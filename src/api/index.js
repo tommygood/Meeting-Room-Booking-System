@@ -14,7 +14,9 @@ app.use(cookieParser()); //解析 HTTP 請求的 cookie
 // routing
 // api
 app.use("/api/login", require("./api/login.js"));
+app.use("/api/info", require("./api/info.js"));
+app.use("/example", require("./example.js"));
 
-server.listen(5000, function () {
+server.listen(3000, function () {
     console.log('Node server is running..');
 });
