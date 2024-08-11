@@ -22,7 +22,7 @@
   - ![image](https://github.com/user-attachments/assets/ecfd905d-faa3-4970-8a5d-9c767b109d7a)
 - redirect to NCU Portal
   - ![image](https://github.com/user-attachments/assets/9d00645a-6a7f-46a4-8886-a58c0444d00d)
-- login with NCU account & pwd
+- NCU Portal show the leave alert message after login with NCU account & pwd
   - ![image](https://github.com/user-attachments/assets/ef15fd9c-a06a-4bc9-80b0-448e518b815f)
 - redirect to `/example`
   - ![image](https://github.com/user-attachments/assets/4f448821-734d-4d9e-80f9-af8f2556f43a)
