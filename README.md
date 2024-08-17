@@ -21,6 +21,9 @@
 - `npm install`
 - `node index.js`
 ### Frontend Site
+## Future Works
+1. 目前會將 OAuth access token 以 query string 存到使用者的前端頁面，但這是不安全的作法，之後要改為將 access token 存到 session
+2. 後端 API 的單元測試
 ## Demo
 - send a request to `/api/login/sso`
   - ![image](https://github.com/user-attachments/assets/ecfd905d-faa3-4970-8a5d-9c767b109d7a)
