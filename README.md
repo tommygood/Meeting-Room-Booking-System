@@ -10,7 +10,11 @@
   - GET `/api/info/accoutType` : 利用 request header 的 `access_token` field，送查詢資料的 request to `https://portal.ncu.edu.tw/apis/oauth/v1/info`，以回傳此 `access_token` 所屬帳號的帳號類型
 ### Frontend Site
 ## Features
+### 串接 NCU OAuth
 - 提供利用 NCU Portal 實作第三方登入機制，讓學校職員可以利用學校帳號登入此系統
+- 流程圖
+  ![image](https://github.com/user-attachments/assets/f68b2537-54b4-42b2-a6ec-433800275c99)
+
 ## Prerequisite
 ## Usage
 ### Backend API
