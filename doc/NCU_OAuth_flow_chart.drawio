@@ -4,100 +4,100 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="d_T4CtBdEG4fSvAagIkc-2" target="d_T4CtBdEG4fSvAagIkc-5">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="d_T4CtBdEG4fSvAagIkc-2" target="d_T4CtBdEG4fSvAagIkc-5" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-2" value="跳轉到&amp;nbsp;&lt;div&gt;NCU OAuth&lt;div&gt;Authorization page&lt;/div&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-2" value="跳轉到&amp;nbsp;&lt;div&gt;NCU OAuth :&lt;/div&gt;&lt;div&gt;/oauth2/authorization&lt;br&gt;&lt;div&gt;的 Authorization page&lt;/div&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="300" y="155" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="d_T4CtBdEG4fSvAagIkc-3" target="d_T4CtBdEG4fSvAagIkc-2">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="d_T4CtBdEG4fSvAagIkc-3" target="d_T4CtBdEG4fSvAagIkc-2" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-3" value="前往後端呼叫&amp;nbsp;&lt;div&gt;NCU OAuth&lt;div&gt;進行登入的 API&lt;div&gt;/api/login/sso&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-3" value="前往後端呼叫&amp;nbsp;&lt;div&gt;NCU OAuth&lt;div&gt;進行登入的 API&lt;div&gt;/api/login/sso&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="40" y="140" width="140" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="d_T4CtBdEG4fSvAagIkc-5" target="d_T4CtBdEG4fSvAagIkc-7">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="d_T4CtBdEG4fSvAagIkc-5" target="d_T4CtBdEG4fSvAagIkc-7" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-5" value="使用者輸入&amp;nbsp;&lt;div&gt;NCU Account &amp;amp; Pwd&amp;nbsp;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-5" value="使用者輸入&amp;nbsp;&lt;div&gt;NCU Account &amp;amp; Pwd&amp;nbsp;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="500" y="155" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="d_T4CtBdEG4fSvAagIkc-7" target="d_T4CtBdEG4fSvAagIkc-11">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="d_T4CtBdEG4fSvAagIkc-7" target="d_T4CtBdEG4fSvAagIkc-11" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="730" y="280" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-36" value="Y" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="d_T4CtBdEG4fSvAagIkc-10">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-36" value="Y" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="d_T4CtBdEG4fSvAagIkc-10" vertex="1" connectable="0">
           <mxGeometry x="-0.696" y="-1" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-7" value="成功登入" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-7" value="成功登入" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="690" y="145" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="d_T4CtBdEG4fSvAagIkc-11" target="d_T4CtBdEG4fSvAagIkc-13">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="d_T4CtBdEG4fSvAagIkc-11" target="d_T4CtBdEG4fSvAagIkc-13" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-11" value="帶著 Authrization grant&lt;div&gt;回到後端的 callback url&lt;div&gt;/api/login/callback&lt;/div&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-11" value="將 Authrization code 以 query string 跳轉回&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;後端的 callback url&lt;/span&gt;&lt;div&gt;&lt;div&gt;/api/login/callback&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="620" y="280" width="130" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="d_T4CtBdEG4fSvAagIkc-13" target="d_T4CtBdEG4fSvAagIkc-15">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="d_T4CtBdEG4fSvAagIkc-13" target="d_T4CtBdEG4fSvAagIkc-15" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-13" value="利用 Authrization grant 和 NCU OAuth token&amp;nbsp;&lt;div&gt;要求 access token&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="400" y="280" width="140" height="60" as="geometry" />
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-13" value="後端利用&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;Authrization code&amp;nbsp;&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;和&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&amp;nbsp;NCU OAuth : /oauth2/token&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;要求 access token&lt;/div&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="400" y="280" width="160" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="d_T4CtBdEG4fSvAagIkc-15" target="d_T4CtBdEG4fSvAagIkc-19">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="d_T4CtBdEG4fSvAagIkc-15" target="d_T4CtBdEG4fSvAagIkc-19" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="160" y="310" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-20" value="Y" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="d_T4CtBdEG4fSvAagIkc-18">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-20" value="Y" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="d_T4CtBdEG4fSvAagIkc-18" vertex="1" connectable="0">
           <mxGeometry x="-0.0044" y="1" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-15" value="成功存取" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-15" value="成功存取" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="240" y="270" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="d_T4CtBdEG4fSvAagIkc-19" target="d_T4CtBdEG4fSvAagIkc-21">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="d_T4CtBdEG4fSvAagIkc-19" target="d_T4CtBdEG4fSvAagIkc-21" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-19" value="&lt;div&gt;將 access token 以&lt;div&gt;query string or cookie&lt;/div&gt;&lt;div&gt;的方式存到使用者端&lt;/div&gt;&lt;/div&gt;&lt;div&gt;並&lt;span style=&quot;background-color: initial;&quot;&gt;跳轉到前端頁面&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-19" value="&lt;div&gt;將 access token 以&lt;div&gt;query string or cookie&lt;/div&gt;&lt;div&gt;的方式存到使用者端&lt;/div&gt;&lt;/div&gt;&lt;div&gt;並&lt;span style=&quot;background-color: initial;&quot;&gt;跳轉到前端頁面&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="50" y="280" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="d_T4CtBdEG4fSvAagIkc-21" target="d_T4CtBdEG4fSvAagIkc-25">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="d_T4CtBdEG4fSvAagIkc-21" target="d_T4CtBdEG4fSvAagIkc-25" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-21" value="&lt;div&gt;前端頁面利用&lt;/div&gt;&lt;div&gt;access token&lt;/div&gt;&lt;div&gt;呼叫後端 API&lt;/div&gt;&lt;div&gt;/api/info/accountType&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-21" value="&lt;div&gt;前端頁面利用&lt;/div&gt;&lt;div&gt;access token&lt;/div&gt;&lt;div&gt;呼叫後端 API&lt;/div&gt;&lt;div&gt;/api/info/accountType&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="50" y="380" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="d_T4CtBdEG4fSvAagIkc-25" target="d_T4CtBdEG4fSvAagIkc-27">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="d_T4CtBdEG4fSvAagIkc-25" target="d_T4CtBdEG4fSvAagIkc-27" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-25" value="&lt;div&gt;後端 API 利用&lt;/div&gt;&lt;div&gt;access token&lt;/div&gt;&lt;div&gt;向 NCU OAuth&lt;/div&gt;&lt;div&gt;/apis/oauth/v1/info&lt;br&gt;&lt;/div&gt;&lt;div&gt;存取資料&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-25" value="&lt;div&gt;後端 API 利用&lt;/div&gt;&lt;div&gt;access token&lt;/div&gt;&lt;div&gt;向 NCU OAuth :&lt;/div&gt;&lt;div&gt;/apis/oauth/v1/info&lt;br&gt;&lt;/div&gt;&lt;div&gt;存取資料&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="242" y="370" width="136" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="d_T4CtBdEG4fSvAagIkc-27" target="d_T4CtBdEG4fSvAagIkc-32">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="d_T4CtBdEG4fSvAagIkc-27" target="d_T4CtBdEG4fSvAagIkc-32" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="570" y="410" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-35" value="Y" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="d_T4CtBdEG4fSvAagIkc-30">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-35" value="Y" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="d_T4CtBdEG4fSvAagIkc-30" vertex="1" connectable="0">
           <mxGeometry x="-0.1086" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-27" value="成功存取" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-27" value="成功存取" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="450" y="370" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="d_T4CtBdEG4fSvAagIkc-32" target="d_T4CtBdEG4fSvAagIkc-33">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="d_T4CtBdEG4fSvAagIkc-32" target="d_T4CtBdEG4fSvAagIkc-33" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-32" value="後端 API 回傳資料" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-32" value="後端 API 回傳資料" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="600" y="380" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-33" value="前端顯示&lt;div&gt;使用者帳號種類&lt;/div&gt;&lt;div&gt;在頁面上&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-33" value="前端顯示&lt;div&gt;使用者帳號種類&lt;/div&gt;&lt;div&gt;在頁面上&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="790" y="380" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
