@@ -13,8 +13,7 @@
 ### 串接 NCU OAuth
 - 提供利用 NCU Portal 實作第三方登入機制，讓學校職員可以利用學校帳號登入此系統
 - 流程圖
-  ![image](https://github.com/user-attachments/assets/f68b2537-54b4-42b2-a6ec-433800275c99)
-
+  ![image](https://github.com/user-attachments/assets/22449913-dd71-47cf-b016-1c25c7072ae1)
 ## Prerequisite
 ## Usage
 ### Backend API
