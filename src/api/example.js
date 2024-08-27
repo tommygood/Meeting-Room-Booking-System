@@ -1,7 +1,6 @@
 // Required modules
 const router = require('express').Router();
 const util = require("./utilities/main.js");
-
 router.get('/', async function(req, res) {
     try {
 		console.log("example", util.getParentPath(__dirname));
@@ -12,5 +11,6 @@ router.get('/', async function(req, res) {
         console.log(e);
     }
 })
+
 
 module.exports = router;

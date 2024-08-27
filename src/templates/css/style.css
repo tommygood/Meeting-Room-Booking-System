@@ -1,0 +1,58 @@
+body{
+margin:0px;
+}
+.groupDiv {
+    position: relative;
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+    min-width: 0;
+    height: 725.175px;
+  }
+.image{
+    width:65%;
+    min-width: 70%;
+    height:auto ;
+    background-image: url('../image/行政大樓二樓會議室預約系統.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.flexContainer {
+    display: flex;
+    flex-direction: column;
+    width: 488px;
+    min-width: 0;
+    height:100%;
+    margin-left: 3%;
+  }
+.title {
+    display: flex;
+    font: 300 55px/1.21 Inter, Helvetica, Arial, serif;
+    color: rgb(95 99 104);
+    letter-spacing: 6.3px;
+    text-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+    margin-top:10%;
+    line-height: 1.2;
+}
+
+.subtitle{
+    width: 83.61%;
+    font: 600 30px/1.2 Inter, Helvetica, Arial, serif;
+    color: rgb(105 106 106);
+    letter-spacing: 1.5px;
+    text-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+    margin-top: 10%;
+    line-height: 1.5;
+}
+.loginbutton{
+    margin-top: 20%;
+    width :30%;
+    margin-left: 10%;
+    text-align: center;
+    
+}
+.buttontext{
+    font: 600 30px/1.2 Inter, Helvetica, Arial, serif;
+    color: rgb(105 106 106);
+    margin: 2.5%;
+}
