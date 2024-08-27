@@ -13,8 +13,13 @@ async function getInfoFromAPI(access_token) {
 	return res.data;
 }
 
+async function getAccountName(access_token) {
+	const result = await getInfoFromAPI(access_token);
+    return result.chineseName;
+}
 async function getAccountType(access_token) {
 	const result = await getInfoFromAPI(access_token);
+	//test 拿到的資料
 	return result.accountType;
 }
 
@@ -28,4 +33,13 @@ router.get('/accountType', async function(req, res) {
     }
 })
 
+router.get('/accountName', async function(req, res) {
+	try {
+        const result = await getAccountName(req.headers.access_token);
+        res.json({result});
+    }
+    catch(e) {
+        console.log(e);
+    }
+})
 module.exports = router;

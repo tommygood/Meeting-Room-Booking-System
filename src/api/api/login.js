@@ -2,10 +2,8 @@
 const router = require('express').Router();
 const oauth = require("./../utilities/oauth.js");
 const jwt = require('jsonwebtoken');
-
 const { ClientCredentials, ResourceOwnerPassword, AuthorizationCode } = require('simple-oauth2');
 const config = oauth.config;
-
 
 router.post('/', async function(req, res) {
     try {
@@ -32,14 +30,15 @@ router.get('/callback', async function(req, res) {
 
     const tokenParams = {
         code,
-        redirect_uri: 'http://163.22.17.184:3000/example',
+        redirect_uri: 'http://localhost:3000/example',
         scope: 'identifier',
     };
 
     try {
   		const client = new AuthorizationCode(config);
         const auth_res = await client.getToken(tokenParams);
-		res.redirect(`/example?access_token=${auth_res.token.access_token}`);
+        //有改
+		  res.redirect(`http://localhost:80/templates/userlobby.php?access_token=${auth_res.token.access_token}`);
         // Now use accessToken to access the resource
         //res.status(200).json(access_token);
     } catch (error) {
@@ -53,8 +52,8 @@ async function run(req, res) {
   const client = new AuthorizationCode(config);
 
   const authorizationUri = client.authorizeURL({
-    redirect_uri: 'http://163.22.17.184:3000/api/login/callback',
-    scope: 'identifier',
+    redirect_uri: 'http://localhost:3000/api/login/callback',
+    scope: 'identifier,chinese-name,english-name,gender',
     state: '9d6ca6532dab4d92eac96d7b114730b4',
     
   });
