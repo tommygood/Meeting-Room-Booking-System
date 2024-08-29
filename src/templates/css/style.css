@@ -23,7 +23,7 @@ margin:0px;
     width: 488px;
     min-width: 0;
     height:100%;
-    margin-left: 3%;
+    /*margin-left: 3%;*/
   }
 .title {
     display: flex;
@@ -31,8 +31,8 @@ margin:0px;
     color: rgb(95 99 104);
     letter-spacing: 6.3px;
     text-shadow: 0 4px 4px rgb(0 0 0 / 25%);
-    margin-top:10%;
     line-height: 1.2;
+    margin-top: 10px;
 }
 
 .subtitle{

@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <meta charset="utf-8" />
+    <title>Welcome! 二樓會議室預約系統 </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <style>
+
+        /* 響應式網頁 */
+        @media (max-width: 550px) {
+            div {
+                flex-wrap: wrap;
+            }
+        }
+
+        .flex-container {
+            display: flex;
+        }
+
+        .flex-item-left {
+            flex: 70%;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .flex-item-right {
+            display: flex;
+            flex: 30%;
+            flex-direction: column;
+            padding: 30px;
+            width: 488px;
+            height: stretch;
+            background-color: rgb(255 255 255 / 0.60);
+        }
+
+        /* Button_登入 */
+        .button-login {
+            color: rgb(52 52 52);
+            aspect-ratio: 9/2;
+            width: 80%;
+            height: 60px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+            font-size: 30px;
+        }
+
+        /* 底部版權資訊 */
+        .text-copyright {
+            /* 寫這樣也無法讓它在最底部，Q了 */
+            flex: auto;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body style="background-image: url('../templates/image/RoomPhoto.png'); background-size: auto">
+    <div class="flex-container">
+        <div class="flex-item-left">
+            <a id="ncu-logo" href="https://www.ncu.edu.tw">
+                <img src="../templates/image/ncu_logo.png" width="190" height="60" border="0" alt="國立中央大學" title="國立中央大學">
+            </a>
+        </div>
+        <div class="flex-item-right">
+            <a class="title">
+                行政大樓
+                <br />
+                二樓會議室
+                <br />
+                線上預約系統
+            </a>
+            <h4 style="height: 200px;">.....</h4>
+            <!-- 這理想要整塊留白，讓button在頁面最底部，但不知道要用哪個tag -->
+            <button class="button-login" type="button" onclick="javascript:location.href=`http://localhost:3000/api/login/sso`">登入</button>
+        </div>
+    </div>
+    <div class="text-copyright">
+        ©copyright
+    </div>
+</body>
+</html>
