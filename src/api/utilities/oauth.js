@@ -37,8 +37,10 @@ module.exports = {
 	  
 		try {
 		  const accessToken = await client.getToken(tokenParams);
+		  return {suc : true, access_token : accessToken.access_token};
 		} catch (error) {
 		  console.log('Access Token Error', error.message);
+		  return {suc : false, error : error.message};
 		}
 	},
 
@@ -56,9 +58,11 @@ module.exports = {
 			const client = new AuthorizationCode(this.config);
 			const auth_res = await client.getToken(tokenParams);
 			res.redirect(`${redirect_uri}?access_token=${auth_res.token.access_token}`);
+			return {suc : true, access_token : auth_res.token.access_token};
 		} catch (error) {
 			console.error('Access Token Error', error);
 			res.status(500).json('Authentication failed');
+			return {suc : false, error : error.message};
 		}
 	}
 }

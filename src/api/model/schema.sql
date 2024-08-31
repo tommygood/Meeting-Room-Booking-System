@@ -1,12 +1,3 @@
-CREATE TABLE `member` (
-  `mid` int NOT NULL,
-  `name` char(20) NOT NULL,
-  `state` tinyint(1) NOT NULL,
-  `department` char(40) DEFAULT NULL,
-  `permission` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`mid`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 CREATE TABLE `User` (
   `identifier` varchar(12) NOT NULL,
   `chinesename` varchar(20) DEFAULT NULL,
@@ -18,6 +9,13 @@ CREATE TABLE `User` (
   PRIMARY KEY (`identifier`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE `Operation` (
+    `operation_id` int NOT NULL AUTO_INCREMENT,
+    `operation_name` varchar(40) NOT NULL,
+    PRIMARY KEY (`operation_id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO `Operation` (`operation_name`) VALUES ('login successfully'), ('login failed'), ('logout');
+
 CREATE TABLE `Log` (
     `log_id` int NOT NULL AUTO_INCREMENT,
     `identifier` varchar(12) NOT NULL,
@@ -28,16 +26,16 @@ CREATE TABLE `Log` (
     FOREIGN KEY (`identifier`) REFERENCES `User` (`identifier`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE INDEX `identifier_time` ON `Log` (`identifier`, `time`);
+CREATE INDEX `identifier_time` ON `Log` (`identifier`, `datetime`);
 
-CREATE TABLE `violation` (
+CREATE TABLE `Violation` (
   `violation_id` int NOT NULL AUTO_INCREMENT,
   `identifier` varchar(12) NOT NULL,
   `datetime` datetime NOT NULL,
   `reason` varchar(200) NOT NULL,
   `remark` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`violation_id`),
-  FOREIGN KEY (`identifier`) REFERENCES `User` (`identifier`),
+  FOREIGN KEY (`identifier`) REFERENCES `User` (`identifier`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `Room` (
@@ -47,7 +45,7 @@ CREATE TABLE `Room` (
     PRIMARY KEY (`room_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `Reserve` (
+CREATE TABLE `Reservation` (
     `reserve_id` int NOT NULL AUTO_INCREMENT,
     `identifier` varchar(12) NOT NULL,
     `room_id` int NOT NULL,
@@ -56,5 +54,5 @@ CREATE TABLE `Reserve` (
     `show` boolean NOT NULL,
     `ext` varchar(10),
     PRIMARY KEY (`reserve_id`),
-    FOREIGN KEY (`identifier`) REFERENCES `User` (`identifier`),
+    FOREIGN KEY (`identifier`) REFERENCES `User` (`identifier`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

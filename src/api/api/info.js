@@ -10,6 +10,7 @@ async function getInfoFromAPI(access_token) {
 		"Accept" : "application/json"
 	}
 	const res = await axios.get(api_info, {headers});
+	console.log(res.data, access_token, 123);
 	return res.data;
 }
 
@@ -21,6 +22,11 @@ async function getAccountType(access_token) {
 	const result = await getInfoFromAPI(access_token);
 	//test 拿到的資料
 	return result.accountType;
+}
+
+async function getIdentifier(params) {
+	const result = await getInfoFromAPI(params);
+	return result.identifier;
 }
 
 router.get('/accountType', async function(req, res) {
@@ -41,5 +47,15 @@ router.get('/accountName', async function(req, res) {
     catch(e) {
         console.log(e);
     }
+})
+
+router.get('/identifier', async function(req, res) {
+	try {
+		const result = await getIdentifier(req.headers.access_token);
+		res.json({result});
+	}
+	catch(e) {
+		console.log(e);
+	}
 })
 module.exports = router;
