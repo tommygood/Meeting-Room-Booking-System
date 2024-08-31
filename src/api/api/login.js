@@ -31,7 +31,7 @@ router.get('/sso', async function(req, res) {
 
 router.get('/callback', async function(req, res) {
 	try {
-      const redirect_uri = `${host}/example`;
+      const redirect_uri = `${host}/page/userlobby`;
     	const result = await oauth.callback(host, redirect_uri, req, res);
       if (result.suc) {
         const user_info = await info.getInfoFromAPI(result.access_token);

@@ -1,198 +1,268 @@
 body{
-    margin:0px;
+  margin:0px;
 }
 
 .lobby{
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  transition: transform 0.3s ease;
-  overflow-x: auto;
+position: relative;
+display: flex;
+flex-direction: column;
+flex-grow: 1;
+transition: transform 0.3s ease;
+overflow-x: auto;
+transform-origin: right;
+width: auto;
+height: auto;
+
 }
 .lobby.active{
-  transform: translateX(400px); /* 清單滑入視窗 */
-
+transform: translateX(400px);/* 清單滑入視窗 */
 }
 
 
-    /* 會議的排列(時間，名稱) */
-  .fc-event-main-frame {
-      flex-direction: column;
-  }
-  /* 會議行距 */
-  .fc-event{
-    line-height: 1;
-    z-index: 5;
-    cursor: pointer; 
 
-  }
-  /* 上面按鈕跟日期位置 */
-  .fc-header-toolbar.fc-toolbar.fc-toolbar-ltr .fc-toolbar-chunk:first-child {
-    margin-left: 70px;
-    display: flex;
-    flex-direction: row;
-    margin-top:10px;
-  }
-  .fc-header-toolbar.fc-toolbar.fc-toolbar-ltr .fc-toolbar-chunk:nth-child(2){
-    display: flex;
-    flex-direction: row;
-    margin-top:10px;
-  }
-  /* 字體大小 */
-  .fc-event-title {
-    font-size: 14px;
-
-  } 
-  /* 月曆每格大小 */
-  .fc-daygrid-day-frame{
-    height:150px;
-    min-height: 100%;
-    position: relative;
-  }
-
-  .fc-daygrid-day-top{
-    justify-content: center;
-  }
-
-
-
-  /* 點事件彈出視窗 */
-  .popup{
-    background: rgba(0, 0, 0,0.6);
-    display: none;
-    width:100%;
-    height:100%;
-    position: absolute;
-    top:0;
-    z-index: 10;
-    justify-content: center;
-    align-items: center;
-
-  }
-  .popup-content{
-    display: flex;
+  /* 會議的排列(時間，名稱) */
+.fc-event-main-frame {
     flex-direction: column;
-    margin: 10px;
-    height: 600px;
-    width: 500px;
-    background:#FFF ;
-    justify-self: center;
-    align-items: center;
-    border-radius: 30px;
-  }
-  .popup-datetitle{
-    font: 600 26px/1.2 Inter, Helvetica, Arial, serif;
-    color: rgb(105 106 106);
-    letter-spacing: 6.3px;
-  }
-  .popup-list{
-    width: 80%;
-    height:75%;
-    background:rgb(236,236,236);
-    border-radius: 30px;
-    overflow:scroll
-  }
-  .popup-content_box{
-  
-    display: flex;
-    flex-direction: column;
-    background-color: rgb(217 217 217);
-    border-radius: 30px;
-    border-color: black;
-    border: 2px solid black;
-    margin:10px;
-  }
-  .popup-subtitle {
-    margin: 11px 0 10px 12px;
-    width: 298px;
-    font: 700 20px/1.2 Inter, Helvetica, Arial, serif;
-    color: rgb(0 0 0);
-    letter-spacing: -0.2px;
-  }
+}
+/* 會議行距 */
+.fc-event{
+  line-height: 1;
+  z-index: 5;
+  cursor: pointer; 
+
+}
+/* 上面按鈕跟日期位置 */
+.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr .fc-toolbar-chunk:first-child {
+  margin-left: 70px;
+  display: flex;
+  flex-direction: row;
+  margin-top:10px;
+}
+.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr .fc-toolbar-chunk:nth-child(2){
+  display: flex;
+  flex-direction: row;
+  margin-top:10px;
+  margin-left: -100px;
+}
+/* 字體大小 */
+.fc-event-title {
+  font-size: 14px;
+
+} 
+/* 月曆每格大小 */
+.fc-daygrid-day-frame{
+  height:150px;
+  min-height: 100%;
+  position: relative;
+}
+
+.fc-daygrid-day-top{
+  justify-content: center;
+}
+
+
+
+/* 點事件彈出視窗 */
+.popup{
+  background: rgba(0, 0, 0,0.6);
+  display: none;
+  width:100%;
+  height:100%;
+  position: absolute;
+  top:0;
+  z-index: 10;
+  justify-content: center;
+  align-items: center;
+
+}
+.popup-content{
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  height: 600px;
+  width: 500px;
+  background:#FFF ;
+  justify-self: center;
+  align-items: center;
+  border-radius: 30px;
+}
+.popup-datetitle{
+  font: 600 26px/1.2 Inter, Helvetica, Arial, serif;
+  color: rgb(105 106 106);
+  letter-spacing: 6.3px;
+}
+.popup-list{
+  width: 80%;
+  height:75%;
+  background:rgb(236,236,236);
+  border-radius: 30px;
+  overflow:scroll
+}
+.popup-content_box{
+
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(217 217 217);
+  border-radius: 30px;
+  border-color: black;
+  border: 2px solid black;
+  margin:10px;
+}
+.popup-subtitle {
+  margin: 11px 0 10px 12px;
+  width: 298px;
+  font: 700 20px/1.2 Inter, Helvetica, Arial, serif;
+  color: rgb(0 0 0);
+  letter-spacing: -0.2px;
+}
 
 
 
 
-  /* list按鈕 */
-  .hamburger-button{
-    position:absolute;
-    border: gray 1px solid;
-    cursor: pointer;
-    color: black;
-    padding: 5px;
-    border-radius: 5px;
-    width: 30px;
-    height:30px;
-    margin-top: 10px;
-    margin-left: 10px;
-    background-image: url('../image/list.png');
-    background-size: 70%; 
-    background-position: center; 
-    background-repeat: no-repeat; 
-    transition: transform 0.3s ease; /* 添加過渡效果 */
-  }
- 
-  .list-button:hover{
-    background-color: rgba(0, 0, 0, 0.2);
-  }
+/* list按鈕 */
+.hamburger-button{
+  position:absolute;
+  border: gray 1px solid;
+  cursor: pointer;
+  color: black;
+  padding: 5px;
+  border-radius: 5px;
+  width: 30px;
+  height:30px;
+  margin-top: 10px;
+  margin-left: 10px;
+  background-image: url('../image/list.png');
+  background-size: 70%; 
+  background-position: center; 
+  background-repeat: no-repeat; 
+  transition: transform 0.3s ease; /* 添加過渡效果 */
+}
+
+.hamburger-button:hover{
+  background-color: rgba(0, 0, 0, 0.2);
+}
 
 
 
 
-  .hamburger-menu{
-    position: fixed; 
-    left: -400px;    
-    top: 0;
-    width: 400px;    
-    height: 100%;    
-    background-color: #EEE;
-    list-style: none;
-    padding: 20px;
-    box-sizing: border-box;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease; /* 添加過渡效果 */
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-    z-index: 10;
-  }
-  .hamburger-menu.active {
-    transform: translateX(400px); /* 清單滑入視窗 */
-  }
-  .hamburger-title{
-    display: flex;
-    justify-content: center;
-    font: 700 30px/1.2 Inter, Helvetica, Arial, serif;
-    color: rgb(65 65 65);
-    text-align: center;
-    margin-top: 6px;
-  }
-  .hamburger-list {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 500px;
-    background-color:#CCC;
-  }
-  .hamburger-requestbutton{
-    margin-left: 25%;
-    margin-top: 20px;
-    width: 50%;
-    height: 50px;
-    background-color: #EEE;
-    display: flex;
-    justify-content: center;
-    align-items: normal;
-    font: 700 24px/1.2 Inter, Helvetica, Arial, serif;
-    background-color:#8F8E8E;
-    border-radius: 15px;
-  }
-  .hamburger-requestbutton:hover{
-    background-color:#9F9E9E;
-    cursor: pointer; 
+.hamburger-menu{
+  position: fixed; 
+  left: -400px;    
+  top: 0;
+  width: 400px;    
+  height: 100%;    
+  background-color: #EEE;
+  padding: 10px;
+  box-sizing: border-box;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease; /* 添加過渡效果 */
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  z-index: 10;
+}
+.hamburger-menu.active {
+  transform: translateX(400px); /* 清單滑入視窗 */
+}
+.hamburger-title{
+  display: flex;
+  justify-content: center;
+  font: 700 30px/1.2 Inter, Helvetica, Arial, serif;
+  color: rgb(65 65 65);
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.hamburger-list {
+  display: flex;
+  flex-direction: column;
+  width: 370px;
+  height: 500px;
+  background-color:#CCC;
+}
+.hamburger-requestbutton{
+  margin-left: 25%;
+  margin-top: 20px;
+  width: 50%;
+  height: 50px;
+  background-color: #EEE;
+  display: flex;
+  justify-content: center;
+  align-items: normal;
+  font: 700 24px/1.2 Inter, Helvetica, Arial, serif;
+  background-color:#8F8E8E;
+  border-radius: 15px;
+}
+.hamburger-requestbutton:hover{
+  background-color:#9F9E9E;
+  cursor: pointer; 
 
-  }
+}
 
-  .hamburger-requestpage{
-    display: none;
-  }
+  /* 申請清單清單 */
+.hamburger-requestpage{
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.hamburger-request-title{
+  margin-left: 10px;
+  font-size: 18px;
+}
+
+.hamburger-bottom{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.input-group{
+  display: flex;
+  flex-direction:row;
+  justify-content: right;
+  align-items: center;
+  padding: 2px;
+  margin-top: 5px;
+  margin-right: 5px;
+}
+input{
+  font-size: 1.1em;
+  height: 35px;
+  width:70%;
+  border-radius: 10px;
+}
+
+.hamburger-timerequest{
+  font-size: 1.1em;
+  height: 35px;
+  width: 30%;
+  border-radius: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.hamburger-sendbutton{
+  margin-left: 3%;
+  margin-right:3%;
+  margin-top: 20px;
+  width: 50%;
+  height: 50px;
+  background-color: #EEE;
+  display: flex;
+  justify-content: center;
+  align-items: normal;
+  font: 700 24px/1.2 Inter, Helvetica, Arial, serif;
+  background-color:#8F8E8E;
+  border-radius: 15px;
+}
+.hamburger-sendbutton:hover{
+  background-color:#9F9E9E;
+  cursor: pointer; 
+
+}
+.request-check{
+  flex-direction:row ; 
+  display:inline-flex; 
+  align-items: center;
+}
