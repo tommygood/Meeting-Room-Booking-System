@@ -6,14 +6,14 @@
 - based on Express.JS & MySQL
 - 提供前端需要的資料，處理資料的儲存
 - Current APIs
-  - GET `/api/login/sso` : 串接 NCU OAuth，並將 request 和取得的 `access_token` 一起 redirect to a url（目前暫時會回傳到 `/example`，其有範例的 html 展示如何使用 API）
-  - GET `/api/info/accoutType` : 利用 request header 的 `access_token` field，送查詢資料的 request to `https://portal.ncu.edu.tw/apis/oauth/v1/info`，以回傳此 `access_token` 所屬帳號的帳號類型
+  - GET `/api/login/sso` : 串接 NCU OAuth，並將 OAuth 回傳的 `identifier` 用 jwt sign 後放到 user cookie
+  - GET `/api/info/chinesename` : 驗證 cookie，並回傳 user 的中文名字
 ### Frontend Site
 ## Features
 ### 串接 NCU OAuth
 - 提供利用 NCU Portal 實作第三方登入機制，讓學校職員可以利用學校帳號登入此系統
 - 流程圖
-  ![image](https://github.com/user-attachments/assets/22449913-dd71-47cf-b016-1c25c7072ae1)
+  ![image](https://github.com/user-attachments/assets/f62dd386-0089-4614-8aef-a58b838188a3)
 ## Prerequisite
 ## Usage
 ### Backend API
@@ -21,7 +21,7 @@
 - `node index.js`
 ### Frontend Site
 ## Future Works
-1. 目前會將 OAuth access token 以 query string 存到使用者的前端頁面，但這是不安全的作法，之後要改為將 access token 存到 session
+1. ~~目前會將 OAuth access token 以 query string 存到使用者的前端頁面，但這是不安全的作法，之後要改為將 access token 存到 session~~
 2. 後端 API 的單元測試
 ## Demo
 - send a request to `/api/login/sso`
@@ -32,3 +32,5 @@
   - ![image](https://github.com/user-attachments/assets/ef15fd9c-a06a-4bc9-80b0-448e518b815f)
 - redirect to `/example`
   - ![image](https://github.com/user-attachments/assets/4f448821-734d-4d9e-80f9-af8f2556f43a)
+## Contribution
+- 歡迎 PR，可以先看一下<a href="https://github.com/tommygood/Meeting-Room-Booking-System/blob/main/doc/contribution.md">教學</a>
