@@ -6,6 +6,7 @@ const axios = require('axios');
 
 router.get('/chinesename', async function(req, res) {
 	try {
+		// Verify the token
 		const result = jwt.verifyJwtToken(req.cookies.token);
 		if (result.suc) {
 			const data = await Info.getChinesename(result.data.data);

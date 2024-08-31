@@ -71,7 +71,7 @@ module.exports = {
 				const user_info = await Info.getInfoFromAPI(access_token);
 				const token = jwt.signJwtToken(user_info.identifier);
                 res.cookie("token", token);
-				res.redirect(`${redirect_uri}?access_token=${auth_res.token.access_token}`);
+				res.redirect(`${redirect_uri}`);
 				return {suc : true, access_token : auth_res.token.access_token, user_info};
 			}
 		} catch (error) {

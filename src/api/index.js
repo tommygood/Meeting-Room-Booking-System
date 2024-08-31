@@ -25,6 +25,7 @@ app.use("/page", require("./page/main.js"));
 app.use("/example", require("./example.js"));
 app.use("/css", express.static(templates_path + '/css'));
 app.use("/image", express.static(templates_path + '/image'));
+app.use("/js", express.static(templates_path + '/js'));
 
 
 server.listen(3000, function () {

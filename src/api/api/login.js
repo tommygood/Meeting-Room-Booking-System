@@ -36,7 +36,7 @@ router.get('/callback', async function(req, res) {
 
       // insert/update user info into db
       User.insert(result.user_info);
-
+      console.log("ip: ", req.ip);
       // Log the login result
       if (result.suc) {
         Log.insert(req.ip, Operator.getOperator.LoginSuc, result.user_info);
