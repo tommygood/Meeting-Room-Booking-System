@@ -49,6 +49,7 @@ CREATE TABLE `Reservation` (
     `reserve_id` int NOT NULL AUTO_INCREMENT,
     `identifier` varchar(12) NOT NULL,
     `room_id` int NOT NULL,
+    `name` varchar(20) NOT NULL,
     `start_time` datetime NOT NULL,
     `end_time` datetime NOT NULL,
     `show` boolean NOT NULL,
