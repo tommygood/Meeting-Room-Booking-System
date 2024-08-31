@@ -5,8 +5,8 @@ const path = require('path');
 
 router.get('/main', async function(req, res) {
     try {
-		// use path.resolve to get the absolute path
-		res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/Page_welcome.html'));
+      // use path.resolve to get the absolute path
+      res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/Page_welcome.html'));
     }
     catch(e) {
         console.log(e);

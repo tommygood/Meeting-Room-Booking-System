@@ -1,3 +1,6 @@
+CREATE DATABASE `NCU-MRBS` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `NCU-MRBS`;
+
 CREATE TABLE `User` (
   `identifier` varchar(12) NOT NULL,
   `chinesename` varchar(20) DEFAULT NULL,
@@ -19,7 +22,7 @@ INSERT INTO `Operation` (`operation_name`) VALUES ('login successfully'), ('logi
 CREATE TABLE `Log` (
     `log_id` int NOT NULL AUTO_INCREMENT,
     `identifier` varchar(12) NOT NULL,
-    `datetime` datetime NOT NULL,
+    `datetime` datetime DEFAULT CURRENT_TIMESTAMP,
     `IP` varchar(15) NOT NULL,
     `operation_id` int NOT NULL,
     PRIMARY KEY (`log_id`),
@@ -31,7 +34,7 @@ CREATE INDEX `identifier_time` ON `Log` (`identifier`, `datetime`);
 CREATE TABLE `Violation` (
   `violation_id` int NOT NULL AUTO_INCREMENT,
   `identifier` varchar(12) NOT NULL,
-  `datetime` datetime NOT NULL,
+  `datetime` datetime DEFAULT CURRENT_TIMESTAMP,
   `reason` varchar(200) NOT NULL,
   `remark` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`violation_id`),
@@ -49,7 +52,7 @@ CREATE TABLE `Reservation` (
     `reserve_id` int NOT NULL AUTO_INCREMENT,
     `identifier` varchar(12) NOT NULL,
     `room_id` int NOT NULL,
-    `name` varchar(20) NOT NULL,
+    `name` varchar(40) NOT NULL,
     `start_time` datetime NOT NULL,
     `end_time` datetime NOT NULL,
     `show` boolean NOT NULL,

@@ -2,9 +2,9 @@
 const router = require('express').Router();
 const oauth = require("./../utilities/oauth.js");
 const config = require("./../utilities/config.js");
-const operator = require("./../model/operator.js");
+const Operator = require("./../model/operator.js");
 const Log = require("./../model/log.js");
-const info = require("./../utilities/info.js");
+const User = require("./../model/user.js");
 const jwt = require('jsonwebtoken');
 const oauth_config = oauth.config;
 const host = config.host;
@@ -33,9 +33,16 @@ router.get('/callback', async function(req, res) {
 	try {
       const redirect_uri = `${host}/example`;
     	const result = await oauth.callback(host, redirect_uri, req, res);
+
+      // insert/update user info into db
+      User.insert(result.user_info);
+
+      // Log the login result
       if (result.suc) {
-        const user_info = await info.getInfoFromAPI(result.access_token);
-        Log.insert(req.ip, operator.getOperator.LoginSuc, user_info);
+        Log.insert(req.ip, Operator.getOperator.LoginSuc, result.user_info);
+      }
+      else {
+        Log.insert(req.ip, Operator.getOperator.LoginFail, result.user_info);
       }
   }
   catch(e) {

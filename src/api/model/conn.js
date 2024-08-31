@@ -1,12 +1,13 @@
 const db = require("mariadb");
+const config = require("./../utilities/config.js");
 // create pool
 const pool = db.createPool({
-    connectionLimit : 500,
-    host : 'db.cymlab.ncu.im',
-    port : 443,
-    user : 'secretariat',
-    password : 'Sec@ncu',
-    database : 'secretariat',
+    connectionLimit : 5,
+    host : config.db.host,
+    port : config.db.port,
+    user : config.db.username,
+    password : config.db.password,
+    database : config.db.name,
 });
 
 module.exports = {
