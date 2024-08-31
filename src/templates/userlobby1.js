@@ -15,13 +15,19 @@ async function getinfo(type){
       console.error("Error:", error);
     }
   }
-
-  async function setAccountType() {
+async function setAccountName() {
     const account_type = await getinfo('accountName');
     document.getElementById("accountName").innerHTML += account_type;
   }
-  setAccountType();
+  // setAccountName();
 
+
+
+
+//隱藏會議列表
+function hidepopup(){
+  document.querySelector('.popup').style.display='none';
+}
 
   
 //calendar
@@ -35,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function() {
     height: 700,
     contentHeight: 700,
 
-
+    windowResizeDelay: 1,
     displayEventEnd:true,
     fixedWeekCount:false,
 
@@ -86,10 +92,45 @@ document.addEventListener("DOMContentLoaded", function() {
       hour12: false 
     },
 
-    
+    eventClick: function(info) {
+      console.log(info.event);
+      const StartTime = info.event.start.toLocaleString('zh-TW', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    });
+    const EndTime = info.event.end.toLocaleString('zh-TW', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+  });
+
+
+
+      Swal.fire({
+        title: info.event.title,
+        html: `
+            ${StartTime} ~ ${EndTime}<br>
+            會議：${info.event.title}<br>
+            借用單位: ${info.event.extendedProps.department}<br>
+            發起人: ${info.event.extendedProps.name}<br>
+            分機號碼: ${info.event.extendedProps.number}<br>
+        `,
+        confirmButtonText: "OK",
+      })
+    },
+
 });
 
-//彈出視窗
+
+
+// 彈出視窗
 function handleDateClick(info){
   const event = calendar.getEvents().filter(event => {
     return event.startStr.startsWith(info.dateStr);
@@ -149,45 +190,45 @@ calendar.on('dateClick', function(info) {
 });
 
 
-// 點事件彈出視窗
-calendar.on('eventClick', function(info) {
-  // 取得被點擊事件的日期
-  const eventDate = info.event.start;
-  console.log(eventDate);
-  // 將日期部分格式化為 "YYYY-MM-DD"
-  const eventDateStr = eventDate.toISOString().split('T')[0];
+// // 點事件彈出視窗
+// calendar.on('eventClick', function(info) {
+//   // 取得被點擊事件的日期
+//   const eventDate = info.event.start;
+//   console.log(eventDate);
+//   // 將日期部分格式化為 "YYYY-MM-DD"
+//   const eventDateStr = eventDate.toISOString().split('T')[0];
 
-  // 過濾當天所有事件
-  const events = calendar.getEvents().filter(event => {
-    const eventStartStr = event.start.toISOString().split('T')[0];
-    return eventStartStr === eventDateStr;
-  });
+//   // 過濾當天所有事件
+//   const events = calendar.getEvents().filter(event => {
+//     const eventStartStr = event.start.toISOString().split('T')[0];
+//     return eventStartStr === eventDateStr;
+//   });
 
-  // 確保事件按開始時間排序
-  events.sort((a, b) => a.start - b.start);
+//   // 確保事件按開始時間排序
+//   events.sort((a, b) => a.start - b.start);
 
-  // 在這裡，你可以處理當天的所有事件
+//   // 在這裡，你可以處理當天的所有事件
 
-  // 將這些事件資訊傳遞給 handleDateClick 或其他處理函數
-  const dateInfo = {
-    dateStr: eventDateStr,
-    date: eventDate,
-    events: events
-  };
+//   // 將這些事件資訊傳遞給 handleDateClick 或其他處理函數
+//   const dateInfo = {
+//     dateStr: eventDateStr,
+//     date: eventDate,
+//     events: events
+//   };
 
-  handleDateClick(dateInfo);
-});
+//   handleDateClick(dateInfo);
+// });
 
 
 
   calendar.render()
   
+
+
+  
 })
 
-//隱藏會議列表
-function hidepopup(){
-  document.querySelector('.popup').style.display='none';
-}
+
 
 // 漢堡選單
 document.addEventListener('DOMContentLoaded', function() {
@@ -198,6 +239,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+//申請換頁
 document.addEventListener('DOMContentLoaded', function() {
   const requestbutton = document.getElementById('hamburger-requestbutton');
   requestbutton.addEventListener('click', function() {
@@ -205,3 +248,11 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('hamburger-requestpage').style.display = 'flex';
     });
 })
+document.addEventListener('DOMContentLoaded', function() {
+  const requestButton = document.getElementById('backbtn');
+  requestButton.addEventListener('click', function() {
+    document.getElementById('hamburger-content').style.display = 'block';
+    document.getElementById('hamburger-requestpage').style.display = 'none';
+  });
+});
+

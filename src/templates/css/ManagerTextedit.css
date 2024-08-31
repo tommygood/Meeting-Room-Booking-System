@@ -1,0 +1,95 @@
+body {
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    background-color:#DDD;
+}
+
+/* 左邊頁面選項 */
+.menu{
+    background-color: #fff;
+    width:230px;
+    height:100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.title{
+    font: 600 28px/1.2 Inter, Helvetica, Arial, serif;
+    color: #000;
+    letter-spacing: 6.3px;
+}
+.choice{
+    font: bold 20px/1.2 Inter, Helvetica, Arial, serif;
+    color: #000;
+    letter-spacing: 6.3px;
+    background-color:#FFF;
+    width:fit-content;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+}
+.choice:hover{
+    background-color:#DDD;
+    cursor: pointer;
+}
+.pagetext{
+    padding: 10px;
+    padding-left: 25px;
+    padding-right: 25px;
+    margin-top:30px;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin-top: 30px;
+}
+.ql-toolbar{
+    background-color: #fff;
+    width: fit-content;
+    border-right: 2px solid #000000;
+}
+.ql-editor{
+    margin-top: 1%;
+    background-color: #fff;
+    height:84vh;
+    overflow-y: scroll;
+    width:85%;
+    overflow-wrap: break-word; 
+    word-break: break-word; 
+}
+.ql-container.ql-snow {
+    height: auto;
+}
+
+
+.ql-picker.ql-size .ql-picker-label::before,
+.ql-picker.ql-size .ql-picker-item::before {
+	content: attr(data-value) !important;
+}
+
+.save-button{
+    position:absolute;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #8F8E8E;
+    border-radius: 10px;
+    width: 100px;
+    height: 41.6px;
+    margin-left: 780px;
+    cursor: pointer;
+    
+}
+.save-button:hover{
+    background-color:#9F9E9E;
+    cursor: pointer; 
+
+  }
+.buttontext{
+    font: 700 24px/1.2 Inter, Helvetica, Arial, serif;
+    color:#DDD
+}
