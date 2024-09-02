@@ -1,5 +1,6 @@
 body{
   margin:0px;
+  overflow-x: scroll;
 }
 
 .lobby{
@@ -8,7 +9,6 @@ display: flex;
 flex-direction: column;
 flex-grow: 1;
 transition: transform 0.3s ease;
-overflow-x: auto;
 transform-origin: right;
 width: auto;
 height: auto;
@@ -98,6 +98,7 @@ transform: translateX(400px);/* 清單滑入視窗 */
   border-radius: 30px;
   overflow:scroll
 }
+/* 每個事件 */
 .popup-content_box{
 
   display: flex;
@@ -115,7 +116,24 @@ transform: translateX(400px);/* 清單滑入視窗 */
   color: rgb(0 0 0);
   letter-spacing: -0.2px;
 }
-
+.popup-button{
+  margin-left: 3%;
+  margin-right:3%;
+  margin-top: 20px;
+  width: 20%;
+  height: 50px;
+  background-color: #EEE;
+  display: flex;
+  justify-content: center;
+  align-items: normal;
+  font: 700 24px/1.2 Inter, Helvetica, Arial, serif;
+  background-color:#8F8E8E;
+  border-radius: 15px;
+}
+.popup-button:hover{
+  background-color:#9F9E9E;
+  cursor: pointer;
+}
 
 
 
@@ -265,4 +283,34 @@ input{
   flex-direction:row ; 
   display:inline-flex; 
   align-items: center;
+}
+
+
+
+/* 使用者/管理者按鈕 */
+.useradmin{
+  position:absolute ;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  border:1px black solid;
+  width: fit-content;
+  height:40px;
+  margin-top: 10px;
+  margin-left:85%;
+}
+
+.useradmin-button{
+  width: 40px;
+  height: 40px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+  background-repeat: no-repeat;
+  background-size: cover;
+  justify-content: center;
+}
+.useradmin-button:hover{
+  background-color: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }

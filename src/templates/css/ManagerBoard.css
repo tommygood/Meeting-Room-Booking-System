@@ -1,14 +1,13 @@
 body {
     margin: 0;
-    display: flex;
-    height: 100vh;
     background-color:#DDD;
+    display: flex;
+    flex-direction: row;
 }
-
 /* 左邊頁面選項 */
 .menu{
     background-color: #fff;
-    width:230px;
+    width:230px ;
     height:100vh;
     display: flex;
     flex-direction: column;
@@ -47,38 +46,6 @@ body {
 }
 
 
-/* 右半邊 */
-.main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    margin-top: 30px;
-}
-.ql-toolbar{
-    background-color: #fff;
-    width: fit-content;
-    border-right: 2px solid #000000;
-}
-.ql-editor{
-    margin-top: 1%;
-    background-color: #fff;
-    height:84vh;
-    overflow-y: scroll;
-    overflow-x: scroll;
-    width:85%;
-    overflow-wrap: break-word; 
-    word-break: break-word; 
-}
-.ql-container.ql-snow {
-    height: auto;
-}
-
-/* 幾px */
-.ql-picker.ql-size .ql-picker-label::before,
-.ql-picker.ql-size .ql-picker-item::before {
-	content: attr(data-value) !important;
-}
 
 .save-button{
     position:absolute;
@@ -89,7 +56,8 @@ body {
     border-radius: 10px;
     width: 100px;
     height: 41.6px;
-    margin-left: 780px;
+    margin-left: 53%;
+    margin-top: 8px;
     cursor: pointer;
     
 }
@@ -97,15 +65,15 @@ body {
     background-color:#9F9E9E;
     cursor: pointer; 
 
-  }
+}
 .buttontext{
     font: 700 24px/1.2 Inter, Helvetica, Arial, serif;
     color:#DDD
 }
 
 
-/* 使用者/管理者按鈕 */
-.useradmin{
+  /* 使用者/管理者按鈕 */
+  .useradmin{
     position:absolute ;
     display: flex;
     flex-direction: row;

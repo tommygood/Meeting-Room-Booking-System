@@ -1,0 +1,203 @@
+body {
+    margin: 0;
+    height: 100vh;
+    background-color:#DDD;
+    display: flex;
+    flex-direction: row;
+}
+/* 左邊頁面選項 */
+.menu{
+    background-color: #fff;
+    width:230px;
+    height:100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.menu-title{
+    font: 600 28px/1.2 Inter, Helvetica, Arial, serif;
+    color: #000;
+    letter-spacing: 6.3px;
+}
+#menu-title1{
+  margin-bottom: 0;
+}
+#accountName{
+  margin-top :10px;
+}
+.choice{
+    font: bold 20px/1.2 Inter, Helvetica, Arial, serif;
+    color: #000;
+    letter-spacing: 6.3px;
+    background-color:#FFF;
+    width:fit-content;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+}
+.choice:hover{
+    background-color:#DDD;
+    cursor: pointer;
+}
+.pagetext{
+    padding: 10px;
+    padding-left: 25px;
+    padding-right: 25px;
+    margin-top:30px;
+}
+
+
+/* calendar */
+.lobby{
+    margin-left: 10px;
+    margin-right:10px;
+    margin-bottom:10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-x: auto;
+    width: auto;
+    background-color: #DDD;
+}
+.fc-event-main-frame {
+    flex-direction: column;
+}
+/* 會議行距 */
+.fc-event{
+  line-height: 1;
+  z-index: 5;
+  cursor: pointer; 
+
+}
+/* 上面按鈕跟日期位置 */
+.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr .fc-toolbar-chunk:first-child {
+  display: flex;
+  flex-direction: row;
+  margin-top:10px;
+}
+.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr .fc-toolbar-chunk:nth-child(2){
+  display: flex;
+  flex-direction: row;
+  margin-top:10px;
+  margin-left: -100px;
+}
+/* 字體大小 */
+.fc-event-title {
+  font-size: 14px;
+
+} 
+/* 月曆每格大小 */
+.fc-daygrid-day-frame{
+  height:150px;
+  min-height: 100%;
+  position: relative;
+}
+
+.fc-daygrid-day-top{
+  justify-content: center;
+}
+.fc-day { /* FullCalendar 的天單元格 */
+    background-color: white; /* 設置背景色為白色 */
+}
+
+/* 點事件彈出視窗 */
+.popup{
+    background: rgba(0, 0, 0,0.6);
+    display: none;
+    width:100%;
+    height:100%;
+    position: absolute;
+    top:0;
+    z-index: 10;
+    justify-content: center;
+    align-items: center;
+  
+  }
+  .popup-content{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    height: 600px;
+    width: 500px;
+    background:#FFF ;
+    justify-self: center;
+    align-items: center;
+    border-radius: 30px;
+  }
+  .popup-datetitle{
+    font: 600 26px/1.2 Inter, Helvetica, Arial, serif;
+    color: rgb(105 106 106);
+    letter-spacing: 6.3px;
+  }
+  .popup-list{
+    width: 80%;
+    height:75%;
+    background:rgb(236,236,236);
+    border-radius: 30px;
+    overflow:scroll
+  }
+  .popup-content_box{
+  
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(217 217 217);
+    border-radius: 30px;
+    border-color: black;
+    border: 2px solid black;
+    margin:10px;
+  }
+  .popup-subtitle {
+    margin: 11px 0 10px 12px;
+    width: 298px;
+    font: 700 20px/1.2 Inter, Helvetica, Arial, serif;
+    color: rgb(0 0 0);
+    letter-spacing: -0.2px;
+  }
+  .popup-button{
+    margin-left: 3%;
+    margin-right:3%;
+    margin-top: 20px;
+    width: 20%;
+    height: 50px;
+    background-color: #EEE;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font: 700 24px/1.2 Inter, Helvetica, Arial, serif;
+    background-color:#8F8E8E;
+    border-radius: 15px;
+  }
+  .popup-button:hover{
+    background-color:#9F9E9E;
+    cursor: pointer;
+  }
+
+
+  /* 使用者/管理者按鈕 */
+.useradmin{
+  position:absolute ;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  border:1px black solid;
+  width: fit-content;
+  height:40px;
+  margin-top: 10px;
+  margin-left:85%;
+}
+
+.useradmin-button{
+  width: 40px;
+  height: 40px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+  background-repeat: no-repeat;
+  background-size: cover;
+  justify-content: center;
+}
+.useradmin-button:hover{
+  background-color: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}

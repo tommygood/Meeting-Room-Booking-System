@@ -6,6 +6,7 @@ body {
 }
 
 /* 左邊頁面選項 */
+
 .menu{
     background-color: #fff;
     width:230px;
@@ -46,61 +47,32 @@ body {
     margin-top:30px;
 }
 
-
-/* 右半邊 */
-.main-content {
-    flex: 1;
+/* 右半邊畫面 */
+.search-container{
     display: flex;
-    flex-direction: column;
-    padding: 10px;
-    margin-top: 30px;
-}
-.ql-toolbar{
-    background-color: #fff;
-    width: fit-content;
-    border-right: 2px solid #000000;
-}
-.ql-editor{
-    margin-top: 1%;
-    background-color: #fff;
-    height:84vh;
-    overflow-y: scroll;
-    overflow-x: scroll;
-    width:85%;
-    overflow-wrap: break-word; 
-    word-break: break-word; 
-}
-.ql-container.ql-snow {
-    height: auto;
-}
-
-/* 幾px */
-.ql-picker.ql-size .ql-picker-label::before,
-.ql-picker.ql-size .ql-picker-item::before {
-	content: attr(data-value) !important;
-}
-
-.save-button{
-    position:absolute;
-    display:flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    background-color: #8F8E8E;
-    border-radius: 10px;
-    width: 100px;
-    height: 41.6px;
-    margin-left: 780px;
-    cursor: pointer;
-    
+    margin-left: 30px;
+    margin-top: 10px;
 }
-.save-button:hover{
-    background-color:#9F9E9E;
-    cursor: pointer; 
-
-  }
-.buttontext{
-    font: 700 24px/1.2 Inter, Helvetica, Arial, serif;
-    color:#DDD
+.gridjs-search
+{
+    display: none;
+}
+.search-label{
+    font: 600 20px/1 Inter, Helvetica, Arial, serif;
+    color: #000;
+}
+/* 表格單雙換顏色間隔開*/  
+tr:nth-of-type(even) td {
+    background: #fff;
+}
+tr:nth-of-type(odd) td {
+    background: #EEE;
+}
+/* 表格大小 */
+.gridjs-wrapper{
+    max-height: 88vh;
 }
 
 

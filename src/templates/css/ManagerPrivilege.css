@@ -1,0 +1,201 @@
+body {
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    background-color:#DDD;
+}
+
+/* 左邊頁面選項 */
+
+.menu{
+    background-color: #fff;
+    width:230px;
+    height:100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.menu-title{
+    font: 600 28px/1.2 Inter, Helvetica, Arial, serif;
+    color: #000;
+    letter-spacing: 6.3px;
+}
+#menu-title1{
+  margin-bottom: 0;
+}
+#accountName{
+  margin-top :10px;
+}
+.choice{
+    font: bold 20px/1.2 Inter, Helvetica, Arial, serif;
+    color: #000;
+    letter-spacing: 6.3px;
+    background-color:#FFF;
+    width:fit-content;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+}
+.choice:hover{
+    background-color:#DDD;
+    cursor: pointer;
+}
+.pagetext{
+    padding: 10px;
+    padding-left: 25px;
+    padding-right: 25px;
+    margin-top:30px;
+}
+
+
+
+
+
+
+
+
+/* 右半邊畫面 */
+.search-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 30px;
+  margin-top: 10px;
+}
+.gridjs-search
+{
+  display: none;
+}
+.search-label{
+    font: 600 20px/1 Inter, Helvetica, Arial, serif;
+    color: #000;
+}
+/* 表格單雙換顏色間隔開*/  
+tr:nth-of-type(even) td {
+  background: #fff;
+}
+tr:nth-of-type(odd) td {
+  background: #EEE;
+}
+/* 表格大小 */
+.gridjs-wrapper{
+  max-height: 88vh;
+}
+
+
+
+
+
+/* 彈出視窗 */
+ .popup{
+    background: rgba(0, 0, 0,0.6);
+    display: none;
+    width:100%;
+    height:100%;
+    position: absolute;
+    top:0;
+    z-index: 10;
+    justify-content: center;
+    align-items: center;
+  
+  }
+  .popup-content{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    height: fit-content;
+    padding-bottom:30px;
+    width: 500px;
+    background:#FFF ;
+    justify-self: center;
+    align-items: center;
+    border-radius: 30px;
+
+  }
+  .bottom-button{
+    display: flex;
+    flex-direction: row;
+
+  }
+  .popup-button{
+    margin-left: 3%;
+    margin-right:3%;
+    margin-top: 20px;
+    width: 20%;
+    height: 50px;
+    background-color: #EEE;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font: 700 24px/1.2 Inter, Helvetica, Arial, serif;
+    background-color:#8F8E8E;
+    border-radius: 15px;
+  }
+  .popup-button:hover{
+    background-color:#9F9E9E;
+    cursor: pointer;
+  }
+ .popup-title{
+    font: 600 28px/1.2 Inter, Helvetica, Arial, serif;
+    color: rgb(105 106 106);
+    letter-spacing: 6.3px;
+    text-align: center;
+  }
+ .popup-input{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    width:80%;
+    margin-top: 15px;
+    margin-bottom: 10px;
+ }
+.title{
+    font: 600 28px/1.2 Inter, Helvetica, Arial, serif;
+    color: rgb(105 106 106);
+    letter-spacing: 6.3px;
+    text-align: center;
+    margin:0px;
+}
+.selector{
+    width: 90px;
+}
+.large-textarea {
+    width: 70%; 
+    height: 80px; 
+    padding: 10px; 
+    font-size: 16px; 
+    resize:none;
+  }
+.violation-input{
+    width: 114.33px;
+}
+
+
+
+/* 使用者/管理者按鈕 */
+.useradmin{
+  position:absolute ;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  border:1px black solid;
+  width: fit-content;
+  height:40px;
+  margin-top: 10px;
+  margin-left:85%;
+}
+
+.useradmin-button{
+  width: 40px;
+  height: 40px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+  background-repeat: no-repeat;
+  background-size: cover;
+  justify-content: center;
+}
+.useradmin-button:hover{
+  background-color: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}

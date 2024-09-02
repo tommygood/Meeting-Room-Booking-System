@@ -27,7 +27,7 @@
 
 
         <!-- 申請頁面 -->
-        <div id= "hamburger-requestpage" class="hamburger-requestpage" style="display:none">
+        <div id= "hamburger-requestpage" class="hamburger-requestpage">
             <h3 class="hamburger-title">送出申請</h3>
             <form action="" method="post" id="hamburger-request">
                 <div class="hamburger-list">
@@ -62,15 +62,20 @@
 
                     <div class="input-group">
                         <h2 class="hamburger-request-title">借用時間：</h2>
-                        <input type="time" id="start-time" name="start-time" class="hamburger-timerequest" step="1800"> <!-- 每30分鐘 -->
+                        <input type="time" id="start-time" name="start-time" class="hamburger-timerequest" step="1800">
                         <span>至</span>
-                        <input type="time" id="end-time" name="end-time" class="hamburger-timerequest" step="1800"> <!-- 每30分鐘 -->
+                        <input type="time" id="end-time" name="end-time" class="hamburger-timerequest" step="1800"> 
                     </div>
 
                 </div>
                 <div class="request-check">
                     <input type="checkbox">
-                    <h2 class="hamburger-request-title" style="white-space: nowrap">我已詳閱《會議室使用規則》</h2>
+                    <h2 class="hamburger-request-title" style="white-space: nowrap">
+                        我已詳閱
+                        <a href="#" onclick="showRules()">
+                            《會議室使用規則》
+                        </a>
+                    </h2>
                 </div>
                 <div id="hamburger-bottom" class="hamburger-bottom" >
                     <div id="backbtn" class="hamburger-sendbutton">
@@ -84,10 +89,14 @@
         </div>
     </div>
     
-    
 
     <div id='lobby' class="lobby">
-
+        <!-- 使用者/管理者 -->
+        <div class="useradmin" onclick=""> 
+            <img src="/image/user.png"  class="useradmin-button" onclick="location.href ='/page/userlobby'">
+            <hr style="margin: 0; height: 100%;" />
+            <img src="/image/admin.png" class="useradmin-button" onclick="location.href ='/page/privilege'">
+        </div>
         <div id="hamburger-button" class="hamburger-button" onclick=""> </div>
         <!-- 月曆 -->
         <div id="calendar" class="calendar"></div>
@@ -102,13 +111,12 @@
             <h1 id="popup-datetitle" class="popup-datetitle">8/20會議</h1>
             <div class="popup-list">
                 <div class="popup-content_box">
-                    <h3 class="popup-subtitle">
-                    
-                    </h3>
-                    </div>
-
+                    <h3 class="popup-subtitle"></h3>
                 </div>
-            <button class="popup-btn" onclick="hidepopup()">確定</button>
+            </div>
+            <div id="backbtn" class="popup-button" style="width:180px" onclick="hidePopup('popup')">
+                <h3 class="hamburger-title" style="color:white">返回</h3>
+            </div>
         </div>
     </div>
 </body>

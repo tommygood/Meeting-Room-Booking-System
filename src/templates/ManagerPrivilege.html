@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="UTF-8">
+        <title>權限管理</title>
+        <script src="https://unpkg.com/gridjs@6.2.0/dist/gridjs.umd.js"></script>
+        <script src="/js/ManagerPrivilege.js"></script>
+        <link rel="stylesheet" href="/css/ManagerPrivilege.css">
+        <link href="https://unpkg.com/gridjs@6.2.0/dist/theme/mermaid.min.css" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- 左邊選單 -->
+        <div class="menu">
+            <h3 class="menu-title" id="menu-title1">歡迎登入</h3>
+            <h3 id="accountName" class="menu-title" ></h3>
+            <div class="page-choose">
+                <div id="privilege" class="choice" onclick="changePage(this)">
+                    <h3 class="pagetext">權限管理</h3>
+                </div>
+                <div id="conference" class="choice" onclick="changePage(this)">
+                    <h3  class="pagetext">會議管理</h3>
+                </div>
+                <div id="board" class="choice" onclick="changePage(this)">
+                    <h3  class="pagetext">看板管理</h3>
+                </div>
+                <div id="rules" class="choice"  onclick="changePage(this)">
+                    <h3 class="pagetext">使用規則</h3>
+                </div>
+                <div id="log" class="choice" onclick="changePage(this)">
+                    <h3  class="pagetext">登入紀錄</h3>
+                </div>
+            </div>
+        </div>
+        <!-- 表單 -->
+        <div>
+            <div class="search-container">
+                <span class="search-label">關鍵字搜尋 :&nbsp;</span>
+                <input type="text" placeholder="Type a keyword..." id="grid-search" class="gridjs-input"/>
+            </div>
+            <div id="gridtable"></div>
+        </div>
+
+        <!-- 使用者/管理者 -->
+        <div class="useradmin" onclick=""> 
+            <img src="/image/user.png"  class="useradmin-button" onclick="location.href ='/page/userlobby'">
+            <hr style="margin: 0; height: 100%;" />
+            <img src="/image/admin.png" class="useradmin-button" onclick="location.href ='/page/privilege'">
+        </div>
+        <!-- 權限修改視窗 -->
+        <div id="popup-permission" class="popup"> 
+            <div class="popup-content">
+                <h2 class="popup-title">權限修改</h2>
+                    <div class="popup-input">
+                        <h2 class="title">目前權限 :&nbsp;</h2>
+                        <select id="permissionSelect" class="selector">
+                            <option value="admin">管理者</option>
+                            <option value="user">一般使用者</option>
+                        </select>
+                    </div>
+                    <div class="popup-input">
+                        <h2 class="title">目前狀態 :&nbsp;</h2>
+                        <select id="actionSelect" class="selector">
+                            <option value="active">有效</option>
+                            <option value="inactive">無效</option>
+                        </select>
+                    </div>
+                    <div class="bottom-button">
+                        <div class="popup-button" style="width:180px" onclick="hidePopup('popup-permission')">
+                            <h3 class="hamburger-title" style="color:white">返回</h3>
+                        </div>
+                        <div class="popup-button" style="width:180px" onclick="hidePopup('popup-permission')">
+                            <h3 class="hamburger-title" style="color:white">確定</h3>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        <div id="popup-violate" class="popup">
+            <div class="popup-content">
+                <h2 class="popup-title">會議違規紀錄</h2>
+                <div class="popup-input">
+                    <h2 class="title">會議日期 :&nbsp;</h2>
+                    <input type="date" id="violationDate" >
+                </div>
+                <div class="popup-input">
+                    <h2 class="title">違規事項 :&nbsp;</h2>
+                    <input type="text" id="violation-input"  >
+                </div>
+                <hr/>
+                <h2 class="title">違規備註 :&nbsp;</h2>
+                <textarea id="violationNote" class="large-textarea"></textarea>
+                <div class="bottom-button">
+                    <div class="popup-button" style="width:180px" onclick="hidePopup('popup-violate')">
+                        <h3 class="hamburger-title" style="color:white">返回</h3>
+                    </div>
+                    <div class="popup-button" style="width:180px" onclick="hidePopup('popup-violate')">
+                        <h3 class="hamburger-title" style="color:white">確定</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>

@@ -1,14 +1,12 @@
 <!DOCTYPE html>
     <head>
-            <meta charset="UTF-8">
-            <title>管理員使用規則修改</title>
-            <!-- 引入 Quill 的 CSS 和 JavaScript -->
-        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-        <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-        <script src="/js/ManagerTextedit.js"></script>
-        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-        <link href="https://cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
-        <link rel="stylesheet" href="/css/ManagerTextedit.css">
+        <meta charset="UTF-8">
+        <title>登入紀錄</title>
+        <script src="https://unpkg.com/gridjs@6.2.0/dist/gridjs.umd.js"></script>
+        <script src="/js/ManagerLog.js"></script>
+        <link rel="stylesheet" type="text/css" href="/css/ManagerLog.css">
+        <link href="https://unpkg.com/gridjs@6.2.0/dist/theme/mermaid.min.css" rel="stylesheet" />
+
     </head>
     <body>
         <!-- 左邊選單 -->
@@ -34,12 +32,13 @@
             </div>
         </div>
 
-        <!-- texteditor -->
-        <div class="main-content">
-            <div id="quill" class="quill"></div>
-            <div class="save-button" onclick="saveContent()">
-                <div class="buttontext">儲存</div>
+        <!-- 右邊表格 -->
+        <div>
+            <div class="search-container">
+                <span class="search-label">關鍵字搜尋 :&nbsp;</span>
+                <input type="text" placeholder="Type a keyword..." id="grid-search" class="gridjs-input"/>
             </div>
+            <div id="gridtable"></div>
         </div>
         <!-- 使用者/管理者 -->
         <div class="useradmin" onclick=""> 
@@ -47,6 +46,5 @@
             <hr style="margin: 0; height: 100%;" />
             <img src="/image/admin.png" class="useradmin-button" onclick="location.href ='/page/privilege'">
         </div>
-        
     </body>
 </html>

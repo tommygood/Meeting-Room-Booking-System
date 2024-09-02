@@ -15,7 +15,8 @@ async function getinfo(type){
   }
 
 async function setAccountName() {
-    const account_type = await getinfo('accountName');
+    const account_type = await getinfo('chinesename');
+    console.log(account_type);
     document.getElementById("accountName").innerHTML += account_type;
   }
   setAccountName();
@@ -29,11 +30,15 @@ function saveContent() {
 
 //當頁按鈕變色
 document.addEventListener("DOMContentLoaded",function(){
-    document.getElementById('textedit').style.backgroundColor = 'rgba(253, 105, 89, 0.636)';
-    document.getElementById('textedit').style.color= 'white';
+    document.getElementById('rules').style.backgroundColor = 'rgba(253, 105, 89, 0.636)';
+    document.getElementById('rules').style.color= 'white';
 })
 
-
+//換頁
+function changePage(button){
+  console.log(button.id);
+  location.href = "/page/"+button.id;
+}
 
 
 const fontSizeArr = ['8px','9px','10px','12px','14px','16px','20px','24px','32px','42px','54px','68px','84px','98px'];
