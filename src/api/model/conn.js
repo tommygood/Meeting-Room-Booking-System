@@ -27,9 +27,11 @@ module.exports = {
     closeDBConnection : function(conn) {
         try {
             conn.release();
+            return true;
         }
         catch(e) {
             console.error("error closing db connection : ", e);
+            return false;
         }
     }
 }
