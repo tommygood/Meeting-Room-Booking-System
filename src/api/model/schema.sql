@@ -59,5 +59,6 @@ CREATE TABLE `Reservation` (
     `show` boolean NOT NULL,
     `ext` varchar(10),
     PRIMARY KEY (`reserve_id`),
-    FOREIGN KEY (`identifier`) REFERENCES `User` (`identifier`)
+    FOREIGN KEY (`identifier`) REFERENCES `User` (`identifier`),
+    FOREIGN KEY (`room_id`) REFERENCES `Room` (`room_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
