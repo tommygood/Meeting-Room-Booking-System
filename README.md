@@ -5,9 +5,7 @@
 ### Backend API
 - based on Express.JS & MySQL
 - 提供前端需要的資料，處理資料的儲存
-- Current APIs
-  - GET `/api/login/sso` : 串接 NCU OAuth，並將 OAuth 回傳的 `identifier` 用 jwt sign 後放到 user cookie
-  - GET `/api/info/chinesename` : 驗證 cookie，並回傳 user 的中文名字
+- <a href='https://github.com/tommygood/Meeting-Room-Booking-System/blob/main/doc/api.md'>API doc</a>
 ### Frontend Site
 ## Features
 ### 串接 NCU OAuth
