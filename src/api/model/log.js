@@ -3,8 +3,8 @@ const db_conn = require('./conn');
 module.exports = {
 
     convertIPv4ToIPv6 : function (ip) {
-        // convert ipv6 to ipv4
-	    return ip.split(":")[ip.length-1];
+        // convert ipv6 to ipv4 if it is ipv6
+	    return ip.includes(':') ? ip.split(":")[ip.length-1] : ip;
     },
 
     insert : async function (ip, operator_id, user_info) {
@@ -14,7 +14,7 @@ module.exports = {
         }
         else {
             try {
-                ip = this.convertIPv4ToIPv6(ip);
+                ip = this.convertIPv4ToIPv6(ip);                
                 const sql = "insert into `Log` (`identifier`, `IP`, `operation_id`) values (?, ?, ?);";
                 await conn.query(sql, [user_info.identifier, ip, operator_id]);
                 db_conn.closeDBConnection(conn);

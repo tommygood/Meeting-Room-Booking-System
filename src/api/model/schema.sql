@@ -1,5 +1,5 @@
-CREATE DATABASE `NCU-MRBS` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `NCU-MRBS`;
+CREATE DATABASE `NCU_MRBS` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `NCU_MRBS`;
 
 CREATE TABLE `User` (
   `identifier` varchar(12) NOT NULL,
@@ -11,6 +11,7 @@ CREATE TABLE `User` (
   `privilege_level` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`identifier`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO `User` (`identifier`, `chinesename`, `email`, `mobilePhone`, `unit`, `status`, `privilege_level`) VALUES ('admin', '管理員', 'tommy50508@gmail.com', '0912345678', 'NCU-IM', 1, 1);
 
 CREATE TABLE `Operation` (
     `operation_id` int NOT NULL AUTO_INCREMENT,

@@ -1,4 +1,8 @@
 
+const request = require('supertest');
+const config = require("./config.js");
+const telegram = config.telegram;
+
 module.exports = {
 
 	// shared function
@@ -29,5 +33,12 @@ module.exports = {
         catch(e) {
             console.log(e);
         }
+    },
+
+    // functions
+    sendTelegramMsg : async function(msg) {
+        const telegram_host = "https://api.telegram.org"
+        const telegram_api = `/bot${telegram.bot_token}/sendMessage?chat_id=${telegram.admin_id}&text=${msg}`
+        const result = await request(telegram_host).get(telegram_api) 
     }
 }

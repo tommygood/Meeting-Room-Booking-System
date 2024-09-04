@@ -13,6 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //express.json: 處理 JSON 資料
 app.use(express.json());
 app.use(cookieParser()); //解析 HTTP 請求的 cookie
+app.set('trust proxy', true); // trust first proxy to get the client IP address
 
 
 // routing
