@@ -11,7 +11,6 @@ router.get('/chinesename', async function(req, res) {
 		if (result.suc) {
 			const data = await Info.getChinesename(result.data.data);
 			res.json({data});
-			console.log(data);
 		}
 		else {
 			res.json({result : 'Invalid token'});

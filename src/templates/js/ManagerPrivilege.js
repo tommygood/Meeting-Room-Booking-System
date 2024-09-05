@@ -8,7 +8,8 @@ const api_info = 'http://localhost:3000/api/info/';
     try {
       const response = await fetch(api_info+type,{ headers: { 'access_token': headers } });
       const data = await response.json();
-      return data.result;
+      console.log(data);
+      return data.data;
       } catch (error) {
       console.error("Error:", error);
     }

@@ -7,8 +7,8 @@
       try {
         const response = await fetch(api_info+type,{ headers: { 'access_token': headers } });
         const data = await response.json();
-        return data.result;
-        } catch (error) {
+        return data.data;
+      } catch (error) {
         console.error("Error:", error);
       }
     }
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
     buttonText: {
       today: "今天",
       month: "月",
-      week: "周",
+      week: "週",
       day: "天",
     },
 
@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function() {
             ${StartTime} ~ ${EndTime}<br>
             會議：${info.event.title}<br>
             借用單位: ${info.event.extendedProps.department}<br>
-            發起人: ${info.event.extendedProps.name}<br>
+            申請人: ${info.event.extendedProps.name}<br>
             分機號碼: ${info.event.extendedProps.number}<br>
         `,
         confirmButtonText: "OK",

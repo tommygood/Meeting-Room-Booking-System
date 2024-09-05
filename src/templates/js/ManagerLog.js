@@ -7,8 +7,8 @@ async function getinfo(type){
     try {
     const response = await fetch(api_info+type,{ headers: { 'access_token': headers } });
     const data = await response.json();
-    return data.result;
-    } catch (error) {
+    return data.data;
+  } catch (error) {
     console.error("Error:", error);
     }
 }
