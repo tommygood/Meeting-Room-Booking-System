@@ -35,13 +35,12 @@ jobs:
         needs: build
         name: deploy image
         runs-on: ubuntu-latest
-
         steps:
         - name: install ssh keys
           run: |
-            eval $(ssh-agent -s)
-            ssh-add <(echo "${{ secrets.SSH_PRIVATE_KEY }}")
+            echo "${{ secrets.SSH_PRIVATE_KEY }}" > test.pem
+            cat test.pem
         - name: connect and pull
-          run: ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && docker compose pull && docker compose up -d && exit"
+          run: ssh -i test.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && docker compose pull && docker compose up -d && exit"
         - name: cleanup
           run: rm -rf ~/.ssh
