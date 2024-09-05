@@ -17,6 +17,7 @@ router.post('/', async function(req, res) {
     }
     catch(e) {
         console.log(e);
+        res.json({result : 'error'});
     }
 })
 
@@ -26,6 +27,7 @@ router.get('/sso', async function(req, res) {
 	}
 	catch(e) {
       console.log(e);
+      res.json({result : 'error'});
   }
 })
 
@@ -47,6 +49,7 @@ router.get('/callback', async function(req, res) {
   }
   catch(e) {
       console.log(e);
+      res.json({result : 'error'});
   }
 })
 

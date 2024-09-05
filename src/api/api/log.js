@@ -1,15 +1,16 @@
 // Required modules
 const router = require('express').Router();
-const Info = require('./../model/info.js');
+const Log = require('./../model/log.js');
 const jwt = require('./../utilities/jwt.js');
-const axios = require('axios');
 
-router.get('/chinesename', async function(req, res) {
+router.get('/', async function(req, res) {
 	try {
 		// Verify the token
 		const result = jwt.verifyJwtToken(req.cookies.token);
 		if (result.suc) {
-			const data = await Info.getChinesename(result.data.data);
+            const offset = req.query.offset;
+            const num = req.query.num;
+			const data = await Log.get(offset, num);
 			res.json({data});
 		}
 		else {
@@ -18,7 +19,7 @@ router.get('/chinesename', async function(req, res) {
     }
     catch(e) {
         console.log(e);
-		res.json({result : 'error'});
+        res.json({result : 'error'});
     }
 })
 

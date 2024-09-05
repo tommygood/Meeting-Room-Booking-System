@@ -1,4 +1,5 @@
 // get user info from ncu portal
+const api = 'http://localhost:3000/api/';
 const api_info = 'http://localhost:3000/api/info/';
 async function getinfo(type){
     const queryString = window.location.search;
@@ -12,6 +13,21 @@ async function getinfo(type){
     console.error("Error:", error);
     }
 }
+
+function setUrlParams(origin_url, params) {
+    const url = new URL(origin_url);
+    for (const key in params) {
+        url.searchParams.set(key, params[key]);
+    }
+    return url.href;
+}
+
+async function getLog(condition) {
+  const url = setUrlParams(api+'log', condition);
+  const res = await axios.get(url);
+  return res.data.data;
+}
+
 async function setAccountName() {
     const account_type = await getinfo('chinesename');
     document.getElementById("accountName").innerHTML += account_type;
@@ -31,9 +47,10 @@ function changePage(button){
 }
 
 
-
 //表單生成 grid
-document.addEventListener("DOMContentLoaded",function(){
+document.addEventListener("DOMContentLoaded", async function(){
+    const data = await getLog({offset : 0, num : 10});
+    console.log(data);
     const grid = new gridjs.Grid({
         columns: ['姓名', 'ip', '操作內容', '操作時間'],
         data: [

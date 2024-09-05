@@ -3,10 +3,14 @@
 module.exports = {
 	host : "http://localhost:3000",
 	db : {
-		host : "163.22.17.184",
+		host : "db.cymlab.ncu.im",
 		port : 3306,
-		name : "NCU-MRBS",
-		username : "NCU_MRBS",
-		password : "NCU_MRBS_113_pwd"
+		name : "secretariat",
+		username : "secretariat",
+		password : "Sec@ncu"
+	},
+	telegram : {
+		bot_token : "6261510862:AAEHbnjlKupEgKMSn6umI2ARTLNxwUSxnCo",
+		admin_id : "1697361994"
 	}
 }
