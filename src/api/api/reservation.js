@@ -2,6 +2,7 @@
 const router = require('express').Router();
 const Reservation = require('./../model/reservation.js');
 const jwt = require('./../utilities/jwt.js');
+const Email = require("./../utilities/email.js");
 
 // get reservations which are between start_time and end_time 
 router.get('/', async function(req, res) {
@@ -38,6 +39,8 @@ router.post('/', async function(req, res) {
             const ext = req.body.ext;
             const suc = await Reservation.insert(identifier, room_id, name, start_time, end_time, show, ext);
             res.json({suc});
+            // send email to admin if the reservation is successful
+            Email.send(Email.admin_email, "New reservation", `New reservation from ${identifier} at ${start_time} to ${end_time} in room ${room_id} is ${suc ? 'successful' : 'failed'}`);
         }
         else {
             res.json({result : 'Invalid token'});
