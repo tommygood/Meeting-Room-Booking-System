@@ -39,6 +39,7 @@ jobs:
         - name: install ssh keys
           run: |
             echo "${{ secrets.SSH_PRIVATE_KEY }}" > test.pem
+            chmod 600 test.pem
             cat test.pem
         - name: connect and pull
           run: ssh -i test.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && docker compose pull && docker compose up -d && exit"
