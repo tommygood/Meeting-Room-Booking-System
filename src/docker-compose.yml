@@ -1,4 +1,9 @@
 version: "3.0"
+
+networks:
+  database:
+    external: true
+
 services:
   ncu-mrbs:
     image: tommygood/ncu-mrbs:latest
