@@ -40,6 +40,7 @@
     >>> r = requests.get('http://localhost:3000/api/reservation?start_time="2024-09-03"&end_time="2024-09-04"', cookies=cookies)
     >>> r.text
     ```
+    
 - GET `/api/reservation/show`
     - get reservations which `show` are true
     ```
@@ -83,10 +84,19 @@
     '{"suc":true}'
     ```
 
+- PUT `/api/user/status`
+  - update user status by identifier
+  ```
+  >>> data = {'identifier' : 'admin', 'status' : 2}
+  >>> r = requests.put('http://localhost:3000/api/user/status', cookies=cookies, json=data)
+  >>> r.text
+  '{"suc":true}'
+  ```
+
 - POST `/api/violation`
-    - insert a violation record by identifier
+    - insert a violation record by reservation id
     ```
-    >>> data = {'identifier' : 'admin', 'reason' : 'test', 'remark' : 'badbad'}
+    >>> data = {'reserve_id' : 1, 'reason' : 'test', 'remark' : 'test'}
     >>> r = requests.post('http://localhost:3000/api/violation', cookies=cookies, json=data)
     >>> r.text
     '{"suc":true}'
