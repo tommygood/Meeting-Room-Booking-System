@@ -13,6 +13,7 @@ router.get('/', async function(req, res) {
             const start_time = req.query.start_time;
             const end_time = req.query.end_time;
             const data = await Reservation.get(start_time, end_time);
+            console.log(data);
             res.json({data});
 		}
 		else {

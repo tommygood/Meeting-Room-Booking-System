@@ -25,12 +25,45 @@ async function setAccountName() {
 
 
 
+
+//fetch event info from sql
+const eventApiUrl = (start, end) => `http://localhost:3000/api/reservation?start_time=${start}&end_time=${end}`;
+function fetchevent(start, end){
+  return fetch(eventApiUrl(start, end),{
+    method: 'GET',
+    credentials: 'include', 
+    headers: { 'Content-Type': 'application/json' },
+  })
+  .then(response => response.json())
+  .then(result => {
+    if (result && Array.isArray(result.data)) {
+      // 將 data 中的每個項目格式化為 FullCalendar 需要的事件格式
+      return result.data.map(item => ({
+        id: item.reserve_id,
+        title: item.name, // 預約名稱
+        start: item.start_time, // 開始時間
+        end: item.end_time, // 結束時間
+        extendedProps: {
+          identifier: item.identifier,
+          room_id: item.room_id,
+          show: item.show,
+          number: item.ext
+        }
+      }));
+    } else {
+      console.error('Unexpected data format:', result); 
+    }
+  })}
+
+
+
+
 //隱藏彈出視窗
 function hidePopup(popupId) {
   document.getElementById(popupId).style.display = 'none';
 }
 
-  
+
 function showRules(){
   Swal.fire({
     title: '會議室使用規則',
@@ -54,6 +87,75 @@ function showRules(){
     confirmButtonText: 'OK',
   });
   
+}
+
+//starttime&endtime轉datetime格式
+function formatDateTimeForDatabase(dateTime) {
+  const date = new Date(dateTime);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份從0開始，需要加1
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`; // 返回 'YYYY-MM-DD HH:MM:SS'
+}
+
+
+
+function reservationPost(){
+  const form = document.getElementById('request');
+  const formData = new FormData(form);
+  const date=formData.get('date');
+  const name = formData.get('name');
+  const starthour = formData.get('starthour');
+  const startminute = formData.get('startminute');
+  const endhour = formData.get('endhour');
+  const endminute = formData.get('endminute');
+  const ext = formData.get('ext');
+  const startTimestamp = formatDateTimeForDatabase(`${date}T${starthour}:${startminute}:00`);
+  const endTimestamp = formatDateTimeForDatabase(`${date}T${endhour}:${endminute}:00`);
+  if (!date || !starthour || !startminute || !endhour || !endminute || !name || !ext) {
+    alert('所有欄位都是必填的，請完整填寫表單！');
+    return; 
+
+  }
+  const rulesCheckbox = document.getElementById('checkrule');
+  if (!rulesCheckbox.checked) {
+      alert('請先勾選「我已詳閱《會議室使用規則》」才能提交申請。');
+      return; 
+  }
+  if (startTimestamp >= endTimestamp) {
+    alert('開始時間不能晚於或等於結束時間，請修正時間！');
+    return; 
+  }
+
+  console.log(startTimestamp, endTimestamp);
+  const data={
+      identifier:'113423004',
+      name:name,
+      room_id:'1',
+      start_time:startTimestamp,
+      end_time:endTimestamp,
+      show:true,
+      ext: ext,
+      
+  }
+  console.log(data);
+  fetch('http://localhost:3000/api/reservation', {
+    method: 'POST',
+    credentials: 'include', 
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  }) 
+  .then(response => response.json())
+  .then(result => {
+      console.log('Success:', result);
+      alert('預約成功！');
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
 }
 
 
@@ -99,25 +201,30 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-    events: [ // Events 
-      {
-        title: "資料庫測試", // 事件標題
-        start: '2024-09-02T12:08:00', // 開始時間，時間格式建議使用 ISO 格式 (yyyy-MM-ddTHH:mm:ss)
-        end: '2024-09-02T13:08:00', // 結束時間
-        // 其他自定義屬性，這些屬性不會影響 FullCalendar 的顯示
-        extendedProps: {
-        name: "小明",
-        department: "秘書室",
-        number: "576"
-      }
-      },
+    events: function(fetchInfo, successCallback, failureCallback) {
+      // 調用 API 獲取事件，fetchInfo 會自動提供 start 和 end 日期
+      fetchevent(fetchInfo.startStr, fetchInfo.endStr)
+          .then(events => successCallback(events))
+          .catch(error => failureCallback(error));
+  },
 
-    ],
-  //   eventSources:[
-  //     {
-  //     url: `./dbselectevent.php`
-  //     }
+
+  // events: [ // Events 
+  //   {
+  //     title: "資料庫測試", // 事件標題
+  //     start: '2024-09-02T12:08:00', // 開始時間，時間格式建議使用 ISO 格式 (yyyy-MM-ddTHH:mm:ss)
+  //     end: '2024-09-02T13:08:00', // 結束時間
+  //     // 其他自定義屬性，這些屬性不會影響 FullCalendar 的顯示
+  //     extendedProps: {
+  //     name: "小明",
+  //     department: "秘書室",
+  //     number: "576"
+  //   }
+  //   },
+
   // ],
+
+
 
     // 會議顯示
     // eventDisplay:
@@ -186,8 +293,6 @@ if (event) {
  var day=info.date.getDate();
  var weekdays = ['日', '一', '二', '三', '四', '五', '六'];
  var weekdayName = weekdays[dayofweek%7];
-
-
  document.querySelector('.popup').style.display='flex';
  document.querySelector('.popup-datetitle').innerHTML = month+"/"+day+"("+weekdayName+")"+"會議";
  
@@ -231,42 +336,7 @@ calendar.on('dateClick', function(info) {
   handleDateClick(info);
 });
 
-
-// // 點事件彈出視窗
-// calendar.on('eventClick', function(info) {
-//   // 取得被點擊事件的日期
-//   const eventDate = info.event.start;
-//   console.log(eventDate);
-//   // 將日期部分格式化為 "YYYY-MM-DD"
-//   const eventDateStr = eventDate.toISOString().split('T')[0];
-
-//   // 過濾當天所有事件
-//   const events = calendar.getEvents().filter(event => {
-//     const eventStartStr = event.start.toISOString().split('T')[0];
-//     return eventStartStr === eventDateStr;
-//   });
-
-//   // 確保事件按開始時間排序
-//   events.sort((a, b) => a.start - b.start);
-
-//   // 在這裡，你可以處理當天的所有事件
-
-//   // 將這些事件資訊傳遞給 handleDateClick 或其他處理函數
-//   const dateInfo = {
-//     dateStr: eventDateStr,
-//     date: eventDate,
-//     events: events
-//   };
-
-//   handleDateClick(dateInfo);
-// });
-
-
-
   calendar.render()
-  
-
-
   
 })
 

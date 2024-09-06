@@ -18,7 +18,34 @@
     }
     setAccountName();
   
-
+//fetch event info from sql
+const eventApiUrl = (start, end) => `http://localhost:3000/api/reservation?start_time=${start}&end_time=${end}`;
+function fetchevent(start, end){
+  return fetch(eventApiUrl(start, end),{
+    method: 'GET',
+    credentials: 'include', 
+    headers: { 'Content-Type': 'application/json' },
+  })
+  .then(response => response.json())
+  .then(result => {
+    if (result && Array.isArray(result.data)) {
+      // 將 data 中的每個項目格式化為 FullCalendar 需要的事件格式
+      return result.data.map(item => ({
+        id: item.reserve_id,
+        title: item.name, // 預約名稱
+        start: item.start_time, // 開始時間
+        end: item.end_time, // 結束時間
+        extendedProps: {
+          identifier: item.identifier,
+          room_id: item.room_id,
+          show: item.show,
+          number: item.ext
+        }
+      }));
+    } else {
+      console.error('Unexpected data format:', result); 
+    }
+  })}
 
 
 
@@ -81,11 +108,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-    eventSources:[
-      {
-      url: `./dbselectevent.php`
-      }
-  ],
+    events: function(fetchInfo, successCallback, failureCallback) {
+      // 調用 API 獲取事件，fetchInfo 會自動提供 start 和 end 日期
+      fetchevent(fetchInfo.startStr, fetchInfo.endStr)
+          .then(events => successCallback(events))
+          .catch(error => failureCallback(error));
+  },
 
     // 會議顯示
     // eventDisplay:
