@@ -63,5 +63,26 @@ module.exports = {
                 return false;
             }
         }
+    },
+
+    // update user status by identifier
+    updateStatus : async function (identifier, status) {
+        const conn = await db_conn.getDBConnection();
+        if (conn == null) {
+            return false;
+        }
+        else {
+            try {
+                const sql = 'UPDATE `User` SET `status` = ? WHERE `identifier` = ?;';
+                await conn.query(sql, [status, identifier]);
+                db_conn.closeDBConnection(conn);
+                return true;
+            }
+            catch(e) {
+                console.error("error updating user status : ", e);
+                conn.release();
+                return false;
+            }
+        }
     }
 }

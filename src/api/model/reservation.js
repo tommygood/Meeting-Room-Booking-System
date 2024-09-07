@@ -10,8 +10,8 @@ module.exports = {
         }
         else {
             try {
-                sql = "SELECT * FROM `Reservation` WHERE `start_time` >= ? AND `end_time` <= ?;";
-                const result = await conn.query(sql, [start_time, end_time]);
+                sql = "SELECT `Reservation`.identifier, `Room`.room_name, `Reservation`.name, `Reservation`.start_time, `Reservation`.end_time, `Reservation`.show, `Reservation`.ext, `User`.chinesename, `User`.`unit` FROM `Reservation`,`Room`, `User` WHERE `Reservation`.room_id = `Room`.room_id AND `Reservation`.identifier = `User`.identifier AND `Reservation`.start_time >= ? AND `Reservation`.end_time <= ?;";     
+                const result = await conn.query(sql, [start_time, end_time]);              
                 db_conn.closeDBConnection(conn);
                 return result;
             }

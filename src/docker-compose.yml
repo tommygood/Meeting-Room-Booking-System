@@ -1,0 +1,18 @@
+version: "3.0"
+
+networks:
+  database:
+    external: true
+
+services:
+  ncu-mrbs:
+    image: tommygood/ncu-mrbs:latest
+    ports:
+      - 3000:3000
+    environment:
+      - db_host=mysql
+      - db_username=2fconference
+      - db_password=Po2fF8MoFUnPbHLmNM8aNilNydqgY9oSbrWLEdZJogeuU2RbtH
+    # make sure the network 'database' existed
+    #networks:
+      #- database

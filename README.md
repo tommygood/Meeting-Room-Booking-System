@@ -30,5 +30,7 @@
   - ![image](https://github.com/user-attachments/assets/ef15fd9c-a06a-4bc9-80b0-448e518b815f)
 - redirect to `/example`
   - ![image](https://github.com/user-attachments/assets/4f448821-734d-4d9e-80f9-af8f2556f43a)
+## Workflow
+- <a href='https://github.com/tommygood/Meeting-Room-Booking-System/blob/main/doc/workflow.md'>doc</a>
 ## Contribution
 - 歡迎 PR，可以先看一下<a href="https://github.com/tommygood/Meeting-Room-Booking-System/blob/main/doc/contribution.md">教學</a>
