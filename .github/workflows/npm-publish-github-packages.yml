@@ -41,13 +41,6 @@ jobs:
             # ssh vpn is needed only if you can not directly connect to the `SSH_HOST`
             echo "${{ secrets.SSH_VPN_1_PRIVATE_KEY }}" > ssh_vpn_1.pem
             chmod 600 ssh_vpn_1.pem
-            ssh -i ssh_vpn_1.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_VPN_1_USER }}@${{ secrets.SSH_VPN_1_HOST }}
-            # install ssh key
-            echo "${{ secrets.SSH_PRIVATE_KEY }}" > test.pem
-            chmod 600 test.pem
-            cat test.pem
-            ifconfig
-            # connect and pull
-            ssh -i test.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && docker compose pull && docker compose up -d && exit"
+            ssh -i ssh_vpn_1.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_VPN_1_USER }}@${{ secrets.SSH_VPN_1_HOST }} "ssh -i test.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd ${{ secrets.WORK_DIR }} && docker compose pull && docker compose up -d && exit'"
         - name: cleanup
           run: rm -rf ~/.ssh
