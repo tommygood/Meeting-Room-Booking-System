@@ -9,8 +9,7 @@ router.get('/', async function(req, res) {
         // Verify the token
         const result = jwt.verifyJwtToken(req.cookies.token);
         if (result.suc) {
-            const identifier = req.query.identifier;
-            const data = await Violation.getByIdentifier(identifier);
+            const data = await Violation.get();
             res.json({data});
         }
         else {
@@ -29,10 +28,10 @@ router.post('/', async function(req, res) {
         // Verify the token
         const result = jwt.verifyJwtToken(req.cookies.token);
         if (result.suc) {
-            const identifier = req.body.identifier;
+            const reserve_id = req.body.reserve_id;
             const reason = req.body.reason;
             const remark = req.body.remark;
-            const suc = await Violation.insert(identifier, reason, remark);
+            const suc = await Violation.insert(reserve_id, reason, remark);
             res.json({suc});
         }
         else {

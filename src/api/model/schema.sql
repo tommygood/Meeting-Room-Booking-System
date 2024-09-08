@@ -7,7 +7,7 @@ CREATE TABLE `User` (
   `email` varchar(35) DEFAULT NULL,
   `mobilePhone` varchar(12) DEFAULT NULL,
   `unit` varchar(20) DEFAULT NULL,
-  `status` boolean DEFAULT NULL,
+  `status` tinyint(1) DEFAULT NULL,
   `privilege_level` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`identifier`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

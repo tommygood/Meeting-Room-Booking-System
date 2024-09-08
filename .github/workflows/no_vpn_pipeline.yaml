@@ -1,8 +1,10 @@
+# a pipeline with test, build, deploy on a host with ssh when the host can be directly connected without ssh vpn
+
 name: CI
 
-on:
-  pull_request:
-    branches: [ main ]
+#on:
+  #pull_request:
+    #branches: [ main ]
 
 jobs:
   test:
@@ -36,11 +38,12 @@ jobs:
         name: deploy image
         runs-on: ubuntu-latest
         steps:
-        - name: connect and pull
+        - name: install ssh keys
           run: |
-            # ssh vpn is needed only if you can not directly connect to the `SSH_HOST`
-            echo "${{ secrets.SSH_VPN_1_PRIVATE_KEY }}" > ssh_vpn_1.pem
-            chmod 600 ssh_vpn_1.pem
-            ssh -i ssh_vpn_1.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_VPN_1_USER }}@${{ secrets.SSH_VPN_1_HOST }} "echo '${{ secrets.SSH_PRIVATE_KEY }}' > b.pem && chmod 600 b.pem && ssh -i b.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd ${{ secrets.WORK_DIR }} && docker compose pull && docker compose up -d && exit'"
+            echo "${{ secrets.SSH_PRIVATE_KEY }}" > test.pem
+            chmod 600 test.pem
+            cat test.pem
+        - name: connect and pull
+          run: ssh -i test.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && docker compose pull && docker compose up -d && exit"
         - name: cleanup
           run: rm -rf ~/.ssh
