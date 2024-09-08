@@ -36,8 +36,8 @@ function fetchevent(start, end){
         start: item.start_time, // 開始時間
         end: item.end_time, // 結束時間
         extendedProps: {
-          identifier: item.identifier,
-          room_id: item.room_id,
+          chinesename: item.chinesename,
+          unit:item.unit,
           show: item.show,
           number: item.ext
         }
@@ -46,7 +46,6 @@ function fetchevent(start, end){
       console.error('Unexpected data format:', result); 
     }
   })}
-
 
 
 
@@ -107,13 +106,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-
     events: function(fetchInfo, successCallback, failureCallback) {
       // 調用 API 獲取事件，fetchInfo 會自動提供 start 和 end 日期
       fetchevent(fetchInfo.startStr, fetchInfo.endStr)
           .then(events => successCallback(events))
           .catch(error => failureCallback(error));
   },
+
+
+
+
 
     // 會議顯示
     // eventDisplay:
@@ -128,7 +130,6 @@ document.addEventListener("DOMContentLoaded", function() {
       meridiem: false, 
       hour12: false 
     },
-
 
     
     eventClick: function(info) {
@@ -152,18 +153,28 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-      Swal.fire({
-        title: info.event.title,
-        html: `
-            ${StartTime} ~ ${EndTime}<br>
-            會議：${info.event.title}<br>
-            借用單位: ${info.event.extendedProps.department}<br>
-            申請人: ${info.event.extendedProps.name}<br>
-            分機號碼: ${info.event.extendedProps.number}<br>
-        `,
-        confirmButtonText: "OK",
-      })
-    },
+    Swal.fire({
+      title: info.event.title,
+      html: `
+          ${StartTime} ~ ${EndTime}<br>
+          會議：${info.event.title}<br>
+          借用單位: ${info.event.extendedProps.unit}<br>
+          申請人: ${info.event.extendedProps.chinesename}<br>
+          分機號碼: ${info.event.extendedProps.number}<br>
+      `,
+      showCancelButton: true,
+      cancelButtonText: 'OK' ,
+      confirmButtonText: '編輯會議', 
+
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById('hamburger-menu').style.display='flex';
+
+        } else {
+          
+        }
+          })
+        },
 
 });
 
@@ -183,8 +194,6 @@ if (event) {
  var day=info.date.getDate();
  var weekdays = ['日', '一', '二', '三', '四', '五', '六'];
  var weekdayName = weekdays[dayofweek%7];
-
-
  document.querySelector('.popup').style.display='flex';
  document.querySelector('.popup-datetitle').innerHTML = month+"/"+day+"("+weekdayName+")"+"會議";
  
@@ -228,41 +237,6 @@ calendar.on('dateClick', function(info) {
   handleDateClick(info);
 });
 
-
-// // 點事件彈出視窗
-// calendar.on('eventClick', function(info) {
-//   // 取得被點擊事件的日期
-//   const eventDate = info.event.start;
-//   console.log(eventDate);
-//   // 將日期部分格式化為 "YYYY-MM-DD"
-//   const eventDateStr = eventDate.toISOString().split('T')[0];
-
-//   // 過濾當天所有事件
-//   const events = calendar.getEvents().filter(event => {
-//     const eventStartStr = event.start.toISOString().split('T')[0];
-//     return eventStartStr === eventDateStr;
-//   });
-
-//   // 確保事件按開始時間排序
-//   events.sort((a, b) => a.start - b.start);
-
-//   // 在這裡，你可以處理當天的所有事件
-
-//   // 將這些事件資訊傳遞給 handleDateClick 或其他處理函數
-//   const dateInfo = {
-//     dateStr: eventDateStr,
-//     date: eventDate,
-//     events: events
-//   };
-
-//   handleDateClick(dateInfo);
-// });
-
-
-
   calendar.render()
-  
-
-
   
 })

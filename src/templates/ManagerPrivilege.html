@@ -4,6 +4,7 @@
         <title>權限管理</title>
         <script src="https://unpkg.com/gridjs@6.2.0/dist/gridjs.umd.js"></script>
         <script src="/js/ManagerPrivilege.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
         <link rel="stylesheet" href="/css/ManagerPrivilege.css">
         <link href="https://unpkg.com/gridjs@6.2.0/dist/theme/mermaid.min.css" rel="stylesheet" />
     </head>
@@ -65,10 +66,13 @@
                         </select>
                     </div>
                     <div class="bottom-button">
-                        <div class="popup-button" style="width:180px" onclick="hidePopup('popup-privilege')">
+                        <div class="popup-button" style="width:150px" onclick="deleteUser()">
+                            <h3 class="hamburger-title" style="color:white">刪除</h3>
+                        </div>
+                        <div class="popup-button" style="width:150px" onclick="hidePopup('popup-privilege')">
                             <h3 class="hamburger-title" style="color:white">返回</h3>
                         </div>
-                        <div class="popup-button" style="width:180px" onclick="putPrivilege()">
+                        <div class="popup-button" style="width:150px" onclick="putPrivilege()">
                             <h3 class="hamburger-title" style="color:white">確定</h3>
                         </div>
                     </div>

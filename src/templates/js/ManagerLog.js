@@ -55,7 +55,15 @@ document.addEventListener("DOMContentLoaded", async function(){
       item.identifier,
       item.IP,
       item.operation_id,
-      item.datetime,
+      new Intl.DateTimeFormat('default', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZoneName: 'short' 
+      }).format(new Date(item.datetime))
     ]);
     new gridjs.Grid({
         columns: ['姓名', 'ip', '操作內容', '操作時間'],

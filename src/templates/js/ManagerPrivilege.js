@@ -34,20 +34,101 @@ function changePage(button){
 }
 
 //權限設置
-function setPermission(){
+let selectedIdentifier;
+let selectedName;
+function setPermission(identifier,name){
   document.getElementById('popup-privilege').style.display='flex';
+  selectedIdentifier = String(identifier);
+  selectedName = name;
 }
 
 
 
+function deleteUser(){
+  Swal.fire({
+    title: `確定要刪除「${selectedName}」？`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33', 
+    cancelButtonColor: '#3085d6', 
+    confirmButtonText: '確定刪除', 
+    cancelButtonText: '取消' 
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch(status_put,{
+        method: 'PUT',
+        credentials: 'include', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({identifier:selectedIdentifier, status: 0}),
+      })
+      .then(response => response.json())
+      .catch(error => {
+          console.error('Error:', error);
+      });
+      Swal.fire(
+        '已刪除！',
+        '您的數據已被刪除。',
+        'success'
+      );
+
+    } else {
+      Swal.fire(
+        '已取消',
+        '您的數據未被刪除。',
+        'info' 
+      );
+    }
+  });
+}
 
 
+//fetch event info from sql
+const eventApiUrl = (start, end) => `http://localhost:3000/api/reservation?start_time=${start}&end_time=${end}`;
+function fetchevent(start, end){
+  console.log(start, end);
+  return fetch(eventApiUrl(start, end),{
+    method: 'GET',
+    credentials: 'include', 
+    headers: { 'Content-Type': 'application/json' },
+  })
+  .then(response => response.json())
+  .then(data => {
+    
+    return data; // 返回事件數組
+  })
+}
+function formatDateTimeForDatabase(dateTime) {
+  const date = new Date(dateTime);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份從0開始，需要加1
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`; // 返回 'YYYY-MM-DD HH:MM:SS'
+}
 
 
 //違規畫面彈出
-function addViolate(element){
-  const role=element.getAttribute("data-role"); 
+async function addViolate(identifier){
+  const today = new Date(); 
+
+  const threeMonthsAgo = new Date(today); 
+  threeMonthsAgo.setMonth(today.getMonth() - 3); 
+  today.setHours(23, 59, 59, 999);
+  if (threeMonthsAgo.getMonth() > today.getMonth()) {
+    threeMonthsAgo.setFullYear(today.getFullYear() - 1);
+  }
+  const startOfRange = formatDateTimeForDatabase(threeMonthsAgo);
+  const endOfRange = formatDateTimeForDatabase(today);
+  console.log(startOfRange);
+  const existingEvents = await fetchevent(startOfRange,endOfRange);
+  console.log(existingEvents);
+  selectedIdentifier = String(identifier);
   document.getElementById('popup-violate').style.display='flex';
+  
 }
 
 
@@ -83,16 +164,17 @@ function postViolation(){
   });
 }
 
-//改權限
-const api_put = 'http://localhost:3000/api/user/privilege'
+//改權限&status
+const api_put = 'http://localhost:3000/api/user/privilege';
+const status_put = 'http://localhost:3000/api/user/status';
 function putPrivilege(){
   const form = document.getElementById('privilege-form');
   const formData = new FormData(form);
-  const identifier = '113423004';
-  const privilege = formData.get('privilege') === 'true'; 
+  const privileges = formData.get('privilege') === 'true'; 
+  const status = formData.get('status') === 'true'; 
   const data={
-    identifier:identifier,
-    privilege: privilege,
+    identifier:selectedIdentifier,
+    privileges: privileges,
   }
   fetch(api_put,{
     method: 'PUT',
@@ -109,6 +191,20 @@ function putPrivilege(){
   .catch(error => {
       console.error('Error:', error);
   });
+
+
+  fetch(status_put,{
+    method: 'PUT',
+    credentials: 'include', 
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({identifier:selectedIdentifier, status: status}),
+  })
+  .then(response => response.json())
+  .catch(error => {
+      console.error('Error:', error);
+  });
 }
 
 
@@ -117,34 +213,37 @@ function hidePopup(popupId) {
 }
 
 //get user data
-async function fetchData(){
+async function fetchData() {
   const response = await fetch(`http://localhost:3000/api/user`);
   const result = await response.json();
-  if (result && Array.isArray(result.data)){
-    
-    const data = await Promise.all(result.data.map(async item => {
-      const violationCount = await countViolation(item.identifier);
-      return [
-        item.chinesename,
-        item.unit,
-        item.privilege_level,
-        item.status,
-        gridjs.html(`<a href="#" onclick="setPermission(this);" privilege=${item.privilege_level} status=${item.status}>修改</a>`),
-        gridjs.html(`${violationCount}次 <a href="#" onclick="addViolate(this);">新增</a> <a href="query1">查詢</a>`)
-      ];
+
+  if (result && Array.isArray(result.data)) {
+    // 過濾掉 status 為 0 的項目
+    const filteredData = result.data.filter(item => item.status !== 0);
+
+    const data = await Promise.all(filteredData.map(async item => {
+      const privilegeText = item.privilege_level === 1 ? '管理者' : '一般使用者';
+      const statusText = item.status === 1 ? '✔️' : '❌';
+      return {
+        data: [
+          item.chinesename,
+          item.unit,
+          privilegeText,
+          statusText,
+          gridjs.html(`<a href="#" onclick="setPermission(${item.identifier},'${item.chinesename}');" >修改</a>`),
+          gridjs.html(`${item.violation_count}次 <a href="#" onclick="addViolate('${item.identifier}');">新增</a> <a href="query1">查詢</a>`)
+        ],
+        extendedProps: {
+          identifier: item.identifier // 將 identifier 作為隱藏數據
+        }
+      };
     }));
     return data;
-  };
+  }
 }
 
 
-// 計算違規次數
-async function countViolation(identifier){
-  const response =await fetch(`http://localhost:3000/api/violation?identifier=${identifier}`)
-  const violationResult = await response.json();
-  const violationCount = violationResult.data ? violationResult.data.length : 0; 
-  return violationCount;
-}
+
 
 
 //表單生成 grid
@@ -153,7 +252,7 @@ document.addEventListener("DOMContentLoaded",function(){
 
     new gridjs.Grid({
         columns: ['姓名', '單位名稱', '身份權限', '狀態', '權限修改', '違規記點'],
-        data:data,
+        data: data.map(item => item.data),
         width:'1200px',
         fixedHeader:true,
         search: true,
