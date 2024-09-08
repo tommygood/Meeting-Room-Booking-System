@@ -38,6 +38,7 @@ CREATE TABLE `Violation` (
   `datetime` datetime DEFAULT CURRENT_TIMESTAMP,
   `reason` varchar(200) NOT NULL,
   `remark` varchar(200) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`violation_id`),
   FOREIGN KEY (`identifier`) REFERENCES `User` (`identifier`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -58,6 +59,7 @@ CREATE TABLE `Reservation` (
     `end_time` datetime NOT NULL,
     `show` boolean NOT NULL,
     `ext` varchar(10),
+    `status` tinyint(1) DEFAULT 0,
     PRIMARY KEY (`reserve_id`),
     FOREIGN KEY (`identifier`) REFERENCES `User` (`identifier`),
     FOREIGN KEY (`room_id`) REFERENCES `Room` (`room_id`)
