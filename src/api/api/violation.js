@@ -44,4 +44,24 @@ router.post('/', async function(req, res) {
     }
 });
 
+// delete violation record by violation id
+router.delete('/', async function(req, res) {
+    try {
+        // Verify the token
+        const result = jwt.verifyJwtToken(req.cookies.token);
+        if (result.suc) {
+            const violation_id = req.body.violation_id;
+            const suc = await Violation.delete(violation_id);
+            res.json({suc});
+        }
+        else {
+            res.json({result : 'Invalid token'});
+        }
+    }
+    catch(e) {
+        console.log(e);
+        res.json({result : 'error'});
+    }
+});
+
 module.exports = router;

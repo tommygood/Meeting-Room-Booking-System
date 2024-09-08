@@ -69,4 +69,24 @@ router.put('/status', async function(req, res) {
     }
 })
 
+// get user privileges by identifier in cookies
+router.get('/privilege', async function(req, res) {
+    try {
+        // Verify the token
+        const result = jwt.verifyJwtToken(req.cookies.token);
+        if (result.suc) {
+            const identifier = result.data.data;
+            const data = await User.getPrivilegeLevel(identifier);
+            res.json({data});
+        }
+        else {
+            res.json({result : 'Invalid token'});
+        }
+    }
+    catch(e) {
+        console.log(e);
+        res.json({result : 'error'});
+    }
+})
+
 module.exports = router;
