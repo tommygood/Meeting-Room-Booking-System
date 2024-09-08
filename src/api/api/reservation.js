@@ -30,7 +30,7 @@ router.post('/', async function(req, res) {
         // Verify the token
         const result = jwt.verifyJwtToken(req.cookies.token);
         if (result.suc) {
-            const identifier = req.body.identifier;
+            const identifier = result.data.data;
             const room_id = req.body.room_id;
             const name = req.body.name;
             const start_time = req.body.start_time;

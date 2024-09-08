@@ -9,8 +9,7 @@ router.get('/', async function(req, res) {
         // Verify the token
         const result = jwt.verifyJwtToken(req.cookies.token);
         if (result.suc) {
-            const identifier = req.query.identifier;
-            const data = await Violation.getByIdentifier(identifier);
+            const data = await Violation.get();
             res.json({data});
         }
         else {
