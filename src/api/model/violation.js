@@ -3,15 +3,15 @@ const db_conn = require('./conn');
 module.exports = {
 
     // get violation records by identifier
-    getByIdentifier : async function (identifier) {
+    get : async function () {
         const conn = await db_conn.getDBConnection();
         if (conn == null) {
             return null;
         }
         else {
             try {
-                sql = "SELECT * FROM `Violation` WHERE `identifier` = ?;";
-                const result = await conn.query(sql, [identifier]);
+                sql = "SELECT * FROM `Violation`;";
+                const result = await conn.query(sql);
                 db_conn.closeDBConnection(conn);
                 return result;
             }

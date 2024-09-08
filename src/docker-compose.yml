@@ -11,6 +11,8 @@ services:
       - 3000:3000
     environment:
       - db_host=mysql
+      - db_name=2fconference
+      - db_port=3306
       - db_username=2fconference
       - db_password=Po2fF8MoFUnPbHLmNM8aNilNydqgY9oSbrWLEdZJogeuU2RbtH
     # make sure the network 'database' existed
