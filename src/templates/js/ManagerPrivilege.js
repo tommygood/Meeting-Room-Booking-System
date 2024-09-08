@@ -228,7 +228,6 @@ async function showViolation(identifier){
     return violationList;
   });
   if (violation.length > 0) {
-    // 將所有違規記錄組合成一個 HTML 字符串
     const violationHtml = violation.map(violation => `
       <div style="margin-bottom: 10px;">
         <p><strong>違規時間：</strong> ${new Date(violation.datetime).toLocaleString()}</p>
@@ -237,19 +236,17 @@ async function showViolation(identifier){
         <hr>
       </div>
     `).join('');
-
-    // 使用 SweetAlert 顯示合併的 HTML 內容
+      //刪除還沒寫
     Swal.fire({
       title: "違規紀錄",
       html: violationHtml,
       confirmButtonText: 'OK',
-      width: '600px', // 設置彈窗的寬度
+      width: '600px', 
       customClass: {
-        popup: 'swal-wide', // 使用自定義樣式類調整樣式
+        popup: 'swal-wide', 
       },
     });
   } else {
-    // 當沒有違規記錄時顯示提示
     Swal.fire({
       title: '沒有違規記錄',
       text: '該用戶沒有違規記錄。',

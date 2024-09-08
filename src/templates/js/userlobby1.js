@@ -416,7 +416,7 @@ function handleDatesSet(){
                 const endMinute = String(endDate.getMinutes()).padStart(2, '0');
                 document.querySelector('select[name="endhour"]').value = endHour;
                 document.querySelector('select[name="endminute"]').value = endMinute;  
-                
+                //還沒寫完
                 document.getElementById('requestsend').onclick = reservationPut;
 
               } else if (result.isDenied) {
