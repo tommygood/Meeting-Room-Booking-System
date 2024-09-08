@@ -2,7 +2,7 @@ let identifier;
 // let privilege;
 const api_info = 'http://localhost:3000/api/info/';
   // get user info from ncu portal
-  async function getinfo(type){
+async function getinfo(type){
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const headers = urlParams.get('access_token')
@@ -19,7 +19,7 @@ async function setAccountName() {
     const account_type = await getinfo('chinesename');
     document.getElementById("accountName").innerHTML += account_type;
   }
-  setAccountName();
+setAccountName();
 
 //拿identifier
 function parseJwt (token) {
@@ -348,7 +348,6 @@ function handleDatesSet(){
   end.setHours(23, 59, 59, 999); 
   const startOfDay = formatDateTimeForDatabase(start);
   const endOfDay = formatDateTimeForDatabase(end);
-  console.log(startOfDay, endOfDay);
   fetch(eventApiUrl(startOfDay, endOfDay),{
     method: 'GET',
     credentials: 'include', 
@@ -362,12 +361,11 @@ function handleDatesSet(){
 
     if (filteredEvents.length > 0) {
       document.querySelector('.hamburger-list').innerHTML = '';
-
+      //顯示每個自己的會議
       filteredEvents.forEach(event => {
         const popup = document.createElement('div');
         popup.className = 'list-content_box';
         popup.style.display = 'flex';
-        console.log(event);
         const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const date = new Date(event.start_time).toLocaleDateString([], { month: '2-digit', day: '2-digit' });

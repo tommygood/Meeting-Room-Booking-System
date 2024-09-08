@@ -127,7 +127,6 @@ async function addViolate(identifier){
   const result = existingEvents .data || []; 
   const events = result.filter(event => event.identifier === identifier);
   selectedIdentifier = identifier;
-  console.log(events);
   document.getElementById('popup-violate').style.display='flex';
 
   const selectElement = document.getElementById('violation-name');
@@ -148,7 +147,6 @@ function postViolation(){
   const form = document.getElementById('violation');
   const formData = new FormData(form);
   const reservation_id = formData.get('reservation_id');
-  console.log(reservation_id);
   const reason = formData.get('reason');
   const remark = formData.get('remark');
   const data={
@@ -229,7 +227,6 @@ async function showViolation(identifier){
     const violationList = violation.filter(violation => violation.identifier === identifier);
     return violationList;
   });
-  console.log(violation);
   if (violation.length > 0) {
     // 將所有違規記錄組合成一個 HTML 字符串
     const violationHtml = violation.map(violation => `
