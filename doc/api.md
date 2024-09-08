@@ -25,6 +25,7 @@
     >>> r.text
     '{"data":[{"log_id":2,"identifier":"admin","datetime":"2024-09-04T02:16:21.000Z","IP":"127.0.0.1","operation_id":0},{"log_id":3,"identifier":"admin","datetime":"2024-09-04T02:17:53.000Z","IP":"127.0.0.1","operation_id":0}]}'
     ```
+
 - POST `/api/reservation`
     - insert a reservation record into db
     ```
@@ -37,7 +38,7 @@
 - GET `/api/reservation?start_time=<start_time>&end_time=<end_time>`
     - get reservaions which are between `start_time` and `end_time`
     ```
-    >>> r = requests.get('http://localhost:3000/api/reservation?start_time="2024-09-03"&end_time="2024-09-04"', cookies=cookies)
+    >>> r = requests.get('http://localhost:3000/api/reservation?start_time=2024-09-03&end_time=2024-09-04', cookies=cookies)
     >>> r.text
     ```
     
@@ -47,6 +48,26 @@
     >>> r = requests.get('http://localhost:3000/api/reservation/show', cookies=cookies)
     >>> r.text
     '{"data":{"reserve_id":1,"identifier":"admin","room_id":1,"name":"測試預約1","start_time":"2024-09-04T07:30:00.000Z","end_time":"2024-09-08T08:30:00.000Z","show":1,"ext":"0912345678"}}'
+    ```
+
+- PUT `/api/reservation`
+    - update reservation by `reserve_id`
+    - if the privilege level of user is greater than 1, then update all reservation records is allowed
+    - otherwise it would be only can update the own reservation.
+    ```
+    >>> data = {'reserve_id' : 121, 'room_id' : 1, 'name' : '會議', 'start_time' : '2020-06-01 08:00:00', 'end_time' : '2020-06-01 12:00:00', 'show' : 1, 'ext' : '0922222123'}
+    >>> r = requests.put('http://localhost:3000/api/reservation', cookies=cookies, json=data)
+    >>> r.text
+    '{"suc":true}'
+    ```
+
+- DELETE `/api/reservation`
+    - delete reservation by `reserve_id`
+    ```
+    >>> data = {'reserve_id' : 1}
+    >>> r = requests.delete('http://localhost:3000/api/reservation', cookies=cookies, json=data)
+    >>> r.text
+    '{"suc":true}'
     ```
 
 - POST `/api/room`
@@ -108,4 +129,13 @@
     >>> r = requests.get('http://localhost:3000/api/violation', cookies=cookies)
     >>> r.text
     '{"data":[{"violation_id":1,"identifier":"admin","datetime":"2024-09-04T15:07:44.000Z","reason":"test","remark":"badbad"}]}'
+    ```
+
+- DELETE `/api/violation`
+    - delete violation by `violation_id`
+    ```
+    >>> data = {'violation_id' : 1}
+    >>> r = requests.delete('http://localhost:3000/api/violation', cookies=cookies, json=data)
+    >>> r.text
+    '{"suc":true}'
     ```

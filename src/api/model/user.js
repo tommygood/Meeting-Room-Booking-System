@@ -84,5 +84,26 @@ module.exports = {
                 return false;
             }
         }
+    },
+
+    // get user privilege level by identifier
+    getPrivilegeLevel : async function (identifier) {
+        const conn = await db_conn.getDBConnection();
+        if (conn == null) {
+            return null;
+        }
+        else {
+            try {
+                const sql = 'SELECT `privilege_level` FROM `User` WHERE `identifier` = ?;';
+                const result = await conn.query(sql, [identifier]);
+                db_conn.closeDBConnection(conn);
+                return result[0].privilege_level;
+            }
+            catch(e) {
+                console.error("error getting privilege level : ", e);
+                conn.release();
+                return null;
+            }
+        }
     }
 }
