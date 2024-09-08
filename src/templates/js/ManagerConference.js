@@ -1,3 +1,4 @@
+let reserve_id
 // get user info from ncu portal
 const api_info = 'http://localhost:3000/api/info/';
 async function getinfo(type){
@@ -20,6 +21,7 @@ setAccountName();
 
 function hidePopup(popupId) {
   document.getElementById(popupId).style.display = 'none';
+
 }
 
 
@@ -44,7 +46,8 @@ function fetchevent(start, end){
           chinesename: item.chinesename,
           unit:item.unit,
           show: item.show,
-          number: item.ext
+          number: item.ext,
+          reserve_id: item.reserve_id,
         }
       }));
     } else {
@@ -68,7 +71,95 @@ function changePage(button){
 
 function hidePopup(popupId) {
   document.getElementById(popupId).style.display = 'none';
+
 }
+
+//starttime&endtime轉datetime格式
+function formatDateTimeForDatabase(dateTime) {
+  const date = new Date(dateTime);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份從0開始，需要加1
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`; // 返回 'YYYY-MM-DD HH:MM:SS'
+}
+
+
+//編輯會議
+async function reservationPut() {
+  const formData = new FormData(document.getElementById("request"));
+  const date = formData.get('date');
+  const name = formData.get('name');
+  const starthour = formData.get('starthour');
+  const startminute = formData.get('startminute');
+  const endhour = formData.get('endhour');
+  const endminute = formData.get('endminute');
+  const ext = formData.get('ext');
+
+  // 格式化起始和結束時間為數據庫格式
+  const startTimestamp = formatDateTimeForDatabase(`${date}T${starthour}:${startminute}:00`);
+  const endTimestamp = formatDateTimeForDatabase(`${date}T${endhour}:${endminute}:00`);
+  const startOfDay = formatDateTimeForDatabase(`${date}T00:00:00`);
+  const endOfDay = formatDateTimeForDatabase(`${date}T23:59:59`);
+  const existingEvents = await fetchevent(startOfDay, endOfDay);
+  // 構建數據對象
+  const data = {
+    reserve_id: reserve_id,
+    name: name,
+    room_id: '1',
+    start_time: startTimestamp,
+    end_time: endTimestamp,
+    ext: ext,
+    show: true,
+    status: true,
+  };
+  // 檢查新預約是否與現有事件有時間衝突
+  const hasConflict = existingEvents.some(event => {
+    const existingStart = new Date(event.start);
+    const existingEnd = new Date(event.end);
+    return (new Date(startTimestamp) < existingEnd && new Date(endTimestamp) > existingStart);
+  });
+  if (hasConflict) {
+    alert('該時間段已被預約，請選擇其他時間。');
+    return;
+  }
+  // 發送 PUT 請求，使用 JSON 格式
+  fetch('http://localhost:3000/api/reservation', {
+    method: 'PUT',
+    credentials: 'include', 
+    body: JSON.stringify(data),  // 將數據轉換為 JSON 字符串
+    headers: { 
+      'Content-Type': 'application/json'  // 使用 JSON 格式
+    },
+  })
+  .then(response => response.json())
+  .then(()=> {
+      alert('修改成功');
+      window.location.reload();  // 刷新頁面以顯示最新數據
+   
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('發生錯誤，請稍後重試。');
+  });
+}
+
+const delete_api='http://localhost:3000/api/reservation';
+async function reservationDelete(reserve_id){
+  fetch(delete_api,{
+    method: 'DELETE',
+    credentials: 'include', 
+    body: JSON.stringify({reserve_id: reserve_id}),  
+    headers: { 'Content-Type': 'application/json' },
+  })
+ .then(response => response.json())
+}
+
+
+
+
 
 // calendar
 document.addEventListener("DOMContentLoaded", function() {
@@ -138,7 +229,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     
     eventClick: function(info) {
-      console.log(info.event);
       const startTime = info.event.start.toLocaleString('zh-TW', {
         year: 'numeric',
         month: '2-digit',
@@ -168,18 +258,19 @@ document.addEventListener("DOMContentLoaded", function() {
           分機號碼: ${info.event.extendedProps.number}<br>
       `,
       showCancelButton: true,
+      showDenyButton: true,
       cancelButtonText: 'OK' ,
-      confirmButtonText: '編輯會議', 
-
+      confirmButtonText: '編輯會議',
+      denyButtonText: '刪除會議',
       }).then((result) => {
         if (result.isConfirmed) {
+          console.log(info.event.extendedProps.reserve_id);
+          reserve_id = String(info.event.extendedProps.reserve_id);
           document.getElementById('hamburger-menu').style.display='flex';
           document.querySelector('input[name="name"]').value = info.event.title;
           document.querySelector('input[name="person"]').value = info.event.extendedProps.chinesename;
           document.querySelector('input[name="unit"]').value = info.event.extendedProps.unit;
-          document.querySelector('input[name="phone"]').value = info.event.extendedProps.phone; // 假設有對應資料
           document.querySelector('input[name="ext"]').value = info.event.extendedProps.number;
-          document.querySelector('input[name="email"]').value = info.event.extendedProps.email; // 假設有對應資料
           const startDate = new Date(info.event.start);
           document.querySelector('input[name="date"]').value = startDate.toISOString().split('T')[0]; // 只取日期部分        
           const startHour = String(startDate.getHours()).padStart(2, '0');
@@ -193,7 +284,25 @@ document.addEventListener("DOMContentLoaded", function() {
           document.querySelector('select[name="endhour"]').value = endHour;
           document.querySelector('select[name="endminute"]').value = endMinute;  
 
-        } else {
+        } else if (result.isDenied) {
+          // User denied the action or closed the dialog
+          Swal.fire({
+            title: '確定要刪除該會議嗎',
+            icon: "warning",
+            confirmButtonText: '確定',
+            showCancelButton: true,
+            cancelButtonText: '返回' ,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              reservationDelete(info.event.extendedProps.reserve_id);
+              Swal.fire({
+                title: '刪除成功',
+                icon:'success',
+              }).then(() => {
+                window.location.reload();
+              });
+            }  
+          })
           
         }
           })

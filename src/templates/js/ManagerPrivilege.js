@@ -95,10 +95,10 @@ function fetchevent(start, end){
   })
   .then(response => response.json())
   .then(data => {
-    
     return data; // 返回事件數組
   })
 }
+
 function formatDateTimeForDatabase(dateTime) {
   const date = new Date(dateTime);
   const year = date.getFullYear();
@@ -111,7 +111,7 @@ function formatDateTimeForDatabase(dateTime) {
 }
 
 
-//違規畫面彈出
+//新增違規畫面彈出
 async function addViolate(identifier){
   const today = new Date(); 
 
@@ -124,10 +124,21 @@ async function addViolate(identifier){
   const startOfRange = formatDateTimeForDatabase(threeMonthsAgo);
   const endOfRange = formatDateTimeForDatabase(today);
   const existingEvents = await fetchevent(startOfRange,endOfRange);
-  console.log(existingEvents);
-  selectedIdentifier = String(identifier);
+  const result = existingEvents .data || []; 
+  const events = result.filter(event => event.identifier === identifier);
+  selectedIdentifier = identifier;
+  console.log(events);
   document.getElementById('popup-violate').style.display='flex';
-  
+
+  const selectElement = document.getElementById('violation-name');
+    selectElement.innerHTML = '';
+    // 將過濾後的事件添加為 <select> 的選項
+    events.forEach(event => {
+      const option = document.createElement('option');
+      option.value = event.reserve_id;  // 可以根據需要調整 value
+      option.textContent = `${event.name}`;
+      selectElement.appendChild(option);
+    });
 }
 
 
@@ -136,11 +147,12 @@ const api_post = 'http://localhost:3000/api/violation';
 function postViolation(){
   const form = document.getElementById('violation');
   const formData = new FormData(form);
-  const identifier = 'admin';
+  const reservation_id = formData.get('reservation_id');
+  console.log(reservation_id);
   const reason = formData.get('reason');
   const remark = formData.get('remark');
   const data={
-    identifier:identifier,
+    reserve_id:reservation_id,
     reason:reason,
     remark:remark,
   };
@@ -157,6 +169,7 @@ function postViolation(){
   .then(result => {
       console.log('Success:', result);
       alert('新增成功！');
+      window.location.reload();
   })
   .catch(error => {
       console.error('Error:', error);
@@ -186,6 +199,7 @@ function putPrivilege(){
   .then(result => {
       console.log('Success:', result);
       alert('修改成功！');
+      window.location.reload();
   })
   .catch(error => {
       console.error('Error:', error);
@@ -261,7 +275,7 @@ async function fetchData() {
   const result = await response.json();
 
   if (result && Array.isArray(result.data)) {
-    // 過濾掉 status 為 0 的項目
+    // 過濾掉 status 為 -1 的項目
     const filteredData = result.data.filter(item => item.status !== -1);
 
     const data = await Promise.all(filteredData.map(async item => {

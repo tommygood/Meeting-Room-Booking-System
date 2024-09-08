@@ -144,7 +144,10 @@ transform: translateX(400px);/* 清單滑入視窗 */
   border: 2px solid black;
   margin:10px;
 }
-
+.list-content_box:hover{
+  background-color:rgb(247, 247, 247);
+  cursor: pointer;
+}
 .hamburger-requestbutton{
   margin-left: 25%;
   margin-top: 20px;

@@ -13,7 +13,6 @@ async function getinfo(type){
     console.error("Error:", error);
     }
 }
-
 function setUrlParams(origin_url, params) {
     const url = new URL(origin_url);
     for (const key in params) {
@@ -49,7 +48,7 @@ function changePage(button){
 
 //表單生成 grid
 document.addEventListener("DOMContentLoaded", async function(){
-    const response = await getLog({offset : 0, num : 10});
+    const response = await getLog({offset : 0, num : 1000});
     console.log(response);
     const data = response.map(item => [
       item.identifier,
@@ -66,13 +65,18 @@ document.addEventListener("DOMContentLoaded", async function(){
       }).format(new Date(item.datetime))
     ]);
     new gridjs.Grid({
-        columns: ['姓名', 'ip', '操作內容', '操作時間'],
+        columns: ['id', 'ip', '操作內容', '操作時間'],
         data: data,
         width:'1200px',
         fixedHeader:true,
         search: true,
         sort: true,
         resizable: true,
+        pagination: {
+          enabled: true,     
+          limit: 100,          
+          summary: true,     
+        },
         style: {
             container:{
               'margin-left':'20px'
@@ -89,9 +93,7 @@ document.addEventListener("DOMContentLoaded", async function(){
                 'top': '0', // 固定在表格的頂部
                 'z-index': '1', // 確保標題在最上層
               },
-            td: {
 
-            },
           
         }
 

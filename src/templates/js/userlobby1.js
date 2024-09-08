@@ -33,11 +33,10 @@ function parseJwt (token) {
 }
 function getIdentifier(){
   try {
-    // 從 cookie 中獲取 token
     var token = document.cookie.split('token=')[1];
     if (token) {
-        identifier = parseJwt(token); // 將結果存入全域變數
-        console.log(identifier.data);
+        identifier=parseJwt(token); 
+
     } else {
         console.error('Token not found in cookies.');
     }
@@ -46,6 +45,16 @@ function getIdentifier(){
 }
 }
 getIdentifier();
+
+
+
+//拿privilege_level
+async function getPrivilege() {
+  const response = await fetch("http://localhost:3000/api/user/privilege");
+  const data = await response.json();
+  const privilege_level = data.data;
+  return privilege_level;
+}
 
 
 
@@ -77,7 +86,6 @@ function fetchevent(start, end){
       console.error('Unexpected data format:', result); 
     }
   })}
-
 
 
 
@@ -167,12 +175,14 @@ async function reservationPost(){
   }
 
   const threeMonthsLater = new Date(today.setMonth(today.getMonth() + 3));
-  // if(privilege!=1){
-  //   if (reservationDate > threeMonthsLater) {
-  //     alert('借閱日期不能超過三個月後，請選擇在三個月內的日期！');
-  //     return;
-  //   }
-  // }
+
+  const privilege = getPrivilege();
+  if(privilege!=1){
+    if (reservationDate > threeMonthsLater) {
+      alert('借閱日期不能超過三個月後，請選擇在三個月內的日期！');
+      return;
+    }
+  }
 
   // 檢查新預約是否與現有事件有時間衝突
   const hasConflict = existingEvents.some(event => {
@@ -186,7 +196,6 @@ async function reservationPost(){
   }
 
   const data={
-    //目前寫死的
       name:name,
       room_id:'1',
       start_time:startTimestamp,
@@ -205,11 +214,26 @@ async function reservationPost(){
   .then(result => {
       console.log('Success:', result);
       alert('預約成功！');
+      window.location.reload();
+
   })
   .catch(error => {
       console.error('Error:', error);
   });
 }
+
+//刪除會議
+const delete_api='http://localhost:3000/api/reservation';
+async function reservationDelete(reserve_id){
+  fetch(delete_api,{
+    method: 'DELETE',
+    credentials: 'include', 
+    body: JSON.stringify({reserve_id: reserve_id}),  
+    headers: { 'Content-Type': 'application/json' },
+  })
+ .then(response => response.json())
+}
+
 
 
 
@@ -260,8 +284,6 @@ document.addEventListener("DOMContentLoaded", function() {
           .then(events => successCallback(events))
           .catch(error => failureCallback(error));
   },
-
-
 
 
 
@@ -336,20 +358,16 @@ function handleDatesSet(){
   .then(result => {
     const events = result.data || []; 
     const filteredEvents = events.filter(event => event.identifier === identifier.data);
-    console.log(filteredEvents);
-    // 排序事件根據開始時間
-    filteredEvents.sort((a, b) => new Date(a.start) - new Date(b.start));
+    filteredEvents.sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
 
-    // 顯示彈出框和事件信息
     if (filteredEvents.length > 0) {
       document.querySelector('.hamburger-list').innerHTML = '';
 
-      // 為每個事件生成彈出框
       filteredEvents.forEach(event => {
         const popup = document.createElement('div');
         popup.className = 'list-content_box';
         popup.style.display = 'flex';
-
+        console.log(event);
         const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const date = new Date(event.start_time).toLocaleDateString([], { month: '2-digit', day: '2-digit' });
@@ -365,12 +383,71 @@ function handleDatesSet(){
           <hr>
         `;
 
-        // 添加到彈出框列表中
+        //編輯自己的會議
+        popup.onclick = () => {
+          Swal.fire({
+            title: event.name,
+            html: `
+                ${startTime} ~ ${endTime}<br>
+                借用單位: ${event.unit}<br>
+                申請人: ${event.chinesename}<br>
+                分機號碼: ${event.ext}<br>
+            `,
+            showCancelButton: true,
+            showDenyButton: true,
+            cancelButtonText: 'OK' ,
+            confirmButtonText: '編輯會議',
+            denyButtonText: '刪除會議',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                document.getElementById('hamburger-requestpage').style.display='flex';
+                document.getElementById('hamburger-content').style.display='none';
+                document.querySelector('input[name="name"]').value = event.name;
+                document.querySelector('input[name="person"]').value = event.chinesename;
+                document.querySelector('input[name="unit"]').value = event.unit;
+                document.querySelector('input[name="ext"]').value = event.ext;
+                const startDate = new Date(event.start_time);
+                document.querySelector('input[name="date"]').value = startDate.toISOString().split('T')[0]; // 只取日期部分        
+                const startHour = String(startDate.getHours()).padStart(2, '0');
+                const startMinute = String(startDate.getMinutes()).padStart(2, '0');
+                document.querySelector('select[name="starthour"]').value = startHour;
+                document.querySelector('select[name="startminute"]').value = startMinute;
+      
+                const endDate = new Date(event.end_time);
+                const endHour = String(endDate.getHours()).padStart(2, '0');
+                const endMinute = String(endDate.getMinutes()).padStart(2, '0');
+                document.querySelector('select[name="endhour"]').value = endHour;
+                document.querySelector('select[name="endminute"]').value = endMinute;  
+                
+                document.getElementById('requestsend').onclick = reservationPut;
+
+              } else if (result.isDenied) {
+                // 刪除會議
+                Swal.fire({
+                  title: '確定要刪除該會議嗎',
+                  icon: "warning",
+                  confirmButtonText: '確定',
+                  showCancelButton: true,
+                  cancelButtonText: '返回' ,
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    reservationDelete(event.reserve_id);
+                    Swal.fire({
+                      title: '刪除成功',
+                      icon:'success',
+                    }).then(() => {
+                      window.location.reload();
+                    });
+                  }  
+                })
+                
+              }
+                })
+        };
         document.querySelector('.hamburger-list').appendChild(popup);
         document.getElementById('event-list').style.overflow = 'scroll';
       });
     } else {
-      // 沒有事件時隱藏彈出框
       document.querySelector('.popup').style.display = 'none';
     }
   })
@@ -378,9 +455,6 @@ function handleDatesSet(){
     console.error('Error fetching events:', error);
   });
 }
-
-
-
 
   calendar.render()
   
@@ -414,10 +488,19 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('hamburger-requestpage').style.display = 'none';
   });
 });
-// document.addEventListener('DOMContentLoaded', function() {
-//   const useradmin = document.getElementById('useradmin');
-//   if(privilege!=1){
-//     useradmin.style.display = 'none';
-//   }
-// })
+
+
+// 顯示使用者/管理者
+document.addEventListener('DOMContentLoaded', async function() {
+  const useradmin = document.getElementById('useradmin');
+  try {
+    const privilege = await getPrivilege(); 
+
+    if (privilege != 1) {
+      useradmin.style.display = 'none';
+    }
+  } catch (error) {
+    console.error('Error fetching privilege:', error);
+  }
+});
 
