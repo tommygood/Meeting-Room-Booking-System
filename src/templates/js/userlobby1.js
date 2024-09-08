@@ -374,7 +374,7 @@ if(event.length>0){
      `;
 
      // 添加到list中
-     document.querySelector('.popup-list').appendChild(popup);
+     document.querySelector('.hamburger-list').appendChild(popup);
    });
  }}
  
@@ -397,6 +397,7 @@ document.addEventListener('DOMContentLoaded', function() {
   hamburger.addEventListener('click', function() {
       document.getElementById('hamburger-menu').classList.toggle('active');
       document.getElementById('lobby').classList.toggle('active');
+      
     });
 });
 

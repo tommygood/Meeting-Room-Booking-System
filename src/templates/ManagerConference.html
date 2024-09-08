@@ -67,7 +67,7 @@
                         </div>
                         <div class="input-group">
                             <h2 class="hamburger-request-title">連絡電話：</h2>
-                            <input type="text" class="hamburger-request" name='phone' placeholder="連絡電話" style="background-color:#ece673" readonly/>
+                            <input type="text" class="hamburger-request" name='phone' placeholder="連絡電話" />
                         </div>
                         <div class="input-group">
                             <h2 class="hamburger-request-title">分機號碼：</h2>
@@ -75,7 +75,7 @@
                         </div>
                         <div class="input-group">
                             <h2 class="hamburger-request-title">電子信箱：</h2>
-                            <input type="text" class="hamburger-request" name='email' placeholder="電子信箱" style="background-color:#ece673" readonly/>
+                            <input type="text" class="hamburger-request" name='email' placeholder="電子信箱"  >
                         </div>
                         <div class="input-group">
                             <h2 class="hamburger-request-title">借用日期：</h2>
@@ -134,17 +134,9 @@
                         </div>
 
                     </div>
-                    <div class="request-check">
-                        <input type="checkbox" id="checkrule">
-                        <h2 class="hamburger-request-title" style="white-space: nowrap">
-                            我已詳閱
-                            <a href="#" onclick="showRules()">
-                                《會議室使用規則》
-                            </a>
-                        </h2>
-                    </div>
+                    
                     <div id="hamburger-bottom" class="hamburger-bottom" >
-                        <div id="backbtn" class="hamburger-sendbutton">
+                        <div id="backbtn" class="hamburger-sendbutton" onclick="hidePopup('hamburger-menu')">
                             <h3 class="hamburger-title" style="color:white" >返回</h3>
                         </div>
                         <div id="requestsend" class="hamburger-sendbutton" onclick="reservationPost()">

@@ -42,8 +42,6 @@ function setPermission(identifier,name){
   selectedName = name;
 }
 
-
-
 function deleteUser(){
   Swal.fire({
     title: `確定要刪除「${selectedName}」？`,
@@ -82,6 +80,8 @@ function deleteUser(){
     }
   });
 }
+
+
 
 
 //fetch event info from sql
@@ -167,6 +167,7 @@ function postViolation(){
 //改權限&status
 const api_put = 'http://localhost:3000/api/user/privilege';
 const status_put = 'http://localhost:3000/api/user/status';
+const violation_get=(identifier)=>`http://localhost:3000/api/violation?identifier=${identifier}`;
 function putPrivilege(){
   const form = document.getElementById('privilege-form');
   const formData = new FormData(form);
@@ -207,6 +208,16 @@ function putPrivilege(){
   });
 }
 
+function showViolation(identifier){
+  selectedIdentifier = String(identifier);
+  fetch(violation_get(selectedIdentifier))
+  .then(response => response.json)
+  .then(data => {
+    console.log(data);
+  })
+}
+
+
 
 function hidePopup(popupId) {
   document.getElementById(popupId).style.display = 'none';
@@ -231,7 +242,7 @@ async function fetchData() {
           privilegeText,
           statusText,
           gridjs.html(`<a href="#" onclick="setPermission(${item.identifier},'${item.chinesename}');" >修改</a>`),
-          gridjs.html(`${item.violation_count}次 <a href="#" onclick="addViolate('${item.identifier}');">新增</a> <a href="query1">查詢</a>`)
+          gridjs.html(`${item.violation_count}次 <a href="#" onclick="addViolate('${item.identifier}');">新增</a> <a href="#" onclick="showViolation(${item.identifier})">查詢</a>`)
         ],
         extendedProps: {
           identifier: item.identifier // 將 identifier 作為隱藏數據
