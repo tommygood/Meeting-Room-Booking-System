@@ -1,23 +1,28 @@
-  // get user info from ncu portal
-  const api_info = 'http://localhost:3000/api/info/';
-  async function getinfo(type){
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-      const headers = urlParams.get('access_token')
-      try {
-        const response = await fetch(api_info+type,{ headers: { 'access_token': headers } });
-        const data = await response.json();
-        return data.data;
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    }
-  async function setAccountName() {
-      const account_type = await getinfo('chinesename');
-      document.getElementById("accountName").innerHTML += account_type;
-    }
-    setAccountName();
-  
+// get user info from ncu portal
+const api_info = 'http://localhost:3000/api/info/';
+async function getinfo(type){
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const headers = urlParams.get('access_token')
+  try {
+    const response = await fetch(api_info+type,{ headers: { 'access_token': headers } });
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+async function setAccountName() {
+  const account_type = await getinfo('chinesename');
+  document.getElementById("accountName").innerHTML += account_type;
+}
+setAccountName();
+
+function hidePopup(popupId) {
+  document.getElementById(popupId).style.display = 'none';
+}
+
+
 //fetch event info from sql
 const eventApiUrl = (start, end) => `http://localhost:3000/api/reservation?start_time=${start}&end_time=${end}`;
 function fetchevent(start, end){
@@ -36,8 +41,8 @@ function fetchevent(start, end){
         start: item.start_time, // 開始時間
         end: item.end_time, // 結束時間
         extendedProps: {
-          identifier: item.identifier,
-          room_id: item.room_id,
+          chinesename: item.chinesename,
+          unit:item.unit,
           show: item.show,
           number: item.ext
         }
@@ -46,7 +51,6 @@ function fetchevent(start, end){
       console.error('Unexpected data format:', result); 
     }
   })}
-
 
 
 
@@ -107,13 +111,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-
     events: function(fetchInfo, successCallback, failureCallback) {
       // 調用 API 獲取事件，fetchInfo 會自動提供 start 和 end 日期
       fetchevent(fetchInfo.startStr, fetchInfo.endStr)
           .then(events => successCallback(events))
           .catch(error => failureCallback(error));
   },
+
+
+
+
 
     // 會議顯示
     // eventDisplay:
@@ -129,11 +136,10 @@ document.addEventListener("DOMContentLoaded", function() {
       hour12: false 
     },
 
-
     
     eventClick: function(info) {
       console.log(info.event);
-      const StartTime = info.event.start.toLocaleString('zh-TW', {
+      const startTime = info.event.start.toLocaleString('zh-TW', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
@@ -141,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function() {
         minute: '2-digit',
         hour12: false
     });
-    const EndTime = info.event.end.toLocaleString('zh-TW', {
+    const endTime = info.event.end.toLocaleString('zh-TW', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
@@ -152,117 +158,49 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-      Swal.fire({
-        title: info.event.title,
-        html: `
-            ${StartTime} ~ ${EndTime}<br>
-            會議：${info.event.title}<br>
-            借用單位: ${info.event.extendedProps.department}<br>
-            申請人: ${info.event.extendedProps.name}<br>
-            分機號碼: ${info.event.extendedProps.number}<br>
-        `,
-        confirmButtonText: "OK",
-      })
-    },
+    Swal.fire({
+      title: info.event.title,
+      html: `
+          ${startTime} ~ ${endTime}<br>
+          會議：${info.event.title}<br>
+          借用單位: ${info.event.extendedProps.unit}<br>
+          申請人: ${info.event.extendedProps.chinesename}<br>
+          分機號碼: ${info.event.extendedProps.number}<br>
+      `,
+      showCancelButton: true,
+      cancelButtonText: 'OK' ,
+      confirmButtonText: '編輯會議', 
+
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById('hamburger-menu').style.display='flex';
+          document.querySelector('input[name="name"]').value = info.event.title;
+          document.querySelector('input[name="person"]').value = info.event.extendedProps.chinesename;
+          document.querySelector('input[name="unit"]').value = info.event.extendedProps.unit;
+          document.querySelector('input[name="phone"]').value = info.event.extendedProps.phone; // 假設有對應資料
+          document.querySelector('input[name="ext"]').value = info.event.extendedProps.number;
+          document.querySelector('input[name="email"]').value = info.event.extendedProps.email; // 假設有對應資料
+          const startDate = new Date(info.event.start);
+          document.querySelector('input[name="date"]').value = startDate.toISOString().split('T')[0]; // 只取日期部分        
+          const startHour = String(startDate.getHours()).padStart(2, '0');
+          const startMinute = String(startDate.getMinutes()).padStart(2, '0');
+          document.querySelector('select[name="starthour"]').value = startHour;
+          document.querySelector('select[name="startminute"]').value = startMinute;
+
+          const endDate = new Date(info.event.end);
+          const endHour = String(endDate.getHours()).padStart(2, '0');
+          const endMinute = String(endDate.getMinutes()).padStart(2, '0');
+          document.querySelector('select[name="endhour"]').value = endHour;
+          document.querySelector('select[name="endminute"]').value = endMinute;  
+
+        } else {
+          
+        }
+          })
+        },
 
 });
-
-
-
-// 彈出視窗
-function handleDateClick(info){
-  const event = calendar.getEvents().filter(event => {
-    return event.startStr.startsWith(info.dateStr);
- });
- event.sort((a, b) => a.start - b.start);
-
-if (event) {
- // 顯示出框
- var dayofweek=info.date.getDay();
- var month=info.date.getMonth()+1;
- var day=info.date.getDate();
- var weekdays = ['日', '一', '二', '三', '四', '五', '六'];
- var weekdayName = weekdays[dayofweek%7];
-
-
- document.querySelector('.popup').style.display='flex';
- document.querySelector('.popup-datetitle').innerHTML = month+"/"+day+"("+weekdayName+")"+"會議";
- 
-}
-
-// 清空list
-document.querySelector('.popup-list').innerHTML = '';
-
-if(event.length>0){
- {
-   // 為每個事件生成彈出框
-   event.forEach(event => {
-     const popup = document.createElement('div');
-     popup.className = 'popup-content_box';
-     popup.style.display = 'flex';
-
-     const startTime = event.start.toLocaleString().slice(9, 16).replace(/:$/, '');
-     const endTime = event.end.toLocaleString().slice(9, 16).replace(/:$/, '');
-
-
-     popup.innerHTML = `
-       <h3 class="popup-subtitle">
-       ${startTime}~${endTime}<br>
-         會議：${event.title}<br>
-         借用單位: ${event.extendedProps.department}<br>
-         發起人: ${event.extendedProps.name}<br>
-         分機號碼: ${event.extendedProps.number}<br>
-       </h3>
-       <hr>
-     `;
-
-     // 添加到list中
-     document.querySelector('.popup-list').appendChild(popup);
-   });
- }}
- 
-}
-
-  // 點日期彈出視窗
-calendar.on('dateClick', function(info) {
-  handleDateClick(info);
-});
-
-
-// // 點事件彈出視窗
-// calendar.on('eventClick', function(info) {
-//   // 取得被點擊事件的日期
-//   const eventDate = info.event.start;
-//   console.log(eventDate);
-//   // 將日期部分格式化為 "YYYY-MM-DD"
-//   const eventDateStr = eventDate.toISOString().split('T')[0];
-
-//   // 過濾當天所有事件
-//   const events = calendar.getEvents().filter(event => {
-//     const eventStartStr = event.start.toISOString().split('T')[0];
-//     return eventStartStr === eventDateStr;
-//   });
-
-//   // 確保事件按開始時間排序
-//   events.sort((a, b) => a.start - b.start);
-
-//   // 在這裡，你可以處理當天的所有事件
-
-//   // 將這些事件資訊傳遞給 handleDateClick 或其他處理函數
-//   const dateInfo = {
-//     dateStr: eventDateStr,
-//     date: eventDate,
-//     events: events
-//   };
-
-//   handleDateClick(dateInfo);
-// });
-
-
 
   calendar.render()
-  
-
-
   
 })

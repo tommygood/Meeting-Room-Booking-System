@@ -31,7 +31,26 @@ document.addEventListener("DOMContentLoaded",function(){
 function changePage(button){
     console.log(button.id);
     location.href = "/page/"+button.id;
+} 
+
+
+
+function fetchData(){
+  const date = new Date();
+  const today = new Date().toISOString().split('.')[0];
+  today.setHours(0, 0, 0, 0); 
+  date.setDate(date.getDate() + 7); 
+  date.setHours(0, 0, 0, 0); 
+  const nextSevenDay = date.toISOString().split('.')[0]; 
+  const api_board = `http://localhost:3000/api/reservation?start_time=${today}&end_time=${nextSevenDay}`;
+
+  fetch(api_board, {
+    method: 'GET',
+    credentials: 'include', 
+    headers: { 'Content-Type': 'application/json' },
+  })
 }
+
 
 
 

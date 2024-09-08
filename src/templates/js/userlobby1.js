@@ -1,6 +1,37 @@
 
-
+let privilege;
 const api_info = 'http://localhost:3000/api/info/';
+//抓資訊到申請頁面的資料
+async function fetchUserInfo(identifier) {
+  try {
+    const response = await fetch('http://localhost:3000/api/user');
+    const result = await response.json();
+
+    if (result && Array.isArray(result.data)) {
+      const user = result.data.find(item => item.identifier === identifier);
+      
+      if (user) {
+        document.querySelector('input[name="person"]').value = user.chinesename || '';
+        document.querySelector('input[name="unit"]').value = user.unit || '';
+        document.querySelector('input[name="phone"]').value = user.mobilePhone || '';
+        document.querySelector('input[name="email"]').value = user.email || '';
+        privilege=user.privilege_level;
+        if(privilege!=1){
+          document.getElementById('useradmin').style.display = 'none';
+        }
+      } 
+    }
+  } catch (error) {
+    console.error('Error fetching user info:', error);
+  }
+}
+
+
+// 在頁面加載後自動調用 fetchUserInfo
+document.addEventListener("DOMContentLoaded", function() {
+  fetchUserInfo('113423004');
+});
+
 
   // get user info from ncu portal
 async function getinfo(type){
@@ -9,7 +40,7 @@ async function getinfo(type){
     const headers = urlParams.get('access_token')
     try {
       const response = await fetch(api_info+type,{ headers: { 'access_token': headers } });
-      const data = await response.json();
+      const data = await response.json();      
       return data.result;
       } catch (error) {
       console.error("Error:", error);
@@ -18,7 +49,6 @@ async function getinfo(type){
 async function setAccountName() {
     const account_type = await getinfo('chinesename');
     // document.getElementById("accountName").innerHTML += account_type;
-    console.log(account_type);
   }
   setAccountName();
 
@@ -44,8 +74,8 @@ function fetchevent(start, end){
         start: item.start_time, // 開始時間
         end: item.end_time, // 結束時間
         extendedProps: {
-          identifier: item.identifier,
-          room_id: item.room_id,
+          chinesename: item.chinesename,
+          unit:item.unit,
           show: item.show,
           number: item.ext
         }
@@ -102,8 +132,8 @@ function formatDateTimeForDatabase(dateTime) {
 }
 
 
-
-function reservationPost(){
+async function reservationPost(){
+  
   const form = document.getElementById('request');
   const formData = new FormData(form);
   const date=formData.get('date');
@@ -115,6 +145,11 @@ function reservationPost(){
   const ext = formData.get('ext');
   const startTimestamp = formatDateTimeForDatabase(`${date}T${starthour}:${startminute}:00`);
   const endTimestamp = formatDateTimeForDatabase(`${date}T${endhour}:${endminute}:00`);
+  const startOfDay = formatDateTimeForDatabase(`${date}T00:00:00`);
+  const endOfDay = formatDateTimeForDatabase(`${date}T23:59:59`);
+  const existingEvents = await fetchevent(startOfDay, endOfDay);
+
+
   if (!date || !starthour || !startminute || !endhour || !endminute || !name || !ext) {
     alert('所有欄位都是必填的，請完整填寫表單！');
     return; 
@@ -130,8 +165,37 @@ function reservationPost(){
     return; 
   }
 
-  console.log(startTimestamp, endTimestamp);
+    //不能借現在以前的時間&超過三個月
+  const reservationDate = new Date(date);
+  const today = new Date();
+  console.log(startTimestamp);
+  console.log(today);
+  if(new Date(startTimestamp )<=today){
+    alert('預約時間請選在現在後的時間！');
+    return;
+  }
+
+  const threeMonthsLater = new Date(today.setMonth(today.getMonth() + 3));
+  if(privilege!=1){
+    if (reservationDate > threeMonthsLater) {
+      alert('借閱日期不能超過三個月後，請選擇在三個月內的日期！');
+      return;
+    }
+  }
+
+  // 檢查新預約是否與現有事件有時間衝突
+  const hasConflict = existingEvents.some(event => {
+    const existingStart = new Date(event.start);
+    const existingEnd = new Date(event.end);
+    return (new Date(startTimestamp) < existingEnd && new Date(endTimestamp) > existingStart);
+  });
+  if (hasConflict) {
+    alert('該時間段已被預約，請選擇其他時間。');
+    return;
+  }
+
   const data={
+    //目前寫死的
       identifier:'113423004',
       name:name,
       room_id:'1',
@@ -141,7 +205,6 @@ function reservationPost(){
       ext: ext,
       
   }
-  console.log(data);
   fetch('http://localhost:3000/api/reservation', {
     method: 'POST',
     credentials: 'include', 
@@ -209,20 +272,6 @@ document.addEventListener("DOMContentLoaded", function() {
   },
 
 
-  // events: [ // Events 
-  //   {
-  //     title: "資料庫測試", // 事件標題
-  //     start: '2024-09-02T12:08:00', // 開始時間，時間格式建議使用 ISO 格式 (yyyy-MM-ddTHH:mm:ss)
-  //     end: '2024-09-02T13:08:00', // 結束時間
-  //     // 其他自定義屬性，這些屬性不會影響 FullCalendar 的顯示
-  //     extendedProps: {
-  //     name: "小明",
-  //     department: "秘書室",
-  //     number: "576"
-  //   }
-  //   },
-
-  // ],
 
 
 
@@ -267,8 +316,8 @@ document.addEventListener("DOMContentLoaded", function() {
         html: `
             ${StartTime} ~ ${EndTime}<br>
             會議：${info.event.title}<br>
-            借用單位: ${info.event.extendedProps.department}<br>
-            申請人: ${info.event.extendedProps.name}<br>
+            借用單位: ${info.event.extendedProps.unit}<br>
+            申請人: ${info.event.extendedProps.chinesename}<br>
             分機號碼: ${info.event.extendedProps.number}<br>
         `,
         confirmButtonText: "OK",
@@ -325,7 +374,7 @@ if(event.length>0){
      `;
 
      // 添加到list中
-     document.querySelector('.popup-list').appendChild(popup);
+     document.querySelector('.hamburger-list').appendChild(popup);
    });
  }}
  
@@ -348,6 +397,7 @@ document.addEventListener('DOMContentLoaded', function() {
   hamburger.addEventListener('click', function() {
       document.getElementById('hamburger-menu').classList.toggle('active');
       document.getElementById('lobby').classList.toggle('active');
+      
     });
 });
 

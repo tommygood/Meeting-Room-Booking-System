@@ -5,7 +5,7 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
-    <script src="/js/userlobby1.js">    </script>
+    <script src="/js/userlobby1.js"></script>
      <!-- sweetAlert2 origin code-->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
   <!-- fullcalendar origin code-->
@@ -19,6 +19,9 @@
         <div  id= "hamburger-content" class="hamburger-content" >
             <h3 class="hamburger-title">我的會議</h3>
             <div class="hamburger-list">
+                <div class="popup-content_box"></div>
+                    <h3 class="popup-subtitle"></h3>
+                </div>
             </div>
             <div id="hamburger-requestbutton" class="hamburger-requestbutton">
                 <h3 class="hamburger-title" style="color:white">預約申請</h3>
@@ -136,7 +139,7 @@
 
     <div id='lobby' class="lobby">
         <!-- 使用者/管理者 -->
-        <div class="useradmin" onclick=""> 
+        <div class="useradmin" id='useradmin'onclick=""> 
             <img src="/image/user.png"  class="useradmin-button" onclick="location.href ='/page/userlobby'">
             <hr style="margin: 0; height: 100%;" />
             <img src="/image/admin.png" class="useradmin-button" onclick="location.href ='/page/privilege'">
