@@ -94,9 +94,11 @@ module.exports = {
         }
         else {
             try {
+                console.log("identifier : ", identifier);
                 const sql = 'SELECT `privilege_level` FROM `User` WHERE `identifier` = ?;';
                 const result = await conn.query(sql, [identifier]);
                 db_conn.closeDBConnection(conn);
+                console.log("result : ", result);
                 return result[0].privilege_level;
             }
             catch(e) {
