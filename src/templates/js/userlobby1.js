@@ -53,6 +53,7 @@ async function getPrivilege() {
   const response = await fetch("http://localhost:3000/api/user/privilege");
   const data = await response.json();
   const privilege_level = data.data;
+  console.log(privilege_level);
   return privilege_level;
 }
 

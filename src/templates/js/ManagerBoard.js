@@ -133,11 +133,6 @@ document.addEventListener("DOMContentLoaded", function() {
         },
         td: {}
       },
-      rowClick: (row, rowData) => {
-        const reserve_id = rows[row.index].reserve_id; // 獲取 reserve_id
-        console.log('Reserve ID:', reserve_id);
-        // 在這裡執行基於 reserve_id 的操作
-      }
     }).render(document.getElementById('gridtable'));
   }).catch(error => {
     console.error('Error rendering Grid.js:', error);
