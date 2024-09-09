@@ -41,7 +41,7 @@ jobs:
             # ssh vpn is needed only if you can not directly connect to the `SSH_HOST`
             echo "${{ secrets.SSH_VPN_1_PRIVATE_KEY }}" > ssh_vpn_1.pem
             chmod 600 ssh_vpn_1.pem
-            ssh -i ssh_vpn_1.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_VPN_1_USER }}@${{ secrets.SSH_VPN_1_HOST }} "echo '${{ secrets.SSH_PRIVATE_KEY }}' > b.pem && chmod 600 b.pem && ssh -i b.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd ${{ secrets.WORK_DIR }} && rm .env && echo a=1 >> .env && echo HOST=${{ vars.Host }} >> .env;echo OAuth_Client_ID=${{ secrets.OAuth_Client_ID }} >> .env;echo OAuth_Client_Secret=${{ secrets.OAuth_Client_Secret }} >> .env'"
+            ssh -i ssh_vpn_1.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_VPN_1_USER }}@${{ secrets.SSH_VPN_1_HOST }} "echo '${{ secrets.SSH_PRIVATE_KEY }}' > b.pem && chmod 600 b.pem && ssh -i b.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd ${{ secrets.WORK_DIR }} && rm .env && echo HOST=${{ vars.Host }} >> .env;echo OAuth_Client_ID=${{ secrets.OAuth_Client_ID }} >> .env;echo OAuth_Client_Secret=${{ secrets.OAuth_Client_Secret }} >> .env'"
         - name: connect and pull
           run: |
             # ssh vpn is needed only if you can not directly connect to the `SSH_HOST`
