@@ -464,10 +464,10 @@ function handleDatesSet(){
 // 漢堡選單
 document.addEventListener('DOMContentLoaded', function() {
   const hamburger = document.getElementById('hamburger-button');
+  const lobby = document.getElementById('lobby');
   hamburger.addEventListener('click', function() {
       document.getElementById('hamburger-menu').classList.toggle('active');
       document.getElementById('lobby').classList.toggle('active');
-      
     });
 });
 
