@@ -10,8 +10,9 @@ module.exports = {
         else {
             try {
                 // insert user info into db, if user exists, then update user info
+                console.log(user_info.academyRecords.name)
                 const sql = 'INSERT INTO `User` (`identifier`, `chinesename`, `email`, `mobilePhone`, `unit`) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `chinesename` = ?, `email` = ?, `mobilePhone` = ?, `unit` = ?;';
-                await conn.query(sql, [user_info.identifier, user_info.chineseName, user_info.email, user_info.mobilePhone, user_info.unit, user_info.chineseName, user_info.email, user_info.mobilePhone, user_info.unit]);
+                await conn.query(sql, [user_info.identifier, user_info.chineseName, user_info.email, user_info.mobilePhone, user_info.unit, user_info.chineseName, user_info.email, user_info.mobilePhone, user_info.FacultyRecords.unit]);
                 db_conn.closeDBConnection(conn);
                 return true;
             }
