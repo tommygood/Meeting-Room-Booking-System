@@ -1,6 +1,6 @@
 // get user info from ncu portal
-const api = 'http://localhost:3000/api/';
-const api_info = 'http://localhost:3000/api/info/';
+const api = '/api/';
+const api_info = '/api/info/';
 async function getinfo(type){
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);

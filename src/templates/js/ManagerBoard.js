@@ -1,4 +1,4 @@
-const api_info = 'http://localhost:3000/api/info/';
+const api_info = '/api/info/';
 
   // get user info from ncu portal
 async function getinfo(type){
@@ -44,7 +44,7 @@ function fetchData() {
   date2.setHours(0, 0, 0, 0); 
   const nextSevenDay = date2.toISOString().split('.')[0];
 
-  const api_board = `http://localhost:3000/api/reservation?start_time=${today}&end_time=${nextSevenDay}`;
+  const api_board = `/api/reservation?start_time=${today}&end_time=${nextSevenDay}`;
 
   return fetch(api_board, {
     method: 'GET',

@@ -1,4 +1,4 @@
-const api_info = 'http://localhost:3000/api/info/';
+const api_info = '/api/info/';
 
   // get user info from ncu portal
 async function getinfo(type){

@@ -1,6 +1,6 @@
 let reserve_id
 // get user info from ncu portal
-const api_info = 'http://localhost:3000/api/info/';
+const api_info = '/api/info/';
 async function getinfo(type){
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -26,7 +26,7 @@ function hidePopup(popupId) {
 
 
 //fetch event info from sql
-const eventApiUrl = (start, end) => `http://localhost:3000/api/reservation?start_time=${start}&end_time=${end}`;
+const eventApiUrl = (start, end) => `/api/reservation?start_time=${start}&end_time=${end}`;
 function fetchevent(start, end){
   return fetch(eventApiUrl(start, end),{
     method: 'GET',
@@ -126,7 +126,7 @@ async function reservationPut() {
     return;
   }
   // 發送 PUT 請求，使用 JSON 格式
-  fetch('http://localhost:3000/api/reservation', {
+  fetch('/api/reservation', {
     method: 'PUT',
     credentials: 'include', 
     body: JSON.stringify(data),  // 將數據轉換為 JSON 字符串
@@ -146,7 +146,7 @@ async function reservationPut() {
   });
 }
 
-const delete_api='http://localhost:3000/api/reservation';
+const delete_api='/api/reservation';
 async function reservationDelete(reserve_id){
   fetch(delete_api,{
     method: 'DELETE',
@@ -168,6 +168,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const calendar = new FullCalendar.Calendar(calendarEl, {
 
     initialView: "dayGridMonth",
+    firstDay:1,
     locale:"zh-tw",
     height: '100vh',
     contentHeight: 700,

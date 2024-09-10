@@ -3,7 +3,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>�ݪO�w��</title>
+    <title>看板預覽</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
     <link rel="stylesheet" type="text/css" href="/css/Board_preview.css" />
@@ -38,15 +38,15 @@
 <body>
 
     <div class="swiper">
-        <!-- swiper class �n���������e�� swiper-wrapper -->
+        <!-- swiper class 要輪播的內容為 swiper-wrapper -->
         <div class="swiper-wrapper">
-            <!-- ����|ĳ -->
+            <!-- 今日會議 -->
             <div class="swiper-slide">
                 <div>
                     <div class="head" style="display: flex; justify-content: space-between; align-items: center;">
-                        <h1 class="hero_title">����|ĳ</h1>
+                        <h1 class="hero_title">今日會議</h1>
                         <h3 class="subtitle" style=" text-align: right;">
-                            2024/08/27(�G)
+                            2024/08/27(二)
                             <br />
                             10:45
                         </h3>
@@ -54,12 +54,12 @@
                     <div id="calendar"></div>
                 </div>
             </div>
-            <!-- �{���i��|ĳ -->
+            <!-- 現正進行會議 -->
             <div class="swiper-slide">
                 <div class="head" style="display: flex; justify-content: space-between; align-items: center;">
-                    <h1 class="hero_title">�{���i��|ĳ</h1>
+                    <h1 class="hero_title">現正進行會議</h1>
                     <h3 class="subtitle" style=" text-align: right;">
-                        2024/08/27(�G)
+                        2024/08/27(二)
                         <br />
                         10:45
                     </h3>
@@ -67,24 +67,24 @@
                 <div class="board-info">
                     <div class="block">
                         <div class="flex_col_info" style="padding: 5px 15px 10px 15px;">
-                            <h3 class="medium_title">�|ĳ�W�١G</h3>
-                            <h1 class="emphasis" id="reserveName">�|ĳ�ǹw���t�ζ}�o�Q��</h1>
-                            <h3 class="medium_title1">�ɥήɬq�G</h3>
+                            <h3 class="medium_title">會議名稱：</h3>
+                            <h1 class="emphasis" id="reserveName">會議室預約系統開發討論</h1>
+                            <h3 class="medium_title1">借用時段：</h3>
                             <h1 class="emphasis1">10:00 - 12:00</h1>
-                            <h3 class="medium_title1">�ɥγ��G</h3>
-                            <h1 class="text">���ѫ�</h1>
-                            <h3 class="medium_title2">�ɥΤH�G</h3>
+                            <h3 class="medium_title1">借用單位：</h3>
+                            <h1 class="text">秘書室</h1>
+                            <h3 class="medium_title2">借用人：</h3>
                             <h1 class="text1">Vicky</h1>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- �U�@���|ĳ -->
+            <!-- 下一場會議 -->
             <div class="swiper-slide">
                 <div class="head" style="display: flex; justify-content: space-between; align-items: center;">
-                    <h1 class="hero_title">�U�@���|ĳ</h1>
+                    <h1 class="hero_title">下一場會議</h1>
                     <h3 class="subtitle" style=" text-align: right;">
-                        2024/08/27(�G)
+                        2024/08/27(二)
                         <br />
                         10:45
                     </h3>
@@ -92,13 +92,13 @@
                 <div class="board-info">
                     <div class="block">
                         <div class="flex_col_info" style="padding: 5px 15px 10px 15px;">
-                            <h3 class="medium_title">�|ĳ�W�١G</h3>
-                            <h1 class="emphasis" id="reserveName">�|ĳ�ǹw���t�ζ}�o�Q��</h1>
-                            <h3 class="medium_title1">�ɥήɬq�G</h3>
+                            <h3 class="medium_title">會議名稱：</h3>
+                            <h1 class="emphasis" id="reserveName">會議室預約系統開發討論</h1>
+                            <h3 class="medium_title1">借用時段：</h3>
                             <h1 class="emphasis1">12:00 - 13:00</h1>
-                            <h3 class="medium_title1">�ɥγ��G</h3>
-                            <h1 class="text">���ѫ�</h1>
-                            <h3 class="medium_title2">�ɥΤH�G</h3>
+                            <h3 class="medium_title1">借用單位：</h3>
+                            <h1 class="text">秘書室</h1>
+                            <h3 class="medium_title2">借用人：</h3>
                             <h1 class="text1">Vicky</h1>
                         </div>
                     </div>
@@ -114,13 +114,13 @@
     <!-- Swiper origin code-->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        const swiper = new Swiper('.swiper', { // �Ыؤ@�ӽ���
-            autoplay: { // �۰ʽ��� swiper
-                delay: 5 * 1000, // �C��������U�@�i
+        const swiper = new Swiper('.swiper', { // 創建一個輪播
+            autoplay: { // 自動輪播 swiper
+                delay: 5 * 1000, // 每兩秒切換下一張
             },
-            loop: true, // ����������^��Ĥ@�i�~�����
+            loop: true, // 輪播結束後回到第一張繼續輪播
 
-            pagination: { // �U�譶��
+            pagination: { // 下方頁籤
                 el: ".swiper-pagination",
             },
         });
@@ -135,11 +135,11 @@
                 initialView: "timeGridDay",
                 headerToolbar: false,
                 overflow: false,
-                slotMinTime: "08:00:00", // �i�w�����̦��ɶ�
-                slotMaxTime: "17:30:00", // �i�w�����̱߮ɶ�
+                slotMinTime: "08:00:00", // 可預約的最早時間
+                slotMaxTime: "17:30:00", // 可預約的最晚時間
 
-                nowIndicator: true, // ��ܥثe�ɶ��аO
-                now: '2024-08-27T10:45:00', // �ݪO�w���]�w���ɶ�
+                nowIndicator: true, // 顯示目前時間標記
+                now: '2024-08-27T10:45:00', // 看板預覽設定的時間
             });
             calendar.render();
         })

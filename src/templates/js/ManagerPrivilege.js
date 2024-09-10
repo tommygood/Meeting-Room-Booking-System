@@ -1,6 +1,6 @@
 
 
-const api_info = 'http://localhost:3000/api/info/';
+const api_info = '/api/info/';
   // get user info from ncu portal
   async function getinfo(type){
     const queryString = window.location.search;
@@ -88,7 +88,7 @@ function deleteUser(){
 
 
 //fetch event info from sql
-const eventApiUrl = (start, end) => `http://localhost:3000/api/reservation?start_time=${start}&end_time=${end}`;
+const eventApiUrl = (start, end) => `/api/reservation?start_time=${start}&end_time=${end}`;
 function fetchevent(start, end){
   return fetch(eventApiUrl(start, end),{
     method: 'GET',
@@ -144,7 +144,7 @@ async function addViolate(identifier){
 
 
 //新增違規
-const api_post = 'http://localhost:3000/api/violation';
+const api_post = '/api/violation';
 function postViolation(){
   const form = document.getElementById('violation');
   const formData = new FormData(form);
@@ -177,8 +177,8 @@ function postViolation(){
 }
 
 //改權限&status
-const api_put = 'http://localhost:3000/api/user/privilege';
-const status_put = 'http://localhost:3000/api/user/status';
+const api_put = '/api/user/privilege';
+const status_put = '/api/user/status';
 function putPrivilege(){
   const form = document.getElementById('privilege-form');
   const formData = new FormData(form);
@@ -220,7 +220,7 @@ function putPrivilege(){
   });
 }
 
-const violation_get=`http://localhost:3000/api/violation`;
+const violation_get=`/api/violation`;
 async function showViolation(identifier){
   const violation= await fetch(violation_get)
   .then(response => response.json())
@@ -267,7 +267,7 @@ function hidePopup(popupId) {
 
 //get user data
 async function fetchData() {
-  const response = await fetch(`http://localhost:3000/api/user`);
+  const response = await fetch(`/api/user`);
   const result = await response.json();
 
   if (result && Array.isArray(result.data)) {
@@ -299,7 +299,7 @@ async function fetchData() {
 
 //get user data
 async function fetchData() {
-  const response = await fetch(`http://localhost:3000/api/user`);
+  const response = await fetch(`/api/user`);
   const result = await response.json();
 
   if (result && Array.isArray(result.data)) {
