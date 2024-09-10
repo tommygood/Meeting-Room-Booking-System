@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded",function(){
 
 //換頁
 function changePage(button){
-  console.log(button.id);
   location.href = "/page/"+button.id;
 }
 

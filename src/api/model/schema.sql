@@ -7,8 +7,8 @@ CREATE TABLE `User` (
   `email` varchar(35) DEFAULT NULL,
   `mobilePhone` varchar(12) DEFAULT NULL,
   `unit` varchar(20) DEFAULT NULL,
-  `status` tinyint(1) DEFAULT NULL,
-  `privilege_level` tinyint(1) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 0,
+  `privilege_level` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`identifier`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 INSERT INTO `User` (`identifier`, `chinesename`, `email`, `mobilePhone`, `unit`, `status`, `privilege_level`) VALUES ('admin', '管理員', 'tommy50508@gmail.com', '0912345678', 'NCU-IM', 1, 1);

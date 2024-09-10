@@ -7,8 +7,8 @@ const Info = require("./../utilities/info.js");
 module.exports = {
 	config: {
 		client: {
-		  id: '20240810153319N3rBYdMmk8gj',
-		  secret: '5qnk47LxuLGxJLrRUKSDNNJxRC5pU4byTV5ZYMKnro0SOyBiVtoEhe'
+		  id: process.env.oauth_client_id == undefined ? '20240810153319N3rBYdMmk8gj' : process.env.oauth_client_id,
+		  secret: process.env.oauth_client_secret == undefined ? '5qnk47LxuLGxJLrRUKSDNNJxRC5pU4byTV5ZYMKnro0SOyBiVtoEhe' : process.env.oauth_client_secret
 		},
 		auth: {
 			tokenHost: 'https://portal.ncu.edu.tw',
@@ -25,7 +25,7 @@ module.exports = {
 	  
 		const authorizationUri = client.authorizeURL({
 		  redirect_uri: `${host}/api/login/callback`,
-		  scope: 'identifier,chinese-name,english-name',
+		  scope: this.scope,
 		  state: '9d6ca6532dab4d92eac96d7b114730b4',
 		});
 	  
@@ -35,7 +35,7 @@ module.exports = {
 		const tokenParams = {
 		  code: '<code>',
 		  redirect_uri: `${host}/api/login/callback`,
-		  scope: 'identifier,chinese-name,english-name',
+		  scope: this.scope,
 		};
 	  
 		try {
@@ -54,7 +54,7 @@ module.exports = {
 		const tokenParams = {
 			code,
 			redirect_uri: `${host}/example`,
-			scope: 'identifier,chinese-name,english-name',
+			scope: this.scope,
 		};
 
 		try {

@@ -1,5 +1,6 @@
 let identifier;
 // let privilege;
+
 const api_info = 'http://localhost:3000/api/info/';
   // get user info from ncu portal
   async function getinfo(type){
@@ -19,7 +20,7 @@ async function setAccountName() {
     const account_type = await getinfo('chinesename');
     document.getElementById("accountName").innerHTML += account_type;
   }
-  setAccountName();
+setAccountName();
 
 //拿identifier
 function parseJwt (token) {
