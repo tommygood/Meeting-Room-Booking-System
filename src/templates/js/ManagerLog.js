@@ -14,11 +14,13 @@ async function getinfo(type){
     }
 }
 function setUrlParams(origin_url, params) {
-    const url = new URL(origin_url);
+    // add params to url
     for (const key in params) {
-        url.searchParams.set(key, params[key]);
+      if (params[key] !== null) {
+        origin_url += (origin_url.includes('?') ? '&' : '?') + key + '=' + params[key];
+      }
     }
-    return url.href;
+    return origin_url
 }
 
 async function getLog(condition) {
