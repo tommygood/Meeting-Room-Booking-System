@@ -15,7 +15,7 @@ module.exports = {
                 const mobilePhone = user_info.mobilePhone == undefined ? null : user_info.mobilePhone;
                 const unit = user_info.facultyRecords == undefined ? null : user_info.facultyRecords.unit;
                 const sql = 'INSERT INTO `User` (`identifier`, `chinesename`, `email`, `mobilePhone`, `unit`) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `chinesename` = ?, `email` = ?, `mobilePhone` = ?, `unit` = ?;';
-                await conn.query(sql, [user_info.identifier, user_info.chineseName, user_info.email, user_info.mobilePhone, user_info.unit, user_info.chineseName, user_info.email, mobilePhone, unit]);
+                await conn.query(sql, [user_info.identifier, user_info.chineseName, user_info.email, mobilePhone, unit, user_info.chineseName, user_info.email, mobilePhone, unit]);
                 db_conn.closeDBConnection(conn);
                 return true;
             }
@@ -42,6 +42,27 @@ module.exports = {
             }
             catch(e) {
                 console.error("error getting user : ", e);
+                conn.release();
+                return null;
+            }
+        }
+    },
+
+    // get user self info by identifier
+    getSelf : async function (identifier) {
+        const conn = await db_conn.getDBConnection();
+        if (conn == null) {
+            return null;
+        }
+        else {
+            try {
+                const sql = 'SELECT * FROM `User` WHERE `identifier` = ?;';
+                const result = await conn.query(sql, [identifier]);
+                db_conn.closeDBConnection(conn);
+                return result[0];
+            }
+            catch(e) {
+                console.error("error getting user self info : ", e);
                 conn.release();
                 return null;
             }
