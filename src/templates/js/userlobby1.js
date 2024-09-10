@@ -246,6 +246,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const calendar = new FullCalendar.Calendar(calendarEl, {
 
     initialView: "dayGridMonth",
+    firstDay:1,
     locale:"zh-tw",
     height: '100vh',
     contentHeight: 700,
