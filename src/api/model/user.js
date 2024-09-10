@@ -13,7 +13,7 @@ module.exports = {
                 console.log(user_info.academyRecords.name)
                 // mobilePhone and unit may not exist
                 const mobilePhone = user_info.mobilePhone == undefined ? null : user_info.mobilePhone;
-                const unit = user_info.FacultyRecords.unit == undefined ? null : user_info.FacultyRecords.unit;
+                const unit = user_info.FacultyRecords == undefined ? null : user_info.FacultyRecords.unit;
                 const sql = 'INSERT INTO `User` (`identifier`, `chinesename`, `email`, `mobilePhone`, `unit`) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `chinesename` = ?, `email` = ?, `mobilePhone` = ?, `unit` = ?;';
                 await conn.query(sql, [user_info.identifier, user_info.chineseName, user_info.email, user_info.mobilePhone, user_info.unit, user_info.chineseName, user_info.email, mobilePhone, unit]);
                 db_conn.closeDBConnection(conn);
