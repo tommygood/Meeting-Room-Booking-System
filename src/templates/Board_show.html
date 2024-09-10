@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>看板預覽</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+    <link rel="stylesheet" type="text/css" href="/css/Board_preview.css" />
+
+
+    <style>
+        .swiper {
+            width: 95vw;
+            height: 95vh;
+        }
+
+        .swiper-slide {
+            font-size: 18px;
+            width: contain;
+            height: contain;
+        }
+
+        :root {
+            --swiper-theme-color: peru;
+        }
+
+
+        .block {
+            width: contain;
+            height: contain;
+            background-color: rgb(238 238 238);
+            box-shadow: inset 0 4px 4px 0 rgb(0 0 0 / 25%);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="swiper">
+        <!-- swiper class 要輪播的內容為 swiper-wrapper -->
+        <div class="swiper-wrapper">
+            <!-- 今日會議 -->
+            <div class="swiper-slide">
+                <div>
+                    <div class="head" style="display: flex; justify-content: space-between; align-items: center;">
+                        <h1 class="hero_title">今日會議</h1>
+                        <h3 class="subtitle" style=" text-align: right;">
+                            2024/08/27(二)
+                            <br />
+                            10:45
+                        </h3>
+                    </div>
+                    <div id="calendar"></div>
+                </div>
+            </div>
+            <!-- 現正進行會議 -->
+            <div class="swiper-slide">
+                <div class="head" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h1 class="hero_title">現正進行會議</h1>
+                    <h3 class="subtitle" style=" text-align: right;">
+                        2024/08/27(二)
+                        <br />
+                        10:45
+                    </h3>
+                </div>
+                <div class="board-info">
+                    <div class="block">
+                        <div class="flex_col_info" style="padding: 5px 15px 10px 15px;">
+                            <h3 class="medium_title">會議名稱：</h3>
+                            <h1 class="emphasis" id="reserveName">會議室預約系統開發討論</h1>
+                            <h3 class="medium_title1">借用時段：</h3>
+                            <h1 class="emphasis1">10:00 - 12:00</h1>
+                            <h3 class="medium_title1">借用單位：</h3>
+                            <h1 class="text">秘書室</h1>
+                            <h3 class="medium_title2">借用人：</h3>
+                            <h1 class="text1">Vicky</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 下一場會議 -->
+            <div class="swiper-slide">
+                <div class="head" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h1 class="hero_title">下一場會議</h1>
+                    <h3 class="subtitle" style=" text-align: right;">
+                        2024/08/27(二)
+                        <br />
+                        10:45
+                    </h3>
+                </div>
+                <div class="board-info">
+                    <div class="block">
+                        <div class="flex_col_info" style="padding: 5px 15px 10px 15px;">
+                            <h3 class="medium_title">會議名稱：</h3>
+                            <h1 class="emphasis" id="reserveName">會議室預約系統開發討論</h1>
+                            <h3 class="medium_title1">借用時段：</h3>
+                            <h1 class="emphasis1">12:00 - 13:00</h1>
+                            <h3 class="medium_title1">借用單位：</h3>
+                            <h1 class="text">秘書室</h1>
+                            <h3 class="medium_title2">借用人：</h3>
+                            <h1 class="text1">Vicky</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+
+    <!-- Swiper origin code-->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        const swiper = new Swiper('.swiper', { // 創建一個輪播
+            autoplay: { // 自動輪播 swiper
+                delay: 5 * 1000, // 每兩秒切換下一張
+            },
+            loop: true, // 輪播結束後回到第一張繼續輪播
+
+            pagination: { // 下方頁籤
+                el: ".swiper-pagination",
+            },
+        });
+    </script>
+
+    <!-- FullCalendar origin code-->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const calendarEl = document.getElementById("calendar");
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: "timeGridDay",
+                headerToolbar: false,
+                overflow: false,
+                slotMinTime: "08:00:00", // 可預約的最早時間
+                slotMaxTime: "17:30:00", // 可預約的最晚時間
+
+                nowIndicator: true, // 顯示目前時間標記
+                now: '2024-08-27T10:45:00', // 看板預覽設定的時間
+            });
+            calendar.render();
+        })
+
+    </script>
+
+</body>
+
+</html>

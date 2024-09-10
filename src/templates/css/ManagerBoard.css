@@ -59,7 +59,7 @@ body {
     margin-left: 53%;
     margin-top: 8px;
     cursor: pointer;
-    
+    z-index: 10;
 }
 .save-button:hover{
     background-color:#9F9E9E;

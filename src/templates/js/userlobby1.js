@@ -1,7 +1,7 @@
+let identifier;
+// let privilege;
 
-
-const api_info = 'http://localhost:3000/api/info/';
-
+const api_info = '/api/info/';
   // get user info from ncu portal
 async function getinfo(type){
     const queryString = window.location.search;
@@ -10,18 +10,84 @@ async function getinfo(type){
     try {
       const response = await fetch(api_info+type,{ headers: { 'access_token': headers } });
       const data = await response.json();
-      return data.result;
+      return data.data;
       } catch (error) {
       console.error("Error:", error);
     }
   }
+
 async function setAccountName() {
     const account_type = await getinfo('chinesename');
-    // document.getElementById("accountName").innerHTML += account_type;
-    console.log(account_type);
+    document.getElementById("accountName").innerHTML += account_type;
   }
-  setAccountName();
+setAccountName();
 
+//拿identifier
+function parseJwt (token) {
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    
+  }).join(''));
+  return JSON.parse(jsonPayload);
+}
+function getIdentifier(){
+  try {
+    var token = document.cookie.split('token=')[1];
+    if (token) {
+        identifier=parseJwt(token); 
+
+    } else {
+        console.error('Token not found in cookies.');
+    }
+} catch (error) {
+    console.error('Error parsing JWT:', error);
+}
+}
+getIdentifier();
+
+
+
+//拿privilege_level
+async function getPrivilege() {
+  const response = await fetch("/api/user/privilege");
+  const data = await response.json();
+  const privilege_level = data.data;
+  console.log(privilege_level);
+  return privilege_level;
+}
+
+
+
+//fetch event info from sql
+const eventApiUrl = (start, end) => `/api/reservation?start_time=${start}&end_time=${end}`;
+function fetchevent(start, end){
+  return fetch(eventApiUrl(start, end),{
+    method: 'GET',
+    credentials: 'include', 
+    headers: { 'Content-Type': 'application/json' },
+  })
+  .then(response => response.json())
+  .then(result => {
+    if (result && Array.isArray(result.data)) {
+      // 將 data 中的每個項目格式化為 FullCalendar 需要的事件格式
+      return result.data.map(item => ({
+        id: item.reserve_id,
+        title: item.name, // 預約名稱
+        start: item.start_time, // 開始時間
+        end: item.end_time, // 結束時間
+        extendedProps: {
+          chinesename: item.chinesename,
+          unit:item.unit,
+          show: item.show,
+          number: item.ext
+        }
+      }));
+    } else {
+      console.error('Unexpected data format:', result); 
+    }
+  })}
 
 
 
@@ -30,7 +96,7 @@ function hidePopup(popupId) {
   document.getElementById(popupId).style.display = 'none';
 }
 
-  
+
 function showRules(){
   Swal.fire({
     title: '會議室使用規則',
@@ -56,6 +122,121 @@ function showRules(){
   
 }
 
+//starttime&endtime轉datetime格式
+function formatDateTimeForDatabase(dateTime) {
+  const date = new Date(dateTime);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份從0開始，需要加1
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`; // 返回 'YYYY-MM-DD HH:MM:SS'
+}
+
+//上傳預約
+async function reservationPost(){
+  
+  const form = document.getElementById('request');
+  const formData = new FormData(form);
+  const date=formData.get('date');
+  const name = formData.get('name');
+  const starthour = formData.get('starthour');
+  const startminute = formData.get('startminute');
+  const endhour = formData.get('endhour');
+  const endminute = formData.get('endminute');
+  const ext = formData.get('ext');
+  const startTimestamp = formatDateTimeForDatabase(`${date}T${starthour}:${startminute}:00`);
+  const endTimestamp = formatDateTimeForDatabase(`${date}T${endhour}:${endminute}:00`);
+  const startOfDay = formatDateTimeForDatabase(`${date}T00:00:00`);
+  const endOfDay = formatDateTimeForDatabase(`${date}T23:59:59`);
+  const existingEvents = await fetchevent(startOfDay, endOfDay);
+
+
+  if (!date || !starthour || !startminute || !endhour || !endminute || !name || !ext) {
+    alert('所有欄位都是必填的，請完整填寫表單！');
+    return; 
+
+  }
+  const rulesCheckbox = document.getElementById('checkrule');
+  if (!rulesCheckbox.checked) {
+      alert('請先勾選「我已詳閱《會議室使用規則》」才能提交申請。');
+      return; 
+  }
+  if (startTimestamp >= endTimestamp) {
+    alert('開始時間不能晚於或等於結束時間，請修正時間！');
+    return; 
+  }
+
+    //不能借現在以前的時間&超過三個月
+  const reservationDate = new Date(date);
+  const today = new Date();
+  if(new Date(startTimestamp )<=today){
+    alert('預約時間請選在現在後的時間！');
+    return;
+  }
+
+  const threeMonthsLater = new Date(today.setMonth(today.getMonth() + 3));
+
+  const privilege = getPrivilege();
+  if(privilege!=1){
+    if (reservationDate > threeMonthsLater) {
+      alert('借閱日期不能超過三個月後，請選擇在三個月內的日期！');
+      return;
+    }
+  }
+
+  // 檢查新預約是否與現有事件有時間衝突
+  const hasConflict = existingEvents.some(event => {
+    const existingStart = new Date(event.start);
+    const existingEnd = new Date(event.end);
+    return (new Date(startTimestamp) < existingEnd && new Date(endTimestamp) > existingStart);
+  });
+  if (hasConflict) {
+    alert('該時間段已被預約，請選擇其他時間。');
+    return;
+  }
+
+  const data={
+      name:name,
+      room_id:'1',
+      start_time:startTimestamp,
+      end_time:endTimestamp,
+      show:true,
+      ext: ext,
+      
+  }
+  fetch('/api/reservation', {
+    method: 'POST',
+    credentials: 'include', 
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  }) 
+  .then(response => response.json())
+  .then(result => {
+      console.log('Success:', result);
+      alert('預約成功！');
+      window.location.reload();
+
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
+}
+
+//刪除會議
+const delete_api='/api/reservation';
+async function reservationDelete(reserve_id){
+  fetch(delete_api,{
+    method: 'DELETE',
+    credentials: 'include', 
+    body: JSON.stringify({reserve_id: reserve_id}),  
+    headers: { 'Content-Type': 'application/json' },
+  })
+ .then(response => response.json())
+}
+
+
 
 
 //calendar
@@ -65,6 +246,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const calendar = new FullCalendar.Calendar(calendarEl, {
 
     initialView: "dayGridMonth",
+    firstDay:1,
     locale:"zh-tw",
     height: '100vh',
     contentHeight: 700,
@@ -93,31 +275,20 @@ document.addEventListener("DOMContentLoaded", function() {
     buttonText: {
       today: "今天",
       month: "月",
-      week: "周",
+      week: "週",
       day: "天",
     },
 
 
 
-    events: [ // Events 
-      {
-        title: "資料庫測試", // 事件標題
-        start: '2024-09-02T12:08:00', // 開始時間，時間格式建議使用 ISO 格式 (yyyy-MM-ddTHH:mm:ss)
-        end: '2024-09-02T13:08:00', // 結束時間
-        // 其他自定義屬性，這些屬性不會影響 FullCalendar 的顯示
-        extendedProps: {
-        name: "小明",
-        department: "秘書室",
-        number: "576"
-      }
-      },
+    events: function(fetchInfo, successCallback, failureCallback) {
+      // 調用 API 獲取事件，fetchInfo 會自動提供 start 和 end 日期
+      fetchevent(fetchInfo.startStr, fetchInfo.endStr)
+          .then(events => successCallback(events))
+          .catch(error => failureCallback(error));
+  },
 
-    ],
-  //   eventSources:[
-  //     {
-  //     url: `./dbselectevent.php`
-  //     }
-  // ],
+
 
     // 會議顯示
     // eventDisplay:
@@ -135,7 +306,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     
     eventClick: function(info) {
-      console.log(info.event);
       const StartTime = info.event.start.toLocaleString('zh-TW', {
         year: 'numeric',
         month: '2-digit',
@@ -160,113 +330,134 @@ document.addEventListener("DOMContentLoaded", function() {
         html: `
             ${StartTime} ~ ${EndTime}<br>
             會議：${info.event.title}<br>
-            借用單位: ${info.event.extendedProps.department}<br>
-            發起人: ${info.event.extendedProps.name}<br>
+            借用單位: ${info.event.extendedProps.unit}<br>
+            申請人: ${info.event.extendedProps.chinesename}<br>
             分機號碼: ${info.event.extendedProps.number}<br>
         `,
         confirmButtonText: "OK",
       })
     },
-
+    datesSet: handleDatesSet, 
 });
 
 
 
-// 彈出視窗
-function handleDateClick(info){
-  const event = calendar.getEvents().filter(event => {
-    return event.startStr.startsWith(info.dateStr);
- });
- event.sort((a, b) => a.start - b.start);
+// 左邊「我的會議」視窗
+function handleDatesSet(){
+  const start = new Date();
+  const end = new Date();
+  end.setFullYear(end.getFullYear() + 1);
+  start.setHours(0, 0, 0, 0); 
+  end.setHours(23, 59, 59, 999); 
+  const startOfDay = formatDateTimeForDatabase(start);
+  const endOfDay = formatDateTimeForDatabase(end);
+  fetch(eventApiUrl(startOfDay, endOfDay),{
+    method: 'GET',
+    credentials: 'include', 
+    headers: { 'Content-Type': 'application/json' },
+  })
+  .then(response => response.json())
+  .then(result => {
+    const events = result.data || []; 
+    const filteredEvents = events.filter(event => event.identifier === identifier.data);
+    filteredEvents.sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
 
-if (event) {
- // 顯示出框
- var dayofweek=info.date.getDay();
- var month=info.date.getMonth()+1;
- var day=info.date.getDate();
- var weekdays = ['日', '一', '二', '三', '四', '五', '六'];
- var weekdayName = weekdays[dayofweek%7];
+    if (filteredEvents.length > 0) {
+      document.querySelector('.hamburger-list').innerHTML = '';
+      //顯示每個自己的會議
+      filteredEvents.forEach(event => {
+        const popup = document.createElement('div');
+        popup.className = 'list-content_box';
+        popup.style.display = 'flex';
+        const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const date = new Date(event.start_time).toLocaleDateString([], { month: '2-digit', day: '2-digit' });
 
+        popup.innerHTML = `
+          <h3 class="list-subtitle">
+            ${date} ${startTime} ~ ${endTime}<br>
+            會議：${event.name}<br>
+            借用單位: ${event.unit}<br>
+            發起人: ${event.chinesename}<br>
+            分機號碼: ${event.ext}<br>
+          </h3>
+          <hr>
+        `;
 
- document.querySelector('.popup').style.display='flex';
- document.querySelector('.popup-datetitle').innerHTML = month+"/"+day+"("+weekdayName+")"+"會議";
- 
+        //編輯自己的會議
+        popup.onclick = () => {
+          Swal.fire({
+            title: event.name,
+            html: `
+                ${startTime} ~ ${endTime}<br>
+                借用單位: ${event.unit}<br>
+                申請人: ${event.chinesename}<br>
+                分機號碼: ${event.ext}<br>
+            `,
+            showCancelButton: true,
+            showDenyButton: true,
+            cancelButtonText: 'OK' ,
+            confirmButtonText: '編輯會議',
+            denyButtonText: '刪除會議',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                document.getElementById('hamburger-requestpage').style.display='flex';
+                document.getElementById('hamburger-content').style.display='none';
+                document.querySelector('input[name="name"]').value = event.name;
+                document.querySelector('input[name="person"]').value = event.chinesename;
+                document.querySelector('input[name="unit"]').value = event.unit;
+                document.querySelector('input[name="ext"]').value = event.ext;
+                const startDate = new Date(event.start_time);
+                document.querySelector('input[name="date"]').value = startDate.toISOString().split('T')[0]; // 只取日期部分        
+                const startHour = String(startDate.getHours()).padStart(2, '0');
+                const startMinute = String(startDate.getMinutes()).padStart(2, '0');
+                document.querySelector('select[name="starthour"]').value = startHour;
+                document.querySelector('select[name="startminute"]').value = startMinute;
+      
+                const endDate = new Date(event.end_time);
+                const endHour = String(endDate.getHours()).padStart(2, '0');
+                const endMinute = String(endDate.getMinutes()).padStart(2, '0');
+                document.querySelector('select[name="endhour"]').value = endHour;
+                document.querySelector('select[name="endminute"]').value = endMinute;  
+                //還沒寫完
+                document.getElementById('requestsend').onclick = reservationPut;
+
+              } else if (result.isDenied) {
+                // 刪除會議
+                Swal.fire({
+                  title: '確定要刪除該會議嗎',
+                  icon: "warning",
+                  confirmButtonText: '確定',
+                  showCancelButton: true,
+                  cancelButtonText: '返回' ,
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    reservationDelete(event.reserve_id);
+                    Swal.fire({
+                      title: '刪除成功',
+                      icon:'success',
+                    }).then(() => {
+                      window.location.reload();
+                    });
+                  }  
+                })
+                
+              }
+                })
+        };
+        document.querySelector('.hamburger-list').appendChild(popup);
+        document.getElementById('event-list').style.overflow = 'scroll';
+      });
+    } else {
+      document.querySelector('.popup').style.display = 'none';
+    }
+  })
+  .catch(error => {
+    console.error('Error fetching events:', error);
+  });
 }
-
-// 清空list
-document.querySelector('.popup-list').innerHTML = '';
-
-if(event.length>0){
- {
-   // 為每個事件生成彈出框
-   event.forEach(event => {
-     const popup = document.createElement('div');
-     popup.className = 'popup-content_box';
-     popup.style.display = 'flex';
-
-     const startTime = event.start.toLocaleString().slice(9, 16).replace(/:$/, '');
-     const endTime = event.end.toLocaleString().slice(9, 16).replace(/:$/, '');
-
-
-     popup.innerHTML = `
-       <h3 class="popup-subtitle">
-       ${startTime}~${endTime}<br>
-         會議：${event.title}<br>
-         借用單位: ${event.extendedProps.department}<br>
-         發起人: ${event.extendedProps.name}<br>
-         分機號碼: ${event.extendedProps.number}<br>
-       </h3>
-       <hr>
-     `;
-
-     // 添加到list中
-     document.querySelector('.popup-list').appendChild(popup);
-   });
- }}
- 
-}
-
-  // 點日期彈出視窗
-calendar.on('dateClick', function(info) {
-  handleDateClick(info);
-});
-
-
-// // 點事件彈出視窗
-// calendar.on('eventClick', function(info) {
-//   // 取得被點擊事件的日期
-//   const eventDate = info.event.start;
-//   console.log(eventDate);
-//   // 將日期部分格式化為 "YYYY-MM-DD"
-//   const eventDateStr = eventDate.toISOString().split('T')[0];
-
-//   // 過濾當天所有事件
-//   const events = calendar.getEvents().filter(event => {
-//     const eventStartStr = event.start.toISOString().split('T')[0];
-//     return eventStartStr === eventDateStr;
-//   });
-
-//   // 確保事件按開始時間排序
-//   events.sort((a, b) => a.start - b.start);
-
-//   // 在這裡，你可以處理當天的所有事件
-
-//   // 將這些事件資訊傳遞給 handleDateClick 或其他處理函數
-//   const dateInfo = {
-//     dateStr: eventDateStr,
-//     date: eventDate,
-//     events: events
-//   };
-
-//   handleDateClick(dateInfo);
-// });
-
-
 
   calendar.render()
-  
-
-
   
 })
 
@@ -275,6 +466,7 @@ calendar.on('dateClick', function(info) {
 // 漢堡選單
 document.addEventListener('DOMContentLoaded', function() {
   const hamburger = document.getElementById('hamburger-button');
+  const lobby = document.getElementById('lobby');
   hamburger.addEventListener('click', function() {
       document.getElementById('hamburger-menu').classList.toggle('active');
       document.getElementById('lobby').classList.toggle('active');
@@ -296,5 +488,20 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('hamburger-content').style.display = 'block';
     document.getElementById('hamburger-requestpage').style.display = 'none';
   });
+});
+
+
+// 顯示使用者/管理者
+document.addEventListener('DOMContentLoaded', async function() {
+  const useradmin = document.getElementById('useradmin');
+  try {
+    const privilege = await getPrivilege(); 
+
+    if (privilege != 1) {
+      useradmin.style.display = 'none';
+    }
+  } catch (error) {
+    console.error('Error fetching privilege:', error);
+  }
 });
 

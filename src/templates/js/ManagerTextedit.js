@@ -1,4 +1,4 @@
-const api_info = 'http://localhost:3000/api/info/';
+const api_info = '/api/info/';
 
   // get user info from ncu portal
 async function getinfo(type){
@@ -8,7 +8,7 @@ async function getinfo(type){
     try {
       const response = await fetch(api_info+type,{ headers: { 'access_token': headers } });
       const data = await response.json();
-      return data.result;
+      return data.data;
       } catch (error) {
       console.error("Error:", error);
     }
@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded",function(){
 
 //換頁
 function changePage(button){
-  console.log(button.id);
   location.href = "/page/"+button.id;
 }
 
