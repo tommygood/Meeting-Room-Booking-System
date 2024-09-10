@@ -83,7 +83,15 @@
                 </div>
                 <div class="popup-input">
                     <h2 class="title">違規事項 :&nbsp;</h2>
-                    <input type="text" id="violation-input"  >
+                    <!--<input type="text" id="violation-input"  >-->
+                    <!-- 下拉式選單 -->
+                    <select id="violationId" name="violation">
+                        <option value="1">未關閉設備</option>
+                        <option value="2">未復原場地</option>
+                        <option value="3">超時使用會議室</option>
+                        <option value="4">預約後未使用場地</option>
+                        <option value="0">其他</option>
+                    </select>
                 </div>
                 <hr/>
                 <h2 class="title">違規備註 :&nbsp;</h2>
@@ -92,7 +100,7 @@
                     <div class="popup-button" style="width:180px" onclick="hidePopup('popup-violate')">
                         <h3 class="hamburger-title" style="color:white">返回</h3>
                     </div>
-                    <div class="popup-button" style="width:180px" onclick="hidePopup('popup-violate')">
+                    <div id="submit-violation" class="popup-button" style="width:180px" onclick="hidePopup('popup-violate')">
                         <h3 class="hamburger-title" style="color:white">確定</h3>
                     </div>
                 </div>

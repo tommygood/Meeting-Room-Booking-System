@@ -46,10 +46,44 @@ function hidePopup(popupId) {
 }
 
 //新增違規
-function addViolate(element){
-  const role=element.getAttribute("data-role"); 
-  document.getElementById('popup-violate').style.display='flex';
+function addViolate(element) {
+    const role = element.getAttribute("data-role");
+    document.getElementById('popup-violate').style.display = 'flex';
 
+    /* 以INT存入SQL */
+    // 確定提交按鈕動作
+    document.getElementById('submit-violation').addEventListener('click', async function () {
+        // 獲取違規事項的選擇及備註
+        const violationValue = document.getElementById('violationId').value;
+        const remarkValue = document.getElementById('violationNote').value;
+
+        const additionalData = {
+            reserve_id: role,  // 假設你通過 role 傳遞 reserve_id
+            reason: violationValue,
+            remark: remarkValue
+        };
+
+        try {
+            const response = await fetch('/addViolation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(additionalData)
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                console.log("違規事項已成功添加");
+                document.getElementById('popup-violate').style.display = 'none';
+            } else {
+                console.log("違規事項添加失敗");
+            }
+        } catch (error) {
+            console.error('錯誤:', error);
+        }
+    });
 }
 
 
