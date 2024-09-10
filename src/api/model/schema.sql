@@ -64,4 +64,4 @@ CREATE TABLE `Reservation` (
     FOREIGN KEY (`identifier`) REFERENCES `User` (`identifier`),
     FOREIGN KEY (`room_id`) REFERENCES `Room` (`room_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-insert into Reservation value('100','admin','1','test','2024-09-09T12:00:00','2024-09-09T14:00:00',true,'578');
+insert into Reservation value('100','admin','1','test','2024-09-09T12:00:00','2024-09-09T14:00:00',true,'578',1);

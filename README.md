@@ -15,6 +15,7 @@
 ## Prerequisite
 ## Usage
 ### Backend API
+- `mysql < schemal.sql`
 - `npm install`
 - `node index.js`
 ### Frontend Site
