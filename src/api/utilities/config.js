@@ -1,7 +1,7 @@
 // Configuration file for the application
 
 module.exports = {
-	host : "http://localhost:3000",
+	host : process.env.host == undefined ? "http://localhost:3000" : process.env.host,
 	db : {
 		host : process.env.db_host == undefined ? 'db.cymlab.ncu.im' : process.env.db_host,
 		port : process.env.db_port == undefined ? 3306 : process.env.db_port,
