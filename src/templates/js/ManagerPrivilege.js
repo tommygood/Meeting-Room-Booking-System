@@ -64,7 +64,7 @@ function addViolate(element) {
         };
 
         try {
-            const response = await fetch('/addViolation', {
+            const response = await fetch('/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
