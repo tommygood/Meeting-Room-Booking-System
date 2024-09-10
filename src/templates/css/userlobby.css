@@ -4,20 +4,20 @@ body{
 
 }
 
-.lobby{
-position: relative;
-display: flex;
-flex-direction: column;
-flex-grow: 1;
-transition: transform 0.3s ease;
-transform-origin: right;
-width: auto;
-height: auto;
+.lobby {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  transition: transform 0.3s ease;
+  transform-origin: right;
+  width: auto;
+  height: auto;
+  transform: translateX(400px); /* 初始狀態向右移動 */
 }
-.lobby.active{
-transform: translateX(400px);/* 清單滑入視窗 */
+.lobby.active {
+  transform: translateX(0); /* 按鈕點擊後恢復原位 */
 }
-
 
 
   /* 會議的排列(時間，名稱) */
@@ -91,16 +91,16 @@ transform: translateX(400px);/* 清單滑入視窗 */
 
 
 
-.hamburger-menu{
-  position: fixed; 
-  left: -400px;    
+.hamburger-menu {
+  position:fixed; 
+  left: 0;    
   top: 0;
   width: 400px;    
   height: 100%;    
   background-color: #EEE;
   padding: 10px;
   box-sizing: border-box;
-  transform: translateX(-100%);
+  transform: translateX(0); /* 初始狀態顯示 */
   transition: transform 0.3s ease; /* 添加過渡效果 */
   display: flex;
   flex-direction: column;
@@ -108,7 +108,7 @@ transform: translateX(400px);/* 清單滑入視窗 */
   z-index: 10;
 }
 .hamburger-menu.active {
-  transform: translateX(400px); /* 清單滑入視窗 */
+  transform: translateX(-100%); /* 菜單隱藏到視窗外 */
 }
 .hamburger-title{
   display: flex;

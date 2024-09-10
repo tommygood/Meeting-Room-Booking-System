@@ -3,7 +3,7 @@ let identifier;
 
 const api_info = 'http://localhost:3000/api/info/';
   // get user info from ncu portal
-  async function getinfo(type){
+async function getinfo(type){
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const headers = urlParams.get('access_token')
@@ -351,7 +351,6 @@ function handleDatesSet(){
   end.setHours(23, 59, 59, 999); 
   const startOfDay = formatDateTimeForDatabase(start);
   const endOfDay = formatDateTimeForDatabase(end);
-  console.log(startOfDay, endOfDay);
   fetch(eventApiUrl(startOfDay, endOfDay),{
     method: 'GET',
     credentials: 'include', 
@@ -365,12 +364,11 @@ function handleDatesSet(){
 
     if (filteredEvents.length > 0) {
       document.querySelector('.hamburger-list').innerHTML = '';
-
+      //顯示每個自己的會議
       filteredEvents.forEach(event => {
         const popup = document.createElement('div');
         popup.className = 'list-content_box';
         popup.style.display = 'flex';
-        console.log(event);
         const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const date = new Date(event.start_time).toLocaleDateString([], { month: '2-digit', day: '2-digit' });
@@ -421,7 +419,7 @@ function handleDatesSet(){
                 const endMinute = String(endDate.getMinutes()).padStart(2, '0');
                 document.querySelector('select[name="endhour"]').value = endHour;
                 document.querySelector('select[name="endminute"]').value = endMinute;  
-                
+                //還沒寫完
                 document.getElementById('requestsend').onclick = reservationPut;
 
               } else if (result.isDenied) {
@@ -468,10 +466,10 @@ function handleDatesSet(){
 // 漢堡選單
 document.addEventListener('DOMContentLoaded', function() {
   const hamburger = document.getElementById('hamburger-button');
+  const lobby = document.getElementById('lobby');
   hamburger.addEventListener('click', function() {
       document.getElementById('hamburger-menu').classList.toggle('active');
       document.getElementById('lobby').classList.toggle('active');
-      
     });
 });
 
