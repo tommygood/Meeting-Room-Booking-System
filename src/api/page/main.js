@@ -125,4 +125,44 @@ router.get('/board', async function(req, res) {
     res.redirect('/page/main');
   }
 })
+
+// 跳轉到看板預覽
+router.get('/board_preview', async function (req, res) {
+    try {
+        // 要再加上：根據「預覽設定」的日期時間，設定預覽看板的時間點
+        const result = jwt.verifyJwtToken(req.cookies.token);
+        if (result.suc) {
+            // use path.resolve to get the absolute path
+            res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/Board_preview.html'));
+        }
+        else {
+            res.redirect('/page/main');
+        }
+    }
+    catch (e) {
+        console.log(e);
+        res.redirect('/page/main');
+    }
+})
+
+// 跳轉到看板播放
+router.get('/board_show', async function (req, res) {
+    try {
+        // 要再加上：根據「目前」的日期時間，設定看板的資訊
+        // 每間隔5分鐘，重新載入資訊(同步更新管理者的修改)
+        const result = jwt.verifyJwtToken(req.cookies.token);
+        if (result.suc) {
+            // use path.resolve to get the absolute path
+            res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/Board_show.html'));
+        }
+        else {
+            res.redirect('/page/main');
+        }
+    }
+    catch (e) {
+        console.log(e);
+        res.redirect('/page/main');
+    }
+})
+
 module.exports = router;
