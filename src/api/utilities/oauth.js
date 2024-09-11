@@ -17,7 +17,7 @@ module.exports = {
 		}
 	},
 
-	scope: 'identifier,chinese-name,english-name',
+	scope: 'identifier,chinese-name,english-name,faculty-records,email,mobile-phone',
 
 	// Function to get the token
 	run : async function run(host, req, res) {
