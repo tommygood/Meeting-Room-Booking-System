@@ -2,8 +2,9 @@
 <html>
 
 <head>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¬İªO¹wÄı</title>
+    <title>çœ‹æ¿æ’­æ”¾</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
     <link rel="stylesheet" type="text/css" href="/css/Board_preview.css" />
@@ -11,18 +12,21 @@
 
     <style>
         .swiper {
-            width: 95vw;
-            height: 95vh;
+            margin: 0px 0px;
+            width: 90%;
+            height: 95%;
         }
 
         .swiper-slide {
-            font-size: 18px;
             width: contain;
             height: contain;
         }
 
         :root {
             --swiper-theme-color: peru;
+            --fc-event-border-color: #737d9c;
+            --fc-today-bg-color: #ffffff;
+            --fc-small-font-size: 1.5em;
         }
 
 
@@ -38,28 +42,28 @@
 <body>
 
     <div class="swiper">
-        <!-- swiper class ­n½ü¼½ªº¤º®e¬° swiper-wrapper -->
+        <!-- swiper class è¦è¼ªæ’­çš„å…§å®¹ç‚º swiper-wrapper -->
         <div class="swiper-wrapper">
-            <!-- ¤µ¤é·|Ä³ -->
+            <!-- ä»Šæ—¥æœƒè­° -->
             <div class="swiper-slide">
                 <div>
-                    <div class="head" style="display: flex; justify-content: space-between; align-items: center;">
-                        <h1 class="hero_title">¤µ¤é·|Ä³</h1>
+                    <div class="head" style="display: flex; height: 10%; justify-content: space-between; align-items: center;">
+                        <h1 class="hero_title">ä»Šæ—¥æœƒè­°</h1>
                         <h3 class="subtitle" style=" text-align: right;">
-                            2024/08/27(¤G)
+                            2024/08/27(äºŒ)
                             <br />
                             10:45
                         </h3>
                     </div>
-                    <div id="calendar"></div>
+                    <div id="calendar" style="display: flex; position: fixed; top: 150px; left: 0; right: 0; bottom: 3%;"></div>
                 </div>
             </div>
-            <!-- ²{¥¿¶i¦æ·|Ä³ -->
+            <!-- ç¾æ­£é€²è¡Œæœƒè­° -->
             <div class="swiper-slide">
                 <div class="head" style="display: flex; justify-content: space-between; align-items: center;">
-                    <h1 class="hero_title">²{¥¿¶i¦æ·|Ä³</h1>
+                    <h1 class="hero_title">ç¾æ­£é€²è¡Œæœƒè­°</h1>
                     <h3 class="subtitle" style=" text-align: right;">
-                        2024/08/27(¤G)
+                        2024/08/27(äºŒ)
                         <br />
                         10:45
                     </h3>
@@ -67,24 +71,24 @@
                 <div class="board-info">
                     <div class="block">
                         <div class="flex_col_info" style="padding: 5px 15px 10px 15px;">
-                            <h3 class="medium_title">·|Ä³¦WºÙ¡G</h3>
-                            <h1 class="emphasis" id="reserveName">·|Ä³«Ç¹w¬ù¨t²Î¶}µo°Q½×</h1>
-                            <h3 class="medium_title1">­É¥Î®É¬q¡G</h3>
-                            <h1 class="emphasis1">10:00 - 12:00</h1>
-                            <h3 class="medium_title1">­É¥Î³æ¦ì¡G</h3>
-                            <h1 class="text">¯µ®Ñ«Ç</h1>
-                            <h3 class="medium_title2">­É¥Î¤H¡G</h3>
-                            <h1 class="text1">Vicky</h1>
+                            <h3 class="medium_title">æœƒè­°åç¨±ï¼š</h3>
+                            <h1 class="emphasis" id="reserveName">æœƒè­°å®¤é ç´„ç³»çµ±é–‹ç™¼è¨è«–</h1>
+                            <h3 class="medium_title">å€Ÿç”¨æ™‚æ®µï¼š</h3>
+                            <h1 class="emphasis">10:00 - 12:00</h1>
+                            <h3 class="medium_title">å€Ÿç”¨å–®ä½ï¼š</h3>
+                            <h1 class="text">ç§˜æ›¸å®¤</h1>
+                            <h3 class="medium_title">å€Ÿç”¨äººï¼š</h3>
+                            <h1 class="text">Vicky</h1>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- ¤U¤@³õ·|Ä³ -->
+            <!-- ä¸‹ä¸€å ´æœƒè­° -->
             <div class="swiper-slide">
                 <div class="head" style="display: flex; justify-content: space-between; align-items: center;">
-                    <h1 class="hero_title">¤U¤@³õ·|Ä³</h1>
+                    <h1 class="hero_title">ä¸‹ä¸€å ´æœƒè­°</h1>
                     <h3 class="subtitle" style=" text-align: right;">
-                        2024/08/27(¤G)
+                        2024/08/27(äºŒ)
                         <br />
                         10:45
                     </h3>
@@ -92,37 +96,31 @@
                 <div class="board-info">
                     <div class="block">
                         <div class="flex_col_info" style="padding: 5px 15px 10px 15px;">
-                            <h3 class="medium_title">·|Ä³¦WºÙ¡G</h3>
-                            <h1 class="emphasis" id="reserveName">·|Ä³«Ç¹w¬ù¨t²Î¶}µo°Q½×</h1>
-                            <h3 class="medium_title1">­É¥Î®É¬q¡G</h3>
-                            <h1 class="emphasis1">12:00 - 13:00</h1>
-                            <h3 class="medium_title1">­É¥Î³æ¦ì¡G</h3>
-                            <h1 class="text">¯µ®Ñ«Ç</h1>
-                            <h3 class="medium_title2">­É¥Î¤H¡G</h3>
-                            <h1 class="text1">Vicky</h1>
+                            <h3 class="medium_title">æœƒè­°åç¨±ï¼š</h3>
+                            <h1 class="emphasis" id="reserveName">æœƒè­°å®¤é ç´„ç³»çµ±é–‹ç™¼è¨è«–</h1>
+                            <h3 class="medium_title">å€Ÿç”¨æ™‚æ®µï¼š</h3>
+                            <h1 class="emphasis">12:00 - 13:00</h1>
+                            <h3 class="medium_title">å€Ÿç”¨å–®ä½ï¼š</h3>
+                            <h1 class="text">ç§˜æ›¸å®¤</h1>
+                            <h3 class="medium_title">å€Ÿç”¨äººï¼š</h3>
+                            <h1 class="text">Vicky</h1>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
     </div>
 
     <!-- Swiper origin code-->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        const swiper = new Swiper('.swiper', { // ³Ğ«Ø¤@­Ó½ü¼½
-            autoplay: { // ¦Û°Ê½ü¼½ swiper
-                delay: 5 * 1000, // ¨C¨â¬í¤Á´«¤U¤@±i
+        const swiper = new Swiper('.swiper', { // å‰µå»ºä¸€å€‹è¼ªæ’­
+            autoplay: { // è‡ªå‹•è¼ªæ’­ swiper
+                delay: 5 * 1000, // æ¯å…©ç§’åˆ‡æ›ä¸‹ä¸€å¼µ
             },
-            loop: true, // ½ü¼½µ²§ô«á¦^¨ì²Ä¤@±iÄ~Äò½ü¼½
+            loop: true, // è¼ªæ’­çµæŸå¾Œå›åˆ°ç¬¬ä¸€å¼µç¹¼çºŒè¼ªæ’­
 
-            pagination: { // ¤U¤è­¶ÅÒ
-                el: ".swiper-pagination",
-            },
         });
     </script>
 
@@ -135,11 +133,31 @@
                 initialView: "timeGridDay",
                 headerToolbar: false,
                 overflow: false,
-                slotMinTime: "08:00:00", // ¥i¹w¬ùªº³Ì¦­®É¶¡
-                slotMaxTime: "17:30:00", // ¥i¹w¬ùªº³Ì±ß®É¶¡
+                slotMinTime: "08:00:00", // å¯é ç´„çš„æœ€æ—©æ™‚é–“
+                slotMaxTime: "17:30:00", // å¯é ç´„çš„æœ€æ™šæ™‚é–“
 
-                nowIndicator: true, // Åã¥Ü¥Ø«e®É¶¡¼Ğ°O
-                now: '2024-08-27T10:45:00', // ¬İªO¹wÄı³]©wªº®É¶¡
+                nowIndicator: true, // é¡¯ç¤ºç›®å‰æ™‚é–“æ¨™è¨˜
+                now: '2024-08-27T10:45:00', // çœ‹æ¿é è¦½è¨­å®šçš„æ™‚é–“
+
+                expandRows: true, // ä½¿è¡Œæ•¸è‡ªå‹•æ“´å±•ä»¥é©æ‡‰è¢å¹•
+
+                // ----- é¡¯ç¤ºçš„æ´»å‹• -----
+                events: [ // Events 
+                    {
+                        title: "All Day Event",
+                        start: "2024-08-27",
+                    },
+                    {
+                        title: "ç³»çµ±è¨è«– ---- ç§˜æ›¸å®¤  Vicky",
+                        start: "2024-08-27 12:00:00",
+                        end: "2024-08-27 13:00:00",
+                    },
+                ],
+                // ----- æœ¬æ®µè½æ–°å¢çµæŸ -----
+                eventColor: '#737d9c',
+                //eventSmallFontSize: '60px',
+                displayEventTime: false
+                //eventDisplay: 'background'
             });
             calendar.render();
         })

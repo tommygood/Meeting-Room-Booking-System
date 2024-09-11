@@ -1,43 +1,21 @@
 body {
+    overflow: hidden;
     font-family: Inter, Helvetica, Arial, serif;
+    align-content: center;
     width: 100vw;
-    margin: 10px;
+    height: 100vh;
+    display: flex;
+    justify-content: center; /* 水平置中 */
+    align-items: center; /* 垂直置中 */
+    flex-direction: column; /* 垂直排列內容 */
 }
 
 /* 今日會議 */
-.event {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 5px;
-    font-size: 14px;
-    position: relative;
-}
-
-.time { /* 每1小時顯示的時間欄 */
-    background-color: #fafafa;
-    padding: 10px;
-    border-right: 1px solid #ddd;
-    text-align: center;
-    color: #666;
-    grid-row: span 2; /* 每小時跨兩格（因為右側每30分鐘一格） */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.calendar {
+    height: 100%;
 }
 
 /* 現正進行會議 & 下一場會議 */
-.board-conference-now {
-    &.board
-
-{
-    display: flex;
-    flex-direction: column;
-    background-color: rgb(255 255 255);
-    overflow: hidden;
-}
-
 .hero_title {
     min-width: 0;
     font: 700 50px/1.22 Inter, Helvetica, Arial, serif;
@@ -52,10 +30,6 @@ body {
     color: rgb(65 65 65);
     text-align: right;
 
-    @include tn {
-        flex: 0 1 auto;
-        order: 1;
-    }
 }
 
 .board-info {
@@ -66,20 +40,23 @@ body {
 }
 
 .block {
-    height: contain;
+    display: flex;
+    position: fixed;
+    top: 150px;
+    left: 0;
+    right: 0;
+    bottom: 3%;
     background-color: rgb(238 238 238);
     box-shadow: inset 0 4px 4px 0 rgb(0 0 0 / 25%);
 }
 
 .flex_col_info {
-    /*position: absolute;*/
     display: flex;
     flex-direction: column;
-    width: contain;
-    height: contain;
-    padding: 25px;
-    gap: 8px;
-    }
+    width: 100%;
+    height: 100%;
+    padding: 5px 15px 10px 15px;
+    /*gap: 8px;*/
 }
 
 .medium_title {
@@ -92,41 +69,16 @@ body {
 .emphasis {
     font: 700 40px/1.2 Inter, Helvetica, Arial, serif;
     color: rgb(0 0 0);
-    align-items: flex-start;
-}
-
-.medium_title1 {
-    margin: 5% 0 0;
-    font: 700 40px/1.2 Inter, Helvetica, Arial, serif;
-    color: rgb(0 0 0);
-    align-items: flex-start;
-    }
-}
-
-.emphasis1 {
-    font: 600 40px/1.2 Inter, Helvetica, Arial, serif;
-    color: rgb(0 0 0);
     width: 100%;
     align-items: flex-start;
     border-radius: 0;
-    }
+
 }
 
 .text {
     font: 700 40px/1.2 Inter, Helvetica, Arial, serif;
     color: rgb(0 0 0);
     align-items: flex-start;
-    border-radius: 0;
-    }
-}
-
-.medium_title2 {
-    font: 700 40px/1.2 Inter, Helvetica, Arial, serif;
-    color: rgb(0 0 0);
-    align-items: flex-start;
-}
-
-.text1 {
     display: flex;
     align-items: center;
     font: 700 40px/1.2 Inter, Helvetica, Arial, serif;
