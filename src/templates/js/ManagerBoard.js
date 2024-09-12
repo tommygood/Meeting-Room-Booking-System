@@ -75,7 +75,7 @@ function fetchData() {
           formattedDate, 
           formattedTime, 
           item.name,     
-          item.show        
+          `<input type="checkbox" value="${item.reserve_id}" ${item.show ? 'checked' : ''}>`
         ]
       };
     });
@@ -89,7 +89,11 @@ function fetchData() {
 }
 
 function saveContent(){
+ // 選取所有表格中的 checkbox 元素
+ const selectedCheckboxes = document.querySelectorAll('imput[type="checkbox"]');
+  
 
+ console.log( selectedCheckboxes);
 }
 
 
@@ -106,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function() {
         {
           name: '顯示',
           formatter: (cell) => {
-            return gridjs.html(`<input type="checkbox" ${cell ? 'checked' : ''}>`);
+            return gridjs.html(cell); 
           }
         }
       ],

@@ -6,6 +6,7 @@ const path = require('path');
 
 router.get('/main', async function(req, res) {
     try {
+      console.log("test");
       // use path.resolve to get the absolute path
       res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/Page_welcome.html'));
     }
@@ -126,10 +127,10 @@ router.get('/board', async function(req, res) {
   }
 })
 
-// ¸õÂà¨ì¬ÝªO¹wÄý
+// ï¿½ï¿½ï¿½ï¿½ï¿½ÝªOï¿½wï¿½ï¿½
 router.get('/board_preview', async function (req, res) {
     try {
-        // ­n¦A¥[¤W¡G®Ú¾Ú¡u¹wÄý³]©w¡vªº¤é´Á®É¶¡¡A³]©w¹wÄý¬ÝªOªº®É¶¡ÂI
+        // ï¿½nï¿½Aï¿½[ï¿½Wï¿½Gï¿½Ú¾Ú¡uï¿½wï¿½ï¿½ï¿½]ï¿½wï¿½vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¶ï¿½ï¿½Aï¿½]ï¿½wï¿½wï¿½ï¿½ï¿½ÝªOï¿½ï¿½ï¿½É¶ï¿½ï¿½I
         const result = jwt.verifyJwtToken(req.cookies.token);
         if (result.suc) {
             // use path.resolve to get the absolute path
@@ -145,11 +146,11 @@ router.get('/board_preview', async function (req, res) {
     }
 })
 
-// ¸õÂà¨ì¬ÝªO¼½©ñ
+// ï¿½ï¿½ï¿½ï¿½ï¿½ÝªOï¿½ï¿½ï¿½ï¿½
 router.get('/board_show', async function (req, res) {
     try {
-        // ­n¦A¥[¤W¡G®Ú¾Ú¡u¥Ø«e¡vªº¤é´Á®É¶¡¡A³]©w¬ÝªOªº¸ê°T
-        // ¨C¶¡¹j5¤ÀÄÁ¡A­«·s¸ü¤J¸ê°T(¦P¨B§ó·sºÞ²zªÌªº­×§ï)
+        // ï¿½nï¿½Aï¿½[ï¿½Wï¿½Gï¿½Ú¾Ú¡uï¿½Ø«eï¿½vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¶ï¿½ï¿½Aï¿½]ï¿½wï¿½ÝªOï¿½ï¿½ï¿½ï¿½T
+        // ï¿½Cï¿½ï¿½ï¿½j5ï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½sï¿½ï¿½ï¿½Jï¿½ï¿½T(ï¿½Pï¿½Bï¿½ï¿½sï¿½Þ²zï¿½Ìªï¿½ï¿½×§ï¿½)
         const result = jwt.verifyJwtToken(req.cookies.token);
         if (result.suc) {
             // use path.resolve to get the absolute path

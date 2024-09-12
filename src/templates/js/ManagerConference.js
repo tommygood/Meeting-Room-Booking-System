@@ -90,20 +90,20 @@ function formatDateTimeForDatabase(dateTime) {
 //編輯會議
 async function reservationPut() {
   const formData = new FormData(document.getElementById("request"));
-  const date = formData.get('date');
   const name = formData.get('name');
+  const startdate = formData.get('startdate'); 
   const starthour = formData.get('starthour');
   const startminute = formData.get('startminute');
+  const enddate = formData.get('enddate');  
   const endhour = formData.get('endhour');
   const endminute = formData.get('endminute');
   const ext = formData.get('ext');
-
-  // 格式化起始和結束時間為數據庫格式
-  const startTimestamp = formatDateTimeForDatabase(`${date}T${starthour}:${startminute}:00`);
-  const endTimestamp = formatDateTimeForDatabase(`${date}T${endhour}:${endminute}:00`);
-  const startOfDay = formatDateTimeForDatabase(`${date}T00:00:00`);
-  const endOfDay = formatDateTimeForDatabase(`${date}T23:59:59`);
+  const startTimestamp = formatDateTimeForDatabase(`${startdate}T${starthour}:${startminute}:00`);
+  const endTimestamp = formatDateTimeForDatabase(`${enddate}T${endhour}:${endminute}:00`);
+  const startOfDay = formatDateTimeForDatabase(`${startdate}T00:00:00`);
+  const endOfDay = formatDateTimeForDatabase(`${enddate}T23:59:59`);
   const existingEvents = await fetchevent(startOfDay, endOfDay);
+
   // 構建數據對象
   const data = {
     reserve_id: reserve_id,
@@ -119,11 +119,15 @@ async function reservationPut() {
   const hasConflict = existingEvents.some(event => {
     const existingStart = new Date(event.start);
     const existingEnd = new Date(event.end);
+
+    // 檢查新事件是否與現有事件重疊
+    // 包括現有事件跨日情況，且覆蓋到新事件日期
     return (new Date(startTimestamp) < existingEnd && new Date(endTimestamp) > existingStart);
   });
+
   if (hasConflict) {
     alert('該時間段已被預約，請選擇其他時間。');
-    return;
+    return true;
   }
   // 發送 PUT 請求，使用 JSON 格式
   fetch('/api/reservation', {
@@ -236,7 +240,9 @@ document.addEventListener("DOMContentLoaded", function() {
         day: '2-digit',
         hour: '2-digit',
         minute: '2-digit',
-        hour12: false
+        hour12: false,
+        weekday: 'short'
+
     });
     const endTime = info.event.end.toLocaleString('zh-TW', {
       year: 'numeric',
@@ -244,7 +250,9 @@ document.addEventListener("DOMContentLoaded", function() {
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
-      hour12: false
+      hour12: false,
+      weekday: 'short'
+
   });
 
 
@@ -273,7 +281,7 @@ document.addEventListener("DOMContentLoaded", function() {
           document.querySelector('input[name="unit"]').value = info.event.extendedProps.unit;
           document.querySelector('input[name="ext"]').value = info.event.extendedProps.number;
           const startDate = new Date(info.event.start);
-          document.querySelector('input[name="date"]').value = startDate.toISOString().split('T')[0]; // 只取日期部分        
+          document.querySelector('input[name="startdate"]').value = startDate.toISOString().split('T')[0]; // 只取日期部分        
           const startHour = String(startDate.getHours()).padStart(2, '0');
           const startMinute = String(startDate.getMinutes()).padStart(2, '0');
           document.querySelector('select[name="starthour"]').value = startHour;
@@ -282,6 +290,7 @@ document.addEventListener("DOMContentLoaded", function() {
           const endDate = new Date(info.event.end);
           const endHour = String(endDate.getHours()).padStart(2, '0');
           const endMinute = String(endDate.getMinutes()).padStart(2, '0');
+          document.querySelector('input[name="enddate"]').value = endDate.toISOString().split('T')[0]; // 只取日期部分
           document.querySelector('select[name="endhour"]').value = endHour;
           document.querySelector('select[name="endminute"]').value = endMinute;  
 

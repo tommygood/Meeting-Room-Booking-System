@@ -56,6 +56,7 @@ module.exports = {
         }
         else {
             try {
+                console.log(identifier);
                 const sql = 'SELECT * FROM `User` WHERE `identifier` = ?;';
                 const result = await conn.query(sql, [identifier]);
                 db_conn.closeDBConnection(conn);

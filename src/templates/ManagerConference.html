@@ -78,13 +78,15 @@
                             <input type="text" class="hamburger-request" name='email' placeholder="電子信箱"  >
                         </div>
                         <div class="input-group">
-                            <h2 class="hamburger-request-title">借用日期：</h2>
-                            <input type="date" class="hamburger-request" name="date" />
-                        </div>
-
-                        <div class="input-group">
-                            <h2 class="hamburger-request-title">借用時間：</h2>
+                            <h2 class="hamburger-request-title">開始日期：</h2>
+                            <input type="date" class="hamburger-request" name="startdate" id="startdate"/>
                             <select name="starthour" id="starthour">
+                                <option value="00">00</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
                                 <option value="06">06</option>
                                 <option value="07">07</option>
                                 <option value="08">08</option>
@@ -101,14 +103,26 @@
                                 <option value="19">19</option>
                                 <option value="20">20</option>
                                 <option value="21">21</option>
-                            </select>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                              </select>
                             <span>:</span>
                             <select name="startminute" id="startminute">
                                 <option value="00">00</option>
                                 <option value="30">30</option>
                             </select>
-                            <span>至</span>
+                        </div>
+    
+                        <div class="input-group">
+                            <h2 class="hamburger-request-title">結束日期：</h2>
+                            <input type="date" class="hamburger-request" name="enddate" id="enddate"/>
                             <select name="endhour" id="endhour">
+                                <option value="00">00</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
                                 <option value="06">06</option>
                                 <option value="07">07</option>
                                 <option value="08">08</option>
@@ -125,6 +139,8 @@
                                 <option value="19">19</option>
                                 <option value="20">20</option>
                                 <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
                             </select>
                             <span>:</span>
                             <select name="endminute" id="endminute">
