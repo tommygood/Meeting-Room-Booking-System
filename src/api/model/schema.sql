@@ -1,14 +1,14 @@
 CREATE DATABASE `NCU_MRBS` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `NCU_MRBS`;
-
+describe reservation;
 CREATE TABLE `User` (
   `identifier` varchar(12) NOT NULL,
   `chinesename` varchar(20) DEFAULT NULL,
   `email` varchar(35) DEFAULT NULL,
   `mobilePhone` varchar(12) DEFAULT NULL,
   `unit` varchar(20) DEFAULT NULL,
-  `status` tinyint(1) DEFAULT NULL,
-  `privilege_level` tinyint(1) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 0,
+  `privilege_level` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`identifier`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 INSERT INTO `User` (`identifier`, `chinesename`, `email`, `mobilePhone`, `unit`, `status`, `privilege_level`) VALUES ('admin', '管理員', 'tommy50508@gmail.com', '0912345678', 'NCU-IM', 1, 1);
@@ -49,7 +49,7 @@ CREATE TABLE `Room` (
     `room_status` boolean NOT NULL,
     PRIMARY KEY (`room_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
+insert into Room value('1','二樓會議室',true);
 CREATE TABLE `Reservation` (
     `reserve_id` int NOT NULL AUTO_INCREMENT,
     `identifier` varchar(12) NOT NULL,
@@ -64,3 +64,4 @@ CREATE TABLE `Reservation` (
     FOREIGN KEY (`identifier`) REFERENCES `User` (`identifier`),
     FOREIGN KEY (`room_id`) REFERENCES `Room` (`room_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+insert into Reservation value('100','admin','1','test','2024-09-09T12:00:00','2024-09-09T14:00:00',true,'578',1);

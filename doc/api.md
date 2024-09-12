@@ -92,9 +92,15 @@
     ```
     >>> r = requests.get('http://localhost:3000/api/user', cookies=cookies)
     >>> r.text
-    >>> r.text
     '{"data":[{"identifier":"113423005","chinesename":"王冠權","email":null,"mobilePhone":null,"unit":null,"status":null,"privilege_level":null,"violation_count":0},{"identifier":"admin","chinesename":"管理員","email":"tommy50508@gmail.com","mobilePhone":"0912345678","unit":"NCU-IM","status":1,"privilege_level":5,"violation_count":0}]}'
     ```
+
+- GET `/api/user/self`
+    - get user own info by cookies
+    ```
+    >>> r = requests.get('http://localhost:3000/api/user/self', cookies=cookies)
+    >>> r.text
+    '{"data":{"identifier":"113423005","chinesename":"王冠權","email":"tommy50508@gmail.com","mobilePhone":"0933257156","unit":null,"status":0,"privilege_level":1}}'
 
 - GET `/api/user/privilege`
     - get user privilege

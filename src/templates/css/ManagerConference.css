@@ -63,6 +63,7 @@ body {
 .fc-event-main-frame {
     flex-direction: column;
 }
+
 /* 會議行距 */
 .fc-event{
   line-height: 1;
@@ -101,77 +102,7 @@ body {
     background-color: white; /* 設置背景色為白色 */
 }
 
-/* 點事件彈出視窗 */
-.popup{
-    background: rgba(0, 0, 0,0.6);
-    display: none;
-    width:100%;
-    height:100%;
-    position: absolute;
-    top:0;
-    z-index: 10;
-    justify-content: center;
-    align-items: center;
-  
-  }
-  .popup-content{
-    display: flex;
-    flex-direction: column;
-    margin: 10px;
-    height: 600px;
-    width: 500px;
-    background:#FFF ;
-    justify-self: center;
-    align-items: center;
-    border-radius: 30px;
-  }
-  .popup-datetitle{
-    font: 600 26px/1.2 Inter, Helvetica, Arial, serif;
-    color: rgb(105 106 106);
-    letter-spacing: 6.3px;
-  }
-  .popup-list{
-    width: 80%;
-    height:75%;
-    background:rgb(236,236,236);
-    border-radius: 30px;
-    overflow:scroll
-  }
-  .popup-content_box{
-  
-    display: flex;
-    flex-direction: column;
-    background-color: rgb(217 217 217);
-    border-radius: 30px;
-    border-color: black;
-    border: 2px solid black;
-    margin:10px;
-  }
-  .popup-subtitle {
-    margin: 11px 0 10px 12px;
-    width: 298px;
-    font: 700 20px/1.2 Inter, Helvetica, Arial, serif;
-    color: rgb(0 0 0);
-    letter-spacing: -0.2px;
-  }
-  .popup-button{
-    margin-left: 3%;
-    margin-right:3%;
-    margin-top: 20px;
-    width: 20%;
-    height: 50px;
-    background-color: #EEE;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font: 700 24px/1.2 Inter, Helvetica, Arial, serif;
-    background-color:#8F8E8E;
-    border-radius: 15px;
-  }
-  .popup-button:hover{
-    background-color:#9F9E9E;
-    cursor: pointer;
-  }
+
 
 
   /* 使用者/管理者按鈕 */
@@ -201,3 +132,124 @@ body {
   background-color: rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
+
+
+
+/* 申請葉面 */
+.hamburger-menu{
+  left: 0px;    
+  top: 0;
+  width: 400px;    
+  height: 100%;    
+  background-color: #EEE;
+  padding: 10px;
+  box-sizing: border-box;
+  display: none;
+  flex-direction: column;
+  align-content: center;
+  position: relative;
+  z-index: 10;
+}
+.hamburger-title{
+  display: flex;
+  justify-content: center;
+  font: 700 30px/1.2 Inter, Helvetica, Arial, serif;
+  color: rgb(65 65 65);
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.hamburger-list {
+  display: flex;
+  flex-direction: column;
+  width: 370px;
+  height: 500px;
+  background-color:#CCC;
+}
+.hamburger-requestbutton{
+  margin-left: 25%;
+  margin-top: 20px;
+  width: 50%;
+  height: 50px;
+  background-color: #EEE;
+  display: flex;
+  justify-content: center;
+  align-items: normal;
+  font: 700 24px/1.2 Inter, Helvetica, Arial, serif;
+  background-color:#8F8E8E;
+  border-radius: 15px;
+}
+.hamburger-requestbutton:hover{
+  background-color:#9F9E9E;
+  cursor: pointer; 
+
+}
+
+  /* 申請清單清單 */
+.hamburger-requestpage{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.hamburger-request-title{
+  margin-left: 10px;
+  font-size: 18px;
+}
+
+.hamburger-bottom{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.input-group{
+  display: flex;
+  flex-direction:row;
+  justify-content: right;
+  align-items: center;
+  padding: 2px;
+  margin-top: 5px;
+  margin-right: 5px;
+}
+input{
+  font-size: 1.1em;
+  height: 35px;
+  width:70%;
+  border-radius: 10px;
+}
+
+.hamburger-timerequest{
+  font-size: 1.1em;
+  height: 35px;
+  width: 30%;
+  border-radius: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.hamburger-sendbutton{
+  margin-left: 3%;
+  margin-right:3%;
+  margin-top: 20px;
+  width: 50%;
+  height: 50px;
+  background-color: #EEE;
+  display: flex;
+  justify-content: center;
+  align-items: normal;
+  font: 700 24px/1.2 Inter, Helvetica, Arial, serif;
+  background-color:#8F8E8E;
+  border-radius: 15px;
+}
+.hamburger-sendbutton:hover{
+  background-color:#9F9E9E;
+  cursor: pointer; 
+
+}
+.request-check{
+  flex-direction:row ; 
+  display:inline-flex; 
+  align-items: center;
+}
+

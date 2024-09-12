@@ -4,6 +4,7 @@
         <title>權限管理</title>
         <script src="https://unpkg.com/gridjs@6.2.0/dist/gridjs.umd.js"></script>
         <script src="/js/ManagerPrivilege.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
         <link rel="stylesheet" href="/css/ManagerPrivilege.css">
         <link href="https://unpkg.com/gridjs@6.2.0/dist/theme/mermaid.min.css" rel="stylesheet" />
     </head>
@@ -46,66 +47,75 @@
             <img src="/image/admin.png" class="useradmin-button" onclick="location.href ='/page/privilege'">
         </div>
         <!-- 權限修改視窗 -->
-        <div id="popup-permission" class="popup"> 
-            <div class="popup-content">
-                <h2 class="popup-title">權限修改</h2>
+        <div id="popup-privilege" class="popup"> 
+            <form id="privilege-form">
+                <div class="popup-content">
+                    <h2 class="popup-title">權限修改</h2>
                     <div class="popup-input">
                         <h2 class="title">目前權限 :&nbsp;</h2>
-                        <select id="permissionSelect" class="selector">
-                            <option value="admin">管理者</option>
-                            <option value="user">一般使用者</option>
+                        <select id="privilegeSelect" class="selector" name="privilege" >
+                            <option value="true">管理者</option>
+                            <option value="false">一般使用者</option>
                         </select>
                     </div>
                     <div class="popup-input">
                         <h2 class="title">目前狀態 :&nbsp;</h2>
-                        <select id="actionSelect" class="selector">
-                            <option value="active">有效</option>
-                            <option value="inactive">無效</option>
+                        <select id="actionSelect" class="selector"  name="status">
+                            <option value="true">有效</option>
+                            <option value="false">無效</option>
                         </select>
                     </div>
                     <div class="bottom-button">
-                        <div class="popup-button" style="width:180px" onclick="hidePopup('popup-permission')">
+                        <div class="popup-button" style="width:150px" onclick="deleteUser()">
+                            <h3 class="hamburger-title" style="color:white">刪除</h3>
+                        </div>
+                        <div class="popup-button" style="width:150px" onclick="hidePopup('popup-privilege')">
                             <h3 class="hamburger-title" style="color:white">返回</h3>
                         </div>
-                        <div class="popup-button" style="width:180px" onclick="hidePopup('popup-permission')">
+                        <div class="popup-button" style="width:150px" onclick="putPrivilege()">
                             <h3 class="hamburger-title" style="color:white">確定</h3>
                         </div>
                     </div>
-            </div>
+                </div>
+            </form>
         </div>
 
+        <!-- 違規新增 -->
         <div id="popup-violate" class="popup">
-            <div class="popup-content">
-                <h2 class="popup-title">會議違規紀錄</h2>
-                <div class="popup-input">
-                    <h2 class="title">會議日期 :&nbsp;</h2>
-                    <input type="date" id="violationDate" >
-                </div>
-                <div class="popup-input">
-                    <h2 class="title">違規事項 :&nbsp;</h2>
-                    <!--<input type="text" id="violation-input"  >-->
-                    <!-- 下拉式選單 -->
-                    <select id="violationId" name="violation">
-                        <option value="1">未關閉設備</option>
-                        <option value="2">未復原場地</option>
-                        <option value="3">超時使用會議室</option>
-                        <option value="4">預約後未使用場地</option>
-                        <option value="0">其他</option>
-                    </select>
-                </div>
-                <hr/>
-                <h2 class="title">違規備註 :&nbsp;</h2>
-                <textarea id="violationNote" class="large-textarea"></textarea>
-                <div class="bottom-button">
-                    <div class="popup-button" style="width:180px" onclick="hidePopup('popup-violate')">
-                        <h3 class="hamburger-title" style="color:white">返回</h3>
+            <form id="violation">
+                <div class="popup-content">
+                    <h2 class="popup-title">會議違規紀錄</h2>
+                    <div class="popup-input">
+                        <h2 class="title">會議選擇 :&nbsp;</h2>
+                        <select type="text" id="violation-name" name="reservation_id" >
+                        </select>
                     </div>
-                    <div id="submit-violation" class="popup-button" style="width:180px" onclick="hidePopup('popup-violate')">
-                        <h3 class="hamburger-title" style="color:white">確定</h3>
+                    <div class="popup-input">
+                        <h2 class="title">違規事項 :&nbsp;</h2>
+                        <select type="text" id="violation-input" name="reason" >
+                            <option value="未關閉設備">未關閉設備</option>
+                            <option value="未復原場地">未復原場地</option>
+                            <option value="超時使用會議室"> 超時使用會議室</option>
+                            <option value="預約後未使用場地">預約後未使用場地</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+                    <hr/>
+                    <h2 class="title">違規備註 :&nbsp;</h2>
+                    <textarea id="violationNote" class="large-textarea" name="remark" >無備註</textarea>
+                    <div class="bottom-button">
+                        <div class="popup-button" style="width:180px" onclick="hidePopup('popup-violate')">
+                            <h3 class="hamburger-title" style="color:white">返回</h3>
+                        </div>
+                        <div class="popup-button" style="width:180px" onclick="postViolation()">
+                            <h3 class="hamburger-title" style="color:white">確定</h3>
+                        </div> 
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
+
+
         
     </body>
 </html>

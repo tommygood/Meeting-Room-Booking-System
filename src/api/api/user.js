@@ -27,6 +27,26 @@ router.get('/', async function(req, res) {
     }
 });
 
+// get user self information by identifier in cookies
+router.get('/self', async function(req, res) {
+    try {
+        // Verify the token
+        const result = jwt.verifyJwtToken(req.cookies.token);
+        if (result.suc) {
+            const identifier = result.data.data;
+            const data = await User.getSelf(identifier);
+            res.json({data});
+        }
+        else {
+            res.json({result : 'Invalid token'});
+        }
+    }
+    catch(e) {
+        console.log(e);
+        res.json({result : 'error'});
+    }
+})
+
 // update user privileges by identifier
 router.put('/privilege', async function(req, res) {
     try {
