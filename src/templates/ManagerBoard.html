@@ -34,8 +34,16 @@
 
         <!-- 表單 -->
         <div>
-            <div class="save-button" onclick="saveContent()">
-                <div class="buttontext">儲存</div>
+            <div class ="inputdate">
+                <input type="date" name="startdate" placeholder="開始時間" />
+                <input type="date" name="enddate" placeholder="結束時間"/> 
+                <div class="button" onclick="searchBoard()">
+                    <div class="buttontext">搜尋</div>
+                </div>
+            
+                <div class="button" onclick="saveContent()">
+                    <div class="buttontext">儲存</div>
+                </div>
             </div>
             <div id="gridtable"></div>
         </div>

@@ -47,8 +47,13 @@ body {
 
 
 
-.save-button{
-    position:absolute;
+.inputdate{
+  display:flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.button{
     display:flex;
     align-items: center;
     justify-content: center;
@@ -56,12 +61,12 @@ body {
     border-radius: 10px;
     width: 100px;
     height: 41.6px;
-    margin-left: 53%;
+    margin-left: 20%;
     margin-top: 8px;
     cursor: pointer;
     z-index: 10;
 }
-.save-button:hover{
+.button:hover{
     background-color:#9F9E9E;
     cursor: pointer; 
 

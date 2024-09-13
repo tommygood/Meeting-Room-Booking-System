@@ -140,8 +140,130 @@
                     <div id="backbtn" class="hamburger-sendbutton">
                         <h3 class="hamburger-title" style="color:white" >返回</h3>
                     </div>
-                    <div id="requestsend" class="hamburger-sendbutton" onclick="reservationPost()">
+                    <div id="sendbutton" class="hamburger-sendbutton" onclick="reservationPost()">
                         <h3 class="hamburger-title" style="color:white">申請送出</h3>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <!-- 編輯頁面 -->
+        <div id= "hamburger-requestedit" class="hamburger-requestpage">
+            <h3 class="hamburger-title">編輯申請</h3>
+            <form  id="requestedit">
+                <div class="hamburger-list">
+                    <div class="input-group">
+                        <h2 class="hamburger-request-title">會議名稱：</h2>
+                        <input type="text" class="hamburger-request" name='name' placeholder="會議名稱" />
+                    </div>
+                    <div class="input-group">
+                        <h2 class="hamburger-request-title">申請人 ：</h2>
+                        <input type="text" class="hamburger-request" name='person' placeholder="申請人(固定)" style="background-color:#ece673"  readonly/>
+                    </div>
+                    <div class="input-group">
+                        <h2 class="hamburger-request-title">申請單位：</h2>
+                        <input type="text" class="hamburger-request" name='unit' placeholder="申請單位(固定)" style="background-color:#ece673" readonly/>
+                    </div>
+                    <div class="input-group">
+                        <h2 class="hamburger-request-title">連絡電話：</h2>
+                        <input type="text" class="hamburger-request" name='phone' placeholder="連絡電話(固定)" style="background-color:#ece673" readonly/>
+                    </div>
+                    <div class="input-group">
+                        <h2 class="hamburger-request-title">分機號碼：</h2>
+                        <input type="text" class="hamburger-request" name='ext' placeholder="分機號碼" />
+                    </div>
+                    <div class="input-group">
+                        <h2 class="hamburger-request-title">電子信箱：</h2>
+                        <input type="text" class="hamburger-request" name='email' placeholder="電子信箱" />
+                    </div>
+                    <div class="input-group">
+                        <h2 class="hamburger-request-title">開始日期：</h2>
+                        <input type="date" class="hamburger-request" name="startdate" id="startdate"/>
+                        <select name="starthour" id="editstarthour">
+                            <option value="00">00</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                          </select>
+                        <span>:</span>
+                        <select name="startminute" id="editstartminute">
+                            <option value="00">00</option>
+                            <option value="30">30</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <h2 class="hamburger-request-title">結束日期：</h2>
+                        <input type="date" class="hamburger-request" name="enddate" id="enddate"/>
+                        <select name="endhour" id="endhour">
+                            <option value="00">00</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                        </select>
+                        <span>:</span>
+                        <select name="endminute" id="endminute">
+                            <option value="00">00</option>
+                            <option value="30">30</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="request-check">
+                    <input type="checkbox" id="checkrule">
+                    <h2 class="hamburger-request-title">
+                        我已詳閱
+                        <a href="#" onclick="showRules()">
+                            《會議室使用規則》
+                        </a>
+                    </h2>
+                </div>
+                <div  class="hamburger-bottom" >
+                    <div id="backbtnedit" class="hamburger-sendbutton">
+                        <h3 class="hamburger-title" style="color:white" >返回</h3>
+                    </div>
+                    <div id="editbutton" class="hamburger-sendbutton">
+                        <h3 class="hamburger-title" style="color:white">編輯送出</h3>
                     </div>
 
                 </div>

@@ -63,6 +63,16 @@ document.addEventListener("DOMContentLoaded",function(){
     document.getElementById('conference').style.color= 'white';
 })
 
+
+//enddate跟著startdate變化
+document.addEventListener('DOMContentLoaded', function() {
+  const startDate = document.getElementById('startdate');
+  startDate.addEventListener('change', function() {
+    document.getElementById('enddate').value = startDate.value;
+  });
+})
+
+
 //換頁面
 function changePage(button){
     console.log(button.id);
@@ -88,7 +98,7 @@ function formatDateTimeForDatabase(dateTime) {
 
 
 //編輯會議
-async function reservationPut() {
+async function reservationPut(reserve_id) {
   const formData = new FormData(document.getElementById("request"));
   const name = formData.get('name');
   const startdate = formData.get('startdate'); 
@@ -103,7 +113,6 @@ async function reservationPut() {
   const startOfDay = formatDateTimeForDatabase(`${startdate}T00:00:00`);
   const endOfDay = formatDateTimeForDatabase(`${enddate}T23:59:59`);
   const existingEvents = await fetchevent(startOfDay, endOfDay);
-
   // 構建數據對象
   const data = {
     reserve_id: reserve_id,
@@ -119,15 +128,11 @@ async function reservationPut() {
   const hasConflict = existingEvents.some(event => {
     const existingStart = new Date(event.start);
     const existingEnd = new Date(event.end);
-
-    // 檢查新事件是否與現有事件重疊
-    // 包括現有事件跨日情況，且覆蓋到新事件日期
     return (new Date(startTimestamp) < existingEnd && new Date(endTimestamp) > existingStart);
   });
-
   if (hasConflict) {
     alert('該時間段已被預約，請選擇其他時間。');
-    return true;
+    return;
   }
   // 發送 PUT 請求，使用 JSON 格式
   fetch('/api/reservation', {
@@ -235,24 +240,20 @@ document.addEventListener("DOMContentLoaded", function() {
     
     eventClick: function(info) {
       const startTime = info.event.start.toLocaleString('zh-TW', {
-        year: 'numeric',
         month: '2-digit',
         day: '2-digit',
         hour: '2-digit',
         minute: '2-digit',
         hour12: false,
         weekday: 'short'
-
     });
     const endTime = info.event.end.toLocaleString('zh-TW', {
-      year: 'numeric',
       month: '2-digit',
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
       hour12: false,
       weekday: 'short'
-
   });
 
 
@@ -273,7 +274,6 @@ document.addEventListener("DOMContentLoaded", function() {
       denyButtonText: '刪除會議',
       }).then((result) => {
         if (result.isConfirmed) {
-          console.log(info.event.extendedProps.reserve_id);
           reserve_id = String(info.event.extendedProps.reserve_id);
           document.getElementById('hamburger-menu').style.display='flex';
           document.querySelector('input[name="name"]').value = info.event.title;
@@ -281,7 +281,7 @@ document.addEventListener("DOMContentLoaded", function() {
           document.querySelector('input[name="unit"]').value = info.event.extendedProps.unit;
           document.querySelector('input[name="ext"]').value = info.event.extendedProps.number;
           const startDate = new Date(info.event.start);
-          document.querySelector('input[name="startdate"]').value = startDate.toISOString().split('T')[0]; // 只取日期部分        
+          document.querySelector('input[name="date"]').value = startDate.toISOString().split('T')[0]; // 只取日期部分        
           const startHour = String(startDate.getHours()).padStart(2, '0');
           const startMinute = String(startDate.getMinutes()).padStart(2, '0');
           document.querySelector('select[name="starthour"]').value = startHour;
@@ -290,7 +290,6 @@ document.addEventListener("DOMContentLoaded", function() {
           const endDate = new Date(info.event.end);
           const endHour = String(endDate.getHours()).padStart(2, '0');
           const endMinute = String(endDate.getMinutes()).padStart(2, '0');
-          document.querySelector('input[name="enddate"]').value = endDate.toISOString().split('T')[0]; // 只取日期部分
           document.querySelector('select[name="endhour"]').value = endHour;
           document.querySelector('select[name="endminute"]').value = endMinute;  
 
