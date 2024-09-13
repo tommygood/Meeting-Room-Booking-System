@@ -40,36 +40,37 @@
         </div>
         <div id="gridtable"></div>
     </div>
-
-    <!-- 使用者/管理者 -->
-    <div class="useradmin" onclick="">
-        <img src="/image/user.png" class="useradmin-button" onclick="location.href ='/page/userlobby'">
-        <hr style="margin: 0; height: 100%;" />
-        <img src="/image/admin.png" class="useradmin-button" onclick="location.href ='/page/privilege'">
-    </div>
-
-    <!-- 看板預覽/播放 -->
     <div>
-        <div style="font-size: 20px; outline: 3px dashed #000000; background-color: #cacaca; margin: 10px; padding: 10px;">
-            <div>
-                <b>預覽設定</b>
-                <div id="board_preview" class="btn" onclick="changePage(this)">
-                    <div class="buttontext">▶預覽</div>
+        <!-- 使用者/管理者 -->
+        <div class="useradmin" onclick="">
+            <img src="/image/user.png" class="useradmin-button" onclick="location.href ='/page/userlobby'">
+            <hr style="margin: 0; height: 100%;" />
+            <img src="/image/admin.png" class="useradmin-button" onclick="location.href ='/page/privilege'">
+        </div>
+
+        <!-- 看板預覽/播放 -->
+        <div>
+            <div style="font-size: 20px; outline: 3px dashed #000000; background-color: #cacaca; margin: 10px; padding: 10px;">
+                <div>
+                    <b>預覽設定</b>
+                    <div id="board/preview" class="btn" onclick="changePage(this)">
+                        <div class="buttontext">▶預覽</div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <b>日期：</b>
+                    <input type="date" class="hamburger-request" />
+                </div>
+
+                <div class="input-group">
+                    <b>時間：</b>
+                    <input type="time" id="start-time" name="start-time" class="hamburger-timerequest">
                 </div>
             </div>
-
-            <div class="input-group">
-                <b>日期：</b>
-                <input type="date" class="hamburger-request" />
+            <div id="board/demo" class="btn" onclick="changePage(this)">
+                <div class="buttontext">▶看板播放</div>
             </div>
-
-            <div class="input-group">
-                <b>時間：</b>
-                <input type="time" id="start-time" name="start-time" class="hamburger-timerequest">
-            </div>
-        </div>
-        <div id="board_show" class="btn" onclick="changePage(this)">
-            <div class="buttontext">▶看板播放</div>
         </div>
     </div>
 </body>

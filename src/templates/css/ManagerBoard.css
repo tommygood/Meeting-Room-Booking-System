@@ -89,7 +89,7 @@ body {
 
   /* 使用者/管理者按鈕 */
   .useradmin{
-    position:absolute ;
+    /*position:absolute ;*/
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
