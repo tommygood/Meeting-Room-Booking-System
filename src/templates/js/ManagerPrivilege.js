@@ -290,6 +290,42 @@ function hidePopup(popupId) {
 }
 
 
+
+//get user data
+async function fetchData() {
+  const response = await fetch(`/api/user`);
+  const result = await response.json();
+
+  if (result && Array.isArray(result.data)) {
+    // 過濾掉 status 為 -1 的項目
+    const filteredData = result.data.filter(item => item.status !== -1);
+
+    const data = await Promise.all(filteredData.map(async item => {
+      const privilegeText = item.privilege_level === 1 ? '管理者' : '一般使用者';
+      const statusText = item.status === 1 ? '✔️' : '❌';
+      return {
+        data: [
+          item.chinesename,
+          item.unit,
+          privilegeText,
+          statusText,
+          gridjs.html(`<a href="#" onclick="setPermission('${item.identifier}','${item.chinesename}');" >修改</a>`),
+          gridjs.html(`${item.violation_count}次 <a href="#" onclick="addViolate('${item.identifier}');">新增</a> <a href="#" onclick="showViolation('${item.identifier}')">查詢</a>`)
+        ],
+        extendedProps: {
+          identifier: item.identifier // 將 identifier 作為隱藏數據
+        }
+      };
+    }));
+    return data;
+  }
+}
+
+
+
+
+
+
 //表單生成 grid
 document.addEventListener("DOMContentLoaded",function(){
   fetchData().then(data => {
