@@ -31,6 +31,7 @@ app.use("/api/violation", require("./api/violation.js"));
 app.use("/api/room", require("./api/room.js"));
 app.use("/api/user", require("./api/user.js"));
 app.use("/page", require("./page/main.js"));
+app.use("/page/board", require("./page/board.js"));
 app.use("/example", require("./example.js"));
 app.use("/css", express.static(templates_path + '/css'));
 app.use("/image", express.static(templates_path + '/image'));
