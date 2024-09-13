@@ -73,13 +73,28 @@ body {
 }
 .buttontext{
     font: 700 24px/1.2 Inter, Helvetica, Arial, serif;
-    color:#DDD
+    color: #fff;
 }
 
+.btn {
+    font: bold 15px/1.2 Inter, Helvetica, Arial, serif;
+    letter-spacing: 6.3px;
+    background: #b28080;
+    width: fit-content;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+    padding: 5px 10px;
+}
+
+.btn:hover {
+    background-color: #b46969;
+    cursor: pointer;
+}
 
   /* 使用者/管理者按鈕 */
   .useradmin{
-    position:absolute ;
+    /*position:absolute ;*/
     display: flex;
     flex-direction: row;
     justify-content: flex-end;

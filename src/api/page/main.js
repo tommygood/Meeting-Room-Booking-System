@@ -127,43 +127,4 @@ router.get('/board', async function(req, res) {
   }
 })
 
-// �����ݪO�w��
-router.get('/board_preview', async function (req, res) {
-    try {
-        // �n�A�[�W�G�ھڡu�w���]�w�v������ɶ��A�]�w�w���ݪO���ɶ��I
-        const result = jwt.verifyJwtToken(req.cookies.token);
-        if (result.suc) {
-            // use path.resolve to get the absolute path
-            res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/Board_preview.html'));
-        }
-        else {
-            res.redirect('/page/main');
-        }
-    }
-    catch (e) {
-        console.log(e);
-        res.redirect('/page/main');
-    }
-})
-
-// �����ݪO����
-router.get('/board_show', async function (req, res) {
-    try {
-        // �n�A�[�W�G�ھڡu�ثe�v������ɶ��A�]�w�ݪO����T
-        // �C���j5�����A���s���J��T(�P�B��s�޲z�̪��ק�)
-        const result = jwt.verifyJwtToken(req.cookies.token);
-        if (result.suc) {
-            // use path.resolve to get the absolute path
-            res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/Board_show.html'));
-        }
-        else {
-            res.redirect('/page/main');
-        }
-    }
-    catch (e) {
-        console.log(e);
-        res.redirect('/page/main');
-    }
-})
-
 module.exports = router;
