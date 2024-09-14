@@ -47,8 +47,13 @@ body {
 
 
 
-.save-button{
-    position:absolute;
+.inputdate{
+  display:flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.button{
     display:flex;
     align-items: center;
     justify-content: center;
@@ -56,25 +61,40 @@ body {
     border-radius: 10px;
     width: 100px;
     height: 41.6px;
-    margin-left: 53%;
+    margin-left: 20%;
     margin-top: 8px;
     cursor: pointer;
     z-index: 10;
 }
-.save-button:hover{
+.button:hover{
     background-color:#9F9E9E;
     cursor: pointer; 
 
 }
 .buttontext{
     font: 700 24px/1.2 Inter, Helvetica, Arial, serif;
-    color:#DDD
+    color: #fff;
 }
 
+.btn {
+    font: bold 15px/1.2 Inter, Helvetica, Arial, serif;
+    letter-spacing: 6.3px;
+    background: #b28080;
+    width: fit-content;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+    padding: 5px 10px;
+}
+
+.btn:hover {
+    background-color: #b46969;
+    cursor: pointer;
+}
 
   /* 使用者/管理者按鈕 */
   .useradmin{
-    position:absolute ;
+    /*position:absolute ;*/
     display: flex;
     flex-direction: row;
     justify-content: flex-end;

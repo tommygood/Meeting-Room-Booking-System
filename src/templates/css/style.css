@@ -27,7 +27,7 @@ margin:0px;
   }
 .title {
     display: flex;
-    font: 300 55px/1.21 Inter, Helvetica, Arial, serif;
+    font: 300 50px Inter, Helvetica, Arial, serif;
     color: rgb(95 99 104);
     letter-spacing: 6.3px;
     text-shadow: 0 4px 4px rgb(0 0 0 / 25%);

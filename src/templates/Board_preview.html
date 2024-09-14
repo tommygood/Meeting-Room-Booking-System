@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>看板預覽</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
@@ -11,18 +12,21 @@
 
     <style>
         .swiper {
-            width: 95vw;
-            height: 95vh;
+            margin: 0px 0px;
+            width: 90%;
+            height: 95%;
         }
 
         .swiper-slide {
-            font-size: 18px;
             width: contain;
             height: contain;
         }
 
         :root {
             --swiper-theme-color: peru;
+            --fc-event-border-color: #737d9c;
+            --fc-today-bg-color: #ffffff;
+            --fc-small-font-size: 1.5em;
         }
 
 
@@ -43,7 +47,7 @@
             <!-- 今日會議 -->
             <div class="swiper-slide">
                 <div>
-                    <div class="head" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="head" style="display: flex; height: 10%; justify-content: space-between; align-items: center;">
                         <h1 class="hero_title">今日會議</h1>
                         <h3 class="subtitle" style=" text-align: right;">
                             2024/08/27(二)
@@ -51,7 +55,7 @@
                             10:45
                         </h3>
                     </div>
-                    <div id="calendar"></div>
+                    <div id="calendar" style="display: flex; position: fixed; top: 150px; left: 0; right: 0; bottom: 3%;"></div>
                 </div>
             </div>
             <!-- 現正進行會議 -->
@@ -69,12 +73,12 @@
                         <div class="flex_col_info" style="padding: 5px 15px 10px 15px;">
                             <h3 class="medium_title">會議名稱：</h3>
                             <h1 class="emphasis" id="reserveName">會議室預約系統開發討論</h1>
-                            <h3 class="medium_title1">借用時段：</h3>
-                            <h1 class="emphasis1">10:00 - 12:00</h1>
-                            <h3 class="medium_title1">借用單位：</h3>
+                            <h3 class="medium_title">借用時段：</h3>
+                            <h1 class="emphasis">09:30 - 12:00</h1>
+                            <h3 class="medium_title">借用單位：</h3>
                             <h1 class="text">秘書室</h1>
-                            <h3 class="medium_title2">借用人：</h3>
-                            <h1 class="text1">Vicky</h1>
+                            <h3 class="medium_title">借用人：</h3>
+                            <h1 class="text">Vicky</h1>
                         </div>
                     </div>
                 </div>
@@ -94,12 +98,12 @@
                         <div class="flex_col_info" style="padding: 5px 15px 10px 15px;">
                             <h3 class="medium_title">會議名稱：</h3>
                             <h1 class="emphasis" id="reserveName">會議室預約系統開發討論</h1>
-                            <h3 class="medium_title1">借用時段：</h3>
-                            <h1 class="emphasis1">12:00 - 13:00</h1>
-                            <h3 class="medium_title1">借用單位：</h3>
+                            <h3 class="medium_title">借用時段：</h3>
+                            <h1 class="emphasis">12:30 - 13:00</h1>
+                            <h3 class="medium_title">借用單位：</h3>
                             <h1 class="text">秘書室</h1>
-                            <h3 class="medium_title2">借用人：</h3>
-                            <h1 class="text1">Vicky</h1>
+                            <h3 class="medium_title">借用人：</h3>
+                            <h1 class="text">Vicky</h1>
                         </div>
                     </div>
                 </div>
@@ -145,6 +149,31 @@
 
                 nowIndicator: true, // 顯示目前時間標記
                 now: '2024-08-27T10:45:00', // 看板預覽設定的時間
+
+                expandRows: true, // 使行數自動擴展以適應螢幕
+
+                // ----- 顯示的活動 -----
+                events: [ // Events 
+                    {
+                        title: "All Day Event",
+                        start: "2024-08-27",
+                    },
+                    {
+                        title: "系統討論 ---- 秘書室  Vicky",
+                        start: "2024-08-27 09:30:00",
+                        end: "2024-08-27 12:00:00",
+                    },
+                    {
+                        title: "系統討論 ---- 秘書室  Vicky",
+                        start: "2024-08-27 12:30:00",
+                        end: "2024-08-27 13:00:00",
+                    },
+                ],
+                // ----- 本段落新增結束 -----
+                eventColor: '#737d9c',
+                //eventSmallFontSize: '60px',
+                displayEventTime: false
+                //eventDisplay: 'background'
             });
             calendar.render();
         })

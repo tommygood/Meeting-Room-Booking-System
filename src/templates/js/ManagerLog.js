@@ -50,6 +50,7 @@ function changePage(button){
 //表單生成 grid
 document.addEventListener("DOMContentLoaded", async function(){
     const response = await getLog({offset : 0, num : 1000});
+    console.log(response);
     const data = response.map(item => [
       item.identifier,
       item.IP,

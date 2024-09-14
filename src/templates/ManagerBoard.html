@@ -1,45 +1,57 @@
 <!DOCTYPE html>
-    <head>
-        <meta charset="UTF-8">
-        <title>管理員看板管理</title>
-        <script src="https://unpkg.com/gridjs@6.2.0/dist/gridjs.umd.js"></script>
-        <script src="/js/ManagerBoard.js"></script>
-        <link rel="stylesheet" type="text/css" href="/css/ManagerBoard.css">
-        <link href="https://unpkg.com/gridjs@6.2.0/dist/theme/mermaid.min.css" rel="stylesheet" />
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>管理員看板管理</title>
+    <script src="https://unpkg.com/gridjs@6.2.0/dist/gridjs.umd.js"></script>
+    <script src="/js/ManagerBoard.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/ManagerBoard.css">
+    <link href="https://unpkg.com/gridjs@6.2.0/dist/theme/mermaid.min.css" rel="stylesheet" />
 
-    </head>
-    <body>
-        <!-- 左邊選單 -->
-        <div class="menu">
-            <h3 class="menu-title" id="menu-title1">歡迎登入</h3>
-            <h3 id="accountName" class="menu-title"></h3>
-            <div class="page-choose">
-                <div id="privilege" class="choice" onclick="changePage(this)">
-                    <h3 class="pagetext">權限管理</h3>
-                </div>
-                <div id="conference" class="choice" onclick="changePage(this)">
-                    <h3 class="pagetext">會議管理</h3>
-                </div>
-                <div id="board" class="choice" onclick="changePage(this)">
-                    <h3 class="pagetext">看板管理</h3>
-                </div>
-                <div id="rules" class="choice" onclick="changePage(this)">
-                    <h3 class="pagetext">使用規則</h3>
-                </div>
-                <div id="log" class="choice" onclick="changePage(this)">
-                    <h3 class="pagetext">登入紀錄</h3>
-                </div>
+</head>
+<body>
+    <!-- 左邊選單 -->
+    <div class="menu">
+        <h3 class="menu-title" id="menu-title1">歡迎登入</h3>
+        <h3 id="accountName" class="menu-title"></h3>
+        <div class="page-choose">
+            <div id="privilege" class="choice" onclick="changePage(this)">
+                <h3 class="pagetext">權限管理</h3>
+            </div>
+            <div id="conference" class="choice" onclick="changePage(this)">
+                <h3 class="pagetext">會議管理</h3>
+            </div>
+            <div id="board" class="choice" onclick="changePage(this)">
+                <h3 class="pagetext">看板管理</h3>
+            </div>
+            <div id="rules" class="choice" onclick="changePage(this)">
+                <h3 class="pagetext">使用規則</h3>
+            </div>
+            <div id="log" class="choice" onclick="changePage(this)">
+                <h3 class="pagetext">登入紀錄</h3>
             </div>
         </div>
+    </div>
 
         <!-- 表單 -->
-        <div>
-            <div class="save-button" onclick="saveContent()">
-                <div class="buttontext">儲存</div>
+        <div >
+            <div class ="inputdate">
+                <input type="date" name="startdate" placeholder="開始時間" />
+                <input type="date" name="enddate" placeholder="結束時間"/> 
+                <div class="button" onclick="searchBoard()">
+                    <div class="buttontext">搜尋</div>
+                </div>
+            
+                <div class="button" onclick="saveContent()">
+                    <div class="buttontext">儲存</div>
+                </div>
+
             </div>
             <div id="gridtable"></div>
+            
         </div>
-
+    </div>
+    <div>
         <!-- 使用者/管理者 -->
         <div class="useradmin" onclick="">
             <img src="/image/user.png" class="useradmin-button" onclick="location.href ='/page/userlobby'">
@@ -49,24 +61,28 @@
 
         <!-- 看板預覽/播放 -->
         <div>
-            <div>
-                <h2 class="hamburger-request-title">預覽設定</h2>
-                <div id="board_preview" class="choice" onclick="changePage(this)">
-                    <div class="buttontext">▶預覽</div>
+            <div style="font-size: 20px; outline: 3px dashed #000000; background-color: #cacaca; margin: 10px; padding: 10px;">
+                <div>
+                    <b>預覽設定</b>
+                    <div id="board/preview" class="btn" onclick="changePage(this)">
+                        <div class="buttontext">▶預覽</div>
+                    </div>
                 </div>
+
                 <div class="input-group">
-                    <h2 class="hamburger-request-title">日期：</h2>
+                    <b>日期：</b>
                     <input type="date" class="hamburger-request" />
                 </div>
 
                 <div class="input-group">
-                    <h2 class="hamburger-request-title">時間：</h2>
-                    <input type="time" id="start-time" name="start-time" class="hamburger-timerequest" step="1800">
+                    <b>時間：</b>
+                    <input type="time" id="start-time" name="start-time" class="hamburger-timerequest">
                 </div>
             </div>
-            <div id="board_show" class="choice" onclick="changePage(this)">
+            <div id="board/demo" class="btn" onclick="changePage(this)">
                 <div class="buttontext">▶看板播放</div>
             </div>
         </div>
-    </body>
+    </div>
+</body>
 </html>
