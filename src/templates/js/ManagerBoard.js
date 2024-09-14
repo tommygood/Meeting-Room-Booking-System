@@ -34,17 +34,8 @@ function changePage(button){
 
 
 //抓Board 資料
-function fetchData() {
-  const date = new Date();
-  date.setHours(0, 0, 0, 0); 
-  const today = date.toISOString().split('.')[0];
-
-  const date2 = new Date();
-  date2.setDate(date2.getDate() + 7); 
-  date2.setHours(0, 0, 0, 0); 
-  const nextSevenDay = date2.toISOString().split('.')[0];
-
-  const api_board = `/api/reservation?start_time=${today}&end_time=${nextSevenDay}`;
+function fetchData(start, end) {
+  const api_board = `/api/reservation?start_time=${start}&end_time=${end}`;
 
   return fetch(api_board, {
     method: 'GET',
@@ -57,14 +48,13 @@ function fetchData() {
       throw new Error('Unexpected data format from API');
     }
 
+    data.data.sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
+
     const rows = data.data.map(item => {
       const startDate = new Date(item.start_time);
       const endDate = new Date(item.end_time);
 
-      // mm/dd
       const formattedDate = `${(startDate.getMonth() + 1).toString().padStart(2, '0')}/${startDate.getDate().toString().padStart(2, '0')}`;
-      
-      //  hh:ss~hh:ss
       const startTime = `${startDate.getHours().toString().padStart(2, '0')}:${startDate.getMinutes().toString().padStart(2, '0')}`;
       const endTime = `${endDate.getHours().toString().padStart(2, '0')}:${endDate.getMinutes().toString().padStart(2, '0')}`;
       const formattedTime = `${startTime}~${endTime}`;
@@ -75,7 +65,7 @@ function fetchData() {
           formattedDate, 
           formattedTime, 
           item.name,     
-          item.show        
+          `<input type="checkbox" value="${item.reserve_id}" ${item.show ? 'checked' : ''}>`
         ]
       };
     });
@@ -93,49 +83,99 @@ function saveContent(){
 }
 
 
+let grid; // 全局變數來保留 Grid.js 實例
 
-// 表單生成 grid
-document.addEventListener("DOMContentLoaded", function() {
-  fetchData().then(rows => {
-    console.log(rows); 
-    new gridjs.Grid({
-      columns: [
-        '日期', 
-        '時間', 
-        '會議名稱',  
-        {
-          name: '顯示',
-          formatter: (cell) => {
-            return gridjs.html(`<input type="checkbox" ${cell ? 'checked' : ''}>`);
-          }
-        }
-      ],
-      data: rows.map(row => row.data), 
-      width: '900px',
-      fixedHeader: true,
-      search: true,
-      resizable: true,
-      style: {
-        container: {
-          'margin-left': '20px'
-        },
-        table: {
-          border: '3px solid #ccc',
-          'font-size': '16px',
-          'text-align': 'center'
-        },
-        th: {
-          'background-color': 'lightgray',
-          color: '#333',
-          'position': 'sticky', // 使標題固定
-          'top': '0', // 固定在表格的頂部
-          'z-index': '1', // 確保標題在最上層
-        },
-        td: {}
+function updateGrid(rows) {
+  const gridContainer = document.getElementById('gridtable');
+  gridContainer.innerHTML = ''; // 清空容器
+
+  // 創建新的 Grid.js 實例並渲染
+  grid = new gridjs.Grid({
+    columns: [
+      '日期', 
+      '時間', 
+      '會議名稱',  
+      {
+        name: '顯示',
+        formatter: (cell) => gridjs.html(cell)
+      }
+    ],
+    data: rows.map(row => row.data), // 初始資料
+    width: '900px',
+    fixedHeader: true,
+    search: false,
+    resizable: true,
+    style: {
+      container: {
+        'margin-left': '20px'
       },
-    }).render(document.getElementById('gridtable'));
+      table: {
+        border: '3px solid #ccc',
+        'font-size': '16px',
+        'text-align': 'center'
+      },
+      th: {
+        'background-color': 'lightgray',
+        color: '#333',
+        'position': 'sticky',
+        'top': '0',
+        'z-index': '1',
+      },
+      td: {}
+    },
+  }).render(gridContainer);
+}
+
+function searchBoard() {
+  const startInput = document.querySelector('input[name="startdate"]').value;
+  const endInput = document.querySelector('input[name="enddate"]').value;
+
+  if (!startInput || !endInput) {
+    alert('請輸入完整的開始和結束日期');
+    return;
+  }
+
+  const startDate = new Date(startInput);
+  startDate.setHours(0, 0, 0, 0); 
+  const start = startDate.toISOString().split('.')[0];
+
+  const endDate = new Date(endInput);
+  endDate.setHours(23, 59, 59, 999); 
+  const end = endDate.toISOString().split('.')[0];
+
+
+  fetchData(start, end)
+    .then(rows => {
+      if (grid) {
+        grid.updateConfig({
+          data: rows.map(row => row.data) 
+        }).forceRender(); 
+      } else {
+        updateGrid(rows); 
+      }
+    })
+    .catch(error => {
+      console.error('Error rendering Grid.js:', error);
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  // 設定初始的日期範圍
+  const startDate = new Date();
+  startDate.setHours(0, 0, 0, 0); 
+  const start = startDate.toISOString().split('.')[0];
+
+  const endDate = new Date();
+  endDate.setMonth(endDate.getMonth() + 1); // 加一個月
+  endDate.setHours(0, 0, 0, 0); 
+  const end = endDate.toISOString().split('.')[0];
+
+  // 初始載入時抓取一個月內的資料並更新表格
+  fetchData(start, end).then(rows => {
+
+    updateGrid(rows); 
   }).catch(error => {
     console.error('Error rendering Grid.js:', error);
   });
-});
+})
 

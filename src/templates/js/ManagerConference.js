@@ -63,6 +63,16 @@ document.addEventListener("DOMContentLoaded",function(){
     document.getElementById('conference').style.color= 'white';
 })
 
+
+//enddate跟著startdate變化
+document.addEventListener('DOMContentLoaded', function() {
+  const startDate = document.getElementById('startdate');
+  startDate.addEventListener('change', function() {
+    document.getElementById('enddate').value = startDate.value;
+  });
+})
+
+
 //換頁面
 function changePage(button){
     console.log(button.id);
@@ -88,21 +98,20 @@ function formatDateTimeForDatabase(dateTime) {
 
 
 //編輯會議
-async function reservationPut() {
+async function reservationPut(reserve_id) {
   const formData = new FormData(document.getElementById("request"));
-  const date = formData.get('date');
   const name = formData.get('name');
+  const startdate = formData.get('startdate'); 
   const starthour = formData.get('starthour');
   const startminute = formData.get('startminute');
+  const enddate = formData.get('enddate');  
   const endhour = formData.get('endhour');
   const endminute = formData.get('endminute');
   const ext = formData.get('ext');
-
-  // 格式化起始和結束時間為數據庫格式
-  const startTimestamp = formatDateTimeForDatabase(`${date}T${starthour}:${startminute}:00`);
-  const endTimestamp = formatDateTimeForDatabase(`${date}T${endhour}:${endminute}:00`);
-  const startOfDay = formatDateTimeForDatabase(`${date}T00:00:00`);
-  const endOfDay = formatDateTimeForDatabase(`${date}T23:59:59`);
+  const startTimestamp = formatDateTimeForDatabase(`${startdate}T${starthour}:${startminute}:00`);
+  const endTimestamp = formatDateTimeForDatabase(`${enddate}T${endhour}:${endminute}:00`);
+  const startOfDay = formatDateTimeForDatabase(`${startdate}T00:00:00`);
+  const endOfDay = formatDateTimeForDatabase(`${enddate}T23:59:59`);
   const existingEvents = await fetchevent(startOfDay, endOfDay);
   // 構建數據對象
   const data = {
@@ -231,20 +240,20 @@ document.addEventListener("DOMContentLoaded", function() {
     
     eventClick: function(info) {
       const startTime = info.event.start.toLocaleString('zh-TW', {
-        year: 'numeric',
         month: '2-digit',
         day: '2-digit',
         hour: '2-digit',
         minute: '2-digit',
-        hour12: false
+        hour12: false,
+        weekday: 'short'
     });
     const endTime = info.event.end.toLocaleString('zh-TW', {
-      year: 'numeric',
       month: '2-digit',
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
-      hour12: false
+      hour12: false,
+      weekday: 'short'
   });
 
 
@@ -265,7 +274,6 @@ document.addEventListener("DOMContentLoaded", function() {
       denyButtonText: '刪除會議',
       }).then((result) => {
         if (result.isConfirmed) {
-          console.log(info.event.extendedProps.reserve_id);
           reserve_id = String(info.event.extendedProps.reserve_id);
           document.getElementById('hamburger-menu').style.display='flex';
           document.querySelector('input[name="name"]').value = info.event.title;

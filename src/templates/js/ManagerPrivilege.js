@@ -136,8 +136,22 @@ async function addViolate(identifier){
     // 將過濾後的事件添加為 <select> 的選項
     events.forEach(event => {
       const option = document.createElement('option');
+  
+      // 將 start_time 轉換為 Date 對象
+      const startTime = new Date(event.start_time);
+      
+      // 格式化為 mm/dd
+      const month = String(startTime.getMonth() + 1).padStart(2, '0'); // 月份需要加 1
+      const day = String(startTime.getDate()).padStart(2, '0');
+      
+      // 獲取星期幾
+      const daysOfWeek = ['日', '一', '二', '三', '四', '五', '六'];
+      const dayOfWeek = daysOfWeek[startTime.getDay()];
+      
+      // 格式化為 mm/dd (星期幾)
+      const formattedDate = `${month}/${day} (${dayOfWeek})`;
       option.value = event.reserve_id;  // 可以根據需要調整 value
-      option.textContent = `${event.name}`;
+      option.textContent = `${formattedDate} ${event.name}`;
       selectElement.appendChild(option);
     });
 }
@@ -230,14 +244,24 @@ async function showViolation(identifier){
     return violationList;
   });
   if (violation.length > 0) {
-    const violationHtml = violation.map(violation => `
-      <div style="margin-bottom: 10px;">
-        <p><strong>違規時間：</strong> ${new Date(violation.datetime).toLocaleString()}</p>
-        <p><strong>原因：</strong> ${violation.reason}</p>
-        <p><strong>備註：</strong> ${violation.remark}</p>
-        <hr>
-      </div>
-    `).join('');
+    const violationHtml = violation.map(violation => {
+      const date = new Date(violation.datetime);
+      // 獲取格式化的日期和時間
+      const formattedDate = date.toLocaleString().split(' ')[0];
+    
+      // 獲取星期幾
+      const daysOfWeek = ['日', '一', '二', '三', '四', '五', '六'];
+      const dayOfWeek = `${daysOfWeek[date.getDay()]}`;
+    
+      return `
+        <div >
+          <p><strong>違規時間：</strong> ${formattedDate} (${dayOfWeek})</p>
+          <p><strong>原因：</strong> ${violation.reason}</p>
+          <p><strong>備註：</strong> ${violation.remark}</p>
+          <hr>
+        </div>
+      `;
+    }).join('');
       //刪除還沒寫
     Swal.fire({
       title: "違規紀錄",
@@ -264,6 +288,36 @@ async function showViolation(identifier){
 function hidePopup(popupId) {
   document.getElementById(popupId).style.display = 'none';
 }
+//get user data
+async function fetchData() {
+  const response = await fetch(`/api/user`);
+  const result = await response.json();
+
+  if (result && Array.isArray(result.data)) {
+    // 過濾掉 status 為 -1 的項目
+    const filteredData = result.data.filter(item => item.status !== -1);
+
+    const data = await Promise.all(filteredData.map(async item => {
+      const privilegeText = item.privilege_level === 1 ? '管理者' : '一般使用者';
+      const statusText = item.status === 1 ? '✔️' : '❌';
+      return {
+        data: [
+          item.chinesename,
+          item.unit,
+          privilegeText,
+          statusText,
+          gridjs.html(`<a href="#" onclick="setPermission('${item.identifier}','${item.chinesename}');" >修改</a>`),
+          gridjs.html(`${item.violation_count}次 <a href="#" onclick="addViolate('${item.identifier}');">新增</a> <a href="#" onclick="showViolation('${item.identifier}')">查詢</a>`)
+        ],
+        extendedProps: {
+          identifier: item.identifier // 將 identifier 作為隱藏數據
+        }
+      };
+    }));
+    return data;
+  }
+}
+
 
 
 //get user data
@@ -295,6 +349,7 @@ async function fetchData() {
     return data;
   }
 }
+
 
 
 
