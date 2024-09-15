@@ -136,7 +136,7 @@ module.exports = {
         }
         else {
             try {
-                // based on two conditions, check if the reservation is overlapped with the existing reservations
+                // based on three conditions, check if the reservation is overlapped with the existing reservations
                 const sql = "SELECT COUNT(reserve_id) FROM `Reservation` WHERE ? > `start_time` AND ? < `end_time` AND `status` = 0";
                 const result = await conn.query(sql, [start_time, start_time]);
                 const sql1 = "SELECT COUNT(reserve_id) FROM `Reservation` WHERE ? > `start_time` AND ? < `end_time` AND `status` = 0";
