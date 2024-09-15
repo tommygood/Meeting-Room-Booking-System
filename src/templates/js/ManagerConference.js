@@ -1,4 +1,3 @@
-let reserve_id
 // get user info from ncu portal
 const api_info = '/api/info/';
 async function getinfo(type){
@@ -99,6 +98,7 @@ function formatDateTimeForDatabase(dateTime) {
 
 //編輯會議
 async function reservationPut(reserve_id) {
+  console.log(reserve_id);
   const formData = new FormData(document.getElementById("request"));
   const name = formData.get('name');
   const startdate = formData.get('startdate'); 
@@ -134,24 +134,22 @@ async function reservationPut(reserve_id) {
     alert('該時間段已被預約，請選擇其他時間。');
     return;
   }
-  // 發送 PUT 請求，使用 JSON 格式
+
   fetch('/api/reservation', {
     method: 'PUT',
     credentials: 'include', 
-    body: JSON.stringify(data),  // 將數據轉換為 JSON 字符串
+    body: JSON.stringify(data), 
     headers: { 
-      'Content-Type': 'application/json'  // 使用 JSON 格式
+      'Content-Type': 'application/json'  
     },
   })
   .then(response => response.json())
-  .then(()=> {
-      alert('修改成功');
-      window.location.reload();  // 刷新頁面以顯示最新數據
-   
+  .then((data)=> {
+    console.log(data);
+    window.location.reload();  
   })
   .catch(error => {
     console.error('Error:', error);
-    alert('發生錯誤，請稍後重試。');
   });
 }
 
@@ -274,25 +272,28 @@ document.addEventListener("DOMContentLoaded", function() {
       denyButtonText: '刪除會議',
       }).then((result) => {
         if (result.isConfirmed) {
-          reserve_id = String(info.event.extendedProps.reserve_id);
           document.getElementById('hamburger-menu').style.display='flex';
           document.querySelector('input[name="name"]').value = info.event.title;
           document.querySelector('input[name="person"]').value = info.event.extendedProps.chinesename;
           document.querySelector('input[name="unit"]').value = info.event.extendedProps.unit;
           document.querySelector('input[name="ext"]').value = info.event.extendedProps.number;
           const startDate = new Date(info.event.start);
-          document.querySelector('input[name="date"]').value = startDate.toISOString().split('T')[0]; // 只取日期部分        
+          const formattedStartDate = startDate.toISOString().split('T')[0];
           const startHour = String(startDate.getHours()).padStart(2, '0');
           const startMinute = String(startDate.getMinutes()).padStart(2, '0');
-          document.querySelector('select[name="starthour"]').value = startHour;
-          document.querySelector('select[name="startminute"]').value = startMinute;
-
           const endDate = new Date(info.event.end);
+          const formattedEndDate = startDate.toISOString().split('T')[0];
           const endHour = String(endDate.getHours()).padStart(2, '0');
           const endMinute = String(endDate.getMinutes()).padStart(2, '0');
-          document.querySelector('select[name="endhour"]').value = endHour;
+          document.querySelector('input[name="startdate"]').value = formattedStartDate;
+          document.querySelector('select[name="starthour"]').value = startHour;
+          document.querySelector('select[name="startminute"]').value = startMinute;
+          document.querySelector('input[name="enddate"]').value = formattedEndDate; 
+          document.querySelector('select[name="endhour"]').value = endHour; 
           document.querySelector('select[name="endminute"]').value = endMinute;  
-
+          document.getElementById('requestsend').onclick =() => {
+            reservationPut(String(info.event.extendedProps.reserve_id));
+          };
         } else if (result.isDenied) {
           // User denied the action or closed the dialog
           Swal.fire({

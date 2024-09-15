@@ -176,7 +176,6 @@ async function reservationPost(){
   const endTimestamp = formatDateTimeForDatabase(`${enddate}T${endhour}:${endminute}:00`);
   const startOfDay = formatDateTimeForDatabase(`${startdate}T00:00:00`);
   const endOfDay = formatDateTimeForDatabase(`${enddate}T23:59:59`);
-  const existingEvents = await fetchevent(startOfDay, endOfDay);
 
   if (!startdate || !enddate || !starthour || !startminute || !endhour || !endminute || !name || !ext) {
     alert('所有欄位都是必填的，請完整填寫表單！');
@@ -188,17 +187,10 @@ async function reservationPost(){
       alert('請先勾選「我已詳閱《會議室使用規則》」才能提交申請。');
       return; 
   }
-  if (startTimestamp >= endTimestamp) {
-    alert('開始時間不能晚於或等於結束時間，請修正時間！');
-    return; 
-  }
+
 
     //不能借現在以前的時間&超過三個月
   const today = new Date();
-  if(new Date(startTimestamp )<=today){
-    alert('預約時間請選在現在後的時間！');
-    return;
-  }
   const reservationDate = new Date(startdate);
   const threeMonthsLater = new Date(today.setMonth(today.getMonth() + 3));
 
@@ -208,22 +200,6 @@ async function reservationPost(){
       alert('借閱日期不能超過三個月後，請選擇在三個月內的日期！');
       return;
     }
-  }
-
-  // 檢查新預約是否與現有事件有時間衝突
-  // 檢查新預約是否與現有事件有時間衝突
-  const hasConflict = existingEvents.some(event => {
-    const existingStart = new Date(event.start);
-    const existingEnd = new Date(event.end);
-
-    // 檢查新事件是否與現有事件重疊
-    // 包括現有事件跨日情況，且覆蓋到新事件日期
-    return (new Date(startTimestamp) < existingEnd && new Date(endTimestamp) > existingStart);
-  });
-
-  if (hasConflict) {
-    alert('該時間段已被預約，請選擇其他時間。');
-    return true;
   }
 
   const data={
@@ -241,11 +217,19 @@ async function reservationPost(){
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   }) 
-  .then(response => response.json())
-  .then(result => {
-      console.log('Success:', result);  
-      alert('預約成功');
-
+  .then(response =>response.json())
+  .then((data) => {
+    console.log(data);
+    if (data.result === "Invalid time, start_time should be less than end_time") {
+      alert('無效的時間，開始時間應該早於結束時間。');
+    } else if (data.result === "Invalid time, there is a confliction with other reservations") {
+      alert('無效的時間，與其他預約有衝突。');
+    } else if (data.result === 'Invalid token') {
+      alert('無效的憑證，請重新登入。');
+    } else if (data.suc) {
+      alert('預約成功！');
+      window.location.reload(); 
+    }
   })
   .catch(error => {
       console.error('Error:', error);
@@ -299,11 +283,16 @@ async function reservationPut(reserve_id) {
     },
   })
   .then(response => response.json())
-  .then((data)=> {
-    console.log(data);
-      alert(data);
-      window.location.reload();  // 刷新頁面以顯示最新數據
-   
+  .then((data) => {
+    if (data.result === "Invalid time, start_time should be less than end_time") {
+      alert('無效的時間，開始時間應該早於結束時間。');
+    } else if (data.result === "Invalid time, there is a confliction with other reservations") {
+      alert('無效的時間，與其他預約有衝突。');
+    } else if (data.result === 'Invalid token') {
+      alert('無效的憑證，請重新登入。');
+    } else if (data.suc) {
+      window.location.reload(); 
+    }
   })
   .catch(error => {
     console.error('Error:', error);

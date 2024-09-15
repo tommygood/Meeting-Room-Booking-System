@@ -14,7 +14,6 @@ router.get('/', async function(req, res) {
             const start_time = req.query.start_time;
             const end_time = req.query.end_time;
             const data = await Reservation.get(start_time, end_time);
-            console.log(data);
             res.json({data});
 		}
 		else {
@@ -27,6 +26,7 @@ router.get('/', async function(req, res) {
     }
 });
 
+// insert a reservation if not conflict with other reservations
 router.post('/', async function(req, res) {
     try {
         // Verify the token
@@ -39,10 +39,19 @@ router.post('/', async function(req, res) {
             const end_time = req.body.end_time;
             const show = req.body.show;
             const ext = req.body.ext;
-            const suc = await Reservation.insert(identifier, room_id, name, start_time, end_time, show, ext);
-            res.json({suc});
-            // send email to admin if the reservation is successful
-            Email.send(Email.admin_email, "New reservation", `New reservation from ${identifier} at ${start_time} to ${end_time} in room ${room_id} is ${suc ? 'successful' : 'failed'}`);
+            if (start_time >= end_time) {
+                res.json({result : "Invalid time, start_time should be less than end_time"});
+            }
+            else if (await Reservation.checkOverlap(start_time, end_time)) {
+
+                res.json({result : "Invalid time, there is a confliction with other reservations"});
+            }
+            else {
+                const suc = await Reservation.insert(identifier, room_id, name, start_time, end_time, show, ext);
+                res.json({suc});
+                // send email to admin if the reservation is successful
+                Email.send(Email.admin_email, "New reservation", `New reservation from ${identifier} at ${start_time} to ${end_time} in room ${room_id} is ${suc ? 'successful' : 'failed'}`);
+            }
         }
         else {
             res.json({result : 'Invalid token'});

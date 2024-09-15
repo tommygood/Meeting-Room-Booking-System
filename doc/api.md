@@ -34,6 +34,12 @@
     >>> r.text
     '{"suc":true}'
     ```
+    - there have some check when a new reservation added.
+        - check whether a reservation overlap with others reservations when add the reservation at backend.
+            - if an overlap occur, then response {result : "Invalid time, there is a confliction with other reservations"}.
+        - check whether start_time >= end_time in a reservation
+            - if start_time >= end_time, then response {result : "Invalid time, start_time should be less than end_time"}.
+        - response {'suc' : true} when reservation added successfully.
 
 - GET `/api/reservation?start_time=<start_time>&end_time=<end_time>`
     - get reservaions which are between `start_time` and `end_time`
