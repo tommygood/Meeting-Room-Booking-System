@@ -263,23 +263,13 @@ async function reservationPut(reserve_id) {
     show: true,
     status: true,
   };
-  // 檢查新預約是否與現有事件有時間衝突
-  const hasConflict = existingEvents.some(event => {
-    const existingStart = new Date(event.start);
-    const existingEnd = new Date(event.end);
-    return (new Date(startTimestamp) < existingEnd && new Date(endTimestamp) > existingStart);
-  });
-  if (hasConflict) {
-    alert('該時間段已被預約，請選擇其他時間。');
-    return;
-  }
-  // 發送 PUT 請求，使用 JSON 格式
+
   fetch('/api/reservation', {
     method: 'PUT',
     credentials: 'include', 
-    body: JSON.stringify(data),  // 將數據轉換為 JSON 字符串
+    body: JSON.stringify(data),  
     headers: { 
-      'Content-Type': 'application/json'  // 使用 JSON 格式
+      'Content-Type': 'application/json' 
     },
   })
   .then(response => response.json())

@@ -98,7 +98,6 @@ function formatDateTimeForDatabase(dateTime) {
 
 //編輯會議
 async function reservationPut(reserve_id) {
-  console.log(reserve_id);
   const formData = new FormData(document.getElementById("request"));
   const name = formData.get('name');
   const startdate = formData.get('startdate'); 
@@ -112,7 +111,6 @@ async function reservationPut(reserve_id) {
   const endTimestamp = formatDateTimeForDatabase(`${enddate}T${endhour}:${endminute}:00`);
   const startOfDay = formatDateTimeForDatabase(`${startdate}T00:00:00`);
   const endOfDay = formatDateTimeForDatabase(`${enddate}T23:59:59`);
-  const existingEvents = await fetchevent(startOfDay, endOfDay);
   // 構建數據對象
   const data = {
     reserve_id: reserve_id,
@@ -124,32 +122,32 @@ async function reservationPut(reserve_id) {
     show: true,
     status: true,
   };
-  // 檢查新預約是否與現有事件有時間衝突
-  const hasConflict = existingEvents.some(event => {
-    const existingStart = new Date(event.start);
-    const existingEnd = new Date(event.end);
-    return (new Date(startTimestamp) < existingEnd && new Date(endTimestamp) > existingStart);
-  });
-  if (hasConflict) {
-    alert('該時間段已被預約，請選擇其他時間。');
-    return;
-  }
-
+  console.log(data);
   fetch('/api/reservation', {
     method: 'PUT',
     credentials: 'include', 
-    body: JSON.stringify(data), 
+    body: JSON.stringify(data),  
     headers: { 
-      'Content-Type': 'application/json'  
+      'Content-Type': 'application/json' 
     },
   })
   .then(response => response.json())
-  .then((data)=> {
-    console.log(data);
-    window.location.reload();  
+  .then((data) => {
+
+    if (data.result === "Invalid time, start_time should be less than end_time") {
+      alert('無效的時間，開始時間應該早於結束時間。');
+    } else if (data.result === "Invalid time, there is a confliction with other reservations") {
+      alert('無效的時間，與其他預約有衝突。');
+    } else if (data.result === 'Invalid token') {
+      alert('無效的憑證，請重新登入。');
+    } else if (data.suc) {
+      console.log(data.result);
+      alert("123");
+    }
   })
   .catch(error => {
     console.error('Error:', error);
+    alert('發生錯誤，請稍後重試。');
   });
 }
 
@@ -292,7 +290,7 @@ document.addEventListener("DOMContentLoaded", function() {
           document.querySelector('select[name="endhour"]').value = endHour; 
           document.querySelector('select[name="endminute"]').value = endMinute;  
           document.getElementById('requestsend').onclick =() => {
-            reservationPut(String(info.event.extendedProps.reserve_id));
+            reservationPut(info.event.extendedProps.reserve_id);
           };
         } else if (result.isDenied) {
           // User denied the action or closed the dialog
