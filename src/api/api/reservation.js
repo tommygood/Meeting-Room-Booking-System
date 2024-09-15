@@ -43,7 +43,6 @@ router.post('/', async function(req, res) {
                 res.json({result : "Invalid time, start_time should be less than end_time"});
             }
             else if (await Reservation.checkOverlap(start_time, end_time)) {
-
                 res.json({result : "Invalid time, there is a confliction with other reservations"});
             }
             else {
@@ -101,15 +100,24 @@ router.put('/', async function(req, res) {
             const status = req.body.status;
             const user_priveilege = await User.getPrivilegeLevel(identifer);
             
-            // if user privilege is less than 2, then only allow to update the reservation which is created by the user itself
             let suc = false;
-            if (user_priveilege > 1) {
-                suc = await Reservation.update(reserve_id, room_id, name, start_time, end_time, show, ext, status);
+            // check if start_time is less than end_time and there is no confliction with other reservations
+            if (start_time >= end_time) {
+                res.json({result : "Invalid time, start_time should be less than end_time"});
+            }
+            else if (await Reservation.checkOverlap(start_time, end_time)) {
+                res.json({result : "Invalid time, there is a confliction with other reservations"});
             }
             else {
-                suc = await Reservation.updateSelfs(identifer, reserve_id, room_id, name, start_time, end_time, show, ext);
+                // if user privilege is less than 2, then only allow to update the reservation which is created by the user itself
+                if (user_priveilege > 1) {
+                    suc = await Reservation.update(reserve_id, room_id, name, start_time, end_time, show, ext, status);
+                }  
+                else {
+                    suc = await Reservation.updateSelfs(identifer, reserve_id, room_id, name, start_time, end_time, show, ext);
+                }
+                res.json({suc});
             }
-            res.json({suc});
         }
         else {
             res.json({result : 'Invalid token'});
