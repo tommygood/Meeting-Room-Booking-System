@@ -139,25 +139,41 @@ function getBlocksFromData(data) {
         }
     });
 
+    // Set the blocks in the editor
     async function setBlocks() {
-        const blockss = await getBlocks('rules');
-        editor.render({blocks: blockss, version: "2.11.10"});
+        let blocks = await getBlocks('rules');
+        // If there are no blocks, set the default block content
+        if (blocks == false) {
+          blocks = [{
+            type: "paragraph",
+            data: {
+              text: "請在此輸入內容"
+            }
+          }]
+        }
+        console.log(blocks);
+        
+        editor.render({blocks: blocks, version: "2.11.10"});
     };
 
-    setBlocks(editor);
+    // Wait for the editor to be initialized before setting the blocks
+    setTimeout(() => {
+      setBlocks(editor);
+    }, "100");
+    
 
 
     /**
    * Add handler for the Save button
    */
     // Send blocks to the backend
-    async function sendBlocks(blocks) {
+    async function sendBlocks(blocks, doc_name) {
         const res = await fetch('/api/doc', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
             },
-            body: JSON.stringify({blocks: blocks, doc_name:'rules'}),
+            body: JSON.stringify({blocks: blocks, doc_name:doc_name}),
 
         })
     }
@@ -169,9 +185,9 @@ function getBlocksFromData(data) {
 
   saveButton.addEventListener('click', () => {
     editor.save().then( savedData => {
-      blocks = getBlocksFromData(savedData.blocks);
-        sendBlocks(blocks);
-    
+      const doc_name = prompt("請輸入文件名稱");
+      const blocks = getBlocksFromData(savedData.blocks);
+      sendBlocks(blocks, doc_name);
     })
   })
 </script>
