@@ -132,5 +132,26 @@ module.exports = {
                 return null;
             }
         }
+    },
+
+    // get email from all admin
+    getAdminsEmail : async function () {
+        const conn = await db_conn.getDBConnection();
+        if (conn == null) {
+            return null;
+        }
+        else {
+            try {
+                const sql = 'SELECT `email` FROM `User` WHERE `privilege_level` >= 1;';
+                const result = await conn.query(sql);
+                db_conn.closeDBConnection(conn);
+                return result;
+            }
+            catch(e) {
+                console.error("error getting email from all admin : ", e);
+                conn.release();
+                return null;
+            }
+        }
     }
 }
