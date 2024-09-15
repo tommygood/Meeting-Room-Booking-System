@@ -140,9 +140,11 @@ module.exports = {
                 const sql = "SELECT COUNT(reserve_id) FROM `Reservation` WHERE ? > `start_time` AND ? < `end_time` AND `status` = 0";
                 const result = await conn.query(sql, [start_time, start_time]);
                 const sql1 = "SELECT COUNT(reserve_id) FROM `Reservation` WHERE ? > `start_time` AND ? < `end_time` AND `status` = 0";
+                const sql2 = "SELECT COUNT(reserve_id) FROM `Reservation` WHERE ? = `start_time` AND ? = `end_time` AND `status` = 0";
+                const result2 = await conn.query(sql, [end_time, end_time]);
                 const result1 = await conn.query(sql, [end_time, end_time]);
                 db_conn.closeDBConnection(conn);
-                return result[0]['COUNT(reserve_id)'] > 0 || result1[0]['COUNT(reserve_id)'] > 0;
+                return result[0]['COUNT(reserve_id)'] > 0 || result1[0]['COUNT(reserve_id)'] > 0 || result2[0]['COUNT(reserve_id)'] > 0;
             }
             catch(e) {
                 console.error("error checking overlap : ", e);
