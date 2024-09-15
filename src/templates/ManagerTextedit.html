@@ -34,19 +34,148 @@
             </div>
         </div>
 
-        <!-- texteditor -->
-        <div class="main-content">
-            <div id="quill" class="quill"></div>
-            <div class="save-button" onclick="saveContent()">
-                <div class="buttontext">儲存</div>
-            </div>
-        </div>
         <!-- 使用者/管理者 -->
         <div class="useradmin" onclick=""> 
             <img src="/image/user.png"  class="useradmin-button" onclick="location.href ='/page/userlobby'">
             <hr style="margin: 0; height: 100%;" />
             <img src="/image/admin.png" class="useradmin-button" onclick="location.href ='/page/privilege'">
         </div>
-        
+
+        <!--
+  Example playground for guide series learning hot to crate a Block Tool for Editor.js
+  https://editorjs.io/creating-a-block-tool
+-->
+<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+        font-size: 14px;
+        line-height: 1.5em;
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+<script src="/js/text_editor.js"></script>
+<link href="/css/text_editor.css" rel="stylesheet"/>
+
+<div id="editorjs" style="max-width: 1000px; margin: 0 auto"></div>
+
+<button id="save-button">Save</button>
+
+<script>
+function changeHyphen(editorInput) {
+    // Save the caret position before modifying the text
+  const selection = window.getSelection();
+  const range = selection.getRangeAt(0);
+  const startOffset = range.startOffset;
+    // Modify the text content (replace '- ' with your desired character)
+    editorInput.textContent = editorInput.textContent.replace('- ', '• ');
+    // Restore the caret position after modifying the text
+  const newRange = document.createRange();
+  newRange.setStart(editorInput.childNodes[0], startOffset); // Adjust position after text modification
+  newRange.collapse(true);
+  selection.removeAllRanges();
+  selection.addRange(newRange);
+}
+
+function setId(editorInput) {
+  // set the id of this div element to the text content before the space
+  const id = editorInput.textContent.split(' ')[1]
+  editorInput.id = id;
+  console.log(editorInput);
+}
+
+document.addEventListener('keyup', (event) => {
+  const editorInput = document.activeElement;
+
+
+  // Only replace '- ' at the beginning of the input
+  if (editorInput.textContent.startsWith('- ')) {
+    changeHyphen(editorInput);
+  }
+  // If the input starts with '# ', set the id of the div element to the text content after the space
+  else if (editorInput.textContent.startsWith('# ')) {
+    setId(editorInput);
+  }
+});
+
+function getBlocksFromData(data) {
+    blocks = [];
+    for (let i = 0; i < data.length; i++) {
+      blocks.push({data : data[i].data, type: data[i].type});
+    }
+    return blocks;
+ 
+  }
+
+  async function getBlocks(doc_name) {
+    console.log(`/api/doc?doc_name=${doc_name}`)
+    const res = await fetch(`/api/doc?doc_name=${doc_name}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const data = await res.json();
+    console.log(data.data.blocks);
+    return JSON.parse(data.data.blocks);
+  };
+
+    /**
+     * Initialize the Editor
+     */
+    const editor = new EditorJS({
+        autofocus: true,
+        tools: {
+            image: {
+            class: SimpleImage,
+            inlineToolbar: true,
+            config: {
+                placeholder: 'Paste image URL'
+            }
+            }
+        },
+        data: {
+            version: "2.11.10"
+        }
+    });
+
+    async function setBlocks() {
+        const blockss = await getBlocks('rules');
+        editor.render({blocks: blockss, version: "2.11.10"});
+    };
+
+    setBlocks(editor);
+
+
+    /**
+   * Add handler for the Save button
+   */
+    // Send blocks to the backend
+    async function sendBlocks(blocks) {
+        const res = await fetch('/api/doc', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({blocks: blocks, doc_name:'rules'}),
+
+        })
+    }
+
+
+
+  const saveButton = document.getElementById('save-button');
+  const output = document.getElementById('output');
+
+  saveButton.addEventListener('click', () => {
+    editor.save().then( savedData => {
+      blocks = getBlocksFromData(savedData.blocks);
+        sendBlocks(blocks);
+    
+    })
+  })
+</script>
+
+
     </body>
 </html>
