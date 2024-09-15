@@ -30,6 +30,7 @@ app.use("/api/reservation", require("./api/reservation.js"));
 app.use("/api/violation", require("./api/violation.js"));
 app.use("/api/room", require("./api/room.js"));
 app.use("/api/user", require("./api/user.js"));
+app.use("/api/doc", require("./api/doc.js"));
 app.use("/page", require("./page/main.js"));
 app.use("/page/board", require("./page/board.js"));
 app.use("/example", require("./example.js"));
