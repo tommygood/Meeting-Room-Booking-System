@@ -66,7 +66,7 @@ function fetchData(start, end) {
           formattedDate, 
           formattedTime, 
           item.name,     
-          DOMPurify.sanitize(`<input type="checkbox" value="${item.reserve_id}" ${item.show ? 'checked' : ''}>`)
+          `<input type="checkbox" value="${item.reserve_id}" ${item.show ? 'checked' : ''}>`
         ]
       };
     });
@@ -79,18 +79,14 @@ function fetchData(start, end) {
   });
 }
 
-function saveContent(){
-
-}
 
 
-let grid; // 全局變數來保留 Grid.js 實例
+let grid; 
 
 function updateGrid(rows) {
   const gridContainer = document.getElementById('gridtable');
-  gridContainer.innerHTML = ''; // 清空容器
+  gridContainer.innerHTML = ''; 
 
-  // 創建新的 Grid.js 實例並渲染
   grid = new gridjs.Grid({
     columns: [
       '日期', 
@@ -101,12 +97,12 @@ function updateGrid(rows) {
         formatter: (cell) => gridjs.html(cell)
       }
     ],
-    data: rows.map(row => row.data), // 初始資料
+    data: rows.map(row => row.data), 
     width: '900px',
     fixedHeader: true,
     search: false,
     resizable: true,
-    contentHeight: 700,
+  
     style: {
       container: {
         'margin-left': '20px'
@@ -160,6 +156,11 @@ function searchBoard() {
       console.error('Error rendering Grid.js:', error);
     });
 }
+
+function saveContent(){
+  console.log(grid);
+}
+
 
 document.addEventListener("DOMContentLoaded", function() {
   // 設定初始的日期範圍

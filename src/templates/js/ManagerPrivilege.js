@@ -196,8 +196,8 @@ const status_put = '/api/user/status';
 function putPrivilege(){
   const form = document.getElementById('privilege-form');
   const formData = new FormData(form);
-  const privileges = DOMPurify.sanitize(formData.get('privilege') === 'true'); 
-  const status = DOMPurify.sanitize(formData.get('status') === 'true'); 
+  const privileges = DOMPurify.sanitize(formData.get('privilege') ); 
+  const status = DOMPurify.sanitize(formData.get('status')); 
   const data={
     identifier:selectedIdentifier,
     privileges: privileges,
@@ -307,8 +307,8 @@ async function fetchData() {
           item.unit,
           privilegeText,
           statusText,
-          gridjs.html(DOMPurify.sanitize(`<a href="#" onclick="setPermission('${item.identifier}','${item.chinesename}');" >修改</a>`)),
-          gridjs.html(DOMPurify.sanitize(`${item.violation_count}次 <a href="#" onclick="addViolate('${item.identifier}');">新增</a> <a href="#" onclick="showViolation('${item.identifier}')">查詢</a>`))
+          gridjs.html(`<a href="#" onclick="setPermission('${item.identifier}','${item.chinesename}');" >修改</a>`),
+          gridjs.html(`${item.violation_count}次 <a href="#" onclick="addViolate('${item.identifier}');">新增</a> <a href="#" onclick="showViolation('${item.identifier}')">查詢</a>`)
         ],
         extendedProps: {
           identifier: item.identifier // 將 identifier 作為隱藏數據
