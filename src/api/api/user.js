@@ -8,7 +8,7 @@ router.get('/', async function(req, res) {
     try {
         // Verify the token
         const result = jwt.verifyJwtToken(req.cookies.token);
-        if (result.suc) {
+        if (result.suc && await User.isAdmin(result.data.data)) {
             const data = await User.get();
             // Convert BigInt to Number prevent the error : "TypeError: Do not know how to serialize a BigInt"
             BigInt.prototype.toJSON = function () {
@@ -52,7 +52,7 @@ router.put('/privilege', async function(req, res) {
     try {
         // Verify the token
         const result = jwt.verifyJwtToken(req.cookies.token);
-        if (result.suc) {
+        if (result.suc && await User.isAdmin(result.data.data)) {
             const identifier = req.body.identifier;
             const privileges = req.body.privileges;
             const suc = await User.updatePrivilegeLevel(identifier, privileges);
@@ -73,7 +73,7 @@ router.put('/status', async function(req, res) {
     try {
         // Verify the token
         const result = jwt.verifyJwtToken(req.cookies.token);
-        if (result.suc) {
+        if (result.suc && await User.isAdmin(result.data.data)) {
             const identifier = req.body.identifier;
             const status = req.body.status;
             const suc = await User.updateStatus(identifier, status);
