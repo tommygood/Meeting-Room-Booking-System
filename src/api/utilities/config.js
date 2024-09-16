@@ -10,12 +10,16 @@ module.exports = {
 		password : process.env.db_password == undefined ? "Sec@ncu" : process.env.db_password
 	},
 	email : {
-		sender_gmail_account : process.env.sender_gmail_account == undefined ? "tommy50508@gmail.com" : process.env.sender_gmail_account,
-		sender_gmail_password : process.env.sender_gmail_password == undefined ? "yfpo wyie vbjs ruyw" : process.env.sender_gmail_password,
-		sender_alias_account : process.env.sender_alias_account == undefined ? "113423005@cc.ncu.edu.tw" : process.env.sender_alias_account
+		sender_mail_account : process.env.sender_mail_account == undefined ? "" : process.env.sender_mail_account,
+		sender_mail_password : process.env.sender_mail_password == undefined ? "" : process.env.sender_mail_password,
+		mail_server : process.env.mail_server == undefined ? "cc.ncu.edu.tw" : process.env.mail_server
 	},
 	telegram : {
 		bot_token : "6261510862:AAEHbnjlKupEgKMSn6umI2ARTLNxwUSxnCo",
 		admin_id : "1697361994"
+	},
+	area : {
+		organization : "國立中央大學",
+		unit : "行政大樓2樓會議室"
 	}
 }

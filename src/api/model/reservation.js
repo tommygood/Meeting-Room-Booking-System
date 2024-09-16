@@ -152,5 +152,26 @@ module.exports = {
                 return false;
             }
         }
+    },
+
+    // get reservation by reserve_id
+    getById : async function (reserve_id) {
+        const conn = await db_conn.getDBConnection();
+        if (conn == null) {
+            return null;
+        }
+        else {
+            try {
+                const sql = "SELECT * FROM `Reservation` WHERE `reserve_id` = ?;";
+                const result = await conn.query(sql, [reserve_id]);
+                db_conn.closeDBConnection(conn);
+                return result[0];
+            }
+            catch(e) {
+                console.error("error getting reservation by reserve_id : ", e);
+                db_conn.closeDBConnection(conn);
+                return null;
+            }
+        }
     }
 }
