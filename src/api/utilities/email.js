@@ -86,11 +86,11 @@ module.exports = {
     // email text
     text : {
         succeessful_reservation : function(identifier, start_time, end_time, room_id) {
-            return `您好：<br/><br/>您已成功預約${unit}，時間為：<br/><br/>${start_time} 至 ${end_time} 在${room_id}的會議室。
+            return `您好：<br/><br/>您已成功預約${unit}，時間為：<br/><br/>${start_time} 至 ${end_time}
             <br/><br/>若有臨時取消之情形，請於２小時前取消預約。<br/><br/>一年內預約會議室無故未使用累積三次即停權帳號。<br/><br/><br/><br/>此為系統信件，請勿回信。<br/><br/>如有任何疑問，請洽秘書室鄭小姐，分機57006。`;
         },
         cancel_reservation : function(identifier, start_time, end_time, room_id) {
-            return `您好：<br/><br/>您已取消預約${unit}，時間為：<br/><br/>${start_time} 至 ${end_time} 在${room_id}的會議室。
+            return `您好：<br/><br/>您已取消預約${unit}，時間為：<br/><br/>${start_time} 至 ${end_time}
             <br/><br/>若有需要請重新預約，謝謝。<br/><br/><br/><br/>此為系統信件，請勿回信。<br/><br/>如有任何疑問，請洽秘書室鄭小姐，分機57006。`;
         }
     }
