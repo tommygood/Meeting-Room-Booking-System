@@ -27,6 +27,7 @@ router.get('/', async function(req, res) {
 });
 
 // insert a reservation if not conflict with other reservations
+// insert a reservation if not conflict with other reservations
 router.post('/', async function(req, res) {
     try {
         // Verify the token
@@ -49,7 +50,7 @@ router.post('/', async function(req, res) {
                 const suc = await Reservation.insert(identifier, room_id, name, start_time, end_time, show, ext);
                 res.json({suc});
                 // send email to admin if the reservation is successful
-                Email.send(Email.admin_email, "New reservation", `New reservation from ${identifier} at ${start_time} to ${end_time} in room ${room_id} is ${suc ? 'successful' : 'failed'}`);
+                Email.sendAdmins( "New reservation", `New reservation from ${identifier} at ${start_time} to ${end_time} in room ${room_id} is ${suc ? 'successfully' : 'failed to'} applied.`);
             }
         }
         else {

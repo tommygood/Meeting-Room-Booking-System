@@ -13,7 +13,8 @@ async function getinfo(type){
   }
 }
 async function setAccountName() {
-  const account_type = await getinfo('chinesename');
+  var account_type = await getinfo('chinesename');
+  account_type = DOMPurify.sanitize(account_type);
   document.getElementById("accountName").innerHTML += account_type;
 }
 setAccountName();
@@ -99,14 +100,14 @@ function formatDateTimeForDatabase(dateTime) {
 //編輯會議
 async function reservationPut(reserve_id) {
   const formData = new FormData(document.getElementById("request"));
-  const name = formData.get('name');
-  const startdate = formData.get('startdate'); 
-  const starthour = formData.get('starthour');
-  const startminute = formData.get('startminute');
-  const enddate = formData.get('enddate');  
-  const endhour = formData.get('endhour');
-  const endminute = formData.get('endminute');
-  const ext = formData.get('ext');
+  const name = DOMPurify.sanitize(formData.get('name'));
+  const startdate = DOMPurify.sanitize(formData.get('startdate'));
+  const starthour = DOMPurify.sanitize(formData.get('starthour'));
+  const startminute = DOMPurify.sanitize(formData.get('startminute'));
+  const enddate = DOMPurify.sanitize(formData.get('enddate'));
+  const endhour = DOMPurify.sanitize(formData.get('endhour'));
+  const endminute = DOMPurify.sanitize(formData.get('endminute'));
+  const ext = DOMPurify.sanitize(formData.get('ext'));
   const startTimestamp = formatDateTimeForDatabase(`${startdate}T${starthour}:${startminute}:00`);
   const endTimestamp = formatDateTimeForDatabase(`${enddate}T${endhour}:${endminute}:00`);
   const startOfDay = formatDateTimeForDatabase(`${startdate}T00:00:00`);
@@ -255,14 +256,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     Swal.fire({
-      title: info.event.title,
-      html: `
+      title: DOMPurify.sanitize(info.event.title),
+      html: DOMPurify.sanitize(`
           ${startTime} ~ ${endTime}<br>
           會議：${info.event.title}<br>
           借用單位: ${info.event.extendedProps.unit}<br>
           申請人: ${info.event.extendedProps.chinesename}<br>
           分機號碼: ${info.event.extendedProps.number}<br>
-      `,
+      `),
       showCancelButton: true,
       showDenyButton: true,
       cancelButtonText: 'OK' ,
@@ -295,7 +296,7 @@ document.addEventListener("DOMContentLoaded", function() {
         } else if (result.isDenied) {
           // User denied the action or closed the dialog
           Swal.fire({
-            title: '確定要刪除該會議嗎',
+            title: DOMPurify.sanitize('確定要刪除該會議嗎'),
             icon: "warning",
             confirmButtonText: '確定',
             showCancelButton: true,
@@ -304,7 +305,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (result.isConfirmed) {
               reservationDelete(info.event.extendedProps.reserve_id);
               Swal.fire({
-                title: '刪除成功',
+                title: DOMPurify.sanitize('刪除成功'),
                 icon:'success',
               }).then(() => {
                 window.location.reload();

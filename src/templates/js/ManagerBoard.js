@@ -15,7 +15,8 @@ async function getinfo(type){
   }
 
 async function setAccountName() {
-    const account_type = await getinfo('chinesename');
+    var account_type = await getinfo('chinesename');
+    account_type = DOMPurify.sanitize(account_type);
     document.getElementById("accountName").innerHTML += account_type;
   }
   setAccountName();
@@ -65,7 +66,7 @@ function fetchData(start, end) {
           formattedDate, 
           formattedTime, 
           item.name,     
-          `<input type="checkbox" value="${item.reserve_id}" ${item.show ? 'checked' : ''}>`
+          DOMPurify.sanitize(`<input type="checkbox" value="${item.reserve_id}" ${item.show ? 'checked' : ''}>`)
         ]
       };
     });
@@ -105,6 +106,7 @@ function updateGrid(rows) {
     fixedHeader: true,
     search: false,
     resizable: true,
+    contentHeight: 700,
     style: {
       container: {
         'margin-left': '20px'
@@ -139,7 +141,7 @@ function searchBoard() {
   startDate.setHours(0, 0, 0, 0); 
   const start = startDate.toISOString().split('.')[0];
 
-  const endDate = new Date(endInput);
+  const endDate = new Date(endInput); 
   endDate.setHours(23, 59, 59, 999); 
   const end = endDate.toISOString().split('.')[0];
 

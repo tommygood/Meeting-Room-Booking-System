@@ -1,19 +1,4 @@
-let identifier;
 let info;
-const api_info = '/api/info/';
-  // get user info from ncu portal
-async function getinfo(type){
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const headers = urlParams.get('access_token')
-    try {
-      const response = await fetch(api_info+type,{ headers: { 'access_token': headers } });
-      const data = await response.json();
-      return data.data;
-      } catch (error) {
-      console.error("Error:", error);
-    }
-  }
 
 const api_self = '/api/user/self';
 async function getUserInfo(){
@@ -29,60 +14,18 @@ async function getUserInfo(){
   }
 }
 
+//get user information & set accountName
 async function setUserInfo(){
   try{
     info = await getUserInfo();
-    console.log(info);
+    const name = DOMPurify.sanitize(info.chinesename);
+    document.getElementById("accountName").innerHTML += name;
   }
   catch (error) {
     console.error("Error:", error);
   }
 }
-
 setUserInfo();
-
-async function setAccountName() {
-    const account_type = await getinfo('chinesename');
-    document.getElementById("accountName").innerHTML += account_type;
-  }
-setAccountName();
-
-//拿identifier
-function parseJwt (token) {
-  var base64Url = token.split('.')[1];
-  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    
-  }).join(''));
-  return JSON.parse(jsonPayload);
-}
-function getIdentifier(){
-  try {
-    var token = document.cookie.split('token=')[1];
-    if (token) {
-        identifier=parseJwt(token); 
-
-    } else {
-        console.error('Token not found in cookies.');
-    }
-} catch (error) {
-    console.error('Error parsing JWT:', error);
-}
-}
-getIdentifier();
-
-
-
-//拿privilege_level
-async function getPrivilege() {
-  const response = await fetch("/api/user/privilege");
-  const data = await response.json();
-  const privilege_level = data.data;
-  console.log(privilege_level);
-  return privilege_level;
-}
-
 
 
 //fetch event info from sql
@@ -164,18 +107,17 @@ async function reservationPost(){
   
   const form = document.getElementById('request');
   const formData = new FormData(form);
-  const name = formData.get('name');
-  const startdate = formData.get('startdate'); 
-  const starthour = formData.get('starthour');
-  const startminute = formData.get('startminute');
-  const enddate = formData.get('enddate');  
-  const endhour = formData.get('endhour');
-  const endminute = formData.get('endminute');
-  const ext = formData.get('ext');
+  const name = DOMPurify.sanitize(formData.get('name'));
+  const startdate = DOMPurify.sanitize(formData.get('startdate'));
+  const starthour = DOMPurify.sanitize(formData.get('starthour'));
+  const startminute = DOMPurify.sanitize(formData.get('startminute'));
+  const enddate = DOMPurify.sanitize(formData.get('enddate'));
+  const endhour = DOMPurify.sanitize(formData.get('endhour'));
+  const endminute = DOMPurify.sanitize(formData.get('endminute'));
+  const ext = DOMPurify.sanitize(formData.get('ext'));
   const startTimestamp = formatDateTimeForDatabase(`${startdate}T${starthour}:${startminute}:00`);
   const endTimestamp = formatDateTimeForDatabase(`${enddate}T${endhour}:${endminute}:00`);
-  const startOfDay = formatDateTimeForDatabase(`${startdate}T00:00:00`);
-  const endOfDay = formatDateTimeForDatabase(`${enddate}T23:59:59`);
+
 
   if (!startdate || !enddate || !starthour || !startminute || !endhour || !endminute || !name || !ext) {
     alert('所有欄位都是必填的，請完整填寫表單！');
@@ -194,7 +136,8 @@ async function reservationPost(){
   const reservationDate = new Date(startdate);
   const threeMonthsLater = new Date(today.setMonth(today.getMonth() + 3));
 
-  const privilege = getPrivilege();
+  const privilege = info.privilege_level;
+  console.log(privilege);
   if(privilege!=1){
     if (reservationDate > threeMonthsLater) {
       alert('借閱日期不能超過三個月後，請選擇在三個月內的日期！');
@@ -239,14 +182,14 @@ async function reservationPost(){
 //編輯會議
 async function reservationPut(reserve_id) {
   const formData = new FormData(document.getElementById("requestedit"));
-  const name = formData.get('name');
-  const startdate = formData.get('startdate'); 
-  const starthour = formData.get('starthour');
-  const startminute = formData.get('startminute');
-  const enddate = formData.get('enddate');  
-  const endhour = formData.get('endhour');
-  const endminute = formData.get('endminute');
-  const ext = formData.get('ext');
+  const name = DOMPurify.sanitize(formData.get('name'));
+  const startdate = DOMPurify.sanitize(formData.get('startdate'));
+  const starthour = DOMPurify.sanitize(formData.get('starthour'));
+  const startminute = DOMPurify.sanitize(formData.get('startminute'));
+  const enddate = DOMPurify.sanitize(formData.get('enddate'));
+  const endhour = DOMPurify.sanitize(formData.get('endhour'));
+  const endminute = DOMPurify.sanitize(formData.get('endminute'));
+  const ext = DOMPurify.sanitize(formData.get('ext'));
   const startTimestamp = formatDateTimeForDatabase(`${startdate}T${starthour}:${startminute}:00`);
   const endTimestamp = formatDateTimeForDatabase(`${enddate}T${endhour}:${endminute}:00`);
   const startOfDay = formatDateTimeForDatabase(`${startdate}T00:00:00`);
@@ -391,14 +334,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
       Swal.fire({
-        title: info.event.title,
-        html: `
+        title: DOMPurify.sanitize(info.event.title),
+        html: DOMPurify.sanitize(`
             ${StartTime} ~ ${EndTime}<br>
             會議：${info.event.title}<br>
             借用單位: ${info.event.extendedProps.unit}<br>
             申請人: ${info.event.extendedProps.chinesename}<br>
             分機號碼: ${info.event.extendedProps.number}<br>
-        `,
+        `),
         confirmButtonText: "OK",
       })
     },
@@ -424,7 +367,7 @@ function handleDatesSet(){
   .then(response => response.json())
   .then(result => {
     const events = result.data || []; 
-    const filteredEvents = events.filter(event => event.identifier === identifier.data);
+    const filteredEvents = events.filter(event => event.identifier === info.identifier);
     filteredEvents.sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
 
     if (filteredEvents.length > 0) {
@@ -438,7 +381,7 @@ function handleDatesSet(){
         const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const date = new Date(event.start_time).toLocaleDateString([], { month: '2-digit', day: '2-digit' ,weekday:'short'});
 
-        popup.innerHTML = `
+        popup.innerHTML = DOMPurify.sanitize(`
           <h3 class="list-subtitle">
             ${date} <br>
             ${startTime} ~ ${endTime}<br>
@@ -448,19 +391,19 @@ function handleDatesSet(){
             分機號碼: ${event.ext}<br>
           </h3>
           <hr>
-        `;
+        `);
 
         //編輯自己的會議
         popup.onclick = () => {
           Swal.fire({
-            title: event.name,
-            html: `
+            title: DOMPurify.sanitize(event.name),
+            html: DOMPurify.sanitize(`
                 ${date} <br>
                 ${startTime} ~ ${endTime}<br>
                 借用單位: ${event.unit}<br>
                 申請人: ${event.chinesename}<br>
                 分機號碼: ${event.ext}<br>
-            `,
+            `),
             showCancelButton: true,
             showDenyButton: true,
             cancelButtonText: 'OK' ,
