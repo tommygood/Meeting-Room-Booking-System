@@ -90,7 +90,6 @@ router.put('/', async function(req, res) {
         // Verify the token
         const result = jwt.verifyJwtToken(req.cookies.token);
         if (result.suc) {
-            console.log(req.body);
             const identifer = result.data.data;
             const reserve_id = req.body.reserve_id;
             const room_id = req.body.room_id;
