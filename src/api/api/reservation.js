@@ -50,7 +50,7 @@ router.post('/', async function(req, res) {
                 const suc = await Reservation.insert(identifier, room_id, name, start_time, end_time, show, ext);
                 res.json({suc});
                 // send email to admin if the reservation is successful
-                Email.sendAdmins( "New reservation", `New reservation from ${identifier} at ${start_time} to ${end_time} in room ${room_id} is ${suc ? 'successfully' : 'failed to'} applied.`);
+                Email.sendUser(result.data.data, Email.subject.succeessful_reservation, Email.text.succeessful_reservation(result.data.data, start_time, end_time, room_id));
             }
         }
         else {
@@ -140,6 +140,9 @@ router.delete('/', async function(req, res) {
             const reserve_id = req.body.reserve_id;
             const suc = await Reservation.delete(reserve_id);
             res.json({suc});
+            // send email to user who reserved the room if the reservation is deleted
+            const reservation = await Reservation.getById(reserve_id);
+            Email.sendUser(result.data.data, Email.subject.cancel_reservation, Email.text.cancel_reservation(result.data.data, reservation.start_time, reservation.end_time, reservation.room_id));
         }
         else {
             res.json({result : 'Invalid token'});
