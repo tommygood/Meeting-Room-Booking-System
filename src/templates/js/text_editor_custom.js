@@ -20,8 +20,19 @@ const editor = new EditorJS({
 
 // Wait for the editor to be initialized before setting the blocks
 setTimeout(() => {
-    setBlocks(editor);
-}, "100");
+    initBlocks();
+}, "500");
+
+// Set the default blocks in the editor
+async function initBlocks() {
+    blocks = [{
+        type: "paragraph",
+        data: {
+            text: "請在此輸入內容"
+        }
+    }]
+    editor.render({blocks: blocks, version: "2.11.10"});
+};
 
 // directly navigate to the link when clicked
 // avoid anchor tag not working in editor.js div
@@ -100,45 +111,6 @@ async function getBlocksAndId(doc_name) {
     })
     const data = await res.json();
     return Object.keys(data).length == 0 ? false : {blocks: JSON.parse(data.data.blocks), id_content: JSON.parse(data.data.id_content)};
-};
-
-// restore the id back to the content of the block with the corresponding data-id
-function restoreIdContent(old_id_content) {
-    if (old_id_content == null || old_id_content == undefined) return;
-    id_content = old_id_content;
-    // get all edior blocks
-    const all_divs = document.getElementsByClassName('ce-block');
-    // put the id back to the block
-    for (const [key, value] of Object.entries(old_id_content)) {
-        // find all the div which have data-id atrribute equal to key
-        for (let i = 0; i < all_divs.length; i++) {
-            if (all_divs[i].getAttribute('data-id') == key) {
-            const block = all_divs[i].getElementsByTagName('div')[0];
-            block.id = value;
-            }
-        }
-    }
-}
-
-// Set the blocks in the editor
-async function setBlocks() {
-    let data = await getBlocksAndId('rules');
-    let blocks = data.blocks;
-    let id_content = data.id_content;
-    // If there are no blocks, set the default block content
-    if (blocks == false) {
-        blocks = [{
-        type: "paragraph",
-        data: {
-            text: "請在此輸入內容"
-        }
-        }]
-    }
-    editor.render({blocks: blocks, version: "2.11.10"});
-    setTimeout(() => {
-        restoreIdContent(id_content);
-    }, "100");
-    
 };
 
 /**

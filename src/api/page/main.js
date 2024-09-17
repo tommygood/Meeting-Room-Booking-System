@@ -42,24 +42,6 @@ router.get('/userlobby', async function(req, res) {
   }
 })
 
-// get the page for admin to edit the rules
-router.get('/rules', async function(req, res) {
-    try {
-      const result = jwt.verifyJwtToken(req.cookies.token);
-      if (result.suc && await User.isAdmin(result.data.data)) {
-        // use path.resolve to get the absolute path
-        res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/ManagerTextedit.html'));
-      }
-      else {
-        res.redirect('/page/main');
-      }
-    }
-    catch(e) {
-      console.log(e);
-      res.redirect('/page/main');
-    }
-})
-
 // get the page for admin to check the user privilege and violation
 router.get('/privilege', async function(req, res) {
   try {
