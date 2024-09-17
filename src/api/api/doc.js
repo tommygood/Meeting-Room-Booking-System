@@ -26,7 +26,8 @@ router.post('/', async function(req, res) {
         if (result.suc) {
             const doc_name = req.body.doc_name;
             const blocks = req.body.blocks;
-            const suc = await Doc.insert(doc_name, blocks);
+            const id_content = req.body.id_content;
+            const suc = await Doc.insert(doc_name, blocks, id_content);
             res.json({suc});
         }
         else {

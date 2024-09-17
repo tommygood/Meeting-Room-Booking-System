@@ -10,7 +10,7 @@ module.exports = {
         }
         else {
             try {
-                const sql = "select blocks from `Doc` where `name` = ?;";
+                const sql = "select blocks, id_content from `Doc` where `name` = ?;";
                 const result = await conn.query(sql, [name]);
                 db_conn.closeDBConnection(conn);
                 return result[0];
@@ -23,8 +23,9 @@ module.exports = {
         }
     },
 
-    // insert doc into db by doc_name, content of blocks and update if exists
-    insert : async function (name, blocks) {
+    // insert doc into db by doc_name, content of blocks and specify id of div. 
+    // If doc_name already exists, update the blocks and id_content
+    insert : async function (name, blocks, id_content) {
         const conn = await db_conn.getDBConnection();
         if (conn == null) {
             return false;
@@ -32,8 +33,9 @@ module.exports = {
         else {
             try {
                 blocks = JSON.stringify(blocks);
-                const sql = "insert into `Doc` (`name`, `blocks`) values (?, ?) ON DUPLICATE KEY UPDATE `blocks` = ?;";
-                await conn.query(sql, [name, blocks, blocks]);
+                id_content = JSON.stringify(id_content);
+                const sql = "insert into `Doc` (`name`, `blocks`, `id_content`) values (?, ?, ?) ON DUPLICATE KEY UPDATE `blocks` = ? , `id_content` = ?;";
+                await conn.query(sql, [name, blocks, id_content, blocks, id_content]);
                 db_conn.closeDBConnection(conn);
                 return true;
             }
