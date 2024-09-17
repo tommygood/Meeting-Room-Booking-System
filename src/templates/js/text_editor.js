@@ -50,9 +50,6 @@ class SimpleImage {
       url: {},
       caption: {
         b: true,
-        a: {
-          href: true
-        },
         i: true
       }
     }

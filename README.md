@@ -21,22 +21,19 @@
   - Send email to all admins with alias email sender which could be different from gmail account.
   - In this case, alias email would be the ncu email which you need to <a href='https://support.mail.ncu.edu.tw/articles/conf/gmail_new.html'>add a mail account</a> in gmail settings.
 - Text Editor
-  - A simple text editor based on Editor.js.
-  - you can now goto `/page/rules` and do text edition with saving function.
-    <details>
-      <summary>Demo</summary>
-
-      ![image](https://github.com/user-attachments/assets/f8b8de1b-9051-4dff-885d-7a5747426808)
-    </details>
-
-  - text editor function
-    1. support text and image input.
-    2. support convert text to hypertext, bold and italics.
+  - A text editor based on Editor.js.
+  - 功能
+    1. 支援文字和圖片輸入
+    2. 支援將文字轉為 hypertext, bold and italics
       - ![image](https://github.com/user-attachments/assets/950ae35c-ba8e-4f21-95f6-651d822fed12)
-    3. support special char which will be converted to specify symbol
-      - A `- ` at the begining of sentence will be converted to `• `
-      - A `# ` at the begining of sentence will make content of this sentence to be the div element's id of this sentence.
-    4. save the file by clicking save button with file name.
+    3. 客製化功能
+      - 句首的 `- ` 會被轉換成 `• `
+      - 錨點
+        1. 將文字設為 hypertext 作為錨點，並指定對應處的名稱
+        - ![image](https://github.com/user-attachments/assets/7999edfc-b1ad-4bc6-acd0-e8ac2c43cbc0)
+        3. 句首為 `# ` 指定錨點按下的對應處
+        - ![image](https://github.com/user-attachments/assets/3e7e3f75-16a6-4a18-b161-9c92c31a5e92)
+    4. 按下 save button 並輸入檔名
 ## Prerequisite
 - Node v20 up
 ## Usage
