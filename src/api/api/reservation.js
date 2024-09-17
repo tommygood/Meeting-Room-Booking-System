@@ -27,6 +27,7 @@ router.get('/', async function(req, res) {
 });
 
 // insert a reservation if not conflict with other reservations
+// insert a reservation if not conflict with other reservations
 router.post('/', async function(req, res) {
     try {
         // Verify the token
@@ -111,7 +112,7 @@ router.put('/', async function(req, res) {
             }
             else {
                 // if user privilege is less than 2, then only allow to update the reservation which is created by the user itself
-                if (user_priveilege > 1) {
+                if (user_priveilege >= 1) {
                     suc = await Reservation.update(reserve_id, room_id, name, start_time, end_time, show, ext, status);
                 }  
                 else {

@@ -15,7 +15,8 @@ async function getinfo(type){
   }
 
 async function setAccountName() {
-    const account_type = await getinfo('chinesename');
+    var account_type = await getinfo('chinesename');
+    account_type = DOMPurify.sanitize(account_type);
     document.getElementById("accountName").innerHTML += account_type;
   }
   setAccountName();
@@ -78,18 +79,14 @@ function fetchData(start, end) {
   });
 }
 
-function saveContent(){
-
-}
 
 
-let grid; // 全局變數來保留 Grid.js 實例
+let grid; 
 
 function updateGrid(rows) {
   const gridContainer = document.getElementById('gridtable');
-  gridContainer.innerHTML = ''; // 清空容器
+  gridContainer.innerHTML = ''; 
 
-  // 創建新的 Grid.js 實例並渲染
   grid = new gridjs.Grid({
     columns: [
       '日期', 
@@ -100,11 +97,12 @@ function updateGrid(rows) {
         formatter: (cell) => gridjs.html(cell)
       }
     ],
-    data: rows.map(row => row.data), // 初始資料
+    data: rows.map(row => row.data), 
     width: '900px',
     fixedHeader: true,
     search: false,
     resizable: true,
+  
     style: {
       container: {
         'margin-left': '20px'
@@ -139,7 +137,7 @@ function searchBoard() {
   startDate.setHours(0, 0, 0, 0); 
   const start = startDate.toISOString().split('.')[0];
 
-  const endDate = new Date(endInput);
+  const endDate = new Date(endInput); 
   endDate.setHours(23, 59, 59, 999); 
   const end = endDate.toISOString().split('.')[0];
 
@@ -158,6 +156,11 @@ function searchBoard() {
       console.error('Error rendering Grid.js:', error);
     });
 }
+
+function saveContent(){
+  console.log(grid);
+}
+
 
 document.addEventListener("DOMContentLoaded", function() {
   // 設定初始的日期範圍

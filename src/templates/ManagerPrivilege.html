@@ -3,6 +3,7 @@
         <meta charset="UTF-8">
         <title>權限管理</title>
         <script src="https://unpkg.com/gridjs@6.2.0/dist/gridjs.umd.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
         <script src="/js/ManagerPrivilege.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
         <link rel="stylesheet" href="/css/ManagerPrivilege.css">
@@ -54,8 +55,8 @@
                     <div class="popup-input">
                         <h2 class="title">目前權限 :&nbsp;</h2>
                         <select id="privilegeSelect" class="selector" name="privilege" >
-                            <option value="true">管理者</option>
-                            <option value="false">一般使用者</option>
+                            <option value="1">管理者</option>
+                            <option value="0">一般使用者</option>
                         </select>
                     </div>
                     <div class="popup-input">
