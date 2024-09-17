@@ -13,12 +13,12 @@ router.get('/', async function(req, res) {
         res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/ManagerTextedit.html'));
       }
       else {
-        res.redirect('/page/main');
+        res.status(403).send('Bad Request');
       }
     }
     catch(e) {
-      console.log(e);
-      res.redirect('/page/main');
+      console.error(e);
+      res.status(500).send('Internal Server Error');
     }
 })
 
@@ -30,7 +30,7 @@ router.get('/demo', function(req, res) {
     }
     catch(e) {
         console.error(e);
-        res.redirect('/page/main');
+        res.status(500).send('Internal Server Error');
     }
 })
 

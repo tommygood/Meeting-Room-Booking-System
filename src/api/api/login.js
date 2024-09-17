@@ -9,24 +9,14 @@ const jwt = require('jsonwebtoken');
 const oauth_config = oauth.config;
 const host = config.host;
 
-router.post('/', async function(req, res) {
-    try {
-        const account = req.body.account;
-        const password = req.body.password;
-        res.json({suc : false});
-    }
-    catch(e) {
-        console.log(e);
-        res.json({result : 'error'});
-    }
-})
 
 router.get('/sso', async function(req, res) {
 	try {
     	await oauth.run(host, req, res);
 	}
 	catch(e) {
-      console.log(e);
+      console.error(e);
+      res.status(500);
       res.json({result : 'error'});
   }
 })
@@ -38,8 +28,6 @@ router.get('/callback', async function(req, res) {
 
       // insert/update user info into db
       User.insert(result.user_info);
-      console.log("ip: ", req.ip);
-      console.log(result);
       // Log the login result
       if (result.suc) {
         Log.insert(req.ip, Operator.getOperator.LoginSuc, result.user_info);
@@ -49,7 +37,8 @@ router.get('/callback', async function(req, res) {
       }
   }
   catch(e) {
-      console.log(e);
+      console.error(e);
+      res.status(500);
       res.json({result : 'error'});
   }
 })

@@ -11,7 +11,8 @@ router.get('/main', async function(req, res) {
       res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/Page_welcome.html'));
     }
     catch(e) {
-        console.log(e);
+        console.error(e);
+        res.status(500).send('Internal Server Error');
     }
 })
 
@@ -21,7 +22,8 @@ router.get('/lobby', async function(req, res) {
       res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/lobby.html'));
     }
     catch(e) {
-        console.log(e);
+        console.error(e);
+        res.status(500).send('Internal Server Error');
     }
 })
 
@@ -33,12 +35,12 @@ router.get('/userlobby', async function(req, res) {
       res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/userlobby.html'));
     }
     else {
-      res.redirect('/page/main');
+      res.status(403).send('Bad Request');
     }
   }
   catch(e) {
-    console.log(e);
-    res.redirect('/page/main');
+    console.error(e);
+    res.status(500).send('Internal Server Error');
   }
 })
 
@@ -51,12 +53,12 @@ router.get('/privilege', async function(req, res) {
       res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/ManagerPrivilege.html'));
     }
     else {
-      res.redirect('/page/main');
+      res.status(403).send('Bad Request');
     }
   }
   catch(e) {
-    console.log(e);
-    res.redirect('/page/main');
+    console.error(e);
+    res.status(500).send('Internal Server Error');
   }
 })
 
@@ -69,12 +71,12 @@ router.get('/conference', async function(req, res) {
       res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/ManagerConference.html'));
     }
     else {
-      res.redirect('/page/main');
+      res.status(403).send('Bad Request');
     }
   }
   catch(e) {
-    console.log(e);
-    res.redirect('/page/main');
+    console.error(e);
+    res.status(500).send('Internal Server Error');
   }
 })
 
@@ -87,12 +89,12 @@ router.get('/log', async function(req, res) {
       res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/ManagerLog.html'));
     }
     else {
-      res.redirect('/page/main');
+      res.status(403).send('Bad Request');
     }
   }
   catch(e) {
-    console.log(e);
-    res.redirect('/page/main');
+    console.error(e);
+    res.status(500).send('Internal Server Error');
   }
 })
 
