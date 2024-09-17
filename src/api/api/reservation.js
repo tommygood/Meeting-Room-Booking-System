@@ -31,7 +31,7 @@ router.post('/', async function(req, res) {
     try {
         // Verify the token
         const result = jwt.verifyJwtToken(req.cookies.token);
-        if (result.suc) {
+        if (result.suc && await User.isAdmin(result.data.data)) {
             const identifier = result.data.data;
             const room_id = req.body.room_id;
             const name = req.body.name;
@@ -49,7 +49,7 @@ router.post('/', async function(req, res) {
                 const suc = await Reservation.insert(identifier, room_id, name, start_time, end_time, show, ext);
                 res.json({suc});
                 // send email to admin if the reservation is successful
-                Email.send(Email.admin_email, "New reservation", `New reservation from ${identifier} at ${start_time} to ${end_time} in room ${room_id} is ${suc ? 'successful' : 'failed'}`);
+                Email.sendUser(result.data.data, Email.subject.succeessful_reservation, Email.text.succeessful_reservation(result.data.data, start_time, end_time, room_id));
             }
         }
         else {
@@ -63,6 +63,7 @@ router.post('/', async function(req, res) {
 });
 
 // get reservations which `show` is true and between the start_time and end_time
+// this is for showing the reservations in the TV screen
 router.get('/show', async function(req, res) {
     try {
         // Verify the token
@@ -88,7 +89,7 @@ router.put('/', async function(req, res) {
     try {
         // Verify the token
         const result = jwt.verifyJwtToken(req.cookies.token);
-        if (result.suc) {
+        if (result.suc && await User.isAdmin(result.data.data)) {
             const identifer = result.data.data;
             const reserve_id = req.body.reserve_id;
             const room_id = req.body.room_id;
@@ -134,10 +135,13 @@ router.delete('/', async function(req, res) {
     try {
         // Verify the token
         const result = jwt.verifyJwtToken(req.cookies.token);
-        if (result.suc) {
+        if (result.suc && await User.isAdmin(result.data.data)) {
             const reserve_id = req.body.reserve_id;
             const suc = await Reservation.delete(reserve_id);
             res.json({suc});
+            // send email to user who reserved the room if the reservation is deleted
+            const reservation = await Reservation.getById(reserve_id);
+            Email.sendUser(result.data.data, Email.subject.cancel_reservation, Email.text.cancel_reservation(result.data.data, reservation.start_time, reservation.end_time, reservation.room_id));
         }
         else {
             res.json({result : 'Invalid token'});

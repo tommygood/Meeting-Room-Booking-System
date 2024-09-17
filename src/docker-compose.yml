@@ -18,6 +18,8 @@ services:
       - host=${HOST}
       - oauth_client_id=${OAuth_Client_ID}
       - oauth_client_secret=${OAuth_Client_Secret}
+      - sender_mail_account=${Sender_Mail_Account}
+      - sender_mail_password=${Sender_Mail_Password}
 
     # make sure the network 'database' existed
     #networks:
