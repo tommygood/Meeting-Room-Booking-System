@@ -17,11 +17,13 @@ router.get('/', async function(req, res) {
             res.json({data});
 		}
 		else {
+            res.status(403);
 			res.json({result : 'Invalid token'});
 		}
     }
     catch(e) {
-        console.log(e);
+        console.error(e);
+        res.status(500);
         res.json({result : 'error'});
     }
 });
@@ -54,11 +56,13 @@ router.post('/', async function(req, res) {
             }
         }
         else {
+            res.status(403);
             res.json({result : 'Invalid token'});
         }
     }
     catch(e) {
-        console.log(e);
+        console.error(e);
+        res.status(500);
         res.json({result : 'error'});
     }
 });
@@ -76,11 +80,13 @@ router.get('/show', async function(req, res) {
             res.json({data});
         }
         else {
+            res.status(403);
             res.json({result : 'Invalid token'});
         }
     }
     catch(e) {
-        console.log(e);
+        console.error(e);
+        res.status(500);
         res.json({result : 'error'});
     }
 });
@@ -122,11 +128,13 @@ router.put('/', async function(req, res) {
             }
         }
         else {
+            res.status(403);
             res.json({result : 'Invalid token'});
         }
     }
     catch(e) {
-        console.log(e);
+        console.error(e);
+        res.status(500);
         res.json({result : 'error'});
     }
 });
@@ -145,11 +153,13 @@ router.delete('/', async function(req, res) {
             Email.sendUser(result.data.data, Email.subject.cancel_reservation, Email.text.cancel_reservation(result.data.data, reservation.start_time, reservation.end_time, reservation.room_id));
         }
         else {
+            res.status(403);
             res.json({result : 'Invalid token'});
         }
     }
     catch(e) {
-        console.log(e);
+        console.error(e);
+        res.status(500);
         res.json({result : 'error'});
     }
 });
