@@ -104,16 +104,19 @@ async function getBlocksAndId(doc_name) {
 
 // restore the id back to the content of the block with the corresponding data-id
 function restoreIdContent(old_id_content) {
+    if (old_id_content == null || old_id_content == undefined) return;
     id_content = old_id_content;
+    // get all edior blocks
     const all_divs = document.getElementsByClassName('ce-block');
+    // put the id back to the block
     for (const [key, value] of Object.entries(old_id_content)) {
-    // find all the div which have data-id atrribute equal to key
-    for (let i = 0; i < all_divs.length; i++) {
-        if (all_divs[i].getAttribute('data-id') == key) {
-        const block = all_divs[i].getElementsByTagName('div')[0];
-        block.id = value;
+        // find all the div which have data-id atrribute equal to key
+        for (let i = 0; i < all_divs.length; i++) {
+            if (all_divs[i].getAttribute('data-id') == key) {
+            const block = all_divs[i].getElementsByTagName('div')[0];
+            block.id = value;
+            }
         }
-    }
     }
 }
 
