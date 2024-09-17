@@ -23,6 +23,27 @@ module.exports = {
         }
     },
 
+    // get all docs name
+    getAll : async function () {
+        const conn = await db_conn.getDBConnection();
+        if (conn == null) {
+            return null;
+        }
+        else {
+            try {
+                const sql = "select name from `Doc`;";
+                const result = await conn.query(sql);
+                db_conn.closeDBConnection(conn);
+                return result;
+            }
+            catch(e) {
+                console.error("error getting all docs : ", e);
+                db_conn.closeDBConnection(conn);
+                return null;
+            }
+        }
+    },
+
     // insert doc into db by doc_name, content of blocks and specify id of div. 
     // If doc_name already exists, update the blocks and id_content
     insert : async function (name, blocks, id_content) {

@@ -71,6 +71,31 @@ saveButton.addEventListener('click', () => {
     })
 })
 
+// display all doc
+async function getAllDoc() {
+    const res = await fetch(`/api/doc/all`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    const data = await res.json();
+    return data.data;
+}
+
+async function displayAllDoc() {
+    const data = await getAllDoc();
+    // put data into div
+    const docList = document.getElementById('doc_list');
+    for (let i = 0; i < data.length; i++) {
+        const doc = document.createElement('li');
+        doc.innerHTML = `<a href="/page/rules/demo?doc_name=${data[i].name}">${data[i].name}</a>`;
+        docList.appendChild(doc);
+    }
+}
+
+displayAllDoc();
+
 function changeHyphen(editorInput) {
     // Save the caret position before modifying the text
     const selection = window.getSelection();
@@ -127,9 +152,9 @@ async function sendBlocksAndId(blocks, doc_name, id_content) {
     })
     if (await res.json()) {
         alert('文件已儲存');
+        location.reload();
     }
     else {
         alert('文件儲存失敗');
     }
-    location.reload();
 }
