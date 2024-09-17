@@ -3,6 +3,7 @@ const router = require('express').Router();
 const doc = require('../model/doc.js');
 const Doc = require('./../model/doc.js');
 const jwt = require('./../utilities/jwt.js');
+const User = require('./../model/user.js');
 
 // get doc by doc_name
 router.get('/', async function(req, res) {
@@ -13,7 +14,21 @@ router.get('/', async function(req, res) {
         res.json({data});
     }
     catch(e) {
-        console.log(e);
+        console.error(e);
+        res.status(500);
+        res.json({result : 'error'});
+    }
+})
+
+// get all docs
+router.get('/all', async function(req, res) {
+    try {
+        const data = await Doc.getAll();
+        res.json({data});
+    }
+    catch(e) {
+        console.error(e);
+        res.status(500);
         res.json({result : 'error'});
     }
 })
@@ -23,18 +38,21 @@ router.post('/', async function(req, res) {
     try {
         // Verify the token
         const result = jwt.verifyJwtToken(req.cookies.token);
-        if (result.suc) {
+        if (result.suc && await User.isAdmin(result.data.data)) {
             const doc_name = req.body.doc_name;
             const blocks = req.body.blocks;
-            const suc = await Doc.insert(doc_name, blocks);
+            const id_content = req.body.id_content;
+            const suc = await Doc.insert(doc_name, blocks, id_content);
             res.json({suc});
         }
         else {
+            res.status(403);
             res.json({result : 'Invalid token'});
         }
     }
     catch(e) {
-        console.log(e);
+        console.error(e);
+        res.status(500);
         res.json({result : 'error'});
     }
 });
