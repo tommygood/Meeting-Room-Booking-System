@@ -75,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 //換頁面
 function changePage(button){
-    console.log(button.id);
     location.href = "/page/"+button.id;
 }
 
@@ -132,17 +131,13 @@ async function reservationPut(reserve_id) {
   })
   .then(response => response.json())
   .then((data) => {
-    console.log(data);
-
-    if (data.result === "Invalid time, start_time should be less than end_time") {
-      alert('無效的時間，開始時間應該早於結束時間。');
-    } else if (data.result === "Invalid time, there is a confliction with other reservations") {
-      alert('無效的時間，與其他預約有衝突。');
-    } else if (data.result === 'Invalid token') {
-      alert('無效的憑證，請重新登入。');
-    } else if (data.suc) {
-      alert("123");
-    }
+   if(data.suc){
+      alert("預約成功");
+      window.location.reload();
+   }
+   else{
+    alert(`預約失敗：${data.result}`);
+   }
   })
   .catch(error => {
     console.error('Error:', error);

@@ -137,7 +137,6 @@ async function reservationPost(){
   const threeMonthsLater = new Date(today.setMonth(today.getMonth() + 3));
 
   const privilege = info.privilege_level;
-  console.log(privilege);
   if(privilege!=1){
     if (reservationDate > threeMonthsLater) {
       alert('借閱日期不能超過三個月後，請選擇在三個月內的日期！');
@@ -162,17 +161,13 @@ async function reservationPost(){
   }) 
   .then(response =>response.json())
   .then((data) => {
-    console.log(data);
-    if (data.result === "Invalid time, start_time should be less than end_time") {
-      alert('無效的時間，開始時間應該早於結束時間。');
-    } else if (data.result === "Invalid time, there is a confliction with other reservations") {
-      alert('無效的時間，與其他預約有衝突。');
-    } else if (data.result === 'Invalid token') {
-      alert('無效的憑證，請重新登入。');
-    } else if (data.suc) {
-      alert('預約成功！');
-      window.location.reload(); 
-    }
+    if(data.suc){
+      alert("預約成功");
+      window.location.reload();
+   }
+   else{
+    alert(`預約失敗：${data.result}`);
+   }
   })
   .catch(error => {
       console.error('Error:', error);
@@ -217,15 +212,13 @@ async function reservationPut(reserve_id) {
   })
   .then(response => response.json())
   .then((data) => {
-    if (data.result === "Invalid time, start_time should be less than end_time") {
-      alert('無效的時間，開始時間應該早於結束時間。');
-    } else if (data.result === "Invalid time, there is a confliction with other reservations") {
-      alert('無效的時間，與其他預約有衝突。');
-    } else if (data.result === 'Invalid token') {
-      alert('無效的憑證，請重新登入。');
-    } else if (data.suc) {
-      window.location.reload(); 
-    }
+    if(data.suc){
+      alert("預約成功");
+      window.location.reload();
+   }
+   else{
+    alert(`預約失敗：${data.result}`);
+   }
   })
   .catch(error => {
     console.error('Error:', error);

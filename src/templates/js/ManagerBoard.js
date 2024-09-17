@@ -66,8 +66,8 @@ function saveContent() {
       show: checkboxValue,
       status:false,
     };
-    console.log(data);
-  fetch(reserve_put, {
+    
+    fetch(reserve_put, {
     method: 'PUT',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
