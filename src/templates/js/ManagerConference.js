@@ -100,18 +100,17 @@ function formatDateTimeForDatabase(dateTime) {
 //編輯會議
 async function reservationPut(reserve_id) {
   const formData = new FormData(document.getElementById("request"));
-  const name = DOMPurify.sanitize(formData.get('name'));
-  const startdate = DOMPurify.sanitize(formData.get('startdate'));
-  const starthour = DOMPurify.sanitize(formData.get('starthour'));
-  const startminute = DOMPurify.sanitize(formData.get('startminute'));
-  const enddate = DOMPurify.sanitize(formData.get('enddate'));
-  const endhour = DOMPurify.sanitize(formData.get('endhour'));
-  const endminute = DOMPurify.sanitize(formData.get('endminute'));
-  const ext = DOMPurify.sanitize(formData.get('ext'));
+  const name = formData.get('name');
+  const startdate =formData.get('startdate');
+  const starthour =formData.get('starthour');
+  const startminute =formData.get('startminute');
+  const enddate =formData.get('enddate');
+  const endhour =formData.get('endhour');
+  const endminute =formData.get('endminute');
+  const ext =formData.get('ext');
   const startTimestamp = formatDateTimeForDatabase(`${startdate}T${starthour}:${startminute}:00`);
   const endTimestamp = formatDateTimeForDatabase(`${enddate}T${endhour}:${endminute}:00`);
-  const startOfDay = formatDateTimeForDatabase(`${startdate}T00:00:00`);
-  const endOfDay = formatDateTimeForDatabase(`${enddate}T23:59:59`);
+
   // 構建數據對象
   const data = {
     reserve_id: reserve_id,
@@ -121,9 +120,8 @@ async function reservationPut(reserve_id) {
     end_time: endTimestamp,
     ext: ext,
     show: true,
-    status: true,
+    status: false,
   };
-  console.log(data);
   fetch('/api/reservation', {
     method: 'PUT',
     credentials: 'include', 
@@ -134,6 +132,7 @@ async function reservationPut(reserve_id) {
   })
   .then(response => response.json())
   .then((data) => {
+    console.log(data);
 
     if (data.result === "Invalid time, start_time should be less than end_time") {
       alert('無效的時間，開始時間應該早於結束時間。');
@@ -142,7 +141,6 @@ async function reservationPut(reserve_id) {
     } else if (data.result === 'Invalid token') {
       alert('無效的憑證，請重新登入。');
     } else if (data.suc) {
-      console.log(data.result);
       alert("123");
     }
   })

@@ -107,14 +107,14 @@ async function reservationPost(){
   
   const form = document.getElementById('request');
   const formData = new FormData(form);
-  const name = DOMPurify.sanitize(formData.get('name'));
-  const startdate = DOMPurify.sanitize(formData.get('startdate'));
-  const starthour = DOMPurify.sanitize(formData.get('starthour'));
-  const startminute = DOMPurify.sanitize(formData.get('startminute'));
-  const enddate = DOMPurify.sanitize(formData.get('enddate'));
-  const endhour = DOMPurify.sanitize(formData.get('endhour'));
-  const endminute = DOMPurify.sanitize(formData.get('endminute'));
-  const ext = DOMPurify.sanitize(formData.get('ext'));
+  const name =formData.get('name');
+  const startdate =formData.get('startdate');
+  const starthour =formData.get('starthour');
+  const startminute =formData.get('startminute');
+  const enddate =formData.get('enddate');
+  const endhour =formData.get('endhour');
+  const endminute =formData.get('endminute');
+  const ext =formData.get('ext');
   const startTimestamp = formatDateTimeForDatabase(`${startdate}T${starthour}:${startminute}:00`);
   const endTimestamp = formatDateTimeForDatabase(`${enddate}T${endhour}:${endminute}:00`);
 
@@ -182,14 +182,14 @@ async function reservationPost(){
 //編輯會議
 async function reservationPut(reserve_id) {
   const formData = new FormData(document.getElementById("requestedit"));
-  const name = DOMPurify.sanitize(formData.get('name'));
-  const startdate = DOMPurify.sanitize(formData.get('startdate'));
-  const starthour = DOMPurify.sanitize(formData.get('starthour'));
-  const startminute = DOMPurify.sanitize(formData.get('startminute'));
-  const enddate = DOMPurify.sanitize(formData.get('enddate'));
-  const endhour = DOMPurify.sanitize(formData.get('endhour'));
-  const endminute = DOMPurify.sanitize(formData.get('endminute'));
-  const ext = DOMPurify.sanitize(formData.get('ext'));
+  const name =formData.get('name');
+  const startdate =formData.get('startdate');
+  const starthour =formData.get('starthour');
+  const startminute =formData.get('startminute');
+  const enddate =formData.get('enddate');
+  const endhour =formData.get('endhour');
+  const endminute = formData.get('endminute');
+  const ext = formData.get('ext');
   const startTimestamp = formatDateTimeForDatabase(`${startdate}T${starthour}:${startminute}:00`);
   const endTimestamp = formatDateTimeForDatabase(`${enddate}T${endhour}:${endminute}:00`);
   const startOfDay = formatDateTimeForDatabase(`${startdate}T00:00:00`);
@@ -204,7 +204,7 @@ async function reservationPut(reserve_id) {
     end_time: endTimestamp,
     ext: ext,
     show: true,
-    status: true,
+    status: false,
   };
 
   fetch('/api/reservation', {
@@ -334,7 +334,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
       Swal.fire({
-        title: DOMPurify.sanitize(info.event.title),
+        title:DOMPurify.santinize(info.event.title),
         html: DOMPurify.sanitize(`
             ${StartTime} ~ ${EndTime}<br>
             會議：${info.event.title}<br>

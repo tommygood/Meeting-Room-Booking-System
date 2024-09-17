@@ -47,7 +47,7 @@ function setPermission(identifier,name){
 //刪除使用者(status設為-1，fetch時候不會顯示status==-1)
 function deleteUser(){
   Swal.fire({
-    title: DOMPurify.sanitize(`確定要刪除「${selectedName}」？`),
+    title:`確定要刪除「${selectedName}」？`,
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#d33', 
@@ -69,15 +69,15 @@ function deleteUser(){
           console.error('Error:', error);
       });
       Swal.fire(
-        DOMPurify.sanitize('已刪除！'),
-        DOMPurify.sanitize('您的數據已被刪除。'),
+        '已刪除！',
+        '您的數據已被刪除。',
         'success'
       );
 
     } else {
       Swal.fire(
-        DOMPurify.sanitize('已取消'),
-        DOMPurify.sanitize('您的數據未被刪除。'),
+        '已取消',
+       '您的數據未被刪除。',
         'info' 
       );
     }
@@ -196,8 +196,9 @@ const status_put = '/api/user/status';
 function putPrivilege(){
   const form = document.getElementById('privilege-form');
   const formData = new FormData(form);
-  const privileges = DOMPurify.sanitize(formData.get('privilege') ); 
-  const status = DOMPurify.sanitize(formData.get('status')); 
+  const privileges = (formData.get('privilege')== 1 ? 1 : 0 ); 
+  const status = (formData.get('status')== 1 ? 1 : 0); 
+
   const data={
     identifier:selectedIdentifier,
     privileges: privileges,
@@ -299,8 +300,8 @@ async function fetchData() {
     const filteredData = result.data.filter(item => item.status !== -1);
 
     const data = await Promise.all(filteredData.map(async item => {
-      const privilegeText = item.privilege_level === 1 ? '管理者' : '一般使用者';
-      const statusText = item.status === 1 ? '✔️' : '❌';
+      const privilegeText = item.privilege_level == 1 ? '管理者' : '一般使用者';
+      const statusText = item.status == 1 ? '✔️' : '❌';
       return {
         data: [
           item.chinesename,
