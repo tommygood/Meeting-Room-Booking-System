@@ -5,7 +5,7 @@ module.exports = {
     convertIPv4ToIPv6 : function (ip) {
         // convert ipv6 to ipv4 if it is ipv6
         // ::1 is the loopback address in IPv6
-	    return (ip.includes(':') ? ip.split(":").pop() : ip) == 1 ? "127.0.0.1" : ip;
+	    return (ip.includes(':') ? ip.split(":").pop() : ip) == 1 ? "127.0.0.1" : ip.split(":").pop();
     },
 
     // insert log into db by ip, operator_id, user identifier
