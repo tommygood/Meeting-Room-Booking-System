@@ -1,4 +1,12 @@
 const db_conn = require('./conn');
+const Operator = require('./operator');
+
+function replaceOperation(obj) {
+    for (let i = 0; i < obj.length; i++) {
+        obj[i].operation_id = Operator.get(obj[i].operation_id);
+    }
+    return obj;
+}
 
 module.exports = {
 
@@ -39,7 +47,7 @@ module.exports = {
         else {
             try {
                 const sql = "select * from `Log` LIMIT ? OFFSET ?;";
-                const result = await conn.query(sql, [parseInt(num), parseInt(offset)]);
+                const result = replaceOperation(await conn.query(sql, [parseInt(num), parseInt(offset)]));
                 db_conn.closeDBConnection(conn);
                 return result;
             }

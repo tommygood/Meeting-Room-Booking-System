@@ -30,10 +30,10 @@ router.get('/callback', async function(req, res) {
       User.insert(result.user_info);
       // Log the login result
       if (result.suc) {
-        Log.insert(req.ip, Operator.getOperator.LoginSuc, result.user_info);
+        Log.insert(req.ip, Operator.getOperator.LoginSuc.code, result.user_info);
       }
       else {
-        Log.insert(req.ip, Operator.getOperator.LoginFail, result.user_info);
+        Log.insert(req.ip, Operator.getOperator.LoginFail.code, result.user_info);
       }
   }
   catch(e) {

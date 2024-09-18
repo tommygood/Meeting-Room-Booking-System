@@ -23,6 +23,7 @@ module.exports = {
 	run : async function run(host, req, res) {
 		const client = new AuthorizationCode(this.config);
 	  
+		
 		const authorizationUri = client.authorizeURL({
 		  redirect_uri: `${host}/api/login/callback`,
 		  scope: this.scope,
