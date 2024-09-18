@@ -35,6 +35,7 @@
         3. 句首為 `# ` 指定錨點按下的對應處
         - ![image](https://github.com/user-attachments/assets/3e7e3f75-16a6-4a18-b161-9c92c31a5e92)
     4. 按下 save button 並輸入檔名
+    5. 存取 `/page/rules/demo?doc_name=<檔名>` 即可看到輸入的內容
 ## Prerequisite
 - Node v20 up
 ## Usage

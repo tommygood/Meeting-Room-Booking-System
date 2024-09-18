@@ -338,6 +338,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
       Swal.fire({
         title:DOMPurify.sanitize(info.event.title),
+
         html: DOMPurify.sanitize(`
             ${StartTime} ~ ${EndTime}<br>
             會議：${info.event.title}<br>

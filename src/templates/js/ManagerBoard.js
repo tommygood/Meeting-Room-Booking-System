@@ -52,6 +52,7 @@ const reserve_put=`/api/reservation/`;
 function saveContent() {
   const rows = grid.config.data;
   rows.map(row => {
+
     const checkbox = document.querySelector(`#gridtable input[type="checkbox"][value="${row[4]}"]`);
     // 獲取 checkbox 當前的 checked 狀態
     const checkboxValue = checkbox ? checkbox.checked : false;
@@ -77,6 +78,7 @@ function saveContent() {
   });
   alert('預約完成');
   window.location.reload();
+
 }
 
 //get board information
