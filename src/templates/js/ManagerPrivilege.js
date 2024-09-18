@@ -242,6 +242,7 @@ async function showViolation(identifier){
   .then(result =>{
     const violation = result.data || []; 
     const violationList = violation.filter(violation => violation.identifier === identifier);
+    console.log(violationList);
     return violationList;
   });
   if (violation.length > 0) {
@@ -259,6 +260,7 @@ async function showViolation(identifier){
           <p><strong>違規時間：</strong> ${formattedDate} (${dayOfWeek})</p>
           <p><strong>原因：</strong> ${violation.reason}</p>
           <p><strong>備註：</strong> ${violation.remark}</p>
+          <button type="button" class="delete-btn" data-id="${violation.violation_id}">刪除</button>
           <hr>
         </div>
       `);
@@ -273,6 +275,16 @@ async function showViolation(identifier){
       customClass: {
         popup: 'swal-wide', 
       },
+      didOpen: () => {
+        // 動態綁定刪除按鈕的點擊事件
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        deleteButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const violationId = this.getAttribute('data-id');
+            violationDelete(violationId); // 呼叫刪除函數
+          });
+        });
+      }
     });
   } else {
     Swal.fire({
@@ -283,6 +295,34 @@ async function showViolation(identifier){
     });
   }
 }
+
+const violation_del=`/api/violation`;
+function violationDelete(violation_id){
+  try{
+
+    fetch(violation_del,{
+      method: 'DELETE',
+      credentials: 'include', 
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({violation_id: violation_id}),
+    })
+    .then(response => response.json())
+    .then(data=>{
+      if(data.suc){
+        alert("刪除完成");
+        window.location.reload();
+      }
+      else{
+        alert("刪除失敗");
+      }
+    });
+  } catch(error){
+    console.error('Error:', error);
+  }
+}
+
 
 
 

@@ -51,7 +51,7 @@ function formatDateForMySQL(dateString) {
 const reserve_put=`/api/reservation/`;
 function saveContent() {
   const rows = grid.config.data;
-  const result = rows.map(row => {
+  rows.map(row => {
     const checkbox = document.querySelector(`#gridtable input[type="checkbox"][value="${row[4]}"]`);
     // 獲取 checkbox 當前的 checked 狀態
     const checkboxValue = checkbox ? checkbox.checked : false;
@@ -72,14 +72,11 @@ function saveContent() {
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-  })
- .then(response => response.json())
- .then(()=>{
-    alert('儲存完成');
-    window.location.reload();
- });
-});
-
+    })
+    .then(response => response.json());
+  });
+  alert('預約完成');
+  window.location.reload();
 }
 
 //get board information
