@@ -20,6 +20,16 @@ async function setUserInfo(){
     info = await getUserInfo();
     const name = DOMPurify.sanitize(info.chinesename);
     document.getElementById("accountName").innerHTML += name;
+    const useradmin = document.getElementById('useradmin');
+  try {
+    const privilege = info.privilege_level;
+
+    if (privilege != 1) {
+      useradmin.style.display = 'none';
+    }
+  } catch (error) {
+    console.error('Error fetching privilege:', error);
+  }
   }
   catch (error) {
     console.error("Error:", error);
@@ -327,7 +337,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
       Swal.fire({
-        title:DOMPurify.santinize(info.event.title),
+        title:DOMPurify.sanitize(info.event.title),
         html: DOMPurify.sanitize(`
             ${StartTime} ~ ${EndTime}<br>
             會議：${info.event.title}<br>
@@ -522,18 +532,3 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-
-// 顯示使用者/管理者
-document.addEventListener('DOMContentLoaded', async function() {
-  const useradmin = document.getElementById('useradmin');
-  try {
-    const privilege = await getPrivilege(); 
-
-    if (privilege != 1) {
-      useradmin.style.display = 'none';
-    }
-  } catch (error) {
-    console.error('Error fetching privilege:', error);
-  }
-});
