@@ -107,14 +107,14 @@ async function reservationPost(){
   
   const form = document.getElementById('request');
   const formData = new FormData(form);
-  const name = DOMPurify.sanitize(formData.get('name'));
-  const startdate = DOMPurify.sanitize(formData.get('startdate'));
-  const starthour = DOMPurify.sanitize(formData.get('starthour'));
-  const startminute = DOMPurify.sanitize(formData.get('startminute'));
-  const enddate = DOMPurify.sanitize(formData.get('enddate'));
-  const endhour = DOMPurify.sanitize(formData.get('endhour'));
-  const endminute = DOMPurify.sanitize(formData.get('endminute'));
-  const ext = DOMPurify.sanitize(formData.get('ext'));
+  const name =formData.get('name');
+  const startdate =formData.get('startdate');
+  const starthour =formData.get('starthour');
+  const startminute =formData.get('startminute');
+  const enddate =formData.get('enddate');
+  const endhour =formData.get('endhour');
+  const endminute =formData.get('endminute');
+  const ext =formData.get('ext');
   const startTimestamp = formatDateTimeForDatabase(`${startdate}T${starthour}:${startminute}:00`);
   const endTimestamp = formatDateTimeForDatabase(`${enddate}T${endhour}:${endminute}:00`);
 
@@ -137,7 +137,6 @@ async function reservationPost(){
   const threeMonthsLater = new Date(today.setMonth(today.getMonth() + 3));
 
   const privilege = info.privilege_level;
-  console.log(privilege);
   if(privilege!=1){
     if (reservationDate > threeMonthsLater) {
       alert('借閱日期不能超過三個月後，請選擇在三個月內的日期！');
@@ -162,17 +161,13 @@ async function reservationPost(){
   }) 
   .then(response =>response.json())
   .then((data) => {
-    console.log(data);
-    if (data.result === "Invalid time, start_time should be less than end_time") {
-      alert('無效的時間，開始時間應該早於結束時間。');
-    } else if (data.result === "Invalid time, there is a confliction with other reservations") {
-      alert('無效的時間，與其他預約有衝突。');
-    } else if (data.result === 'Invalid token') {
-      alert('無效的憑證，請重新登入。');
-    } else if (data.suc) {
-      alert('預約成功！');
-      window.location.reload(); 
-    }
+    if(data.suc){
+      alert("預約成功");
+      window.location.reload();
+   }
+   else{
+    alert(`預約失敗：${data.result}`);
+   }
   })
   .catch(error => {
       console.error('Error:', error);
@@ -182,14 +177,14 @@ async function reservationPost(){
 //編輯會議
 async function reservationPut(reserve_id) {
   const formData = new FormData(document.getElementById("requestedit"));
-  const name = DOMPurify.sanitize(formData.get('name'));
-  const startdate = DOMPurify.sanitize(formData.get('startdate'));
-  const starthour = DOMPurify.sanitize(formData.get('starthour'));
-  const startminute = DOMPurify.sanitize(formData.get('startminute'));
-  const enddate = DOMPurify.sanitize(formData.get('enddate'));
-  const endhour = DOMPurify.sanitize(formData.get('endhour'));
-  const endminute = DOMPurify.sanitize(formData.get('endminute'));
-  const ext = DOMPurify.sanitize(formData.get('ext'));
+  const name =formData.get('name');
+  const startdate =formData.get('startdate');
+  const starthour =formData.get('starthour');
+  const startminute =formData.get('startminute');
+  const enddate =formData.get('enddate');
+  const endhour =formData.get('endhour');
+  const endminute = formData.get('endminute');
+  const ext = formData.get('ext');
   const startTimestamp = formatDateTimeForDatabase(`${startdate}T${starthour}:${startminute}:00`);
   const endTimestamp = formatDateTimeForDatabase(`${enddate}T${endhour}:${endminute}:00`);
   const startOfDay = formatDateTimeForDatabase(`${startdate}T00:00:00`);
@@ -204,7 +199,7 @@ async function reservationPut(reserve_id) {
     end_time: endTimestamp,
     ext: ext,
     show: true,
-    status: true,
+    status: false,
   };
 
   fetch('/api/reservation', {
@@ -217,15 +212,13 @@ async function reservationPut(reserve_id) {
   })
   .then(response => response.json())
   .then((data) => {
-    if (data.result === "Invalid time, start_time should be less than end_time") {
-      alert('無效的時間，開始時間應該早於結束時間。');
-    } else if (data.result === "Invalid time, there is a confliction with other reservations") {
-      alert('無效的時間，與其他預約有衝突。');
-    } else if (data.result === 'Invalid token') {
-      alert('無效的憑證，請重新登入。');
-    } else if (data.suc) {
-      window.location.reload(); 
-    }
+    if(data.suc){
+      alert("預約成功");
+      window.location.reload();
+   }
+   else{
+    alert(`預約失敗：${data.result}`);
+   }
   })
   .catch(error => {
     console.error('Error:', error);
@@ -334,7 +327,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
       Swal.fire({
-        title: DOMPurify.sanitize(info.event.title),
+        title:DOMPurify.santinize(info.event.title),
         html: DOMPurify.sanitize(`
             ${StartTime} ~ ${EndTime}<br>
             會議：${info.event.title}<br>

@@ -107,7 +107,6 @@ router.put('/', async function(req, res) {
             const ext = req.body.ext;
             const status = req.body.status;
             const user_priveilege = await User.getPrivilegeLevel(identifer);
-            
             let suc = false;
             // check if start_time is less than end_time and there is no confliction with other reservations
             if (start_time >= end_time) {
@@ -133,7 +132,7 @@ router.put('/', async function(req, res) {
         }
     }
     catch(e) {
-        console.error(e);
+            console.error(e);
         res.status(500);
         res.json({result : 'error'});
     }

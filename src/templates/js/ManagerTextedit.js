@@ -16,17 +16,12 @@ async function getinfo(type){
 
 async function setAccountName() {
     const account_type = await getinfo('chinesename');
-    console.log(account_type);
     document.getElementById("accountName").innerHTML += account_type;
   }
   setAccountName();
 
 
 
-function saveContent() {
-    var editor_content = quill.container.innerHTML ;
-    console.log(editor_content);
-}
 
 //當頁按鈕變色
 document.addEventListener("DOMContentLoaded",function(){
