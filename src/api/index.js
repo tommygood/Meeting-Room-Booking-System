@@ -33,6 +33,7 @@ app.use("/api/user", require("./api/user.js"));
 app.use("/api/doc", require("./api/doc.js"));
 app.use("/page", require("./page/main.js"));
 app.use("/page/board", require("./page/board.js"));
+app.use("/page/rules", require("./page/rules.js"));
 app.use("/example", require("./example.js"));
 app.use("/css", express.static(templates_path + '/css'));
 app.use("/image", express.static(templates_path + '/image'));

@@ -70,5 +70,6 @@ insert into Reservation value('100','admin','1','test','2024-09-09T12:00:00','20
 CREATE TABLE `Doc` (
     `name` varchar(40) NOT NULL,
     `blocks` longtext NOT NULL,
+    `id_content` varchar(200) NULL,
     PRIMARY KEY (`name`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -10,14 +10,14 @@ const api_info = '/api/info/';
       const response = await fetch(api_info+type,{ headers: { 'access_token': headers } });
       const data = await response.json();
       return data.data;
-      return data.data;
       } catch (error) {
       console.error("Error:", error);
     }
   }
 
 async function setAccountName() {
-    const account_type = await getinfo('chinesename');
+    var account_type = await getinfo('chinesename');
+    account_type = DOMPurify.sanitize(account_type);
     document.getElementById("accountName").innerHTML += account_type;
   }
   setAccountName();
@@ -47,7 +47,7 @@ function setPermission(identifier,name){
 //刪除使用者(status設為-1，fetch時候不會顯示status==-1)
 function deleteUser(){
   Swal.fire({
-    title: `確定要刪除「${selectedName}」？`,
+    title:`確定要刪除「${selectedName}」？`,
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#d33', 
@@ -77,7 +77,7 @@ function deleteUser(){
     } else {
       Swal.fire(
         '已取消',
-        '您的數據未被刪除。',
+       '您的數據未被刪除。',
         'info' 
       );
     }
@@ -151,7 +151,7 @@ async function addViolate(identifier){
       // 格式化為 mm/dd (星期幾)
       const formattedDate = `${month}/${day} (${dayOfWeek})`;
       option.value = event.reserve_id;  // 可以根據需要調整 value
-      option.textContent = `${formattedDate} ${event.name}`;
+      option.textContent = DOMPurify.sanitize(`${formattedDate} ${event.name}`);
       selectElement.appendChild(option);
     });
 }
@@ -196,8 +196,9 @@ const status_put = '/api/user/status';
 function putPrivilege(){
   const form = document.getElementById('privilege-form');
   const formData = new FormData(form);
-  const privileges = formData.get('privilege') === 'true'; 
-  const status = formData.get('status') === 'true'; 
+  const privileges = (formData.get('privilege')== 1 ? 1 : 0 ); 
+  const status = (formData.get('status')== 1 ? 1 : 0); 
+
   const data={
     identifier:selectedIdentifier,
     privileges: privileges,
@@ -253,18 +254,19 @@ async function showViolation(identifier){
       const daysOfWeek = ['日', '一', '二', '三', '四', '五', '六'];
       const dayOfWeek = `${daysOfWeek[date.getDay()]}`;
     
-      return `
+      const content= DOMPurify.sanitize(`
         <div >
           <p><strong>違規時間：</strong> ${formattedDate} (${dayOfWeek})</p>
           <p><strong>原因：</strong> ${violation.reason}</p>
           <p><strong>備註：</strong> ${violation.remark}</p>
           <hr>
         </div>
-      `;
+      `);
+      return content;
     }).join('');
       //刪除還沒寫
     Swal.fire({
-      title: "違規紀錄",
+      title: DOMPurify.sanitize("違規紀錄"),
       html: violationHtml,
       confirmButtonText: 'OK',
       width: '600px', 
@@ -274,8 +276,8 @@ async function showViolation(identifier){
     });
   } else {
     Swal.fire({
-      title: '沒有違規記錄',
-      text: '該用戶沒有違規記錄。',
+      title: DOMPurify.sanitize('沒有違規記錄'),
+      text: DOMPurify.sanitize('該用戶沒有違規記錄。'),
       icon: 'info',
       confirmButtonText: 'OK',
     });
@@ -298,8 +300,8 @@ async function fetchData() {
     const filteredData = result.data.filter(item => item.status !== -1);
 
     const data = await Promise.all(filteredData.map(async item => {
-      const privilegeText = item.privilege_level === 1 ? '管理者' : '一般使用者';
-      const statusText = item.status === 1 ? '✔️' : '❌';
+      const privilegeText = item.privilege_level == 1 ? '管理者' : '一般使用者';
+      const statusText = item.status == 1 ? '✔️' : '❌';
       return {
         data: [
           item.chinesename,
@@ -317,42 +319,6 @@ async function fetchData() {
     return data;
   }
 }
-
-
-
-//get user data
-async function fetchData() {
-  const response = await fetch(`/api/user`);
-  const result = await response.json();
-
-  if (result && Array.isArray(result.data)) {
-    // 過濾掉 status 為 -1 的項目
-    const filteredData = result.data.filter(item => item.status !== -1);
-
-    const data = await Promise.all(filteredData.map(async item => {
-      const privilegeText = item.privilege_level === 1 ? '管理者' : '一般使用者';
-      const statusText = item.status === 1 ? '✔️' : '❌';
-      return {
-        data: [
-          item.chinesename,
-          item.unit,
-          privilegeText,
-          statusText,
-          gridjs.html(`<a href="#" onclick="setPermission('${item.identifier}','${item.chinesename}');" >修改</a>`),
-          gridjs.html(`${item.violation_count}次 <a href="#" onclick="addViolate('${item.identifier}');">新增</a> <a href="#" onclick="showViolation('${item.identifier}')">查詢</a>`)
-        ],
-        extendedProps: {
-          identifier: item.identifier // 將 identifier 作為隱藏數據
-        }
-      };
-    }));
-    return data;
-  }
-}
-
-
-
-
 
 
 //表單生成 grid

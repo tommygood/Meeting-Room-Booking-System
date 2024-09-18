@@ -6,6 +6,7 @@
         <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
         <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
         <script src="/js/ManagerConference.js"></script>
         <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
           <link rel="stylesheet" type="text/css" href="/css/ManagerConference.css">
@@ -47,7 +48,7 @@
         </div>
 
 
-        <!-- 申請頁面 -->
+        <!-- 編輯頁面 -->
         <div id="hamburger-menu" class="hamburger-menu"> 
             <div id= "hamburger-requestpage" class="hamburger-requestpage">
                 <h3 class="hamburger-title">編輯申請</h3>
@@ -105,6 +106,7 @@
                                 <option value="21">21</option>
                                 <option value="22">22</option>
                                 <option value="23">23</option>
+                                <option value="24">24</option>
                               </select>
                             <span>:</span>
                             <select name="startminute" id="startminute">
@@ -141,6 +143,7 @@
                                 <option value="21">21</option>
                                 <option value="22">22</option>
                                 <option value="23">23</option>
+                                <option value="24">24</option>
                             </select>
                             <span>:</span>
                             <select name="endminute" id="endminute">
@@ -155,7 +158,7 @@
                         <div id="backbtn" class="hamburger-sendbutton" onclick="hidePopup('hamburger-menu')">
                             <h3 class="hamburger-title" style="color:white" >返回</h3>
                         </div>
-                        <div id="requestsend" class="hamburger-sendbutton" onclick="reservationPut()">
+                        <div id="requestsend" class="hamburger-sendbutton" >
                             <h3 class="hamburger-title" style="color:white">編輯送出</h3>
                         </div>
                     </div>

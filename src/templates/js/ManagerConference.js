@@ -1,4 +1,3 @@
-let reserve_id
 // get user info from ncu portal
 const api_info = '/api/info/';
 async function getinfo(type){
@@ -14,7 +13,8 @@ async function getinfo(type){
   }
 }
 async function setAccountName() {
-  const account_type = await getinfo('chinesename');
+  var account_type = await getinfo('chinesename');
+  account_type = DOMPurify.sanitize(account_type);
   document.getElementById("accountName").innerHTML += account_type;
 }
 setAccountName();
@@ -75,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 //換頁面
 function changePage(button){
-    console.log(button.id);
     location.href = "/page/"+button.id;
 }
 
@@ -101,18 +100,16 @@ function formatDateTimeForDatabase(dateTime) {
 async function reservationPut(reserve_id) {
   const formData = new FormData(document.getElementById("request"));
   const name = formData.get('name');
-  const startdate = formData.get('startdate'); 
-  const starthour = formData.get('starthour');
-  const startminute = formData.get('startminute');
-  const enddate = formData.get('enddate');  
-  const endhour = formData.get('endhour');
-  const endminute = formData.get('endminute');
-  const ext = formData.get('ext');
+  const startdate =formData.get('startdate');
+  const starthour =formData.get('starthour');
+  const startminute =formData.get('startminute');
+  const enddate =formData.get('enddate');
+  const endhour =formData.get('endhour');
+  const endminute =formData.get('endminute');
+  const ext =formData.get('ext');
   const startTimestamp = formatDateTimeForDatabase(`${startdate}T${starthour}:${startminute}:00`);
   const endTimestamp = formatDateTimeForDatabase(`${enddate}T${endhour}:${endminute}:00`);
-  const startOfDay = formatDateTimeForDatabase(`${startdate}T00:00:00`);
-  const endOfDay = formatDateTimeForDatabase(`${enddate}T23:59:59`);
-  const existingEvents = await fetchevent(startOfDay, endOfDay);
+
   // 構建數據對象
   const data = {
     reserve_id: reserve_id,
@@ -122,32 +119,25 @@ async function reservationPut(reserve_id) {
     end_time: endTimestamp,
     ext: ext,
     show: true,
-    status: true,
+    status: false,
   };
-  // 檢查新預約是否與現有事件有時間衝突
-  const hasConflict = existingEvents.some(event => {
-    const existingStart = new Date(event.start);
-    const existingEnd = new Date(event.end);
-    return (new Date(startTimestamp) < existingEnd && new Date(endTimestamp) > existingStart);
-  });
-  if (hasConflict) {
-    alert('該時間段已被預約，請選擇其他時間。');
-    return;
-  }
-  // 發送 PUT 請求，使用 JSON 格式
   fetch('/api/reservation', {
     method: 'PUT',
     credentials: 'include', 
-    body: JSON.stringify(data),  // 將數據轉換為 JSON 字符串
+    body: JSON.stringify(data),  
     headers: { 
-      'Content-Type': 'application/json'  // 使用 JSON 格式
+      'Content-Type': 'application/json' 
     },
   })
   .then(response => response.json())
-  .then(()=> {
-      alert('修改成功');
-      window.location.reload();  // 刷新頁面以顯示最新數據
-   
+  .then((data) => {
+   if(data.suc){
+      alert("預約成功");
+      window.location.reload();
+   }
+   else{
+    alert(`預約失敗：${data.result}`);
+   }
   })
   .catch(error => {
     console.error('Error:', error);
@@ -259,14 +249,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     Swal.fire({
-      title: info.event.title,
-      html: `
+      title: DOMPurify.sanitize(info.event.title),
+      html: DOMPurify.sanitize(`
           ${startTime} ~ ${endTime}<br>
           會議：${info.event.title}<br>
           借用單位: ${info.event.extendedProps.unit}<br>
           申請人: ${info.event.extendedProps.chinesename}<br>
           分機號碼: ${info.event.extendedProps.number}<br>
-      `,
+      `),
       showCancelButton: true,
       showDenyButton: true,
       cancelButtonText: 'OK' ,
@@ -274,29 +264,32 @@ document.addEventListener("DOMContentLoaded", function() {
       denyButtonText: '刪除會議',
       }).then((result) => {
         if (result.isConfirmed) {
-          reserve_id = String(info.event.extendedProps.reserve_id);
           document.getElementById('hamburger-menu').style.display='flex';
           document.querySelector('input[name="name"]').value = info.event.title;
           document.querySelector('input[name="person"]').value = info.event.extendedProps.chinesename;
           document.querySelector('input[name="unit"]').value = info.event.extendedProps.unit;
           document.querySelector('input[name="ext"]').value = info.event.extendedProps.number;
           const startDate = new Date(info.event.start);
-          document.querySelector('input[name="date"]').value = startDate.toISOString().split('T')[0]; // 只取日期部分        
+          const formattedStartDate = startDate.toISOString().split('T')[0];
           const startHour = String(startDate.getHours()).padStart(2, '0');
           const startMinute = String(startDate.getMinutes()).padStart(2, '0');
-          document.querySelector('select[name="starthour"]').value = startHour;
-          document.querySelector('select[name="startminute"]').value = startMinute;
-
           const endDate = new Date(info.event.end);
+          const formattedEndDate = startDate.toISOString().split('T')[0];
           const endHour = String(endDate.getHours()).padStart(2, '0');
           const endMinute = String(endDate.getMinutes()).padStart(2, '0');
-          document.querySelector('select[name="endhour"]').value = endHour;
+          document.querySelector('input[name="startdate"]').value = formattedStartDate;
+          document.querySelector('select[name="starthour"]').value = startHour;
+          document.querySelector('select[name="startminute"]').value = startMinute;
+          document.querySelector('input[name="enddate"]').value = formattedEndDate; 
+          document.querySelector('select[name="endhour"]').value = endHour; 
           document.querySelector('select[name="endminute"]').value = endMinute;  
-
+          document.getElementById('requestsend').onclick =() => {
+            reservationPut(info.event.extendedProps.reserve_id);
+          };
         } else if (result.isDenied) {
           // User denied the action or closed the dialog
           Swal.fire({
-            title: '確定要刪除該會議嗎',
+            title: DOMPurify.sanitize('確定要刪除該會議嗎'),
             icon: "warning",
             confirmButtonText: '確定',
             showCancelButton: true,
@@ -305,7 +298,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (result.isConfirmed) {
               reservationDelete(info.event.extendedProps.reserve_id);
               Swal.fire({
-                title: '刪除成功',
+                title: DOMPurify.sanitize('刪除成功'),
                 icon:'success',
               }).then(() => {
                 window.location.reload();

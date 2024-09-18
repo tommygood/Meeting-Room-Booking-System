@@ -119,11 +119,9 @@ module.exports = {
         }
         else {
             try {
-                console.log("identifier : ", identifier);
                 const sql = 'SELECT `privilege_level` FROM `User` WHERE `identifier` = ?;';
                 const result = await conn.query(sql, [identifier]);
                 db_conn.closeDBConnection(conn);
-                console.log("result : ", result);
                 return result[0].privilege_level;
             }
             catch(e) {
@@ -152,6 +150,17 @@ module.exports = {
                 conn.release();
                 return null;
             }
+        }
+    },
+
+    // check if this identifier is admin
+    isAdmin : async function (identifier) {
+        const result = await this.getPrivilegeLevel(identifier);
+        if (result >= 1) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 }

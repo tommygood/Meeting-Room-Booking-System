@@ -30,7 +30,8 @@ async function getLog(condition) {
 }
 
 async function setAccountName() {
-    const account_type = await getinfo('chinesename');
+    var account_type = await getinfo('chinesename');
+    account_type = DOMPurify.sanitize(account_type);
     document.getElementById("accountName").innerHTML += account_type;
 }
 setAccountName();
@@ -49,8 +50,7 @@ function changePage(button){
 
 //表單生成 grid
 document.addEventListener("DOMContentLoaded", async function(){
-    const response = await getLog({offset : 0, num : 1000});
-    console.log(response);
+    const response = await getLog({offset : 0, num : 100});
     const data = response.map(item => [
       item.identifier,
       item.IP,
@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", async function(){
         }
 
     }).render(document.getElementById('gridtable'));
-
+    
      document.getElementById('grid-search').addEventListener('input', function(event) {
       // 設定 Grid.js 的搜尋文字
       document.querySelector('.gridjs-search .gridjs-input').value = event.target.value;

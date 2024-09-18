@@ -13,11 +13,13 @@ router.get('/chinesename', async function(req, res) {
 			res.json({data});
 		}
 		else {
+			res.status(403);
 			res.json({result : 'Invalid token'});
 		}
     }
     catch(e) {
-        console.log(e);
+        console.error(e);
+		res.status(500);
 		res.json({result : 'error'});
     }
 })

@@ -15,7 +15,8 @@ async function getinfo(type){
   }
 
 async function setAccountName() {
-    const account_type = await getinfo('chinesename');
+    var account_type = await getinfo('chinesename');
+    account_type = DOMPurify.sanitize(account_type);
     document.getElementById("accountName").innerHTML += account_type;
   }
   setAccountName();
@@ -33,7 +34,55 @@ function changePage(button){
 } 
 
 
-//抓Board 資料
+function formatDateForMySQL(dateString) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+
+//save board information
+const reserve_put=`/api/reservation/`;
+function saveContent() {
+  const rows = grid.config.data;
+  const result = rows.map(row => {
+    const checkbox = document.querySelector(`#gridtable input[type="checkbox"][value="${row[4]}"]`);
+    // 獲取 checkbox 當前的 checked 狀態
+    const checkboxValue = checkbox ? checkbox.checked : false;
+
+    const data = {
+      reserve_id: row[4],
+      room_id: '1',
+      name: row[2],
+      ext: row[5],
+      start_time: formatDateForMySQL(row[6]),
+      end_time: formatDateForMySQL(row[7]),
+      show: checkboxValue,
+      status:false,
+    };
+    
+    fetch(reserve_put, {
+    method: 'PUT',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  })
+ .then(response => response.json())
+ .then(()=>{
+    alert('儲存完成');
+    window.location.reload();
+ });
+});
+
+}
+
+//get board information
 function fetchData(start, end) {
   const api_board = `/api/reservation?start_time=${start}&end_time=${end}`;
 
@@ -53,19 +102,21 @@ function fetchData(start, end) {
     const rows = data.data.map(item => {
       const startDate = new Date(item.start_time);
       const endDate = new Date(item.end_time);
-
       const formattedDate = `${(startDate.getMonth() + 1).toString().padStart(2, '0')}/${startDate.getDate().toString().padStart(2, '0')}`;
       const startTime = `${startDate.getHours().toString().padStart(2, '0')}:${startDate.getMinutes().toString().padStart(2, '0')}`;
       const endTime = `${endDate.getHours().toString().padStart(2, '0')}:${endDate.getMinutes().toString().padStart(2, '0')}`;
       const formattedTime = `${startTime}~${endTime}`;
-
+    
       return {
-        reserve_id: item.reserve_id, 
         data: [
           formattedDate, 
           formattedTime, 
           item.name,     
-          `<input type="checkbox" value="${item.reserve_id}" ${item.show ? 'checked' : ''}>`
+          `<input type="checkbox" value="${item.reserve_id}" ${item.show ? 'checked' : ''}>`,
+          item.reserve_id, // 在數據中保留 reserve_id
+          item.ext,
+          item.start_time,
+          item.end_time,
         ]
       };
     });
@@ -78,18 +129,14 @@ function fetchData(start, end) {
   });
 }
 
-function saveContent(){
-
-}
 
 
-let grid; // 全局變數來保留 Grid.js 實例
-
+let grid; 
+//render grid
 function updateGrid(rows) {
   const gridContainer = document.getElementById('gridtable');
-  gridContainer.innerHTML = ''; // 清空容器
+  gridContainer.innerHTML = '';
 
-  // 創建新的 Grid.js 實例並渲染
   grid = new gridjs.Grid({
     columns: [
       '日期', 
@@ -100,11 +147,12 @@ function updateGrid(rows) {
         formatter: (cell) => gridjs.html(cell)
       }
     ],
-    data: rows.map(row => row.data), // 初始資料
+    data: rows.map(row => row.data), 
     width: '900px',
     fixedHeader: true,
     search: false,
     resizable: true,
+  
     style: {
       container: {
         'margin-left': '20px'
@@ -139,7 +187,7 @@ function searchBoard() {
   startDate.setHours(0, 0, 0, 0); 
   const start = startDate.toISOString().split('.')[0];
 
-  const endDate = new Date(endInput);
+  const endDate = new Date(endInput); 
   endDate.setHours(23, 59, 59, 999); 
   const end = endDate.toISOString().split('.')[0];
 
@@ -158,6 +206,8 @@ function searchBoard() {
       console.error('Error rendering Grid.js:', error);
     });
 }
+
+
 
 document.addEventListener("DOMContentLoaded", function() {
   // 設定初始的日期範圍
