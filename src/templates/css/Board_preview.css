@@ -1,14 +1,3 @@
-/*body {
-    overflow: hidden;
-    font-family: Inter, Helvetica, Arial, serif;
-    align-content: center;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;*/ /* 水平置中 */
-    /*align-items: center;*/ /* 垂直置中 */
-    /*flex-direction: column;*/ /* 垂直排列內容 */
-/*}*/
 
 * {
     margin: 0;
@@ -52,14 +41,12 @@ body {
     height: 1px;
     background-color: #ccc;
     margin: 25px 0px;
-    /*margin-bottom: 20px;*/
 }
 
 /*今日會議*/
 
 .event-card-min {
     display: flex;
-    /*justify-content: space-around;*/
     align-items: center;
     padding: 10px 15px;
     margin: 30px 0px;
@@ -100,7 +87,6 @@ body {
 /* 現正進行會議 & 下一場會議 */
 .event-card-max {
     display: flex;
-    /*align-content: space-between;*/
     flex-direction: column;
     align-items: center;
     height: 85%;
@@ -135,7 +121,6 @@ body {
     font-size: 80px;
     font-weight: 700;
     color: #c59b47;
-    /*margin-bottom: 20px;*/
 }
 
     .time-block-max span {

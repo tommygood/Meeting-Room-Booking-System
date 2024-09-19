@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>看板預覽</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
@@ -24,9 +24,6 @@
 
         :root {
             --swiper-theme-color: peru;
-            --fc-event-border-color: #737d9c;
-            --fc-today-bg-color: #ffffff;
-            --fc-small-font-size: 1.5em;
         }
 
 
@@ -135,9 +132,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
         const swiper = new Swiper('.swiper', { // 創建一個輪播
-            //autoplay: { // 自動輪播 swiper
-            //    delay: 2 * 1000, // 每兩秒切換下一張 (預覽畫面不自動切換)
-            //},
+
             loop: true, // 輪播結束後回到第一張繼續輪播
 
             navigation: { // 前一張、下一張按鈕
