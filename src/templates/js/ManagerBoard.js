@@ -228,3 +228,16 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 })
 
+function previewBoard(){
+  const formData = new FormData(document.getElementById("previewBoard"));
+
+  const date = formData.get('start-date');
+  const time = formData.get('start-time');
+  if (date && time) {
+    // 將選定的日期和時間拼接成查詢參數
+    const queryString = `?date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`;
+    location.href = `/page/board/preview${queryString}`;
+  } else {
+    alert('請選擇日期和時間');
+}
+}

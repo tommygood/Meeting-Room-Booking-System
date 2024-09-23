@@ -131,6 +131,32 @@
     <!-- Swiper origin code-->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
+        const eventApiUrl = (start, end) => `/api/reservation?start_time=${start}&end_time=${end}`;
+        const urlParams = new URLSearchParams(window.location.search);
+        const date = urlParams.get('date');
+        const time = urlParams.get('time');
+        async function getevent() {
+            const day = new Date(date);
+            const tomorrow = new Date(date);
+            tomorrow.setDate(day.getDate() + 1);
+            try {
+                const response = await fetch(eventApiUrl(day.toISOString().split('T')[0], tomorrow.toISOString().split('T')[0]), {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                });
+                const data = await response.json();
+                return data.data;
+
+            } catch (error) {
+                // 捕捉和處理異常
+                console.error('Fetch error:', error);
+                return null;
+            }
+        }
+        getevent().then(event => {
+            console.log(event);
+        })
         const swiper = new Swiper('.swiper', { // 創建一個輪播
 
             loop: true, // 輪播結束後回到第一張繼續輪播
