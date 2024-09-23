@@ -41,11 +41,14 @@
             <hr style="margin: 0; height: 100%;" />
             <img src="/image/admin.png" class="useradmin-button" onclick="location.href ='/page/privilege'">
         </div>
+        <div style="display: flex; flex-direction:column ; margin-left:30px; width:60%">
         <ul id="doc_list">
           <div>Doc list</div>
         </ul>
-      <div id="editorjs" style="max-width: 1000px; margin: 0 auto"></div>
-      <button id="save-button">Save</button>
+      <div id="editorjs" style="width:100%;height:80vh;overflow-y: scroll; border: 1px solid black;border-radius: 10px; margin: 0 auto ;background-color:white;"></div>
+        </div>
+        <button id="save-button" style="height:30px ;width:50px;margin-top:92vh;margin-left: 5px;">save</button>
+
     </body>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
     <script src="/js/text_editor.js"></script>
