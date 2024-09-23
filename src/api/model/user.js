@@ -35,7 +35,7 @@ module.exports = {
         }
         else {
             try {
-                const sql = 'SELECT User.identifier, User.chinesename, User.email, User.mobilePhone, User.unit, User.status, User.privilege_level, COUNT(Violation.violation_id) AS violation_count FROM `User` LEFT JOIN `Violation` ON User.identifier = Violation.identifier GROUP BY User.identifier;';
+                const sql = 'SELECT User.identifier, User.chinesename, User.email, User.mobilePhone, User.unit, User.status, User.privilege_level, COUNT(Violation.violation_id) AS violation_count FROM `User` LEFT JOIN `Violation` ON Violation.status = 0 AND User.identifier = Violation.identifier GROUP BY User.identifier;';
                 const result = await conn.query(sql);
                 db_conn.closeDBConnection(conn);
                 return result;
