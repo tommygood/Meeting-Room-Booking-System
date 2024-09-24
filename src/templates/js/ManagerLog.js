@@ -52,7 +52,8 @@ function changePage(button){
 document.addEventListener("DOMContentLoaded", async function(){
     const response = await getLog({offset : 0, num : 100});
     const data = response.map(item => [
-      item.identifier,
+      item.chinesename,
+      item.unit,
       item.IP,
       item.operation_id,
       new Intl.DateTimeFormat('default', {
@@ -66,7 +67,7 @@ document.addEventListener("DOMContentLoaded", async function(){
       }).format(new Date(item.datetime))
     ]);
     new gridjs.Grid({
-        columns: ['id', 'ip', '操作內容', '操作時間'],
+        columns: ['姓名', '單位', 'ip', '操作內容', '操作時間'],
         data: data,
         width:'1200px',
         fixedHeader:true,

@@ -1,6 +1,7 @@
 const db_conn = require('./conn');
 const Operator = require('./operator');
 
+// replace operation_id with operation name
 function replaceOperation(obj) {
     for (let i = 0; i < obj.length; i++) {
         obj[i].operation_id = Operator.get(obj[i].operation_id);
@@ -46,8 +47,9 @@ module.exports = {
         }
         else {
             try {
-                const sql = "select * from `Log` LIMIT ? OFFSET ?;";
+                const sql = "select Log.datetime, Log.IP, Log.operation_id, User.chinesename, User.unit from `Log`, `User` where `Log`.identifier = `User`.identifier order by `Log`.datetime desc limit ? offset ?;";
                 const result = replaceOperation(await conn.query(sql, [parseInt(num), parseInt(offset)]));
+                console.log(result)
                 db_conn.closeDBConnection(conn);
                 return result;
             }
