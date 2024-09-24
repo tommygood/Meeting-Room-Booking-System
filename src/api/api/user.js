@@ -18,14 +18,12 @@ router.get('/', async function(req, res) {
             res.json({data});
         }
         else {
-            res.status(403);
-            res.json({result : 'Invalid token'});
+            res.status(403).send('Forbidden');
         }
     }
     catch(e) {
         console.error(e);
-        res.status(500);
-        res.json({result : 'error'});
+        res.status(500).send('Internal Server Error');
     }
 });
 
@@ -40,14 +38,12 @@ router.get('/self', async function(req, res) {
             res.json({data});
         }
         else {
-            res.status(403);
-            res.json({result : 'Invalid token'});
+            res.status(403).send('Forbidden');
         }
     }
     catch(e) {
         console.error(e);
-        res.status(500);
-        res.json({result : 'error'});
+        res.status(500).send('Internal Server Error');
     }
 })
 
@@ -63,14 +59,12 @@ router.put('/privilege', async function(req, res) {
             res.json({suc});
         }
         else {
-            res.status(403);
-            res.json({result : 'Invalid token'});
+            res.status(403).send('Forbidden');
         }
     }
     catch(e) {
         console.error(e);
-        res.status(500);
-        res.json({result : 'error'});
+        res.status(500).send('Internal Server Error');
     }
 })
 
@@ -86,14 +80,12 @@ router.put('/status', async function(req, res) {
             res.json({suc});
         }
         else {
-            res.status(403);
-            res.json({result : 'Invalid token'});
+            res.status(403).send('Forbidden');
         }
     }
     catch(e) {
         console.error(e);
-        res.status(403);
-        res.json({result : 'error'});
+        res.status(500).send('Internal Server Error');
     }
 })
 
@@ -108,14 +100,12 @@ router.get('/privilege', async function(req, res) {
             res.json({data});
         }
         else {
-            res.status(403);
-            res.json({result : 'Invalid token'});
+            res.status(403).send('Forbidden');
         }
     }
     catch(e) {
         console.error(e);
-        res.status(500);
-        res.json({result : 'error'});
+        res.status(500).send('Internal Server Error');
     }
 })
 

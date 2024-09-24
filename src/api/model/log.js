@@ -18,7 +18,7 @@ module.exports = {
     },
 
     // insert log into db by ip, operator_id, user identifier
-    insert : async function (ip, operator_id, user_info) {
+    insert : async function (ip, operator_id, identifier) {
         const conn = await db_conn.getDBConnection();
         if (conn == null) {
             return false;
@@ -27,7 +27,7 @@ module.exports = {
             try {
                 ip = this.convertIPv4ToIPv6(ip);                
                 const sql = "insert into `Log` (`identifier`, `IP`, `operation_id`) values (?, ?, ?);";
-                await conn.query(sql, [user_info.identifier, ip, operator_id]);
+                await conn.query(sql, [identifier, ip, operator_id]);
                 db_conn.closeDBConnection(conn);
                 return true;
             }
@@ -49,7 +49,6 @@ module.exports = {
             try {
                 const sql = "select Log.datetime, Log.IP, Log.operation_id, User.chinesename, User.unit from `Log`, `User` where `Log`.identifier = `User`.identifier order by `Log`.datetime desc limit ? offset ?;";
                 const result = replaceOperation(await conn.query(sql, [parseInt(num), parseInt(offset)]));
-                console.log(result)
                 db_conn.closeDBConnection(conn);
                 return result;
             }

@@ -128,6 +128,27 @@ module.exports = {
         }
     },
 
+    // set reservation status to available by reserve_id
+    setAvailable : async function (reserve_id) {
+        const conn = await db_conn.getDBConnection();
+        if (conn == null) {
+            return false;
+        }
+        else {
+            try {
+                const sql = "UPDATE `Reservation` SET `status` = 0 WHERE `reserve_id` = ?";
+                await conn.query(sql, [reserve_id]);
+                db_conn.closeDBConnection(conn);
+                return true;
+            }
+            catch(e) {
+                console.error("error setting reservation to available : ", e);
+                db_conn.closeDBConnection(conn);
+                return false;
+            }
+        }
+    },
+
     // check if the reservation is overlapped with the existing reservations
     checkOverlap : async function (start_time, end_time) {
         const conn = await db_conn.getDBConnection();

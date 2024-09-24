@@ -3,6 +3,8 @@ const router = require('express').Router();
 const Violation = require('./../model/violation.js');
 const jwt = require('./../utilities/jwt.js');
 const User = require('./../model/user.js');
+const Log = require('./../model/log.js');
+const Operator = require('./../model/operator.js');
 
 // get all violation records which status is 0
 router.get('/', async function(req, res) {
@@ -14,14 +16,12 @@ router.get('/', async function(req, res) {
             res.json({data});
         }
         else {
-            res.status(403);
-            res.json({result : 'Invalid token'});
+            res.status(403).send('Forbidden');
         }
     }
     catch(e) {
         console.error(e);
-        res.status(500);
-        res.json({result : 'error'});
+        res.status(500).send('Internal Server Error');
     }
 });
 
@@ -36,16 +36,16 @@ router.post('/', async function(req, res) {
             const remark = req.body.remark;
             const suc = await Violation.insert(reserve_id, reason, remark);
             res.json({suc});
+            // log the action
+            Log.insert(req.ip, Operator.getOperator.violationInsert.code, result.data.data);
         }
         else {
-            res.status(403);
-            res.json({result : 'Invalid token'});
+            res.status(403).send('Forbidden');
         }
     }
     catch(e) {
         console.error(e);
-        res.status(500);
-        res.json({result : 'error'});
+        res.status(500).send('Internal Server Error');
     }
 });
 
@@ -58,16 +58,16 @@ router.delete('/', async function(req, res) {
             const violation_id = req.body.violation_id;
             const suc = await Violation.delete(violation_id);
             res.json({suc});
+            // log the action
+            Log.insert(req.ip, Operator.getOperator.violationDelete.code, result.data.data);
         }
         else {
-            res.status(403);
-            res.json({result : 'Invalid token'});
+            res.status(403).send('Forbidden');
         }
     }
     catch(e) {
         console.error(e);
-        res.status(500);
-        res.json({result : 'error'});
+        res.status(500).send('Internal Server Error');
     }
 });
 
