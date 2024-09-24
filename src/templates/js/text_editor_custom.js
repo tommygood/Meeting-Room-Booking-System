@@ -143,18 +143,30 @@ async function getBlocksAndId(doc_name) {
  */
 // Send blocks to the backend
 async function sendBlocksAndId(blocks, doc_name, id_content) {
-    const res = await fetch('/api/doc', {
+    fetch('/api/doc', {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
         },
         body: JSON.stringify({blocks: blocks, doc_name:doc_name, id_content:id_content}),
+    }).then(async function(res) {
+        console.log(res);
+        
+        if (res.status == 200) {
+            res = await res.json();
+            if (res.suc) {
+                alert('文件已儲存');
+                location.reload();
+            }
+            else {
+                alert('文件儲存失敗');
+            }
+        }
+        else {
+            alert(`文件儲存失敗, status code : ${res.status}, status text : ${res.statusText}`);
+        }
     })
-    if (await res.json()) {
-        alert('文件已儲存');
-        location.reload();
-    }
-    else {
-        alert('文件儲存失敗');
-    }
+    .catch(function(error) {
+        console.log(error);
+    })    
 }
