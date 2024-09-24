@@ -498,7 +498,6 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('hamburger-requestpage').style.display = 'flex';
       document.querySelector('input[name="person"]').value = info.chinesename;
       document.querySelector('input[name="unit"]').value = info.unit;
-      document.querySelector('input[name="phone"]').value = info.mobilePhone;
       document.querySelector('input[name="email"]').value = info.email;
 
     });

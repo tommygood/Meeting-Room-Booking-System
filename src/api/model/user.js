@@ -12,9 +12,10 @@ module.exports = {
                 // insert user info into db, if user exists, then update user info
 
                 // mobilePhone and unit may not exist
-                const mobilePhone = user_info.mobilePhone == undefined ? null : user_info.mobilePhone;
+                // mobilePhone is deprecated
+                //const mobilePhone = user_info.mobilePhone == undefined ? null : user_info.mobilePhone;
+                const mobilePhone = null;
                 const unit = user_info.facultyRecords == undefined ? null : user_info.facultyRecords.unit;
-                console.log(user_info);
                 const sql = 'INSERT INTO `User` (`identifier`, `chinesename`, `email`, `mobilePhone`, `unit`) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `chinesename` = ?, `email` = ?, `mobilePhone` = ?, `unit` = ?;';
                 await conn.query(sql, [user_info.identifier, user_info.chineseName, user_info.email, mobilePhone, unit, user_info.chineseName, user_info.email, mobilePhone, unit]);
                 db_conn.closeDBConnection(conn);

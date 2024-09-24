@@ -26,7 +26,6 @@ router.get('/callback', async function(req, res) {
       const redirect_uri = `${host}/page/userlobby`;
     	const result = await oauth.callback(host, redirect_uri, req, res);
 
-      console.log(result)
       // insert/update user info into db
       User.insert(result.user_info);
       // Log the login result
