@@ -16,8 +16,7 @@ router.get('/sso', async function(req, res) {
 	}
 	catch(e) {
       console.error(e);
-      res.status(500);
-      res.json({result : 'error'});
+      res.status(500).send('Internal Server Error');
   }
 })
 
@@ -30,16 +29,15 @@ router.get('/callback', async function(req, res) {
       User.insert(result.user_info);
       // Log the login result
       if (result.suc) {
-        Log.insert(req.ip, Operator.getOperator.LoginSuc.code, result.user_info);
+        Log.insert(req.ip, Operator.getOperator.LoginSuc.code, result.user_info.identifier);
       }
       else {
-        Log.insert(req.ip, Operator.getOperator.LoginFail.code, result.user_info);
+        Log.insert(req.ip, Operator.getOperator.LoginFail.code, result.user_info.identifier);
       }
   }
   catch(e) {
       console.error(e);
-      res.status(500);
-      res.json({result : 'error'});
+      res.status(500).send('Internal Server Error');
   }
 })
 

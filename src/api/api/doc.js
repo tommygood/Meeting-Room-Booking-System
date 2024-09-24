@@ -15,8 +15,7 @@ router.get('/', async function(req, res) {
     }
     catch(e) {
         console.error(e);
-        res.status(500);
-        res.json({result : 'error'});
+        res.status(500).send('Internal Server Error');
     }
 })
 
@@ -28,8 +27,7 @@ router.get('/all', async function(req, res) {
     }
     catch(e) {
         console.error(e);
-        res.status(500);
-        res.json({result : 'error'});
+        res.status(500).send('Internal Server Error');
     }
 })
 
@@ -46,14 +44,12 @@ router.post('/', async function(req, res) {
             res.json({suc});
         }
         else {
-            res.status(403);
-            res.json({result : 'Invalid token'});
+            res.status(403).send('Forbidden');
         }
     }
     catch(e) {
         console.error(e);
-        res.status(500);
-        res.json({result : 'error'});
+        res.status(500).send('Internal Server Error');
     }
 });
 
