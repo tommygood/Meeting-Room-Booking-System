@@ -65,20 +65,21 @@
             <div style="font-size: 20px; outline: 3px dashed #000000; background-color: #cacaca; margin: 10px; padding: 10px;">
                 <div>
                     <b>預覽設定</b>
-                    <div id="board/preview" class="btn" onclick="changePage(this)">
+                    <div id="board/preview" class="btn" onclick="previewBoard()">
                         <div class="buttontext">▶預覽</div>
                     </div>
                 </div>
+                <form id="previewBoard">
+                    <div class="input-group">
+                        <b>日期：</b>
+                        <input type="date" class="hamburger-request" name="start-date"/>
+                    </div>
 
-                <div class="input-group">
-                    <b>日期：</b>
-                    <input type="date" class="hamburger-request" />
-                </div>
-
-                <div class="input-group">
-                    <b>時間：</b>
-                    <input type="time" id="start-time" name="start-time" class="hamburger-timerequest">
-                </div>
+                    <div class="input-group">
+                        <b>時間：</b>
+                        <input type="time" id="start-time" name="start-time" class="hamburger-timerequest">
+                    </div>
+                </form>
             </div>
             <div id="board/demo" class="btn" onclick="changePage(this)">
                 <div class="buttontext">▶看板播放</div>

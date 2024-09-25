@@ -1,86 +1,147 @@
-body {
-    overflow: hidden;
-    font-family: Inter, Helvetica, Arial, serif;
-    align-content: center;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center; /* 水平置中 */
-    align-items: center; /* 垂直置中 */
-    flex-direction: column; /* 垂直排列內容 */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* 今日會議 */
-.calendar {
-    height: 100%;
+body {
+    font-family: 'Noto Sans TC', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #fff;
 }
+
+
+.container {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    text-align: center;
+}
+
+.date-time {
+    font-size: 50px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.title {
+    font-size: 80px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    align-content: center;
+}
+
+.divider {
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+    margin: 25px 0px;
+}
+
+/*今日會議*/
+
+.event-card-min {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    margin: 30px 0px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.time-block-min {
+    color: #c59b47;
+    font-weight: 700;
+    font-size: 45px;
+    text-align: center;
+}
+
+    .time-block-min span {
+        display: block;
+    }
+
+.event-details-min {
+    text-align: left;
+    margin-left: 20px;
+}
+
+    .event-details-min h3 {
+        font-size: 50px;
+        font-weight: 700;
+        width: auto;
+        margin-bottom: 8px;
+    }
+
+    .event-details-min p {
+        font-size: 30px;
+        color: #555;
+    }
 
 /* 現正進行會議 & 下一場會議 */
-.hero_title {
-    min-width: 0;
-    font: 700 50px/1.22 Inter, Helvetica, Arial, serif;
-    color: rgb(65 65 65);
-}
-
-.subtitle {
-    display: flex;
-    justify-content: flex-end;
-    min-width: 0;
-    font: 700 20px/1.2 Inter, Helvetica, Arial, serif;
-    color: rgb(65 65 65);
-    text-align: right;
-
-}
-
-.board-info {
+.event-card-max {
     display: flex;
     flex-direction: column;
-    width: contain;
-    height: contain;
-}
-
-.block {
-    display: flex;
-    position: fixed;
-    top: 150px;
-    left: 0;
-    right: 0;
-    bottom: 3%;
-    background-color: rgb(238 238 238);
-    box-shadow: inset 0 4px 4px 0 rgb(0 0 0 / 25%);
-}
-
-.flex_col_info {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    padding: 5px 15px 10px 15px;
-    /*gap: 8px;*/
-}
-
-.medium_title {
-    display: flex;
     align-items: center;
-    font: 700 40px/1.2 Inter, Helvetica, Arial, serif;
-    color: rgb(0 0 0);
+    height: 85%;
+    padding: 20px 100px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.emphasis {
-    font: 700 40px/1.2 Inter, Helvetica, Arial, serif;
-    color: rgb(0 0 0);
-    width: 100%;
-    align-items: flex-start;
-    border-radius: 0;
-
+.this-label {
+    font-size: 30px;
+    color: #c59b47;
+    font-weight: 700;
+    margin-bottom: 10px;
 }
 
-.text {
-    font: 700 40px/1.2 Inter, Helvetica, Arial, serif;
-    color: rgb(0 0 0);
-    align-items: flex-start;
+.event-title {
+    font-size: 80px;
+    font-weight: 700;
+    height: 30%;
+    margin-bottom: 20px;
+    align-content: center;
+}
+
+.time-block-max {
     display: flex;
+    justify-content: space-around;
     align-items: center;
-    font: 700 40px/1.2 Inter, Helvetica, Arial, serif;
-    color: rgb(0 0 0);
+    width: 100%;
+    height: 20%;
+    font-size: 80px;
+    font-weight: 700;
+    color: #c59b47;
+}
+
+    .time-block-max span {
+        display: block;
+    }
+
+    .time-block-max .dash {
+        margin: 0 10px;
+    }
+
+.label {
+    font-size: 30px;
+    height: 10%;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.value {
+    font-size: 50px;
+    font-weight: 700;
+    height: 15%;
+    color: #000;
+    margin-bottom: 20px;
 }

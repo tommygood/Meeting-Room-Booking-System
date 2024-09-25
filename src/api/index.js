@@ -1,24 +1,26 @@
 // entry point
 const express = require('express');
 const app = express();
-const bodyParser = require("body-parser");
+//const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
 const server = require('http').Server(app);
 const cors = require('cors');
 const util = require("./utilities/main.js");
 const templates_path = util.getParentPath(__dirname) + "/templates";
 
-//bodyParser: 解析 HTTP 請求的 body
-app.use(bodyParser.urlencoded({ extended: false }));
+// bodyParser: 解析 HTTP 請求的 body
+// set limit size for request, this must be set before the express.json()
+const bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: '5mb'}));
+app.use(bodyParser.urlencoded({limit: '5mb', extended: true}));
+
 //express.json: 處理 JSON 資料
 app.use(express.json());
 app.use(cookieParser()); //解析 HTTP 請求的 cookie
 app.set('trust proxy', true); // trust first proxy to get the client IP address
 
-
 // routing
 // api
-// 有改
 app.use('/api',cors({
     origin:[ 'http://localhost']
 }));

@@ -128,6 +128,27 @@ module.exports = {
         }
     },
 
+    // set reservation status to available by reserve_id
+    setAvailable : async function (reserve_id) {
+        const conn = await db_conn.getDBConnection();
+        if (conn == null) {
+            return false;
+        }
+        else {
+            try {
+                const sql = "UPDATE `Reservation` SET `status` = 0 WHERE `reserve_id` = ?";
+                await conn.query(sql, [reserve_id]);
+                db_conn.closeDBConnection(conn);
+                return true;
+            }
+            catch(e) {
+                console.error("error setting reservation to available : ", e);
+                db_conn.closeDBConnection(conn);
+                return false;
+            }
+        }
+    },
+
     // check if the reservation is overlapped with the existing reservations
     checkOverlap : async function (start_time, end_time) {
         const conn = await db_conn.getDBConnection();
@@ -138,11 +159,11 @@ module.exports = {
             try {
                 // based on three conditions, check if the reservation is overlapped with the existing reservations
                 const sql = "SELECT COUNT(reserve_id) FROM `Reservation` WHERE ? > `start_time` AND ? < `end_time` AND `status` = 0";
-                const result = await conn.query(sql, [start_time, start_time]);
                 const sql1 = "SELECT COUNT(reserve_id) FROM `Reservation` WHERE ? > `start_time` AND ? < `end_time` AND `status` = 0";
-                const sql2 = "SELECT COUNT(reserve_id) FROM `Reservation` WHERE ? = `start_time` AND ? = `end_time` AND `status` = 0";
-                const result2 = await conn.query(sql, [end_time, end_time]);
-                const result1 = await conn.query(sql, [end_time, end_time]);
+                const sql2 = "SELECT COUNT(reserve_id) FROM `Reservation` WHERE ? <= `start_time` AND ? >= `end_time` AND `status` = 0";
+                const result = await conn.query(sql, [start_time, start_time]);
+                const result1 = await conn.query(sql1, [end_time, end_time]);
+                const result2 = await conn.query(sql2, [start_time, end_time]);
                 db_conn.closeDBConnection(conn);
                 return result[0]['COUNT(reserve_id)'] > 0 || result1[0]['COUNT(reserve_id)'] > 0 || result2[0]['COUNT(reserve_id)'] > 0;
             }

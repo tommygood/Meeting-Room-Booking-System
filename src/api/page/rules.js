@@ -13,7 +13,7 @@ router.get('/', async function(req, res) {
         res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/ManagerTextedit.html'));
       }
       else {
-        res.status(403).send('Bad Request');
+        res.status(403).send('Forbidden');
       }
     }
     catch(e) {

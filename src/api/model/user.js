@@ -12,7 +12,9 @@ module.exports = {
                 // insert user info into db, if user exists, then update user info
 
                 // mobilePhone and unit may not exist
-                const mobilePhone = user_info.mobilePhone == undefined ? null : user_info.mobilePhone;
+                // mobilePhone is deprecated
+                //const mobilePhone = user_info.mobilePhone == undefined ? null : user_info.mobilePhone;
+                const mobilePhone = null;
                 const unit = user_info.facultyRecords == undefined ? null : user_info.facultyRecords.unit;
                 const sql = 'INSERT INTO `User` (`identifier`, `chinesename`, `email`, `mobilePhone`, `unit`) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `chinesename` = ?, `email` = ?, `mobilePhone` = ?, `unit` = ?;';
                 await conn.query(sql, [user_info.identifier, user_info.chineseName, user_info.email, mobilePhone, unit, user_info.chineseName, user_info.email, mobilePhone, unit]);
@@ -35,7 +37,7 @@ module.exports = {
         }
         else {
             try {
-                const sql = 'SELECT User.identifier, User.chinesename, User.email, User.mobilePhone, User.unit, User.status, User.privilege_level, COUNT(Violation.violation_id) AS violation_count FROM `User` LEFT JOIN `Violation` ON User.identifier = Violation.identifier GROUP BY User.identifier;';
+                const sql = 'SELECT User.identifier, User.chinesename, User.email, User.mobilePhone, User.unit, User.status, User.privilege_level, COUNT(Violation.violation_id) AS violation_count FROM `User` LEFT JOIN `Violation` ON Violation.status = 0 AND User.identifier = Violation.identifier GROUP BY User.identifier;';
                 const result = await conn.query(sql);
                 db_conn.closeDBConnection(conn);
                 return result;

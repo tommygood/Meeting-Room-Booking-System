@@ -159,3 +159,13 @@
     >>> r.text
     '{"suc":true}'
     ```
+
+- GET `/api/doc`
+    - get specify doc content with doc name in querystring.
+
+- GET `/api/doc/all`
+    - get all existed doc name.
+
+- POST `/api/doc`
+    - insert/update doc with `doc_name`, `blocks` and `id_content`.
+    - max size limit of file is 5mb.

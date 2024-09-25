@@ -35,7 +35,7 @@ router.get('/userlobby', async function(req, res) {
       res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/userlobby.html'));
     }
     else {
-      res.status(403).send('Bad Request');
+      res.status(403).send('Forbidden');
     }
   }
   catch(e) {
@@ -53,7 +53,7 @@ router.get('/privilege', async function(req, res) {
       res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/ManagerPrivilege.html'));
     }
     else {
-      res.status(403).send('Bad Request');
+      res.status(403).send('Forbidden');
     }
   }
   catch(e) {
@@ -71,7 +71,7 @@ router.get('/conference', async function(req, res) {
       res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/ManagerConference.html'));
     }
     else {
-      res.status(403).send('Bad Request');
+      res.status(403).send('Forbidden');
     }
   }
   catch(e) {
@@ -89,7 +89,7 @@ router.get('/log', async function(req, res) {
       res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/ManagerLog.html'));
     }
     else {
-      res.status(403).send('Bad Request');
+      res.status(403).send('Forbidden');
     }
   }
   catch(e) {
