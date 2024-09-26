@@ -20,7 +20,7 @@ const unit = config.area.unit;
 
 module.exports = {
     send : function(receivers, subject, text) {  
-        // send email to all recevier
+        // send email to receviers
         try {
             for (let i = 0;i < receivers.length;i++) {
                 // mail info

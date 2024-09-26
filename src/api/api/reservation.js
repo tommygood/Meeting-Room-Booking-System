@@ -140,8 +140,9 @@ router.delete('/', jwt.verifyLogin, async function(req, res) {
 
         // send email to user who reserved the room when the reservation is deleted
         const reservation = await Reservation.getById(reserve_id);
-        const start_time = `${reservation.start_time.getFullYear()}-${reservation.start_time.getMonth() + 1}-${reservation.start_time.getDate()} ${reservation.start_time.getHours()}:${reservation.start_time.getMinutes()}`;
-        const end_time = `${reservation.end_time.getFullYear()}-${reservation.end_time.getMonth() + 1}-${reservation.end_time.getDate()} ${reservation.end_time.getHours()}:${reservation.end_time.getMinutes()}`;
+        // format the start_time and end_time from mysql
+        const start_time = `${reservation.start_time.getFullYear()}-${reservation.start_time.getMonth() + 1}-${reservation.start_time.getDate()} ${("0" + reservation.start_time.getHours()).slice(-2)}:${("0" + reservation.start_time.getMinutes()).slice(-2)}`;
+        const end_time = `${reservation.end_time.getFullYear()}-${reservation.end_time.getMonth() + 1}-${reservation.end_time.getDate()} ${("0" + reservation.end_time.getHours()).slice(-2)}:${("0" + reservation.end_time.getMinutes()).slice(-2)}`;
         Email.sendUser(identifier, Email.subject.cancel_reservation, Email.text.cancel_reservation(identifier, start_time, end_time, reservation.room_id));
         // log the action
         Log.insert(req.ip, Operator.getOperator.reservationDelete.code, identifier);
