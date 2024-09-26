@@ -22,6 +22,7 @@ module.exports = {
     send : function(receivers, subject, text) {  
         // send email to receviers
         try {
+            console.log(text);
             for (let i = 0;i < receivers.length;i++) {
                 // mail info
                 var mailOptions = {

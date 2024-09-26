@@ -32,22 +32,22 @@ router.post('/', jwt.verifyAdmin, async function(req, res) {
         const show = req.body.show;
         const ext = req.body.ext;
         if (start_time >= end_time) {
-            res.json({result : "Invalid time, start_time should be less than end_time"});
             // log the action
             Log.insert(req.ip, Operator.getOperator.reservationFailed.code, identifier);
+            res.json({result : "Invalid time, start_time should be less than end_time"});
         }
         else if (await Reservation.checkOverlap(start_time, end_time)) {
-            res.json({result : "Invalid time, there is a confliction with other reservations"});
             // log the action
             Log.insert(req.ip, Operator.getOperator.reservationFailed.code, identifier);
+            res.json({result : "Invalid time, there is a confliction with other reservations"});
         }
         else {
             const suc = await Reservation.insert(identifier, room_id, name, start_time, end_time, show, ext);
-            res.json({suc});
             // send email to admin if the reservation is successful
             Email.sendUser(req.identifier, Email.subject.succeessful_reservation, Email.text.succeessful_reservation(req.identifier, start_time, end_time, room_id));
             // log the action
             Log.insert(req.ip, Operator.getOperator.reservationSuccess.code, identifier);
+            res.json({suc});
         }        
     }
     catch(e) {
@@ -88,9 +88,9 @@ router.put('/', jwt.verifyLogin, async function(req, res) {
         let suc = false;
         // check if start_time is less than end_time and there is no confliction with other reservations
         if (start_time >= end_time) {
-            res.json({result : "Invalid time, start_time should be less than end_time"});
             // log the action
             Log.insert(req.ip, Operator.getOperator.reservationFailed.code, identifier);
+            res.json({result : "Invalid time, start_time should be less than end_time"});
         }
         else {
             // delete the reservation first and then check if there is a confliction with other reservations
@@ -110,9 +110,9 @@ router.put('/', jwt.verifyLogin, async function(req, res) {
                 else {
                     suc = await Reservation.updateSelfs(identifier, reserve_id, room_id, name, start_time, end_time, show, ext);
                 }
-                res.json({suc});
                 // log the action
                 Log.insert(req.ip, Operator.getOperator.reservationPut.code, identifier);
+                res.json({suc});
             }
         }
     }
@@ -136,16 +136,13 @@ router.delete('/', jwt.verifyLogin, async function(req, res) {
         else {
             suc = await Reservation.deleteSelf(reserve_id, identifier);
         }
-        res.json({suc}); 
-
         // send email to user who reserved the room when the reservation is deleted
         const reservation = await Reservation.getById(reserve_id);
         // format the start_time and end_time from mysql
-        const start_time = `${reservation.start_time.getFullYear()}-${reservation.start_time.getMonth() + 1}-${reservation.start_time.getDate()} ${("0" + reservation.start_time.getHours()).slice(-2)}:${("0" + reservation.start_time.getMinutes()).slice(-2)}`;
-        const end_time = `${reservation.end_time.getFullYear()}-${reservation.end_time.getMonth() + 1}-${reservation.end_time.getDate()} ${("0" + reservation.end_time.getHours()).slice(-2)}:${("0" + reservation.end_time.getMinutes()).slice(-2)}`;
-        Email.sendUser(identifier, Email.subject.cancel_reservation, Email.text.cancel_reservation(identifier, start_time, end_time, reservation.room_id));
+        Email.sendUser(identifier, Email.subject.cancel_reservation, Email.text.cancel_reservation(identifier, reservation.start_time, reservation.end_time, reservation.room_id));
         // log the action
         Log.insert(req.ip, Operator.getOperator.reservationDelete.code, identifier);
+        res.json({suc}); 
     }
     catch(e) {
         console.error(e);
