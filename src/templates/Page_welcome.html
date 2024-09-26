@@ -1,90 +1,37 @@
 ﻿<!DOCTYPE html>
 <html lang="zh-tw">
+
 <head>
-    <meta charset="utf-8" />
-    <title>Welcome! 二樓會議室預約系統 </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta charset="UTF-8" />
+    <title>國立中央大學-行政大樓2樓會議室借用系統</title>
+    <link rel="icon" href="/image/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <style>
 
-        /* 響應式網頁 */
-        @media (max-width: 550px) {
-            div {
-                flex-wrap: wrap;
-            }
-        }
-
-        .flex-container {
-            display: flex;
-            bottom: 0;
-        }
-
-        .flex-item-left {
-            flex: 70%;
-            flex-direction: column;
-            padding: 20px;
-        }
-
-        .flex-item-right {
-            display: flex;
-            flex: 30%;
-            flex-direction: column;
-            padding: 30px;
-            height: 100%;
-            background-color: rgb(255 255 255 / 0.60);
-        }
-
-        /* Button_登入 */
-        .button-login {
-            color: rgb(52 52 52);
-            aspect-ratio: 9/2;
-            width: 80%;
-            height: 60px;
-            margin-bottom: 10px;
-            filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-            font-size: 30px;
-        }
-
-        /* 底部版權資訊 */
-        footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            /*background-color: #f1f1f1;*/
-            text-align: left;
-            padding: 10px;
-            font-size: 14px;
-            color: #333;
-        }
-    </style>
 </head>
-<body style="background-image: url('/image/RoomPhoto.png'); background-size: auto">
-    <div class="flex-container">
-        <div class="flex-item-left">
-            <a id="ncu-logo" href="https://ncusec.ncu.edu.tw/secretariat/">
-                <img src="/image/ncu_logo.png" width="190" border="0" alt="國立中央大學" title="國立中央大學">
-            </a>
-        </div>
-        <div class="flex-item-right">
-            <a class="title">
-                行政大樓
-                <br />
-                二樓會議室
-                <br />
-                線上預約系統
-            </a>
-            <h4 style="height: 200px;">
-                <a href="">使用規則</a>
-                <br />
-                <a href="">設備介紹</a>
-            </h4>
-            <!-- 這理想要整塊留白，讓button在頁面最底部，但不知道要用哪個tag -->
-            <button class="button-login" type="button" onclick="javascript:location.href=`http://localhost:3000/api/login/sso`">登入</button>
+
+<body>
+    <header>
+        <a id="ncu-logo" href="https://ncusec.ncu.edu.tw/secretariat/">
+            <img class="logo" src="/image/ncu_logo.png" alt="國立中央大學">
+            <img class="logo_min" src="/image/ncu_logo_min.png" alt="國立中央大學">
+        </a>
+        <h1>行政大樓&emsp;二樓會議室<br>借用系統</h1>
+    </header>
+
+    <div class="background-container">
+        <div class="content-card">
+            <button class="login-btn" onclick="javascript:location.href=`/api/login/sso`">登入</button>
+            <div class="footer-links">
+                <a href="#">使用規則</a>
+                <a href="#">設備介紹</a>
+            </div>
         </div>
     </div>
+
     <footer>
         ©copyright
     </footer>
 </body>
+
 </html>
