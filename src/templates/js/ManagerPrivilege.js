@@ -10,14 +10,14 @@ const api_info = '/api/info/';
       const response = await fetch(api_info+type,{ headers: { 'access_token': headers } });
       const data = await response.json();
       return data.data;
-      return data.data;
       } catch (error) {
       console.error("Error:", error);
     }
   }
 
 async function setAccountName() {
-    const account_type = await getinfo('chinesename');
+    var account_type = await getinfo('chinesename');
+    account_type = DOMPurify.sanitize(account_type);
     document.getElementById("accountName").innerHTML += account_type;
   }
   setAccountName();
@@ -47,7 +47,7 @@ function setPermission(identifier,name){
 //刪除使用者(status設為-1，fetch時候不會顯示status==-1)
 function deleteUser(){
   Swal.fire({
-    title: `確定要刪除「${selectedName}」？`,
+    title:`確定要刪除「${selectedName}」？`,
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#d33', 
@@ -77,7 +77,7 @@ function deleteUser(){
     } else {
       Swal.fire(
         '已取消',
-        '您的數據未被刪除。',
+       '您的數據未被刪除。',
         'info' 
       );
     }
@@ -136,8 +136,22 @@ async function addViolate(identifier){
     // 將過濾後的事件添加為 <select> 的選項
     events.forEach(event => {
       const option = document.createElement('option');
+  
+      // 將 start_time 轉換為 Date 對象
+      const startTime = new Date(event.start_time);
+      
+      // 格式化為 mm/dd
+      const month = String(startTime.getMonth() + 1).padStart(2, '0'); // 月份需要加 1
+      const day = String(startTime.getDate()).padStart(2, '0');
+      
+      // 獲取星期幾
+      const daysOfWeek = ['日', '一', '二', '三', '四', '五', '六'];
+      const dayOfWeek = daysOfWeek[startTime.getDay()];
+      
+      // 格式化為 mm/dd (星期幾)
+      const formattedDate = `${month}/${day} (${dayOfWeek})`;
       option.value = event.reserve_id;  // 可以根據需要調整 value
-      option.textContent = `${event.name}`;
+      option.textContent = DOMPurify.sanitize(`${formattedDate} ${event.name}`);
       selectElement.appendChild(option);
     });
 }
@@ -182,8 +196,9 @@ const status_put = '/api/user/status';
 function putPrivilege(){
   const form = document.getElementById('privilege-form');
   const formData = new FormData(form);
-  const privileges = formData.get('privilege') === 'true'; 
-  const status = formData.get('status') === 'true'; 
+  const privileges = (formData.get('privilege')== 1 ? 1 : 0 ); 
+  const status = (formData.get('status')== 1 ? 1 : 0); 
+
   const data={
     identifier:selectedIdentifier,
     privileges: privileges,
@@ -227,36 +242,87 @@ async function showViolation(identifier){
   .then(result =>{
     const violation = result.data || []; 
     const violationList = violation.filter(violation => violation.identifier === identifier);
+    console.log(violationList);
     return violationList;
   });
   if (violation.length > 0) {
-    const violationHtml = violation.map(violation => `
-      <div style="margin-bottom: 10px;">
-        <p><strong>違規時間：</strong> ${new Date(violation.datetime).toLocaleString()}</p>
-        <p><strong>原因：</strong> ${violation.reason}</p>
-        <p><strong>備註：</strong> ${violation.remark}</p>
-        <hr>
-      </div>
-    `).join('');
+    const violationHtml = violation.map(violation => {
+      const date = new Date(violation.datetime);
+      // 獲取格式化的日期和時間
+      const formattedDate = date.toLocaleString().split(' ')[0];
+    
+      // 獲取星期幾
+      const daysOfWeek = ['日', '一', '二', '三', '四', '五', '六'];
+      const dayOfWeek = `${daysOfWeek[date.getDay()]}`;
+    
+      const content= DOMPurify.sanitize(`
+        <div >
+          <p><strong>違規時間：</strong> ${formattedDate} (${dayOfWeek})</p>
+          <p><strong>原因：</strong> ${violation.reason}</p>
+          <p><strong>備註：</strong> ${violation.remark}</p>
+          <button type="button" class="delete-btn" data-id="${violation.violation_id}">刪除</button>
+          <hr>
+        </div>
+      `);
+      return content;
+    }).join('');
       //刪除還沒寫
     Swal.fire({
-      title: "違規紀錄",
+      title: DOMPurify.sanitize("違規紀錄"),
       html: violationHtml,
       confirmButtonText: 'OK',
       width: '600px', 
       customClass: {
         popup: 'swal-wide', 
       },
+      didOpen: () => {
+        // 動態綁定刪除按鈕的點擊事件
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        deleteButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const violationId = this.getAttribute('data-id');
+            violationDelete(violationId); // 呼叫刪除函數
+          });
+        });
+      }
     });
   } else {
     Swal.fire({
-      title: '沒有違規記錄',
-      text: '該用戶沒有違規記錄。',
+      title: DOMPurify.sanitize('沒有違規記錄'),
+      text: DOMPurify.sanitize('該用戶沒有違規記錄。'),
       icon: 'info',
       confirmButtonText: 'OK',
     });
   }
 }
+
+const violation_del=`/api/violation`;
+function violationDelete(violation_id){
+  try{
+
+    fetch(violation_del,{
+      method: 'DELETE',
+      credentials: 'include', 
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({violation_id: violation_id}),
+    })
+    .then(response => response.json())
+    .then(data=>{
+      if(data.suc){
+        alert("刪除完成");
+        window.location.reload();
+      }
+      else{
+        alert("刪除失敗");
+      }
+    });
+  } catch(error){
+    console.error('Error:', error);
+  }
+}
+
 
 
 
@@ -264,8 +330,6 @@ async function showViolation(identifier){
 function hidePopup(popupId) {
   document.getElementById(popupId).style.display = 'none';
 }
-
-
 //get user data
 async function fetchData() {
   const response = await fetch(`/api/user`);
@@ -276,8 +340,8 @@ async function fetchData() {
     const filteredData = result.data.filter(item => item.status !== -1);
 
     const data = await Promise.all(filteredData.map(async item => {
-      const privilegeText = item.privilege_level === 1 ? '管理者' : '一般使用者';
-      const statusText = item.status === 1 ? '✔️' : '❌';
+      const privilegeText = item.privilege_level == 1 ? '管理者' : '一般使用者';
+      const statusText = item.status == 1 ? '✔️' : '❌';
       return {
         data: [
           item.chinesename,
@@ -295,9 +359,6 @@ async function fetchData() {
     return data;
   }
 }
-
-
-
 
 
 //表單生成 grid

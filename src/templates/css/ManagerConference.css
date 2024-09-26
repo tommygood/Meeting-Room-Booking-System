@@ -163,7 +163,7 @@ body {
   display: flex;
   flex-direction: column;
   width: 370px;
-  height: 500px;
+  height: fit-content;
   background-color:#CCC;
 }
 .hamburger-requestbutton{

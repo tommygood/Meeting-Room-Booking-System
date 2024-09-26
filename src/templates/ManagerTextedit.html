@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
     <head>
             <meta charset="UTF-8">
             <title>管理員使用規則修改</title>
@@ -34,19 +35,23 @@
             </div>
         </div>
 
-        <!-- texteditor -->
-        <div class="main-content">
-            <div id="quill" class="quill"></div>
-            <div class="save-button" onclick="saveContent()">
-                <div class="buttontext">儲存</div>
-            </div>
-        </div>
         <!-- 使用者/管理者 -->
         <div class="useradmin" onclick=""> 
             <img src="/image/user.png"  class="useradmin-button" onclick="location.href ='/page/userlobby'">
             <hr style="margin: 0; height: 100%;" />
             <img src="/image/admin.png" class="useradmin-button" onclick="location.href ='/page/privilege'">
         </div>
-        
+        <div style="display: flex; flex-direction:column ; margin-left:30px; width:60%">
+        <ul id="doc_list">
+          <div>Doc list</div>
+        </ul>
+      <div id="editorjs" style="width:100%;height:80vh;overflow-y: scroll; border: 1px solid black;border-radius: 10px; margin: 0 auto ;background-color:white;"></div>
+        </div>
+        <button id="save-button" style="height:30px ;width:50px;margin-top:92vh;margin-left: 5px;">save</button>
+
     </body>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+    <script src="/js/text_editor.js"></script>
+    <link href="/css/text_editor.css" rel="stylesheet"/>
+    <script src="/js/text_editor_custom.js"></script>
 </html>

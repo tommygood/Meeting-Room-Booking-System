@@ -4,9 +4,11 @@ const jwt = require('./../utilities/jwt.js');
 const path = require('path');
 const User = require('./../model/user.js');
 
+// get the page for admin to edit the rules
 router.get('/', jwt.verifyAdmin, async function(req, res) {
     try {
-        res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/ManagerBoard.html'));
+        // use path.resolve to get the absolute path
+        res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/ManagerTextedit.html'));
     }
     catch(e) {
       console.error(e);
@@ -14,22 +16,13 @@ router.get('/', jwt.verifyAdmin, async function(req, res) {
     }
 })
 
-router.get('/preview', jwt.verifyAdmin, async function (req, res) {
-    try {
-        res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/Board_preview.html'));
-    }
-    catch (e) {
-        console.error(e);
-        res.status(500).send('Internal Server Error');
-    }
-})
-
-router.get('/demo', async function (req, res) {
+// get the page for anyone to check the rules
+router.get('/demo', function(req, res) {
     try {
         // use path.resolve to get the absolute path
-        res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/Board_show.html'));
+        res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/RulesDemo.html'));
     }
-    catch (e) {
+    catch(e) {
         console.error(e);
         res.status(500).send('Internal Server Error');
     }

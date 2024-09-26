@@ -6,6 +6,7 @@
         <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
         <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
         <script src="/js/ManagerConference.js"></script>
         <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
           <link rel="stylesheet" type="text/css" href="/css/ManagerConference.css">
@@ -47,10 +48,10 @@
         </div>
 
 
-        <!-- 申請頁面 -->
+        <!-- 編輯頁面 -->
         <div id="hamburger-menu" class="hamburger-menu"> 
             <div id= "hamburger-requestpage" class="hamburger-requestpage">
-                <h3 class="hamburger-title">送出申請</h3>
+                <h3 class="hamburger-title">編輯申請</h3>
                 <form  id="request">
                     <div class="hamburger-list">
                         <div class="input-group">
@@ -78,13 +79,15 @@
                             <input type="text" class="hamburger-request" name='email' placeholder="電子信箱"  >
                         </div>
                         <div class="input-group">
-                            <h2 class="hamburger-request-title">借用日期：</h2>
-                            <input type="date" class="hamburger-request" name="date" />
-                        </div>
-
-                        <div class="input-group">
-                            <h2 class="hamburger-request-title">借用時間：</h2>
+                            <h2 class="hamburger-request-title">開始日期：</h2>
+                            <input type="date" class="hamburger-request" name="startdate" id="startdate"/>
                             <select name="starthour" id="starthour">
+                                <option value="00">00</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
                                 <option value="06">06</option>
                                 <option value="07">07</option>
                                 <option value="08">08</option>
@@ -101,14 +104,27 @@
                                 <option value="19">19</option>
                                 <option value="20">20</option>
                                 <option value="21">21</option>
-                            </select>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                                <option value="24">24</option>
+                              </select>
                             <span>:</span>
                             <select name="startminute" id="startminute">
                                 <option value="00">00</option>
                                 <option value="30">30</option>
                             </select>
-                            <span>至</span>
+                        </div>
+    
+                        <div class="input-group">
+                            <h2 class="hamburger-request-title">結束日期：</h2>
+                            <input type="date" class="hamburger-request" name="enddate" id="enddate"/>
                             <select name="endhour" id="endhour">
+                                <option value="00">00</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
                                 <option value="06">06</option>
                                 <option value="07">07</option>
                                 <option value="08">08</option>
@@ -125,6 +141,9 @@
                                 <option value="19">19</option>
                                 <option value="20">20</option>
                                 <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                                <option value="24">24</option>
                             </select>
                             <span>:</span>
                             <select name="endminute" id="endminute">
@@ -139,8 +158,8 @@
                         <div id="backbtn" class="hamburger-sendbutton" onclick="hidePopup('hamburger-menu')">
                             <h3 class="hamburger-title" style="color:white" >返回</h3>
                         </div>
-                        <div id="requestsend" class="hamburger-sendbutton" onclick="reservationPut()">
-                            <h3 class="hamburger-title" style="color:white">申請送出</h3>
+                        <div id="requestsend" class="hamburger-sendbutton" >
+                            <h3 class="hamburger-title" style="color:white">編輯送出</h3>
                         </div>
                     </div>
                 </form>

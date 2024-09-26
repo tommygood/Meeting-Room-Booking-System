@@ -50,6 +50,7 @@ CREATE TABLE `Room` (
     PRIMARY KEY (`room_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 insert into Room value('1','二樓會議室',true);
+
 CREATE TABLE `Reservation` (
     `reserve_id` int NOT NULL AUTO_INCREMENT,
     `identifier` varchar(12) NOT NULL,
@@ -65,3 +66,10 @@ CREATE TABLE `Reservation` (
     FOREIGN KEY (`room_id`) REFERENCES `Room` (`room_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 insert into Reservation value('100','admin','1','test','2024-09-09T12:00:00','2024-09-09T14:00:00',true,'578',1);
+
+CREATE TABLE `Doc` (
+    `name` varchar(40) NOT NULL,
+    `blocks` longtext NOT NULL,
+    `id_content` varchar(200) NULL,
+    PRIMARY KEY (`name`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

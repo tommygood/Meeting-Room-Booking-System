@@ -30,7 +30,8 @@ async function getLog(condition) {
 }
 
 async function setAccountName() {
-    const account_type = await getinfo('chinesename');
+    var account_type = await getinfo('chinesename');
+    account_type = DOMPurify.sanitize(account_type);
     document.getElementById("accountName").innerHTML += account_type;
 }
 setAccountName();
@@ -46,12 +47,60 @@ function changePage(button){
     location.href = "/page/"+button.id;
 }
 
+// extract the data from object
+function extractData(obj) {
+  let data = [];
+  for (let i = 0; i < obj.length; i++) {
+    let temp = [];
+    temp.push(obj[i].chinesename, obj[i].unit, obj[i].IP, obj[i].operation_id, obj[i].datetime);
+    data.push(temp);
+  }
+  return data;
+}
 
+// export log to csv
+function downloadLog(){
+    // call excelJs
+    const workbook = new ExcelJS.Workbook();
+    // file name
+    const date = new Date();
+    const file_name = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+    const sheet = workbook.addWorksheet(file_name); //在檔案中新增工作表 參數放自訂名稱
+
+    // get the data need to be put in excel
+    //const rows = [["test", "單位" , "ip", "操作內容", "時間"]]
+    console.log(response)
+    const rows = extractData(response);
+    console.log(rows)
+
+    sheet.addTable({
+      // 在工作表裡面指定位置、格式並用columsn與rows屬性填寫內容
+      name: "總表", // 表格內看不到的，算是key值，讓你之後想要針對這個table去做額外設定的時候，可以指定到這個table
+      ref: "A1", // 從A1開始
+      columns: [{ name: "姓名" }, { name: "單位" }, { name: "ip" }, {name : "操作內容"}, {name : "時間"}],
+      rows: rows
+    });
+
+    // 表格裡面的資料都填寫完成之後，訂出下載的callback function
+    // 異步的等待他處理完之後，創建url與連結，觸發下載
+    workbook.xlsx.writeBuffer().then((content) => {
+      const link = document.createElement("a");
+      const blobData = new Blob([content], {
+        type: "application/vnd.ms-excel;charset=utf-8;"
+      });
+      link.download = file_name + ".xlsx";
+      link.href = URL.createObjectURL(blobData);
+      link.click();
+    });
+}
+
+let response;
 //表單生成 grid
 document.addEventListener("DOMContentLoaded", async function(){
-    const response = await getLog({offset : 0, num : 1000});
+    response = await getLog({offset : 0, num : 20000})
     const data = response.map(item => [
-      item.identifier,
+      item.chinesename,
+      item.unit,
       item.IP,
       item.operation_id,
       new Intl.DateTimeFormat('default', {
@@ -65,7 +114,7 @@ document.addEventListener("DOMContentLoaded", async function(){
       }).format(new Date(item.datetime))
     ]);
     new gridjs.Grid({
-        columns: ['id', 'ip', '操作內容', '操作時間'],
+        columns: ['姓名', '單位', 'ip', '操作內容', '操作時間'],
         data: data,
         width:'1200px',
         fixedHeader:true,
@@ -74,7 +123,7 @@ document.addEventListener("DOMContentLoaded", async function(){
         resizable: true,
         pagination: {
           enabled: true,     
-          limit: 100,          
+          limit: 20,          
           summary: true,     
         },
         style: {
@@ -98,7 +147,7 @@ document.addEventListener("DOMContentLoaded", async function(){
         }
 
     }).render(document.getElementById('gridtable'));
-
+    
      document.getElementById('grid-search').addEventListener('input', function(event) {
       // 設定 Grid.js 的搜尋文字
       document.querySelector('.gridjs-search .gridjs-input').value = event.target.value;

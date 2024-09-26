@@ -4,6 +4,7 @@
         <title>登入紀錄</title>
         <script src="https://unpkg.com/gridjs@6.2.0/dist/gridjs.umd.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
         <script src="/js/ManagerLog.js"></script>
         <link rel="stylesheet" type="text/css" href="/css/ManagerLog.css">
         <link href="https://unpkg.com/gridjs@6.2.0/dist/theme/mermaid.min.css" rel="stylesheet" />
@@ -47,5 +48,9 @@
             <hr style="margin: 0; height: 100%;" />
             <img src="/image/admin.png" class="useradmin-button" onclick="location.href ='/page/privilege'">
         </div>
+        <div>
+            <button id="download-button" onclick="downloadLog()">下載紀錄</button>
+        </div>
     </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js" ></script>
 </html>

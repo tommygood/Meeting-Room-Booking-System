@@ -7,30 +7,43 @@
 - 提供前端需要的資料，處理資料的儲存
 - <a href='https://github.com/tommygood/Meeting-Room-Booking-System/blob/main/doc/api.md'>API doc</a>
 ### Frontend Site
+- html, js and css.
 ## Features
 ### 串接 NCU OAuth
 - 提供利用 NCU Portal 實作第三方登入機制，讓學校職員可以利用學校帳號登入此系統
-- 流程圖
-  ![image](https://github.com/user-attachments/assets/f62dd386-0089-4614-8aef-a58b838188a3)
+
+  <details>
+    <summary>流程圖</summary>
+
+    ![image](https://github.com/user-attachments/assets/f62dd386-0089-4614-8aef-a58b838188a3)
+  </details>
+
+### 當特定 event 發生，使用 NCU SMTP Mail Server 寄信
+- 預約成功
+- 取消預約
+### Text Editor
+- A text editor based on Editor.js.
+- 功能
+  1. 支援文字和圖片輸入
+  2. 支援將文字轉為 hypertext, bold and italics
+    - ![image](https://github.com/user-attachments/assets/950ae35c-ba8e-4f21-95f6-651d822fed12)
+  3. 客製化功能
+    - 句首的 `- ` 會被轉換成 `• `
+    - 錨點
+      1. 將文字設為 hypertext 作為錨點，並指定對應處的名稱
+          - ![image](https://github.com/user-attachments/assets/7999edfc-b1ad-4bc6-acd0-e8ac2c43cbc0)
+      2. 句首為 `# ` 指定錨點按下的對應處
+          - ![image](https://github.com/user-attachments/assets/3e7e3f75-16a6-4a18-b161-9c92c31a5e92)
+      3. 按下 save button 並輸入檔名
+      4. 存取 `/page/rules/demo?doc_name=<檔名>` 即可看到輸入的內容
 ## Prerequisite
+- Node v20 up
 ## Usage
 ### Backend API
 - `mysql < schemal.sql`
 - `npm install`
 - `node index.js`
 ### Frontend Site
-## Future Works
-1. ~~目前會將 OAuth access token 以 query string 存到使用者的前端頁面，但這是不安全的作法，之後要改為將 access token 存到 session~~
-2. 後端 API 的單元測試
-## Demo
-- send a request to `/api/login/sso`
-  - ![image](https://github.com/user-attachments/assets/ecfd905d-faa3-4970-8a5d-9c767b109d7a)
-- redirect to NCU Portal
-  - ![image](https://github.com/user-attachments/assets/9d00645a-6a7f-46a4-8886-a58c0444d00d)
-- NCU Portal show the leave alert message after login with NCU account & pwd
-  - ![image](https://github.com/user-attachments/assets/ef15fd9c-a06a-4bc9-80b0-448e518b815f)
-- redirect to `/example`
-  - ![image](https://github.com/user-attachments/assets/4f448821-734d-4d9e-80f9-af8f2556f43a)
 ## Workflow
 - <a href='https://github.com/tommygood/Meeting-Room-Booking-System/blob/main/doc/workflow.md'>doc</a>
 ## Contribution

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>管理員看板管理</title>
     <script src="https://unpkg.com/gridjs@6.2.0/dist/gridjs.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
     <script src="/js/ManagerBoard.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/ManagerBoard.css">
     <link href="https://unpkg.com/gridjs@6.2.0/dist/theme/mermaid.min.css" rel="stylesheet" />
@@ -33,12 +34,23 @@
         </div>
     </div>
 
-    <!-- 表單 -->
-    <div>
-        <div class="save-button" onclick="saveContent()">
-            <div class="buttontext">儲存</div>
+        <!-- 表單 -->
+        <div >
+            <div class ="inputdate">
+                <input type="date" name="startdate" placeholder="開始時間" />
+                <input type="date" name="enddate" placeholder="結束時間"/> 
+                <div class="button" onclick="searchBoard()">
+                    <div class="buttontext">搜尋</div>
+                </div>
+            
+                <div class="button" onclick="saveContent()">
+                    <div class="buttontext">儲存</div>
+                </div>
+
+            </div>
+            <div id="gridtable"></div>
+            
         </div>
-        <div id="gridtable"></div>
     </div>
     <div>
         <!-- 使用者/管理者 -->
@@ -53,20 +65,21 @@
             <div style="font-size: 20px; outline: 3px dashed #000000; background-color: #cacaca; margin: 10px; padding: 10px;">
                 <div>
                     <b>預覽設定</b>
-                    <div id="board/preview" class="btn" onclick="changePage(this)">
+                    <div id="board/preview" class="btn" onclick="previewBoard()">
                         <div class="buttontext">▶預覽</div>
                     </div>
                 </div>
+                <form id="previewBoard">
+                    <div class="input-group">
+                        <b>日期：</b>
+                        <input type="date" class="hamburger-request" name="start-date"/>
+                    </div>
 
-                <div class="input-group">
-                    <b>日期：</b>
-                    <input type="date" class="hamburger-request" />
-                </div>
-
-                <div class="input-group">
-                    <b>時間：</b>
-                    <input type="time" id="start-time" name="start-time" class="hamburger-timerequest">
-                </div>
+                    <div class="input-group">
+                        <b>時間：</b>
+                        <input type="time" id="start-time" name="start-time" class="hamburger-timerequest">
+                    </div>
+                </form>
             </div>
             <div id="board/demo" class="btn" onclick="changePage(this)">
                 <div class="buttontext">▶看板播放</div>

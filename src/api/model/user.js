@@ -12,7 +12,9 @@ module.exports = {
                 // insert user info into db, if user exists, then update user info
 
                 // mobilePhone and unit may not exist
-                const mobilePhone = user_info.mobilePhone == undefined ? null : user_info.mobilePhone;
+                // mobilePhone is deprecated
+                //const mobilePhone = user_info.mobilePhone == undefined ? null : user_info.mobilePhone;
+                const mobilePhone = null;
                 const unit = user_info.facultyRecords == undefined ? null : user_info.facultyRecords.unit;
                 const sql = 'INSERT INTO `User` (`identifier`, `chinesename`, `email`, `mobilePhone`, `unit`) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `chinesename` = ?, `email` = ?, `mobilePhone` = ?, `unit` = ?;';
                 await conn.query(sql, [user_info.identifier, user_info.chineseName, user_info.email, mobilePhone, unit, user_info.chineseName, user_info.email, mobilePhone, unit]);
@@ -35,7 +37,7 @@ module.exports = {
         }
         else {
             try {
-                const sql = 'SELECT User.identifier, User.chinesename, User.email, User.mobilePhone, User.unit, User.status, User.privilege_level, COUNT(Violation.violation_id) AS violation_count FROM `User` LEFT JOIN `Violation` ON User.identifier = Violation.identifier GROUP BY User.identifier;';
+                const sql = 'SELECT User.identifier, User.chinesename, User.email, User.mobilePhone, User.unit, User.status, User.privilege_level, COUNT(Violation.violation_id) AS violation_count FROM `User` LEFT JOIN `Violation` ON Violation.status = 0 AND User.identifier = Violation.identifier GROUP BY User.identifier;';
                 const result = await conn.query(sql);
                 db_conn.closeDBConnection(conn);
                 return result;
@@ -119,11 +121,9 @@ module.exports = {
         }
         else {
             try {
-                console.log("identifier : ", identifier);
                 const sql = 'SELECT `privilege_level` FROM `User` WHERE `identifier` = ?;';
                 const result = await conn.query(sql, [identifier]);
                 db_conn.closeDBConnection(conn);
-                console.log("result : ", result);
                 return result[0].privilege_level;
             }
             catch(e) {
@@ -131,6 +131,38 @@ module.exports = {
                 conn.release();
                 return null;
             }
+        }
+    },
+
+    // get email from all admin
+    getAdminsEmail : async function () {
+        const conn = await db_conn.getDBConnection();
+        if (conn == null) {
+            return null;
+        }
+        else {
+            try {
+                const sql = 'SELECT `email` FROM `User` WHERE `privilege_level` >= 1;';
+                const result = await conn.query(sql);
+                db_conn.closeDBConnection(conn);
+                return result;
+            }
+            catch(e) {
+                console.error("error getting email from all admin : ", e);
+                conn.release();
+                return null;
+            }
+        }
+    },
+
+    // check if this identifier is admin
+    isAdmin : async function (identifier) {
+        const result = await this.getPrivilegeLevel(identifier);
+        if (result >= 1) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 }

@@ -34,6 +34,12 @@
     >>> r.text
     '{"suc":true}'
     ```
+    - there have some check when a new reservation added.
+        - check whether a reservation overlap with others reservations when add/update the reservation at backend.
+            - if an overlap occur, then response {result : "Invalid time, there is a confliction with other reservations"}.
+        - check whether start_time >= end_time in a reservation
+            - if start_time >= end_time, then response {result : "Invalid time, start_time should be less than end_time"}.
+        - response {'suc' : true} when reservation added successfully.
 
 - GET `/api/reservation?start_time=<start_time>&end_time=<end_time>`
     - get reservaions which are between `start_time` and `end_time`
@@ -153,3 +159,13 @@
     >>> r.text
     '{"suc":true}'
     ```
+
+- GET `/api/doc`
+    - get specify doc content with doc name in querystring.
+
+- GET `/api/doc/all`
+    - get all existed doc name.
+
+- POST `/api/doc`
+    - insert/update doc with `doc_name`, `blocks` and `id_content`.
+    - max size limit of file is 5mb.
