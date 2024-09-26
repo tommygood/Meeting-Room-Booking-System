@@ -40,15 +40,15 @@ module.exports = {
     },
 
     // get log from db by offset and num
-    get : async function (offset, num) {
+    get : async function (offset, num, day_limit) {
         const conn = await db_conn.getDBConnection();
         if (conn == null) {
             return null;
         }
         else {
             try {
-                const sql = "select Log.datetime, Log.IP, Log.operation_id, User.chinesename, User.unit from `Log`, `User` where `Log`.identifier = `User`.identifier order by `Log`.datetime desc limit ? offset ?;";
-                const result = replaceOperation(await conn.query(sql, [parseInt(num), parseInt(offset)]));
+                const sql = "select Log.datetime, Log.IP, Log.operation_id, User.chinesename, User.unit from `Log`, `User` where `Log`.datetime >= DATE_SUB(CURRENT_DATE(),INTERVAL ? DAY) AND `Log`.identifier = `User`.identifier order by `Log`.datetime desc limit ? offset ?;";
+                const result = replaceOperation(await conn.query(sql, [day_limit, parseInt(num), parseInt(offset)]));
                 db_conn.closeDBConnection(conn);
                 return result;
             }

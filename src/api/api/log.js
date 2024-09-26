@@ -8,7 +8,8 @@ router.get('/', jwt.verifyAdmin, async function(req, res) {
 	try {
 		const offset = req.query.offset;
 		const num = req.query.num;
-		const data = await Log.get(offset, num);
+		const day_limit = req.query.day_limit;
+		const data = await Log.get(offset, num, day_limit);
 		res.json({data});
     }
     catch(e) {

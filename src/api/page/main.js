@@ -25,7 +25,7 @@ router.get('/lobby', async function(req, res) {
   }
 })
 
-router.get('/userlobby', jwt.verifyLogin, async function(req, res) {
+router.get('/userlobby', jwt.pageVerifyLogin, async function(req, res) {
   try {
     res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/userlobby.html'));
   }
@@ -36,7 +36,7 @@ router.get('/userlobby', jwt.verifyLogin, async function(req, res) {
 })
 
 // get the page for admin to check the user privilege and violation
-router.get('/privilege', jwt.verifyAdmin, async function(req, res) {
+router.get('/privilege', jwt.pageVerifyAdmin, async function(req, res) {
   try {
     res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/ManagerPrivilege.html'));
   }
@@ -47,7 +47,7 @@ router.get('/privilege', jwt.verifyAdmin, async function(req, res) {
 })
 
 // get the page for admin to show all the conferences which can be edited
-router.get('/conference', jwt.verifyAdmin, async function(req, res) {
+router.get('/conference', jwt.pageVerifyAdmin, async function(req, res) {
   try {
     res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/ManagerConference.html'));
   }
@@ -58,7 +58,7 @@ router.get('/conference', jwt.verifyAdmin, async function(req, res) {
 })
 
 // get the page for admin to show all the logs
-router.get('/log', jwt.verifyAdmin, async function(req, res) {
+router.get('/log', jwt.pageVerifyAdmin, async function(req, res) {
   try {
       res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/ManagerLog.html'));
   }
