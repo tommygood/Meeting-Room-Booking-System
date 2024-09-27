@@ -158,11 +158,38 @@ module.exports = {
     // check if this identifier is admin
     isAdmin : async function (identifier) {
         const result = await this.getPrivilegeLevel(identifier);
-        if (result >= 1) {
+        const is_valid = await this.isValid(identifier);
+        if (result >= 1 && is_valid) {
             return true;
         }
         else {
             return false;
+        }
+    },
+
+    // check if user status is valid
+    isValid : async function (identifer) {
+        const conn = await db_conn.getDBConnection();
+        if (conn == null) {
+            return null;
+        }
+        else {
+            try {
+                const sql = "SELECT COUNT(*) FROM User WHERE identifier = ? AND status = 1;"
+                const result = await conn.query(sql, [identifer]);
+                db_conn.closeDBConnection(conn);
+                if (result[0]['COUNT(*)'] >= 1) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            catch(e) {
+                console.error("error getting user : ", e);
+                conn.release();
+                return null;
+            }
         }
     }
 }

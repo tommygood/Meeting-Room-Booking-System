@@ -52,7 +52,7 @@ function extractData(obj) {
   let data = [];
   for (let i = 0; i < obj.length; i++) {
     let temp = [];
-    temp.push(obj[i].chinesename, obj[i].unit, obj[i].IP, obj[i].operation_id, obj[i].datetime);
+    temp.push(obj[i].unit, obj[i].chinesename, obj[i].IP, obj[i].operation_id, obj[i].datetime);
     data.push(temp);
   }
   return data;
@@ -64,20 +64,18 @@ function downloadLog(){
     const workbook = new ExcelJS.Workbook();
     // file name
     const date = new Date();
-    const file_name = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+    const file_name = `MRBS-Logs-${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
     const sheet = workbook.addWorksheet(file_name); //在檔案中新增工作表 參數放自訂名稱
 
     // get the data need to be put in excel
     //const rows = [["test", "單位" , "ip", "操作內容", "時間"]]
-    console.log(response)
     const rows = extractData(response);
-    console.log(rows)
 
     sheet.addTable({
       // 在工作表裡面指定位置、格式並用columsn與rows屬性填寫內容
       name: "總表", // 表格內看不到的，算是key值，讓你之後想要針對這個table去做額外設定的時候，可以指定到這個table
       ref: "A1", // 從A1開始
-      columns: [{ name: "姓名" }, { name: "單位" }, { name: "ip" }, {name : "操作內容"}, {name : "時間"}],
+      columns: [{ name: "單位" }, { name: "姓名" }, { name: "ip" }, {name : "操作內容"}, {name : "時間"}],
       rows: rows
     });
 
@@ -94,13 +92,13 @@ function downloadLog(){
     });
 }
 
-let response;
+let response; // global variable for restoring logs.
 //表單生成 grid
 document.addEventListener("DOMContentLoaded", async function(){
-    response = await getLog({offset : 0, num : 20000})
+    response = await getLog({offset : 0, num : 20000, day_limit : 180})
     const data = response.map(item => [
-      item.chinesename,
       item.unit,
+      item.chinesename,
       item.IP,
       item.operation_id,
       new Intl.DateTimeFormat('default', {
@@ -114,7 +112,7 @@ document.addEventListener("DOMContentLoaded", async function(){
       }).format(new Date(item.datetime))
     ]);
     new gridjs.Grid({
-        columns: ['姓名', '單位', 'ip', '操作內容', '操作時間'],
+        columns: ['單位', '姓名', 'ip', '操作內容', '操作時間'],
         data: data,
         width:'1200px',
         fixedHeader:true,
@@ -148,11 +146,12 @@ document.addEventListener("DOMContentLoaded", async function(){
 
     }).render(document.getElementById('gridtable'));
     
-     document.getElementById('grid-search').addEventListener('input', function(event) {
-      // 設定 Grid.js 的搜尋文字
-      document.querySelector('.gridjs-search .gridjs-input').value = event.target.value;
-      // 手動觸發輸入事件
-      document.querySelector('.gridjs-search .gridjs-input').dispatchEvent(new Event('input'));
+    document.getElementById('grid-search').addEventListener('input', function(event) {
+    // 設定 Grid.js 的搜尋文字
+    document.querySelector('.gridjs-search .gridjs-input').value = event.target.value;
+    // 手動觸發輸入事件
+    document.querySelector('.gridjs-search .gridjs-input').dispatchEvent(new Event('input'));
      });
-  });
+  }
+);
     

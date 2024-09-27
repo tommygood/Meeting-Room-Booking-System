@@ -4,7 +4,7 @@ const jwt = require('./../utilities/jwt.js');
 const path = require('path');
 const User = require('./../model/user.js');
 
-router.get('/', jwt.verifyAdmin, async function(req, res) {
+router.get('/', jwt.pageVerifyAdmin, async function(req, res) {
     try {
         res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/ManagerBoard.html'));
     }
@@ -14,7 +14,7 @@ router.get('/', jwt.verifyAdmin, async function(req, res) {
     }
 })
 
-router.get('/preview', jwt.verifyAdmin, async function (req, res) {
+router.get('/preview', jwt.pageVerifyAdmin, async function (req, res) {
     try {
         res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/Board_preview.html'));
     }
