@@ -5,7 +5,7 @@ const path = require('path');
 const User = require('./../model/user.js');
 
 // get the page for admin to edit the rules
-router.get('/', jwt.verifyAdmin, async function(req, res) {
+router.get('/', jwt.pageVerifyAdmin, async function(req, res) {
     try {
         // use path.resolve to get the absolute path
         res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/ManagerTextedit.html'));

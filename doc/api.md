@@ -18,10 +18,10 @@
     '{"data":"王冠權"}'
     ```
 
-- GET `/api/log?offset=<offset>&num=<record_num>`
-    - get log by offset and records number
+- GET `/api/log?offset=<offset>&num=<record_num>&day_limit=<day_range_limit>`
+    - get logs by offset and records number in the specify time range.
     ```=
-    >>> r = requests.get('http://localhost:3000/api/log?offset=0&num=2', cookies=cookies)
+    >>> r = requests.get('http://localhost:3000/api/log?offset=0&num=2&day_range_limit=7', cookies=cookies)
     >>> r.text
     '{"data":[{"log_id":2,"identifier":"admin","datetime":"2024-09-04T02:16:21.000Z","IP":"127.0.0.1","operation_id":0},{"log_id":3,"identifier":"admin","datetime":"2024-09-04T02:17:53.000Z","IP":"127.0.0.1","operation_id":0}]}'
     ```
