@@ -21,7 +21,7 @@ router.get('/ip', async function(req, res) {
 	try {
 		const os = require('os');
 		const networkInterfaces = os.networkInterfaces();
-		res.json({data : networkInterfaces, version : '1.0.0'});
+		res.json({data : networkInterfaces, version : '1.0.1'});
 	}
 	catch(e) {
 		console.error(e);
