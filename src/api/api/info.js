@@ -15,4 +15,18 @@ router.get('/chinesename', jwt.verifyLogin, async function(req, res) {
     }
 })
 
+// return server ip
+// FIXME : remove this function after k8s testing is done
+router.get('/ip', async function(req, res) {
+	try {
+		const os = require('os');
+		const networkInterfaces = os.networkInterfaces();
+		res.json({data : networkInterfaces});
+	}
+	catch(e) {
+		console.error(e);
+		res.status(500).send('Internal Server Error');
+	}
+})
+
 module.exports = router;
