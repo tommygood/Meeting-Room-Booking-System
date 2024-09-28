@@ -62,6 +62,6 @@ jobs:
             chmod 600 test.pem
             cat test.pem
         - name: connect and pull
-          run: ssh -i test.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST_K8SPOCA }} "kubectl rollout restart deployment/deployment-mrbs && exit"
+          run: ssh -i test.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER_K8SPOCA }}@${{ secrets.SSH_HOST_K8SPOCA }} "kubectl rollout restart deployment/deployment-mrbs && exit"
         - name: cleanup
           run: rm -rf ~/.ssh
