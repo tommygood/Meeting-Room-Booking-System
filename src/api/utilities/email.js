@@ -80,8 +80,8 @@ module.exports = {
 
     // email subject
     subject : {
-        succeessful_reservation : "預約成功通知信",
-        cancel_reservation : "取消預約通知信",
+        succeessful_reservation : "國立中央大學行政大樓2樓會議室預約成功通知信",
+        cancel_reservation : "國立中央大學行政大樓2樓會議室取消預約通知信",
     },
 
     // email text
