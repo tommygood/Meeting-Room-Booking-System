@@ -344,8 +344,8 @@ async function fetchData() {
       const statusText = item.status == 1 ? '✔️' : '❌';
       return {
         data: [
-          item.chinesename,
           item.unit,
+          item.chinesename,
           privilegeText,
           statusText,
           gridjs.html(`<a href="#" onclick="setPermission('${item.identifier}','${item.chinesename}');" >修改</a>`),
@@ -366,7 +366,7 @@ document.addEventListener("DOMContentLoaded",function(){
   fetchData().then(data => {
 
     new gridjs.Grid({
-        columns: ['姓名', '單位名稱', '身份權限', '狀態', '權限修改', '違規記點'],
+        columns: ['單位名稱','姓名',  '身份權限', '狀態', '權限修改', '違規記點'],
         data: data.map(item => item.data),
         width:'1200px',
         fixedHeader:true,
