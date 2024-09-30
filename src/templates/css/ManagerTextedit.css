@@ -64,16 +64,55 @@ body {
     margin-top: 1%;
     background-color: #fff;
     height:84vh;
-    overflow-y: scroll;
-    overflow-x: scroll;
     width:85%;
-    overflow-wrap: break-word; 
+    overflow:visible !important;
     word-break: break-word; 
+
 }
 .ql-container.ql-snow {
     height: auto;
 }
 
+.ql-tooltip {
+    left: unset !important;  
+}
+
+/* 字體名稱 */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Microsoft-JhengHei"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Microsoft-JhengHei"]::before {
+    content: "微軟正黑體";
+    font-family: "Microsoft-JhengHei";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value=Arial]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=Arial]::before {
+    content: "Arial";
+    font-family: "Arial";
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value=Times-New-Roman]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=Times-New-Roman]::before {
+    content: "Times New Roman";
+    font-family: "Times New Roman";
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value=sans-serif]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=sans-serif]::before {
+    content: "sans-serif";
+    font-family: "sans-serif";
+}
+ 
+.ql-font-Microsoft-JhengHei {
+      font-family: "Microsoft YaHei";
+}
+
+.ql-font-Arial {
+      font-family: "Arial";
+}
+.ql-font-Times-New-Roman {
+      font-family: "Times New Roman";
+}
+.ql-font-sans-serif {
+      font-family: "sans-serif";
+}
 /* 幾px */
 .ql-picker.ql-size .ql-picker-label::before,
 .ql-picker.ql-size .ql-picker-item::before {
@@ -117,17 +156,17 @@ body {
     margin-left:85%;
   }
   
-  .useradmin-button{
+.useradmin-button{
     width: 40px;
     height: 40px;
     padding-left: 10px;
     padding-right: 10px;
-  
+
     background-repeat: no-repeat;
     background-size: cover;
     justify-content: center;
-  }
-  .useradmin-button:hover{
+}
+.useradmin-button:hover{
     background-color: rgba(0, 0, 0, 0.2);
     cursor: pointer;
-  }
+}

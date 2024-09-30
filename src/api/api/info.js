@@ -4,23 +4,14 @@ const Info = require('./../model/info.js');
 const jwt = require('./../utilities/jwt.js');
 const axios = require('axios');
 
-router.get('/chinesename', async function(req, res) {
+router.get('/chinesename', jwt.verifyLogin, async function(req, res) {
 	try {
-		// Verify the token
-		const result = jwt.verifyJwtToken(req.cookies.token);
-		if (result.suc) {
-			const data = await Info.getChinesename(result.data.data);
-			res.json({data});
-		}
-		else {
-			res.status(403);
-			res.json({result : 'Invalid token'});
-		}
+		const data = await Info.getChinesename(req.identifier);
+		res.json({data});
     }
     catch(e) {
         console.error(e);
-		res.status(500);
-		res.json({result : 'error'});
+		res.status(500).send('Internal Server Error');
     }
 })
 

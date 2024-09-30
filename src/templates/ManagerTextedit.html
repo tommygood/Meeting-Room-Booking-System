@@ -2,7 +2,8 @@
 <html>
     <head>
             <meta charset="UTF-8">
-            <title>管理員使用規則修改</title>
+            <title>國立中央大學-行政大樓2樓會議室借用系統</title>
+            <link rel="icon" href="/image/favicon.ico">
             <!-- 引入 Quill 的 CSS 和 JavaScript -->
         <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
         <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
@@ -29,6 +30,9 @@
                 <div id="rules" class="choice"  onclick="changePage(this)">
                     <h3 class="pagetext">使用規則</h3>
                 </div>
+                <div id="equipment" class="choice"  onclick="changePage(this)">
+                    <h3 class="pagetext">器材規則</h3>
+                </div>
                 <div id="log" class="choice" onclick="changePage(this)">
                     <h3  class="pagetext">登入紀錄</h3>
                 </div>
@@ -45,13 +49,13 @@
         <ul id="doc_list">
           <div>Doc list</div>
         </ul>
-      <div id="editorjs" style="width:100%;height:80vh;overflow-y: scroll; border: 1px solid black;border-radius: 10px; margin: 0 auto ;background-color:white;"></div>
+      <div id="quill" style="width:100%;height:80vh;overflow-y: scroll; border: 1px solid black;border-radius: 10px; margin: 0 auto ;background-color:white;"></div>
         </div>
         <button id="save-button" style="height:30px ;width:50px;margin-top:92vh;margin-left: 5px;">save</button>
-
+        <!-- <div id="editorjs"></div> -->
     </body>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
     <script src="/js/text_editor.js"></script>
     <link href="/css/text_editor.css" rel="stylesheet"/>
-    <script src="/js/text_editor_custom.js"></script>
+    <script src="/js/text_editor_custom.js"></script> -->
 </html>
