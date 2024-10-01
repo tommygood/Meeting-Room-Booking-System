@@ -68,6 +68,18 @@ function fetchevent(start, end){
   })}
 
 
+  // 切換active狀態來控制菜單顯示或隱藏
+  menu.classList.toggle('active');
+
+  // 根據菜單是否隱藏來調整lobby的寬度
+  if (menu.classList.contains('active')) {
+    // console.log('1');
+      lobby.classList.add('full-width');
+  } else {
+    // console.log('1');
+      lobby.classList.remove('full-width');
+  }
+
 
 //隱藏彈出視窗
 function hidePopup(popupId) {
@@ -78,23 +90,7 @@ function hidePopup(popupId) {
 function showRules(){
   Swal.fire({
     title: '會議室使用規則',
-    html: `
-      <div style="text-align: left; line-height: 1.6; font-size: 16px;">
-        一、使用時間:每週一到週五,上班時段上午8:00至下午5:00。<br>
-        二、座位數量:16個(備用4張)。<br>
-        三、借用手續:<br>
-        請至秘書室網頁「行政大樓2種會議室預約」登記,登載會議名稱、日期和時間、聯絡人、聯絡分機、e-mail和借用單位等資訊採優先登記制。<br>
-        四、注意事項:<br>
-        1.預約限三個月內活動;超過三個月以上不接受預約。<br>
-        2.為保障各單位使用權益,請備用單位於預約時,確實填寫使用時段,勿超時預約。<br>
-        3.預約單位與使用登記不符,或讓渡其他單位或個仁使用;違反三次以上(含三次)者,給停權一個月。<br>
-        4.借用單位之使用時間,若與管理單位有衝突,以管理單位為優先。<br>
-        5.務必小心使用會議室內設備,使用完畢後恢復原狀。<br>
-        6.會議所需之筆電和茶水,由借用單位自行準備。<br>
-        7.離去時,請將冷氣和電燈電源關閉,並關上門窗。<br>
-        五、申請借用單位願意遵守所有相關規定,如有違反者,願負一切責任。<br>
-      </div>
-    `,
+    html: htmlContent, // 顯示會議室規則，目前排版置中(需修改)
     confirmButtonText: 'OK',
   });
   
