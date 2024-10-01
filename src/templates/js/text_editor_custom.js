@@ -62,14 +62,14 @@ document.addEventListener('keyup', (event) => {
 // save data to the database when the save button is clicked
 const saveButton = document.getElementById('save-button');
 
-saveButton.addEventListener('click', () => {
-    editor.save().then( savedData => {
-        const doc_name = prompt("請輸入文件名稱");
-        console.log(savedData.blocks);
-        const blocks = getBlocksFromData(savedData.blocks);
-        sendBlocksAndId(blocks, doc_name, id_content);
-    })
-})
+// saveButton.addEventListener('click', () => {
+//     editor.save().then( savedData => {
+//         const doc_name = prompt("請輸入文件名稱");
+//         console.log(savedData.blocks);
+//       // const blocks = getBlocksFromData(savedData.blocks);
+//         // sendBlocksAndId(blocks, doc_name, id_content);
+//     })
+// })
 
 // display all doc
 async function getAllDoc() {

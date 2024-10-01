@@ -366,7 +366,7 @@ document.addEventListener("DOMContentLoaded",function(){
   fetchData().then(data => {
 
     new gridjs.Grid({
-        columns: ['單位名稱', '姓名', '身份權限', '狀態', '權限修改', '違規記點'],
+        columns: ['單位名稱','姓名',  '身份權限', '狀態', '權限修改', '違規記點'],
         data: data.map(item => item.data),
         width:'1200px',
         fixedHeader:true,
