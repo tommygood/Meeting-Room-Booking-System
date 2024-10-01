@@ -68,34 +68,56 @@ function fetchevent(start, end) {
     })
 }
 
+function toggleMenu() {
+  const menu = document.getElementById('hamburger-menu');
+  const lobby = document.getElementById('lobby');
 
+  // 切換active狀態來控制菜單顯示或隱藏
+  menu.classList.toggle('active');
+
+  // 根據菜單是否隱藏來調整lobby的寬度
+  if (menu.classList.contains('active')) {
+    console.log('1');
+      lobby.classList.add('full-width');
+  } else {
+    console.log('1');
+
+      lobby.classList.remove('full-width');
+  }
+}
 
 //隱藏彈出視窗
 function hidePopup(popupId) {
   document.getElementById(popupId).style.display = 'none';
 }
+async function getBlocksAndId() {
+  const res = await fetch(`/api/doc?doc_name=rules`, {
+      method: 'GET',
+      headers: {
+      'Content-Type': 'application/json',
+      },
+  })
+  const data = await res.json();
+  return Object.keys(data).length == 0 ? false : {blocks: JSON.parse(data.data.blocks), id_content: JSON.parse(data.data.id_content)};
+};
 
 
-function showRules() {
+
+async function showRules() {
+  const text = await getBlocksAndId();
+  let htmlContent = '';
+  text.blocks.forEach(block =>{
+    console.log(block)
+    if (block.type === 'paragraph' && block.data && block.data.text) {
+      htmlContent += `<p>${block.data.text}</p>`;
+    }
+    else if (block.type === 'image'){
+      htmlContent += `<img src="${block.data.url}" alt="${block.data.alt}">`;
+    }
+    });
   Swal.fire({
     title: '會議室使用規則',
-    html: `
-      <div style="text-align: left; line-height: 1.6; font-size: 16px;">
-        一、使用時間:每週一到週五,上班時段上午8:00至下午5:00。<br>
-        二、座位數量:16個(備用4張)。<br>
-        三、借用手續:<br>
-        請至秘書室網頁「行政大樓2種會議室預約」登記,登載會議名稱、日期和時間、聯絡人、聯絡分機、e-mail和借用單位等資訊採優先登記制。<br>
-        四、注意事項:<br>
-        1.預約限三個月內活動;超過三個月以上不接受預約。<br>
-        2.為保障各單位使用權益,請備用單位於預約時,確實填寫使用時段,勿超時預約。<br>
-        3.預約單位與使用登記不符,或讓渡其他單位或個仁使用;違反三次以上(含三次)者,給停權一個月。<br>
-        4.借用單位之使用時間,若與管理單位有衝突,以管理單位為優先。<br>
-        5.務必小心使用會議室內設備,使用完畢後恢復原狀。<br>
-        6.會議所需之筆電和茶水,由借用單位自行準備。<br>
-        7.離去時,請將冷氣和電燈電源關閉,並關上門窗。<br>
-        五、申請借用單位願意遵守所有相關規定,如有違反者,願負一切責任。<br>
-      </div>
-    `,
+    html: htmlContent,
     confirmButtonText: 'OK',
   });
 
@@ -252,7 +274,7 @@ async function reservationDelete(reserve_id) {
 
 
 //calendar
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
   const calendarEl = document.getElementById("calendar")
 
   const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -480,19 +502,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-// 漢堡選單
-document.addEventListener('DOMContentLoaded', function () {
-  const hamburger = document.getElementById('hamburger-button');
-  const lobby = document.getElementById('lobby');
-  hamburger.addEventListener('click', function () {
-    document.getElementById('hamburger-menu').classList.toggle('active');
-    document.getElementById('lobby').classList.toggle('active');
-  });
-});
+
 
 
 //申請換頁
 document.addEventListener('DOMContentLoaded', function () {
+
   const requestbutton = document.getElementById('hamburger-requestbutton');
   requestbutton.addEventListener('click', function () {
     document.getElementById('hamburger-content').style.display = 'none';
@@ -529,7 +544,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('hamburger-requestedit').style.display = 'none';
   });
 });
-
 
 
 

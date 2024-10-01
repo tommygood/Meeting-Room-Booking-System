@@ -48,7 +48,7 @@ displayAllDoc();
 
 
 async function getBlocksAndId() {
-    const res = await fetch(`/api/doc?doc_name=rules`, {
+    const res = await fetch(`/api/doc?doc_name=equipment`, {
         method: 'GET',
         headers: {
         'Content-Type': 'application/json',
@@ -81,8 +81,8 @@ function convertBlocks(blocks) {
 
 //當頁按鈕變色
 document.addEventListener("DOMContentLoaded",function(){
-    document.getElementById('rules').style.backgroundColor = 'rgba(253, 105, 89, 0.636)';
-    document.getElementById('rules').style.color= 'white';
+    document.getElementById('equipment').style.backgroundColor = 'rgba(253, 105, 89, 0.636)';
+    document.getElementById('equipment').style.color= 'white';
 })
 
 //換頁
@@ -119,24 +119,14 @@ document.addEventListener("DOMContentLoaded", async function() {
     const quill = new Quill(quiller, {
         theme: "snow", // 模板
         modules: {
-            toolbar: toolbarOptions,
-            imageResize: {}
+            toolbar: toolbarOptions
         }
     });
-    quill.on('text-change', function(delta, oldDelta, source) {
-        if (source === 'user') {
-          let imgTags = quill.root.querySelectorAll('div');
-          imgTags.forEach(img => {
-            console.log(img.style);
-        });
-        }
-      });
     quill.clipboard.dangerouslyPasteHTML(text)
     saveButton.addEventListener('click', function() {
         // 使用 quill.root.innerHTML 獲取編輯器的 HTML 內容
         saveEditorContent(quill);
       });
-      
 });
 
 function generateUniqueId() {
@@ -211,6 +201,7 @@ function saveEditorContent(quill) {
                 }
             });
         } else if (op.insert && typeof op.insert === 'object' && op.insert.image) {
+            console.log(op.insert.image);
             // 如果當前段落緩衝區不為空，先保存當前段落
             if (paragraphBuffer.trim() !== "") {
                 let alignedParagraph = paragraphBuffer.trim();
@@ -237,7 +228,6 @@ function saveEditorContent(quill) {
                 type: "image",
                 data: {
                     url: op.insert.image,
-
                 }
             });
         }
@@ -258,8 +248,9 @@ function saveEditorContent(quill) {
             }
         });
     }
+
     // const doc_name = prompt("請輸入文件名稱");
-    sendBlocksAndId(customJson,'rules'); 
+    sendBlocksAndId(customJson,'equipment'); 
 }
 
 async function sendBlocksAndId(blocks, doc_name, id_content) {
@@ -290,7 +281,6 @@ async function sendBlocksAndId(blocks, doc_name, id_content) {
       console.log(error);
   })    
 }
-
 
 document.addEventListener("DOMContentLoaded", function() {
     document.body.addEventListener('click', function(event) {
