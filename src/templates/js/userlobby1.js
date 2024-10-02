@@ -86,13 +86,14 @@ function toggleMenu() {
     // console.log('1');
       lobby.classList.remove('full-width');
   }
+}
 
 //隱藏彈出視窗
 function hidePopup(popupId) {
   document.getElementById(popupId).style.display = 'none';
 }
 async function getBlocksAndId() {
-  const res = await fetch(`/api/doc?doc_name=rules`, {
+  const res = await fetch(`/api/doc?doc_name=use`, {
       method: 'GET',
       headers: {
       'Content-Type': 'application/json',
@@ -544,6 +545,3 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('hamburger-requestedit').style.display = 'none';
   });
 });
-
-
-
