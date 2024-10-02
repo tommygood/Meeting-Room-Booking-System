@@ -2,7 +2,7 @@ const db_conn = require('./conn');
 
 module.exports = {
 
-    // get violation records by identifier
+    // get all violation records which status is 0
     get : async function () {
         const conn = await db_conn.getDBConnection();
         if (conn == null) {

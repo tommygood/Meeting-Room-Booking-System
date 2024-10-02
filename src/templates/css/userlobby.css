@@ -1,11 +1,50 @@
-body{
-  margin:0px;
-  overflow-x: scroll;
+body {
+  width:contain;
+  height: 100%;
+  margin: 0;
+}
 
+header {
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+  height: fit-content;
+}
+
+.navbar {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.navbar h1 {
+  position: absolute;
+  left: 60px;
+  font-size: 20px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.navbar h3 {
+  font-size: 20px;
+  margin: 0px 0px 0px 300px;
+  color: #333;
+}
+
+.navbar a {
+  font-size: 20px;
+  margin: 0px 20px;
+}
+
+.content {
+  display: flex;
+  width: contain;
+  height: contain;
 }
 
 .lobby {
-  position: relative;
+  height: 90vh;
+  padding: 0px 10px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -20,38 +59,44 @@ body{
 .lobby.full-width {
   transition: transform 0.3s ease, width 0.3s ease;
   transform: translateX(0px);
-  width: 100vw;
 }
 
-  /* 會議的排列(時間，名稱) */
+/* 會議的排列(時間，名稱) */
 .fc-event-main-frame {
-    flex-direction: column;
+  flex-direction: column;
 }
+
 /* 會議行距 */
-.fc-event{
+.fc-event {
   line-height: 1;
   z-index: 5;
-  cursor: pointer; 
+  cursor: pointer;
 
 }
+
 /* 上面按鈕跟日期位置 */
 .fc-header-toolbar.fc-toolbar.fc-toolbar-ltr .fc-toolbar-chunk:first-child {
-  margin-left: 70px;
   display: flex;
   flex-direction: row;
-  margin-top:10px;
+  margin: 20px 0px;
 }
-.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr .fc-toolbar-chunk:nth-child(2){
+
+.fc .fc-toolbar.fc-header-toolbar {
+  margin-bottom: 0;
+}
+
+.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr .fc-toolbar-chunk:nth-child(2) {
   display: flex;
   flex-direction: row;
-  margin-top:10px;
   margin-left: -100px;
 }
+
 /* 字體大小 */
 .fc-event-title {
   font-size: 14px;
 
-} 
+}
+
 /* 月曆每格大小 */
 .fc-daygrid-day-frame {
   position: relative;
@@ -59,57 +104,51 @@ body{
   width: auto;
 }
 
-.fc-daygrid-day-top{
+.fc-daygrid-day-top {
   justify-content: center;
 }
 
 
 
-
-
-
 /* list按鈕 */
-.hamburger-button{
-  position:absolute;
-  border: gray 1px solid;
-  cursor: pointer;
-  color: black;
-  padding: 5px;
-  border-radius: 5px;
-  width: 30px;
-  height:30px;
-  margin-top: 10px;
-  margin-left: 10px;
+.hamburger-button {
+  position: absolute;
+  left: 10px;
+  width: 40px;
+  height: 40px;
   background-image: url('../image/list.png');
-  background-size: 70%; 
-  background-position: center; 
-  background-repeat: no-repeat; 
-  transition: transform 0.3s ease; /* 添加過渡效果 */
+  background-size: 70%;
+  align-self: center;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  z-index: 1000;
+  /* z-index: 1000; 確保按鈕在其他元素上面 */
 }
 
-.hamburger-button:hover{
+.hamburger-button:hover {
   background-color: rgba(0, 0, 0, 0.2);
 }
 
 
-
-
 .hamburger-menu {
-  position:fixed; 
-  left: 0;    
-  top: 0;
-  width: 400px;    
-  height: 100%;    
-  background-color: #EEE;
+  width: 400px;
+  border-right: 1px solid #d6d5d5;
+  /* background-color: #fff3dd; */
   padding: 10px;
-  box-sizing: border-box;
-  transform: translateX(0); /* 初始狀態顯示 */
-  transition: transform 0.3s ease; /* 添加過渡效果 */
-  display: flex;
+  /* 初始狀態顯示 */
+  transition: transform 0.3s ease;
+  /* 添加過渡效果 */
   flex-direction: column;
-  align-content: center;
   z-index: 10;
+
+  position: relative;
+  left: 0;
+  /* top: 0; */
+  /* color: white; */
+  display: block; /* 設定初始顯示狀態 */
 }
+
 .hamburger-menu.active {
   position: absolute;
   margin-right: 100%;
@@ -117,45 +156,58 @@ body{
   transform: translateX(-100%);
   /* 菜單隱藏到視窗外 */
 }
-.hamburger-title{
+
+.hamburger-title {
   display: flex;
   justify-content: center;
-  font: 700 30px/1.2 Inter, Helvetica, Arial, serif;
+  font: 700 30px/1.2 Inter, Arial, serif;
   color: rgb(65 65 65);
   text-align: center;
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
 .hamburger-list {
   display: flex;
   flex-direction: column;
   width: 370px;
-  height: 500px;
-  background-color:#CCC;
-  overflow-y: scroll;
+  height: 65vh;
+  padding: 10px;
+  box-shadow: 1px 1px 5px 5px rgb(220, 220, 220) inset;
+  /* border: 1px double rgb(255, 210, 177); */
+  overflow: auto;
 }
-.list-subtitle {
-  margin: 11px 0 10px 12px;
-  width: 298px;
-  font: 700 20px/1.2 Inter, Helvetica, Arial, serif;
-  color: rgb(0 0 0);
+
+.list-title {
+  /* margin: 3px; */
+  font: 800 25px/1.2 Arial, serif;
+  color: rgb(176, 125, 16);
   letter-spacing: -0.2px;
 }
-.list-content_box{
 
+.list-subtitle {
+  margin: 10px;
+  font: 600 18px/1.2 Arial, serif;
+  color: rgb(59, 59, 59);
+  letter-spacing: -0.2px;
+}
+
+.list-content_box {
   display: flex;
   flex-direction: column;
-  background-color: rgb(217 217 217);
-  border-radius: 30px;
-  border-color: black;
-  border: 2px solid black;
-  margin:10px;
+  background-color: rgb(247, 247, 247);
+  border-radius: 10px;
+  /* border-color: black; */
+  border: 2px solid rgb(170, 170, 170);
+  margin: 5px 0px;
 }
-.list-content_box:hover{
-  background-color:rgb(247, 247, 247);
+
+.list-content_box:hover {
+  background-color: rgb(255, 239, 206);
   cursor: pointer;
 }
-.hamburger-requestbutton{
+
+.hamburger-requestbutton {
   margin-left: 25%;
   margin-top: 20px;
   width: 50%;
@@ -165,53 +217,54 @@ body{
   justify-content: center;
   align-items: normal;
   font: 700 24px/1.2 Inter, Helvetica, Arial, serif;
-  background-color:#8F8E8E;
+  background-color: #bbbbbb;
   border-radius: 15px;
 }
-.hamburger-requestbutton:hover{
-  background-color:#9F9E9E;
-  cursor: pointer; 
+
+.hamburger-requestbutton:hover {
+  background-color: #7d7c7c;
+  cursor: pointer;
 
 }
 
-  /* 申請清單清單 */
-.hamburger-requestpage{
+/* 申請清單清單 */
+.hamburger-requestpage {
   display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.hamburger-request-title{
+.hamburger-request-title {
   margin-left: 10px;
   font-size: 18px;
   white-space: nowrap
-
 }
 
-.hamburger-bottom{
-  display:flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-.input-group{
+.hamburger-bottom {
   display: flex;
-  flex-direction:row;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: row;
   justify-content: right;
   align-items: center;
   padding: 2px;
   margin-top: 5px;
   margin-right: 5px;
 }
-input{
+
+input {
   font-size: 1.1em;
   height: 35px;
-  width:70%;
+  width: 70%;
   border-radius: 10px;
 }
 
-.hamburger-timerequest{
+.hamburger-timerequest {
   font-size: 1.1em;
   height: 35px;
   width: 30%;
@@ -219,9 +272,10 @@ input{
   margin-left: 5px;
   margin-right: 5px;
 }
-.hamburger-sendbutton{
+
+.hamburger-sendbutton {
   margin-left: 3%;
-  margin-right:3%;
+  margin-right: 3%;
   margin-top: 20px;
   width: 50%;
   height: 50px;
@@ -230,36 +284,37 @@ input{
   justify-content: center;
   align-items: normal;
   font: 700 24px/1.2 Inter, Helvetica, Arial, serif;
-  background-color:#8F8E8E;
+  background-color: #8F8E8E;
   border-radius: 15px;
 }
-.hamburger-sendbutton:hover{
-  background-color:#9F9E9E;
-  cursor: pointer; 
+
+.hamburger-sendbutton:hover {
+  background-color: #9F9E9E;
+  cursor: pointer;
 
 }
-.request-check{
-  flex-direction:row ; 
-  display:inline-flex; 
+
+.request-check {
+  margin-top: 5px;
+  justify-content: center;
+  flex-direction: row;
+  display: inline-flex;
   align-items: center;
+  height: 20px;
 }
-
 
 
 /* 使用者/管理者按鈕 */
-.useradmin{
-  position:absolute ;
+.useradmin {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
-  border:1px black solid;
+  border: 1px black solid;
   width: fit-content;
-  height:40px;
-  margin-top: 10px;
-  margin-left:1050px;
+  height: 40px;
+  right: 50px;
 }
 
-.useradmin-button{
+.useradmin-button {
   width: 40px;
   height: 40px;
   padding-left: 10px;
@@ -269,13 +324,52 @@ input{
   background-size: cover;
   justify-content: center;
 }
-.useradmin-button:hover{
+
+.useradmin-button:hover {
   background-color: rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
 
-.account{
-  position: absolute;
-  margin-left: 1300px;
 
+/* 響應式調整 */
+@media (max-width: 650px) {
+  body {
+    display: block;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .hamburger-menu {
+    width: 100%;
+    height: 60vh;
+    /* position: absolute; */
+    top: 0;
+    order: 1;
+    /* left: 0; */
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .hamburger-menu.active {
+    transform: translateY(0%);
+  }
+
+  .lobby {
+    order: 2;
+    height: calc(100vh - 60vh);
+    padding: 0px 10px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    transition: transform 0.3s ease, height 0.3s ease;
+  }
+
+  .lobby.full-width {
+    height: 100vh;
+  }
 }

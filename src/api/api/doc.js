@@ -15,8 +15,7 @@ router.get('/', async function(req, res) {
     }
     catch(e) {
         console.error(e);
-        res.status(500);
-        res.json({result : 'error'});
+        res.status(500).send('Internal Server Error');
     }
 })
 
@@ -28,32 +27,22 @@ router.get('/all', async function(req, res) {
     }
     catch(e) {
         console.error(e);
-        res.status(500);
-        res.json({result : 'error'});
+        res.status(500).send('Internal Server Error');
     }
 })
 
 // insert a doc
-router.post('/', async function(req, res) {
+router.post('/', jwt.verifyAdmin, async function(req, res) {
     try {
-        // Verify the token
-        const result = jwt.verifyJwtToken(req.cookies.token);
-        if (result.suc && await User.isAdmin(result.data.data)) {
-            const doc_name = req.body.doc_name;
-            const blocks = req.body.blocks;
-            const id_content = req.body.id_content;
-            const suc = await Doc.insert(doc_name, blocks, id_content);
-            res.json({suc});
-        }
-        else {
-            res.status(403);
-            res.json({result : 'Invalid token'});
-        }
+        const doc_name = req.body.doc_name;
+        const blocks = req.body.blocks;
+        const id_content = req.body.id_content;
+        const suc = await Doc.insert(doc_name, blocks, id_content);
+        res.json({suc});
     }
     catch(e) {
         console.error(e);
-        res.status(500);
-        res.json({result : 'error'});
+        res.status(500).send('Internal Server Error');
     }
 });
 
