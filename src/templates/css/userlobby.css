@@ -48,16 +48,17 @@ header {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  transition: transform 0.3s ease, width 0.3s ease;
   width: calc(100vw - 400px);
   /* 菜單寬度為 400px，lobby 初始占用剩餘寬度 */
+  transition: transform 0.3s ease, width 0.3s ease;
   transform: translateX(0px);
   /* 初始狀態向右移動 */
 }
 
 /* 當菜單隱藏時，lobby 寬度自動填滿 */
 .lobby.full-width {
-  width: 100vw;
+  transition: transform 0.3s ease, width 0.3s ease;
+  transform: translateX(0px);
 }
 
 /* 會議的排列(時間，名稱) */
@@ -98,10 +99,9 @@ header {
 
 /* 月曆每格大小 */
 .fc-daygrid-day-frame {
-  /* height: 150px; */
-  /* min-height: 100%; */
   position: relative;
-  width: max-content;
+  box-sizing: border-box;
+  width: auto;
 }
 
 .fc-daygrid-day-top {
@@ -150,6 +150,9 @@ header {
 }
 
 .hamburger-menu.active {
+  position: absolute;
+  margin-right: 100%;
+  transition: transform 0.3s ease;
   transform: translateX(-100%);
   /* 菜單隱藏到視窗外 */
 }
@@ -369,4 +372,8 @@ input {
   .lobby.full-width {
     height: 100vh;
   }
+}
+
+p {
+  text-align: left;
 }
