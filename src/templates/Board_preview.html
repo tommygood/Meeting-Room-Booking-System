@@ -8,6 +8,9 @@
     <link rel="icon" href="/image/favicon.ico">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script src="/js/Board_preview.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/Board_preview.css" />
 
 
@@ -45,7 +48,7 @@
             <!-- 今日會議 -->
             <div class="swiper-slide">
                 <div class="container">
-                    <div class="date-time">2024年9月20日 09:45</div>
+                    <div id="date-time" class="date-time">2024年9月20日 09:45</div>
                     <div class="title">今日會議</div>
                     <div class="divider"></div>
                     <div class="event-card-min">
@@ -130,8 +133,8 @@
     </div>
 
     <!-- Swiper origin code-->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script> -->
+    <!-- <script>
         const eventApiUrl = (start, end) => `/api/reservation?start_time=${start}&end_time=${end}`;
         const urlParams = new URLSearchParams(window.location.search);
         const date = urlParams.get('date');
@@ -171,7 +174,7 @@
                 el: ".swiper-pagination",
             },
         });
-    </script>
+    </script> -->
 
 </body>
 
