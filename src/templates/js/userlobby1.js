@@ -75,13 +75,15 @@ function toggleMenu() {
   // 切換active狀態來控制菜單顯示或隱藏
   menu.classList.toggle('active');
 
+  // 切換active狀態來控制菜單顯示或隱藏
+  menu.classList.toggle('active');
+
   // 根據菜單是否隱藏來調整lobby的寬度
   if (menu.classList.contains('active')) {
-    console.log('1');
+    // console.log('1');
       lobby.classList.add('full-width');
   } else {
-    console.log('1');
-
+    // console.log('1');
       lobby.classList.remove('full-width');
   }
 }
@@ -91,7 +93,7 @@ function hidePopup(popupId) {
   document.getElementById(popupId).style.display = 'none';
 }
 async function getBlocksAndId() {
-  const res = await fetch(`/api/doc?doc_name=rules`, {
+  const res = await fetch(`/api/doc?doc_name=use`, {
       method: 'GET',
       headers: {
       'Content-Type': 'application/json',
@@ -117,8 +119,7 @@ async function showRules() {
     });
   Swal.fire({
     title: '會議室使用規則',
-    html: htmlContent,
-    confirmButtonText: 'OK',
+    html: htmlContent, // 顯示會議室規則，目前排版置中(需修改)
   });
 
 }
@@ -544,6 +545,3 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('hamburger-requestedit').style.display = 'none';
   });
 });
-
-
-

@@ -68,16 +68,4 @@ router.get('/log', jwt.pageVerifyAdmin, async function(req, res) {
   }
 })
 
-router.get('/equipment', jwt.pageVerifyAdmin, async function(req, res) {
-  try {
-      // use path.resolve to get the absolute path
-      res.sendFile(path.resolve(util.getParentPath(__dirname) + '../../templates/ManagerEquipment.html'));
-  }
-  catch(e) {
-    console.error(e);
-    res.status(500).send('Internal Server Error');
-  }
-})
-
-
 module.exports = router;

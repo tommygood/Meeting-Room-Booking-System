@@ -34,6 +34,7 @@ async function setAccountName() {
 }
 
 async function displayAllDoc() {
+    /*
     const data = await getAllDoc();
     // put data into div
     const docList = document.getElementById('doc_list');
@@ -42,13 +43,28 @@ async function displayAllDoc() {
         doc.innerHTML = `<a href="/page/rules/demo?doc_name=${data[i].name}">${data[i].name}</a>`;
         docList.appendChild(doc);
     }
+    */
 }
 
 displayAllDoc();
 
+function getDocName() {
+    // get doc_name from url path rather than query string
+    // if path not equal 'demo'
+    const path = window.location.pathname;
+    const pathArr = path.split('/');
+    let doc_name = pathArr[pathArr.length - 1];
+    if (doc_name == 'demo') {
+        // get doc_name from query string
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        doc_name = urlParams.get('doc_name');
+    }
+    return doc_name;
+}   
 
 async function getBlocksAndId() {
-    const res = await fetch(`/api/doc?doc_name=rules`, {
+    const res = await fetch(`/api/doc?doc_name=${getDocName()}`, {
         method: 'GET',
         headers: {
         'Content-Type': 'application/json',
@@ -60,6 +76,10 @@ async function getBlocksAndId() {
 function convertBlocks(blocks) {
     // 初始化空字串來存儲文本內容
     let textContent = '';
+    
+    if (!blocks) {
+        return textContent;
+    }
 
     // 迭代 JSON 中的每個段落，將它們的文本提取出來
     blocks.forEach(block => {
@@ -81,8 +101,8 @@ function convertBlocks(blocks) {
 
 //當頁按鈕變色
 document.addEventListener("DOMContentLoaded",function(){
-    document.getElementById('rules').style.backgroundColor = 'rgba(253, 105, 89, 0.636)';
-    document.getElementById('rules').style.color= 'white';
+    document.getElementById('rules/' + getDocName()).style.backgroundColor = 'rgba(253, 105, 89, 0.636)';
+    document.getElementById('rules/' + getDocName()).style.color= 'white';
 })
 
 //換頁
@@ -259,7 +279,7 @@ function saveEditorContent(quill) {
         });
     }
     // const doc_name = prompt("請輸入文件名稱");
-    sendBlocksAndId(customJson,'rules'); 
+    sendBlocksAndId(customJson, getDocName()); 
 }
 
 async function sendBlocksAndId(blocks, doc_name, id_content) {
