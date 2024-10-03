@@ -77,11 +77,8 @@ function toggleMenu() {
 
   // 根據菜單是否隱藏來調整lobby的寬度
   if (menu.classList.contains('active')) {
-    console.log('1');
       lobby.classList.add('full-width');
   } else {
-    console.log('1');
-
       lobby.classList.remove('full-width');
   }
 }
@@ -112,7 +109,7 @@ async function showRules() {
       htmlContent += `<p>${block.data.text}</p>`;
     }
     else if (block.type === 'image'){
-      htmlContent += `<img src="${block.data.url}" alt="${block.data.alt}">`;
+      htmlContent += `<img src="${block.data.url}" style="width:${block.data.width}">`;
     }
     });
   Swal.fire({

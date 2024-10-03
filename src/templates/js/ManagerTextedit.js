@@ -57,26 +57,21 @@ async function getBlocksAndId() {
     const data = await res.json();
     return Object.keys(data).length == 0 ? false : {blocks: JSON.parse(data.data.blocks), id_content: JSON.parse(data.data.id_content)};
 };
-function convertBlocks(blocks) {
-    // 初始化空字串來存儲文本內容
-    let textContent = '';
-
-    // 迭代 JSON 中的每個段落，將它們的文本提取出來
+function convertBlocks(blocks, quill) {
     blocks.forEach(block => {
         if (block.type === 'paragraph' && block.data && block.data.text) {
-            // 如果 block.data.text 中已經包含 HTML 標籤，則不再添加 <p> 標籤
-            if (/<[a-z][\s\S]*>/i.test(block.data.text)) {
-                textContent += block.data.text+`<br>`;
-            } else {
-                textContent += `<p>${block.data.text}</p>`;
-            }
-        }
-        else if (block.type === 'image'){
-            textContent += `<img src="${block.data.url}" alt="${block.data.alt}">`;
+            quill.clipboard.dangerouslyPasteHTML(quill.getLength(), block.data.text);
+        } else if (block.type === 'image') {
+            // 使用 Delta 插入圖片，這樣 Quill 可以完整地管理圖片
+            const index = quill.getLength(); // 獲取插入位置
+            quill.insertEmbed(index, 'image', block.data.url);
+            
+            // 使用 Delta 的方式來設置寬高
+            quill.formatText(index, 1, {
+                width: block.data.width ? `${block.data.width}px` : 'auto',
+            });
         }
     });
-
-    return textContent.trim(); // 去掉結尾的多餘換行
 }
 
 //當頁按鈕變色
@@ -101,15 +96,12 @@ Font.whitelist = fonts; //将字体加入到白名单
 Quill.register(Font, true);
 document.addEventListener("DOMContentLoaded", async function() {
     const content = await getBlocksAndId();
-    const text =convertBlocks(content.blocks);
-
     const quiller = document.getElementById("quill");
     const saveButton = document.getElementById("save-button");
 
     var toolbarOptions = [
         [{ 'size':fontSizeArr }],
         ['bold', 'italic', 'underline', 'strike'],
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
         [{ 'font': Font.whitelist }],
         [{ 'color': [] }, { 'background': [] }],
         ['link', 'image'],
@@ -120,18 +112,12 @@ document.addEventListener("DOMContentLoaded", async function() {
         theme: "snow", // 模板
         modules: {
             toolbar: toolbarOptions,
-            imageResize: {}
+            imageResize: {
+                modules: [ 'Resize' ,'DisplaySize']  // 只保留 Resize 模塊，去除 Alignment 模塊
+              }
         }
     });
-    quill.on('text-change', function(delta, oldDelta, source) {
-        if (source === 'user') {
-          let imgTags = quill.root.querySelectorAll('div');
-          imgTags.forEach(img => {
-            console.log(img.style);
-        });
-        }
-      });
-    quill.clipboard.dangerouslyPasteHTML(text)
+    convertBlocks(content.blocks,quill);
     saveButton.addEventListener('click', function() {
         // 使用 quill.root.innerHTML 獲取編輯器的 HTML 內容
         saveEditorContent(quill);
@@ -211,6 +197,14 @@ function saveEditorContent(quill) {
                 }
             });
         } else if (op.insert && typeof op.insert === 'object' && op.insert.image) {
+            // 使用 src 屬性查找圖片
+            const img = document.querySelector(`img[src="${op.insert.image}"]`);
+            let width = null;
+
+            if (img) {
+                width = img.style.width || img.getAttribute('width') || img.naturalWidth + "px";
+            }
+
             // 如果當前段落緩衝區不為空，先保存當前段落
             if (paragraphBuffer.trim() !== "") {
                 let alignedParagraph = paragraphBuffer.trim();
@@ -237,7 +231,7 @@ function saveEditorContent(quill) {
                 type: "image",
                 data: {
                     url: op.insert.image,
-
+                    width: width,
                 }
             });
         }
