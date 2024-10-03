@@ -108,6 +108,7 @@ async function showRules() {
       htmlContent += `<p>${block.data.text}</p>`;
     }
     else if (block.type === 'image'){
+      console.log(block.data.width);
       htmlContent += `<img src="${block.data.url}" style="width:${block.data.width}">`;
     }
     });

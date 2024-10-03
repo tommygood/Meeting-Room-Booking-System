@@ -84,7 +84,7 @@ function convertBlocks(blocks, quill) {
             
             // 使用 Delta 的方式來設置寬高
             quill.formatText(index, 1, {
-                width: block.data.width ? `${block.data.width}px` : 'auto',
+                width: block.data.width ? `${block.data.width}` : 'auto',
             });
         }
     });
@@ -218,11 +218,17 @@ function saveEditorContent(quill) {
 
             if (img) {
                 width = img.style.width || img.getAttribute('width') || img.naturalWidth;
+
+                // 確保 width 是字符串，並且沒有重複添加 "px"
                 if (typeof width === 'number') {
-                    width = width + "px"; 
-                } else if (typeof width === 'string' && !width.endsWith('px')) {
-                    width += "px"; 
-                }            
+                    // 當寬度是數值時，添加單位
+                    width = width + "px";
+                } else if (typeof width === 'string' && !width.includes('px') && !width.includes('%')) {
+                    // 當 width 是字符串但不包含 "px" 或 "%" 時，添加單位
+                    width += "px";
+                }
+            
+                console.log(width); // 應該輸出最終的寬度值，且只有一個 "px"
             }
 
             if (paragraphBuffer.trim() !== "") {
