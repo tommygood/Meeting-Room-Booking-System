@@ -370,8 +370,24 @@ document.addEventListener("DOMContentLoaded", async function () {
     },
     datesSet: handleDatesSet,
   });
+  
+  //hamburger-list
+  const hamburger = document.getElementById('hamburger-button');
+  hamburger.addEventListener('click', () => {
+    const menu = document.getElementById('hamburger-menu');
+    const lobby = document.getElementById('lobby');
 
+    menu.classList.toggle('active');
 
+    if (menu.classList.contains('active')) {
+        lobby.classList.add('full-width');
+    } else {
+        lobby.classList.remove('full-width');
+    }
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 1);  })
+  
 
   // 左邊「我的會議」視窗
   function handleDatesSet() {
