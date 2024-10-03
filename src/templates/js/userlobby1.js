@@ -75,9 +75,6 @@ function toggleMenu() {
   // 切換active狀態來控制菜單顯示或隱藏
   menu.classList.toggle('active');
 
-  // 切換active狀態來控制菜單顯示或隱藏
-  menu.classList.toggle('active');
-
   // 根據菜單是否隱藏來調整lobby的寬度
   if (menu.classList.contains('active')) {
     // console.log('1');

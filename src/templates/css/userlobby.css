@@ -1,5 +1,5 @@
 body {
-  width:contain;
+  width: contain;
   height: 100%;
   margin: 0;
 }
@@ -22,18 +22,19 @@ header {
   left: 60px;
   font-size: 20px;
   color: #333;
-  line-height: 1.5;
+  line-height: 1;
 }
 
 .navbar h3 {
   font-size: 20px;
   margin: 0px 0px 0px 300px;
-  color: #333;
+  color: #215D5A;
 }
 
 .navbar a {
   font-size: 20px;
   margin: 0px 20px;
+  color: #3C9A86;
 }
 
 .content {
@@ -49,6 +50,7 @@ header {
   flex-direction: column;
   flex-grow: 1;
   width: calc(100vw - 400px);
+  min-width: 400px;
   /* 菜單寬度為 400px，lobby 初始占用剩餘寬度 */
   transition: transform 0.3s ease, width 0.3s ease;
   transform: translateX(0px);
@@ -59,6 +61,7 @@ header {
 .lobby.full-width {
   transition: transform 0.3s ease, width 0.3s ease;
   transform: translateX(0px);
+  width: 100vw;
 }
 
 /* 會議的排列(時間，名稱) */
@@ -108,6 +111,16 @@ header {
   justify-content: center;
 }
 
+:root {
+  --fc-today-bg-color: #3C9A8620;
+  --fc-button-bg-color: #215D5A;
+  /* --fc-button-border-color: #2c3e50; */
+  --fc-button-hover-bg-color: #3C9A86;
+  /* --fc-button-hover-border-color: #1a252f; */
+  --fc-button-active-bg-color: #3C9A86;
+  /* --fc-button-active-border-color: #151e27; */
+}
+
 
 
 /* list按鈕 */
@@ -127,7 +140,7 @@ header {
 }
 
 .hamburger-button:hover {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #38868850;
 }
 
 
@@ -145,8 +158,9 @@ header {
   position: relative;
   left: 0;
   /* top: 0; */
-  /* color: white; */
-  display: block; /* 設定初始顯示狀態 */
+  background-color: #E2F0D975;
+  display: block;
+  /* 設定初始顯示狀態 */
 }
 
 .hamburger-menu.active {
@@ -161,7 +175,7 @@ header {
   display: flex;
   justify-content: center;
   font: 700 30px/1.2 Inter, Arial, serif;
-  color: rgb(65 65 65);
+  color: #388688;
   text-align: center;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -173,22 +187,22 @@ header {
   width: 370px;
   height: 65vh;
   padding: 10px;
-  box-shadow: 1px 1px 5px 5px rgb(220, 220, 220) inset;
+  /* box-shadow: 1px 1px 5px 5px rgb(220, 220, 220) inset; */
   /* border: 1px double rgb(255, 210, 177); */
   overflow: auto;
 }
 
 .list-title {
   /* margin: 3px; */
-  font: 800 25px/1.2 Arial, serif;
-  color: rgb(176, 125, 16);
+  font: 700 25px/1.2 Arial, serif;
+  color: #215D5A;
   letter-spacing: -0.2px;
 }
 
 .list-subtitle {
   margin: 10px;
   font: 600 18px/1.2 Arial, serif;
-  color: rgb(59, 59, 59);
+  color: #0D2524;
   letter-spacing: -0.2px;
 }
 
@@ -198,12 +212,12 @@ header {
   background-color: rgb(247, 247, 247);
   border-radius: 10px;
   /* border-color: black; */
-  border: 2px solid rgb(170, 170, 170);
+  box-shadow: 1px 1px 3px 1px rgb(220, 220, 220);
   margin: 5px 0px;
 }
 
 .list-content_box:hover {
-  background-color: rgb(255, 239, 206);
+  background-color: #3C9A8630;
   cursor: pointer;
 }
 
@@ -212,17 +226,16 @@ header {
   margin-top: 20px;
   width: 50%;
   height: 50px;
-  background-color: #EEE;
+  background-color: #388688;
   display: flex;
   justify-content: center;
   align-items: normal;
   font: 700 24px/1.2 Inter, Helvetica, Arial, serif;
-  background-color: #bbbbbb;
   border-radius: 15px;
 }
 
 .hamburger-requestbutton:hover {
-  background-color: #7d7c7c;
+  background-color: #0D2524;
   cursor: pointer;
 
 }
@@ -264,6 +277,12 @@ input {
   border-radius: 10px;
 }
 
+select {
+  width: 50px;
+  height: 35px;
+  /* box-sizing: 30px 20px; */
+}
+
 .hamburger-timerequest {
   font-size: 1.1em;
   height: 35px;
@@ -279,17 +298,16 @@ input {
   margin-top: 20px;
   width: 50%;
   height: 50px;
-  background-color: #EEE;
+  background-color: #388688;
   display: flex;
   justify-content: center;
   align-items: normal;
   font: 700 24px/1.2 Inter, Helvetica, Arial, serif;
-  background-color: #8F8E8E;
   border-radius: 15px;
 }
 
 .hamburger-sendbutton:hover {
-  background-color: #9F9E9E;
+  background-color: #0D2524;
   cursor: pointer;
 
 }
@@ -308,33 +326,33 @@ input {
 .useradmin {
   display: flex;
   flex-direction: row;
-  border: 1px black solid;
+  border: 1px #215D5A solid;
+  border-radius: 5px;
   width: fit-content;
   height: 40px;
   right: 50px;
 }
 
 .useradmin-button {
-  width: 40px;
-  height: 40px;
-  padding-left: 10px;
-  padding-right: 10px;
+  width: 30px;
+  height: 30px;
+  padding: 5px;
 
   background-repeat: no-repeat;
   background-size: cover;
-  justify-content: center;
 }
 
 .useradmin-button:hover {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #3C9A8650;
   cursor: pointer;
 }
 
 
 /* 響應式調整 */
-@media (max-width: 650px) {
+@media (max-width: 830px) {
   body {
     display: block;
+    flex-wrap: wrap;
   }
 
   .content {

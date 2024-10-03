@@ -22,9 +22,9 @@
     <header>
         <div class="navbar">
             <div id="hamburger-button" class="hamburger-button" onclick="toggleMenu()"> </div>
-            <h1>行政大樓&emsp;二樓會議室&emsp;借用系統</h1>
+            <h1>行政大樓二樓<br>會議室預約系統</h1>
             <h3 class="account-title" id="accountName">歡迎登入,&nbsp; </h3>
-            <a href="#">登出</a>
+            <a onclick="location.href='/page/main'">［登出］</a>
             <!-- 切換 使用者/管理者 -->
             <div class="useradmin" id='useradmin' onclick="">
                 <img src="/image/user.png" class="useradmin-button" onclick="location.href ='/page/userlobby'">
@@ -151,17 +151,12 @@
                         <div class="input-group">
                             <h2 class="hamburger-request-title">申請人 ：</h2>
                             <input type="text" class="hamburger-request" name='person' placeholder="申請人(固定)"
-                                style="background-color:#ece673" readonly />
+                                style="background-color:#9999995f" readonly />
                         </div>
                         <div class="input-group">
                             <h2 class="hamburger-request-title">申請單位：</h2>
                             <input type="text" class="hamburger-request" name='unit' placeholder="申請單位(固定)"
-                                style="background-color:#ece673" readonly />
-                        </div>
-                        <div class="input-group">
-                            <h2 class="hamburger-request-title">連絡電話：</h2>
-                            <input type="text" class="hamburger-request" name='phone' placeholder="連絡電話(固定)"
-                                style="background-color:#ece673" readonly />
+                                style="background-color:#9999995f" readonly />
                         </div>
                         <div class="input-group">
                             <h2 class="hamburger-request-title">分機號碼：</h2>
@@ -175,14 +170,6 @@
                             <h2 class="hamburger-request-title">開始日期：</h2>
                             <input type="date" class="hamburger-request" name="startdate" id="startdate" />
                             <select name="starthour" id="editstarthour">
-                                <option value="00">00</option>
-                                <option value="01">01</option>
-                                <option value="02">02</option>
-                                <option value="03">03</option>
-                                <option value="04">04</option>
-                                <option value="05">05</option>
-                                <option value="06">06</option>
-                                <option value="07">07</option>
                                 <option value="08">08</option>
                                 <option value="09">09</option>
                                 <option value="10">10</option>
@@ -193,13 +180,6 @@
                                 <option value="15">15</option>
                                 <option value="16">16</option>
                                 <option value="17">17</option>
-                                <option value="18">18</option>
-                                <option value="19">19</option>
-                                <option value="20">20</option>
-                                <option value="21">21</option>
-                                <option value="22">22</option>
-                                <option value="23">23</option>
-                                <option value="24">24</option>
                             </select>
                             <span>:</span>
                             <select name="startminute" id="editstartminute">
@@ -212,14 +192,6 @@
                             <h2 class="hamburger-request-title">結束日期：</h2>
                             <input type="date" class="hamburger-request" name="enddate" id="enddate" />
                             <select name="endhour" id="endhour">
-                                <option value="00">00</option>
-                                <option value="01">01</option>
-                                <option value="02">02</option>
-                                <option value="03">03</option>
-                                <option value="04">04</option>
-                                <option value="05">05</option>
-                                <option value="06">06</option>
-                                <option value="07">07</option>
                                 <option value="08">08</option>
                                 <option value="09">09</option>
                                 <option value="10">10</option>
@@ -230,13 +202,6 @@
                                 <option value="15">15</option>
                                 <option value="16">16</option>
                                 <option value="17">17</option>
-                                <option value="18">18</option>
-                                <option value="19">19</option>
-                                <option value="20">20</option>
-                                <option value="21">21</option>
-                                <option value="22">22</option>
-                                <option value="23">23</option>
-                                <option value="24">24</option>
                             </select>
                             <span>:</span>
                             <select name="endminute" id="endminute">
@@ -245,16 +210,17 @@
                             </select>
                         </div>
 
+                        <div class="request-check">
+                            <input type="checkbox" id="checkrule" style="width: 25px;">
+                            <h2 class="hamburger-request-title">
+                                我已詳閱
+                                <a href="#" onclick="showRules()">
+                                    《會議室使用規則》
+                                </a>
+                            </h2>
+                        </div>
                     </div>
-                    <div class="request-check">
-                        <input type="checkbox" id="checkrule">
-                        <h2 class="hamburger-request-title">
-                            我已詳閱
-                            <a href="#" onclick="showRules()">
-                                《會議室使用規則》
-                            </a>
-                        </h2>
-                    </div>
+
                     <div class="hamburger-bottom">
                         <div id="backbtnedit" class="hamburger-sendbutton">
                             <h3 class="hamburger-title" style="color:white">返回</h3>
@@ -269,10 +235,10 @@
         </div>
 
 
+        <!-- 月曆 -->
         <div id='lobby' class="lobby full-width">
 
             <!-- <div id="hamburger-button" class="hamburger-button" onclick="toggleMenu()"> </div> -->
-            <!-- 月曆 -->
             <div id="calendar" class="calendar"></div>
 
         </div>
