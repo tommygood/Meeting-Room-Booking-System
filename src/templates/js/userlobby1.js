@@ -88,7 +88,7 @@ function hidePopup(popupId) {
   document.getElementById(popupId).style.display = 'none';
 }
 async function getBlocksAndId() {
-  const res = await fetch(`/api/doc?doc_name=rules`, {
+  const res = await fetch(`/api/doc?doc_name=use`, {
       method: 'GET',
       headers: {
       'Content-Type': 'application/json',
@@ -104,7 +104,6 @@ async function showRules() {
   const text = await getBlocksAndId();
   let htmlContent = '';
   text.blocks.forEach(block =>{
-    console.log(block)
     if (block.type === 'paragraph' && block.data && block.data.text) {
       htmlContent += `<p>${block.data.text}</p>`;
     }
@@ -114,8 +113,7 @@ async function showRules() {
     });
   Swal.fire({
     title: '會議室使用規則',
-    html: htmlContent,
-    confirmButtonText: 'OK',
+    html: htmlContent, // 顯示會議室規則，目前排版置中(需修改)
   });
 
 }
@@ -541,6 +539,3 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('hamburger-requestedit').style.display = 'none';
   });
 });
-
-
-

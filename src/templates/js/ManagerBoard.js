@@ -207,7 +207,6 @@ function searchBoard() {
 }
 
 
-
 document.addEventListener("DOMContentLoaded", function() {
   // 設定初始的日期範圍
   const startDate = new Date();
@@ -228,6 +227,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 })
 
+// 跳轉預覽看板
 function previewBoard(){
   const formData = new FormData(document.getElementById("previewBoard"));
 
