@@ -1,9 +1,59 @@
 document.addEventListener("DOMContentLoaded", function () {
+    let swiper;
+
+    function isDemoPage() {
+        const path = window.location.pathname.split('/').pop();
+        return path == 'demo';
+    }
+
+    function setSwiper() {
+        if (isDemoPage()) {
+            swiper = new Swiper('.swiper', { // 創建一個輪播
+                autoplay: { // 自動輪播 swiper
+                    delay: 2 * 1000, // 每兩秒切換下一張
+                },
+                loop: true, // 輪播結束後回到第一張繼續輪播
+        
+            });
+        }
+        else {
+            swiper = new Swiper('.swiper', { // 創建一個輪播
+
+                loop: true, // 輪播結束後回到第一張繼續輪播
+            
+                navigation: { // 前一張、下一張按鈕
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+            
+                pagination: { // 下方頁籤
+                    el: ".swiper-pagination",
+                },
+            });
+        }
+    }
+
+    function displayDatetime() {
+        let date, time;
+        // get datetime from query string if url path is not demo
+        if (!isDemoPage()) {
+            const urlParams = new URLSearchParams(window.location.search);
+            date = urlParams.get('date');
+            time = urlParams.get('time');
+        }
+        else {
+            // get current datetime if url path is demo
+            const datetime = new Date();
+            date = datetime.toISOString().split('T')[0];
+            time = datetime.toTimeString().split(' ')[0];
+        }
+        return { date: date, time: time };
+    }
 
     const eventApiUrl = (start, end) => `/api/reservation?start_time=${start}&end_time=${end}`;
-    const urlParams = new URLSearchParams(window.location.search);
-    const date = urlParams.get('date');
-    const time = urlParams.get('time');
+    // set swiper and display datetime based on the page path and query string
+    const {date, time} = displayDatetime();
+    setSwiper();
 
     // 顯示看板上方日期時間(3頁)
     document.querySelectorAll('.date-time').forEach(element => {
@@ -20,7 +70,6 @@ document.addEventListener("DOMContentLoaded", function () {
             alert('日期不可晚於今天');
             return null;
         }
-
         
         tomorrow.setDate(day.getDate() + 1);
         try {
@@ -160,18 +209,6 @@ document.addEventListener("DOMContentLoaded", function () {
         })
     }, 5000);
 
-    const swiper = new Swiper('.swiper', { // 創建一個輪播
-
-        loop: true, // 輪播結束後回到第一張繼續輪播
     
-        navigation: { // 前一張、下一張按鈕
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-    
-        pagination: { // 下方頁籤
-            el: ".swiper-pagination",
-        },
-    });
     
 });

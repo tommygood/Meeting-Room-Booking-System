@@ -7,9 +7,10 @@
     <title>國立中央大學-行政大樓2樓會議室借用系統</title>
     <link rel="icon" href="/image/favicon.ico">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/css/Board_preview.css" />
-
 
     <style>
         .swiper {
@@ -24,9 +25,8 @@
         }
 
         :root {
-            --swiper-theme-color: peru;
+            --swiper-theme-color: #666;
         }
-
 
         .block {
             width: contain;
@@ -35,6 +35,7 @@
             box-shadow: inset 0 4px 4px 0 rgb(0 0 0 / 25%);
         }
     </style>
+
 </head>
 
 <body>
@@ -45,124 +46,42 @@
             <!-- 今日會議 -->
             <div class="swiper-slide">
                 <div class="container">
-                    <div class="date-time">2024年9月20日 09:45</div>
-                    <div class="title">今日會議</div>
-                    <div class="divider"></div>
-                    <div class="event-card-min">
-                        <div class="time-block-min">
-                            <span>09:00</span>
-                            <span>|</span>
-                            <span>10:30</span>
-                        </div>
-                        <div class="event-details-min">
-                            <h3>會議室預約系統開發討論</h3>
-                            <p>借用單位：秘書室</p>
-                            <p>借用人：Vicky</p>
-                        </div>
-                    </div>
-                    <div class="event-card-min">
-                        <div class="time-block-min">
-                            <span>13:00</span>
-                            <span>|</span>
-                            <span>14:30</span>
-                        </div>
-                        <div class="event-details-min">
-                            <h3>會議室預約系統開發討論</h3>
-                            <p>借用單位：秘書室</p>
-                            <p>借用人：Vicky</p>
-                        </div>
+                    <div class="table-container">
+                        <div class="title">- TODAY -</div>
+                        <!-- 顯示會議資訊 -->
+                        <div class="event-list"></div>
                     </div>
                 </div>
             </div>
             <!-- 現正進行會議 -->
             <div class="swiper-slide">
                 <div class="container">
-                    <div class="date-time">2024年9月20日 09:45</div>
-                    <div class="title">現正進行會議</div>
-                    <div class="divider"></div>
-                    <div class="event-card-max">
-                        <div class="this-label">— NOW —</div>
-                        <div class="event-title">會議室預約系統開發討論</div>
-                        <div class="divider"></div>
-                        <div class="time-block-max">
-                            <span>09:00</span>
-                            <span class="dash">—</span>
-                            <span>10:30</span>
-                        </div>
-                        <div class="divider"></div>
-                        <div class="label">借用單位</div>
-                        <div class="value">秘書室</div>
-                        <div class="divider"></div>
-                        <div class="label">借用人</div>
-                        <div class="value">Vicky</div>
+                    <div class="table-container">
+                        <div class="title">- NOW -</div>
+                        <div class="event-list-now"></div>
                     </div>
                 </div>
             </div>
             <!-- 下一場會議 -->
             <div class="swiper-slide">
                 <div class="container">
-                    <div class="date-time">2024年9月20日 09:45</div>
-                    <div class="title">下一場會議</div>
-                    <div class="divider"></div>
-                    <div class="event-card-max">
-                        <div class="this-label">— NEXT —</div>
-                        <div class="event-title">會議室預約系統開發討論</div>
-                        <div class="divider"></div>
-                        <div class="time-block-max">
-                            <span>13:00</span>
-                            <span class="dash">—</span>
-                            <span>14:30</span>
-                        </div>
-                        <div class="divider"></div>
-                        <div class="label">借用單位</div>
-                        <div class="value">秘書室</div>
-                        <div class="divider"></div>
-                        <div class="label">借用人</div>
-                        <div class="value">Vicky</div>
+                    <div class="table-container">
+                        <div class="title">- NEXT -</div>
+                        <!-- <div class="divider"></div> -->
+                        <!-- <div class="event-card-max"> -->
+                        <!-- <div class="this-label">— NEXT —</div> -->
+                        <div id="next-event" class="event-list-next"></div>
+                        <!-- </div> -->
                     </div>
                 </div>
             </div>
         </div>
 
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
     </div>
 
-    <!-- Swiper origin code-->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script>
-        const eventApiUrl = (start, end) => `/api/reservation?start_time=${start}&end_time=${end}`;
-
-        async function getevent() {
-            const today = new Date();
-            const tomorrow = new Date(today);
-            tomorrow.setDate(today.getDate() + 1);
-            try {
-                const response = await fetch(eventApiUrl(today.toISOString().split('T')[0], tomorrow.toISOString().split('T')[0]), {
-                    method: 'GET',
-                    credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' },
-                });
-                const data = await response.json();
-                return data.data;
-
-            } catch (error) {
-                // 捕捉和處理異常
-                console.error('Fetch error:', error);
-                return null;
-            }
-        }
-        getevent().then(event => {
-            console.log(event);
-        })
-
-        const swiper = new Swiper('.swiper', { // 創建一個輪播
-            autoplay: { // 自動輪播 swiper
-                delay: 5 * 1000, // 每兩秒切換下一張
-            },
-            loop: true, // 輪播結束後回到第一張繼續輪播
-
-        });
-    </script>
-
 </body>
-
+<script src="/js/Board_preview.js"></script>
 </html>
