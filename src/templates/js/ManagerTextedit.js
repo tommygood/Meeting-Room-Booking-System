@@ -73,30 +73,21 @@ async function getBlocksAndId() {
     const data = await res.json();
     return Object.keys(data).length == 0 ? false : {blocks: JSON.parse(data.data.blocks), id_content: JSON.parse(data.data.id_content)};
 };
-function convertBlocks(blocks) {
-    // 初始化空字串來存儲文本內容
-    let textContent = '';
-    
-    if (!blocks) {
-        return textContent;
-    }
-
-    // 迭代 JSON 中的每個段落，將它們的文本提取出來
+function convertBlocks(blocks, quill) {
     blocks.forEach(block => {
         if (block.type === 'paragraph' && block.data && block.data.text) {
-            // 如果 block.data.text 中已經包含 HTML 標籤，則不再添加 <p> 標籤
-            if (/<[a-z][\s\S]*>/i.test(block.data.text)) {
-                textContent += block.data.text+`<br>`;
-            } else {
-                textContent += `<p>${block.data.text}</p>`;
-            }
-        }
-        else if (block.type === 'image'){
-            textContent += `<img src="${block.data.url}" alt="${block.data.alt}">`;
+            quill.clipboard.dangerouslyPasteHTML(quill.getLength(), block.data.text);
+        } else if (block.type === 'image') {
+            // 使用 Delta 插入圖片，這樣 Quill 可以完整地管理圖片
+            const index = quill.getLength(); // 獲取插入位置
+            quill.insertEmbed(index, 'image', block.data.url);
+            
+            // 使用 Delta 的方式來設置寬高
+            quill.formatText(index, 1, {
+                width: block.data.width ? `${block.data.width}` : 'auto',
+            });
         }
     });
-
-    return textContent.trim(); // 去掉結尾的多餘換行
 }
 
 //當頁按鈕變色
@@ -121,15 +112,12 @@ Font.whitelist = fonts; //将字体加入到白名单
 Quill.register(Font, true);
 document.addEventListener("DOMContentLoaded", async function() {
     const content = await getBlocksAndId();
-    const text =convertBlocks(content.blocks);
-
     const quiller = document.getElementById("quill");
     const saveButton = document.getElementById("save-button");
 
     var toolbarOptions = [
         [{ 'size':fontSizeArr }],
         ['bold', 'italic', 'underline', 'strike'],
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
         [{ 'font': Font.whitelist }],
         [{ 'color': [] }, { 'background': [] }],
         ['link', 'image'],
@@ -140,18 +128,12 @@ document.addEventListener("DOMContentLoaded", async function() {
         theme: "snow", // 模板
         modules: {
             toolbar: toolbarOptions,
-            imageResize: {}
+            imageResize: {
+                modules: [ 'Resize' ,'DisplaySize']  // 只保留 Resize 模塊，去除 Alignment 模塊
+              }
         }
     });
-    quill.on('text-change', function(delta, oldDelta, source) {
-        if (source === 'user') {
-          let imgTags = quill.root.querySelectorAll('div');
-          imgTags.forEach(img => {
-            console.log(img.style);
-        });
-        }
-      });
-    quill.clipboard.dangerouslyPasteHTML(text)
+    convertBlocks(content.blocks,quill);
     saveButton.addEventListener('click', function() {
         // 使用 quill.root.innerHTML 獲取編輯器的 HTML 內容
         saveEditorContent(quill);
@@ -225,17 +207,33 @@ function saveEditorContent(quill) {
                             }
                         });
                     }
-                    // 重置緩衝區並為下一段生成新的 ID
                     paragraphBuffer = "";
                     paragraphId = generateUniqueId();
                 }
             });
         } else if (op.insert && typeof op.insert === 'object' && op.insert.image) {
-            // 如果當前段落緩衝區不為空，先保存當前段落
+
+            const img = document.querySelector(`img[src="${op.insert.image}"]`);
+            let width = null;
+
+            if (img) {
+                width = img.style.width || img.getAttribute('width') || img.naturalWidth;
+
+                // 確保 width 是字符串，並且沒有重複添加 "px"
+                if (typeof width === 'number') {
+                    // 當寬度是數值時，添加單位
+                    width = width + "px";
+                } else if (typeof width === 'string' && !width.includes('px') && !width.includes('%')) {
+                    // 當 width 是字符串但不包含 "px" 或 "%" 時，添加單位
+                    width += "px";
+                }
+            
+                console.log(width); // 應該輸出最終的寬度值，且只有一個 "px"
+            }
+
             if (paragraphBuffer.trim() !== "") {
                 let alignedParagraph = paragraphBuffer.trim();
 
-                // 如果有對齊屬性，包裹相應的 div 並設置對齊方式
                 if (op.attributes && op.attributes.align) {
                     alignedParagraph = `<div style="text-align: ${op.attributes.align};">${alignedParagraph}</div>`;
                 }
@@ -251,13 +249,12 @@ function saveEditorContent(quill) {
                 paragraphId = generateUniqueId();
             }
 
-            // 保存圖像塊
             customJson.push({
                 id: generateUniqueId(),
                 type: "image",
                 data: {
                     url: op.insert.image,
-
+                    width: width,
                 }
             });
         }

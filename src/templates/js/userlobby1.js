@@ -77,10 +77,8 @@ function toggleMenu() {
 
   // 根據菜單是否隱藏來調整lobby的寬度
   if (menu.classList.contains('active')) {
-    // console.log('1');
       lobby.classList.add('full-width');
   } else {
-    // console.log('1');
       lobby.classList.remove('full-width');
   }
 }
@@ -106,12 +104,12 @@ async function showRules() {
   const text = await getBlocksAndId();
   let htmlContent = '';
   text.blocks.forEach(block =>{
-    console.log(block)
     if (block.type === 'paragraph' && block.data && block.data.text) {
       htmlContent += `<p>${block.data.text}</p>`;
     }
     else if (block.type === 'image'){
-      htmlContent += `<img src="${block.data.url}" alt="${block.data.alt}">`;
+      console.log(block.data.width);
+      htmlContent += `<img src="${block.data.url}" style="width:${block.data.width}">`;
     }
     });
   Swal.fire({
@@ -372,8 +370,24 @@ document.addEventListener("DOMContentLoaded", async function () {
     },
     datesSet: handleDatesSet,
   });
+  
+  //hamburger-list
+  const hamburger = document.getElementById('hamburger-button');
+  hamburger.addEventListener('click', () => {
+    const menu = document.getElementById('hamburger-menu');
+    const lobby = document.getElementById('lobby');
 
+    menu.classList.toggle('active');
 
+    if (menu.classList.contains('active')) {
+        lobby.classList.add('full-width');
+    } else {
+        lobby.classList.remove('full-width');
+    }
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 1);  })
+  
 
   // 左邊「我的會議」視窗
   function handleDatesSet() {
