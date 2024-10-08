@@ -1,7 +1,10 @@
 body {
-  width: contain;
+  width: 100%;
   height: 100%;
   margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 header {
@@ -9,6 +12,7 @@ header {
   border-bottom: 1px solid #ddd;
   padding: 10px;
   height: fit-content;
+  z-index: 1000;
 }
 
 .navbar {
@@ -39,16 +43,15 @@ header {
 
 .content {
   display: flex;
-  width: contain;
-  height: contain;
+  width: 100%;
+  height: 100%;
 }
 
 .lobby {
-  height: 90vh;
   padding: 0px 10px;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  /* flex-grow: 1; */
   width: calc(100vw - 400px);
   min-width: 400px;
   /* 菜單寬度為 400px，lobby 初始占用剩餘寬度 */
@@ -74,7 +77,6 @@ header {
   line-height: 1;
   z-index: 5;
   cursor: pointer;
-
 }
 
 /* 上面按鈕跟日期位置 */
@@ -153,7 +155,7 @@ header {
   transition: transform 0.3s ease;
   /* 添加過渡效果 */
   flex-direction: column;
-  z-index: 10;
+  /* z-index: 10; */
 
   position: relative;
   left: 0;
@@ -183,9 +185,10 @@ header {
 
 .hamburger-list {
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   width: 370px;
-  height: 65vh;
+  height: 70vh;
   padding: 10px;
   /* box-shadow: 1px 1px 5px 5px rgb(220, 220, 220) inset; */
   /* border: 1px double rgb(255, 210, 177); */
@@ -196,13 +199,14 @@ header {
   /* margin: 3px; */
   font: 700 25px/1.2 Arial, serif;
   color: #215D5A;
-  letter-spacing: -0.2px;
+  /* letter-spacing: -0.2px; */
+  margin-top: 5px;
 }
 
 .list-subtitle {
   margin: 10px;
   font: 600 18px/1.2 Arial, serif;
-  color: #0D2524;
+  color: #0d2524dd;
   letter-spacing: -0.2px;
 }
 
@@ -229,7 +233,7 @@ header {
   background-color: #388688;
   display: flex;
   justify-content: center;
-  align-items: normal;
+  align-content: center;
   font: 700 24px/1.2 Inter, Helvetica, Arial, serif;
   border-radius: 15px;
 }
@@ -275,11 +279,15 @@ input {
   height: 35px;
   width: 70%;
   border-radius: 10px;
+  border-width: 1px;
+  padding: 0px 10px;
+  align-content: center;
 }
 
 select {
   width: 50px;
   height: 35px;
+  margin: 0px 5px;
   /* box-sizing: 30px 20px; */
 }
 
@@ -351,8 +359,17 @@ select {
 /* 響應式調整 */
 @media (max-width: 830px) {
   body {
-    display: block;
+    display: flex;
     flex-wrap: wrap;
+    overflow: auto;
+  }
+
+  .navbar {
+    order: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: right;
+    align-items: center;
   }
 
   .content {
@@ -363,23 +380,29 @@ select {
   }
 
   .hamburger-menu {
-    width: 100%;
+    /* 直式，預設關 */
+    display: none;
+
+    /* width: 100%;
     height: 60vh;
     /* position: absolute; */
-    top: 0;
+    /* top: 0;
     order: 1;
     /* left: 0; */
-    transform: translateY(-100%);
-    transition: transform 0.3s ease;
+    /* transform: translateY(-100%);
+    transition: transform 0.3s ease; */
   }
 
   .hamburger-menu.active {
+    order: 1;
+    display: block;
     transform: translateY(0%);
   }
 
   .lobby {
+    /* 直式，預設滿版 */
     order: 2;
-    height: calc(100vh - 60vh);
+    height: calc(100vh - 50px);
     padding: 0px 10px;
     display: flex;
     flex-direction: column;
@@ -388,7 +411,7 @@ select {
   }
 
   .lobby.full-width {
-    height: 100vh;
+    /* height: 100vh; */
   }
 }
 

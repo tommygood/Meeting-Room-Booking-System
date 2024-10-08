@@ -1,13 +1,14 @@
 * {
     margin: 0;
     padding: 0;
+    overflow: hidden;
     box-sizing: border-box;
 }
 
 body {
     font-family: 'Noto Sans TC', sans-serif;
     background-color: #f0f0f0;
-    height: 100vh;
+    height: 100%;
 }
 
 header {
