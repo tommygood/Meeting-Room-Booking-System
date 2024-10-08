@@ -21,9 +21,7 @@ app.set('trust proxy', true); // trust first proxy to get the client IP address
 
 // routing
 // api
-app.use('/api',cors({
-    origin:[ 'http://localhost']
-}));
+app.use(cors( {origin: ['http://localhost:5173'], credentials: true} ));
 
 app.use("/api/login", require("./api/login.js"));
 app.use("/api/info", require("./api/info.js"));
@@ -40,6 +38,20 @@ app.use("/example", require("./example.js"));
 app.use("/css", express.static(templates_path + '/css'));
 app.use("/image", express.static(templates_path + '/image'));
 app.use("/js", express.static(templates_path + '/js'));
+
+// set frontend path
+const { createProxyMiddleware } = require('http-proxy-middleware');
+const { host_frontend } = require('./utilities/config.js');
+// Proxy configuration
+/*
+console.log(host_frontend);
+app.use('/page', createProxyMiddleware({
+  target: host_frontend, // URL of your frontend host
+  pathRewrite: {
+    '^/page': '', // Remove /page prefix when forwarding to the frontend
+  },
+}));
+*/
 
 
 server.listen(3000, function () {
