@@ -291,6 +291,12 @@ select {
   /* box-sizing: 30px 20px; */
 }
 
+select {
+  width: 50px;
+  height: 35px;
+  /* box-sizing: 30px 20px; */
+}
+
 .hamburger-timerequest {
   font-size: 1.1em;
   height: 35px;
