@@ -35,13 +35,13 @@ router.post('/', jwt.verifyAdmin, async function(req, res) {
             // invlid time, start_time should be less than end_time
             // log the action
             Log.insert(req.ip, Operator.getOperator.reservationFailed.code, identifier);
-            res.json({result : "不合法的時間，開始時間應該小於結束時間"});
+            res.json({result : "開始時間應該小於結束時間，請再次確認"});
         }
         else if (await Reservation.checkOverlap(start_time, end_time)) {
             // log the action
             // invlid time, there is a confliction with other reservations
             Log.insert(req.ip, Operator.getOperator.reservationFailed.code, identifier);
-            res.json({result : "不合法的時間，與其他預約有衝突"});
+            res.json({result : "與其他預約有衝突，請再次確認"});
         }
         else {
             const suc = await Reservation.insert(identifier, room_id, name, start_time, end_time, show, ext);
@@ -92,13 +92,13 @@ router.put('/', jwt.verifyLogin, async function(req, res) {
         if (start_time >= end_time) {
             // log the action
             Log.insert(req.ip, Operator.getOperator.reservationFailed.code, identifier);
-            res.json({result : "Invalid time, start_time should be less than end_time"});
+            res.json({result : "開始時間應小於結束時間，請再次確認"});
         }
         else {
             // delete the reservation first and then check if there is a confliction with other reservations
             await Reservation.delete(reserve_id);
             if (await Reservation.checkOverlap(start_time, end_time)) {
-                res.json({result : "Invalid time, there is a confliction with other reservations"});
+                res.json({result : "與其他預約有衝突，請再次確認"});
                 // set the reservation back to the original status
                 Reservation.setAvailable(reserve_id);
                 // log the action
