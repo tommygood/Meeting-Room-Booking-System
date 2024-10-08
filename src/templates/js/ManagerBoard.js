@@ -83,6 +83,7 @@ function saveContent() {
 
 //get board information
 function fetchData(start, end) {
+
   const api_board = `/api/reservation?start_time=${start}&end_time=${end}`;
 
   return fetch(api_board, {
