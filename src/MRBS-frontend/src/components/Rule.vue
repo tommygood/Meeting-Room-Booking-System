@@ -158,7 +158,9 @@ export default {
                     }
                 }
             });
-            this.convertBlocks(content.blocks,quill);
+            if (content) {
+                this.convertBlocks(content.blocks,quill);
+            }
             saveButton.addEventListener('click', () => {
                 // 使用 quill.root.innerHTML 獲取編輯器的 HTML 內容
                 this.saveEditorContent(quill);
