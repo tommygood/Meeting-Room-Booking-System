@@ -22,7 +22,7 @@ router.get('/sso', async function(req, res) {
 
 router.get('/callback', async function(req, res) {
 	try {
-      const redirect_uri = `${host}/page/userlobby`;
+      const redirect_uri = `${host}/lobby`;
     	const result = await oauth.callback(host, redirect_uri, req, res);
 
       // insert/update user info into db

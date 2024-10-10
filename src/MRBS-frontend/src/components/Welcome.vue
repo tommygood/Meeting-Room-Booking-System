@@ -12,8 +12,8 @@
             <div class="content-card">
                 <button class="login-btn" v-on:click="redirectBackend('/login/sso')">登入</button>
                 <div class="footer-links">
-                    <a href="/page/rules/demo?doc_name=use">使用規則</a>
-                    <a href="/page/rules/demo?doc_name=equipment">設備介紹</a>
+                    <a href="/rule/demo?doc_name=use">使用規則</a>
+                    <a href="/rule/demo?doc_name=equipment">設備介紹</a>
                 </div>
             </div>
         </div>

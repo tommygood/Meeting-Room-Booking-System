@@ -20,13 +20,55 @@ export default {
     },
     props : {
         eventApiUrl : {
-            type : Function
+            type : Function,
+            default : (start, end) => config.apiUrl  + `/reservation?start_time=${start}&end_time=${end}`,
         },
         info : {
             type : Object
+        },
+        eventClick : {
+            type : Function,
+            default : (info) => {
+                const StartTime = info.event.start.toLocaleString('zh-TW', {
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                    weekday: 'short'
+                });
+                const EndTime = info.event.end.toLocaleString('zh-TW', {
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                    weekday: 'short'
+                });
+
+                Swal.fire({
+                    title: DOMPurify.sanitize(info.event.title),
+
+                    html: DOMPurify.sanitize(`
+                        ${StartTime} ~ ${EndTime}<br>
+                        會議：${info.event.title}<br>
+                        借用單位: ${info.event.extendedProps.unit}<br>
+                        申請人: ${info.event.extendedProps.chinesename}<br>
+                        分機號碼: ${info.event.extendedProps.number}<br>
+                    `),
+                    confirmButtonText: "OK",
+                })
+            },
+        },
+        setApplicationShow : {
+            type : Function,
+            default : () => {}
         }
     },
     methods : {
+        test() {
+            console.log('test')
+        },
         //starttime&endtime轉datetime格式
         formatDateTimeForDatabase(dateTime) {
             const date = new Date(dateTime);
@@ -57,7 +99,8 @@ export default {
                     chinesename: item.chinesename,
                     unit: item.unit,
                     show: item.show,
-                    number: item.ext
+                    number: item.ext,
+                    identifier: item.identifier,
                 }
                 }));
             } else {
@@ -77,6 +120,113 @@ export default {
                 });
             }));
             
+        },
+        showEditInterface(event, click_event) {
+            console.log('click event:', event);
+            const conference_info = {
+                'start' : event.start_time,
+                'end' : event.end_time,
+                'reserve_id' : event.reserve_id,
+                'title' : event.name,
+                'chinesename' : event.chinesename,
+                'unit' : event.unit,
+                'number' : event.ext,
+                'identifier' : event.identifier,
+                'apiUrl' : config.apiUrl,
+            }
+            this.showEditConferncePage(conference_info);
+        },
+        showEditConferncePage(conference_info) {
+            console.log('showEditConferncePage:', conference_info);
+            const startTime = new Date(conference_info.start).toLocaleTimeString('zh-TW',  {month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                    weekday: 'short'
+            })
+            const endTime = new Date(conference_info.end).toLocaleTimeString('zh-TW',  {month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                    weekday: 'short'
+            })
+            Swal.fire({
+                title: DOMPurify.sanitize(conference_info.title),
+                html: DOMPurify.sanitize(`
+                ${conference_info.date} <br>
+                ${startTime} ~ ${endTime}<br>
+                借用單位: ${conference_info.unit}<br>
+                申請人: ${conference_info.chinesename}<br>
+                分機號碼: ${conference_info.number}<br>
+            `),
+                showCancelButton: true,
+                showDenyButton: true,
+                cancelButtonText: 'OK',
+                confirmButtonText: '編輯會議',
+                denyButtonText: '刪除會議',
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    this.setApplicationShow(true);
+                    const form = document.getElementById('requestedit');
+                    document.getElementById('hamburger-requestpage').style.display = 'none';
+                    document.getElementById('hamburger-requestedit').style.display = 'flex';
+                    document.getElementById('hamburger-content').style.display = 'none';
+                    const startDate = new Date(conference_info.start);
+                    console.log(startDate, conference_info)
+                    const formattedStartDate = startDate.toISOString().split('T')[0];
+                    const startHour = String(startDate.getHours()).padStart(2, '0');
+                    const startMinute = String(startDate.getMinutes()).padStart(2, '0');
+                    const endDate = new Date(conference_info.end);
+                    const formattedEndDate = startDate.toISOString().split('T')[0];
+                    const endHour = String(endDate.getHours()).padStart(2, '0');
+                    const endMinute = String(endDate.getMinutes()).padStart(2, '0');
+                    form.querySelector('input[name="name"]').value = conference_info.title;
+                    form.querySelector('input[name="person"]').value = conference_info.chinesename;
+                    form.querySelector('input[name="unit"]').value = conference_info.unit;
+                    form.querySelector('input[name="ext"]').value = conference_info.number;
+                    form.querySelector('input[name="startdate"]').value = formattedStartDate;
+                    form.querySelector('select[name="starthour"]').value = startHour;
+                    form.querySelector('select[name="startminute"]').value = startMinute;
+                    form.querySelector('input[name="enddate"]').value = formattedEndDate;
+                    form.querySelector('select[name="endhour"]').value = endHour;
+                    form.querySelector('select[name="endminute"]').value = endMinute;
+                    // set email
+                    const identifier = conference_info.identifier;
+                    const res = await fetch(conference_info.apiUrl + `/user/email?identifier=${identifier}`, {
+                        method: 'GET',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    const data = await res.json();
+                    form.querySelector('input[name="email"]').value = data.email;
+                    document.getElementById('editbutton').onclick = () => {
+                        this.reservationPut(conference_info.reserve_id);
+                    };
+                } else if (result.isDenied) {
+                    // 刪除會議
+                    Swal.fire({
+                        title: '確定要刪除該會議嗎',
+                        icon: "warning",
+                        confirmButtonText: '確定',
+                        showCancelButton: true,
+                        cancelButtonText: '返回',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.reservationDelete(conference_info.reserve_id);
+                            Swal.fire({
+                                title: '刪除成功',
+                                icon: 'success',
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        }
+                    })
+                }
+            })
         },
         async loadCalendar() {
             console.log('loadCalendar');
@@ -152,44 +302,12 @@ export default {
                 },
 
 
-                eventClick: function (info) {
-                    const StartTime = info.event.start.toLocaleString('zh-TW', {
-                        month: '2-digit',
-                        day: '2-digit',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false,
-                        weekday: 'short'
-                    });
-                    const EndTime = info.event.end.toLocaleString('zh-TW', {
-                        month: '2-digit',
-                        day: '2-digit',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false,
-                        weekday: 'short'
-                    });
-
-
-
-                    Swal.fire({
-                        title: DOMPurify.sanitize(info.event.title),
-
-                        html: DOMPurify.sanitize(`
-                            ${StartTime} ~ ${EndTime}<br>
-                            會議：${info.event.title}<br>
-                            借用單位: ${info.event.extendedProps.unit}<br>
-                            申請人: ${info.event.extendedProps.chinesename}<br>
-                            分機號碼: ${info.event.extendedProps.number}<br>
-                        `),
-                        confirmButtonText: "OK",
-                    })
-                },
-                datesSet: handleDatesSet,
+                eventClick: this.eventClick,
+                datesSet: handleDatesSet(this.showEditInterface)
             });
             
             // 左邊「我的會議」視窗
-            function handleDatesSet() {
+            function handleDatesSet(showEditInterface) {
                 const start = new Date();
                 const end = new Date();
                 end.setFullYear(end.getFullYear() + 1);
@@ -211,97 +329,34 @@ export default {
                     filteredEvents.sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
 
                     if (filteredEvents.length > 0) {
-                    document.querySelector('.hamburger-list').innerHTML = '';
-                    //顯示每個自己的會議
-                    filteredEvents.forEach(event => {
-                        const popup = document.createElement('div');
-                        popup.className = 'list-content_box';
-                        popup.style.display = 'flex';
-                        const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                        const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                        const date = new Date(event.start_time).toLocaleDateString([], { month: '2-digit', day: '2-digit', weekday: 'short' });
+                        document.querySelector('.hamburger-list').innerHTML = '';
+                        console.log(filteredEvents)
+                        //顯示每個自己的會議
+                        filteredEvents.forEach(event => {
+                            const popup = document.createElement('div');
+                            popup.className = 'list-content_box';
+                            popup.style.display = 'flex';
+                            popup.style.margin = '5%';
+                            const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            const date = new Date(event.start_time).toLocaleDateString([], { month: '2-digit', day: '2-digit', weekday: 'short' });
+                            popup.innerHTML = DOMPurify.sanitize(`
+                            <div class="list-subtitle">
+                                ${date} ${startTime} ~ ${endTime}
+                                <br>
+                                <div class="list-title">${event.name}</div>
+                                
+                            </div>
+                            `);
+                            //     <br>
+                            //     借用單位: ${event.unit}<br>
+                            //     申請人: ${event.chinesename} &emsp; 分機號碼: ${event.ext}
 
-                        popup.innerHTML = DOMPurify.sanitize(`
-                        <div class="list-subtitle">
-                            ${date} ${startTime} ~ ${endTime}
-                            <br>
-                            <div class="list-title">${event.name}</div>
-                            
-                        </div>
-                        `);
-                        //     <br>
-                        //     借用單位: ${event.unit}<br>
-                        //     申請人: ${event.chinesename} &emsp; 分機號碼: ${event.ext}
-
-                        //編輯自己的會議
-                        popup.onclick = () => {
-                        Swal.fire({
-                            title: DOMPurify.sanitize(event.name),
-                            html: DOMPurify.sanitize(`
-                            ${date} <br>
-                            ${startTime} ~ ${endTime}<br>
-                            借用單位: ${event.unit}<br>
-                            申請人: ${event.chinesename}<br>
-                            分機號碼: ${event.ext}<br>
-                        `),
-                            showCancelButton: true,
-                            showDenyButton: true,
-                            cancelButtonText: 'OK',
-                            confirmButtonText: '編輯會議',
-                            denyButtonText: '刪除會議',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                            const form = document.getElementById('requestedit');
-                            document.getElementById('hamburger-requestpage').style.display = 'none';
-                            document.getElementById('hamburger-requestedit').style.display = 'flex';
-                            document.getElementById('hamburger-content').style.display = 'none';
-                            const startDate = new Date(event.start_time);
-                            const formattedStartDate = startDate.toISOString().split('T')[0];
-                            const startHour = String(startDate.getHours()).padStart(2, '0');
-                            const startMinute = String(startDate.getMinutes()).padStart(2, '0');
-                            const endDate = new Date(event.end_time);
-                            const formattedEndDate = startDate.toISOString().split('T')[0];
-                            const endHour = String(endDate.getHours()).padStart(2, '0');
-                            const endMinute = String(endDate.getMinutes()).padStart(2, '0');
-                            form.querySelector('input[name="name"]').value = event.name;
-                            form.querySelector('input[name="person"]').value = event.chinesename;
-                            form.querySelector('input[name="unit"]').value = event.unit;
-                            form.querySelector('input[name="ext"]').value = event.ext;
-                            form.querySelector('input[name="startdate"]').value = formattedStartDate;
-                            form.querySelector('select[name="starthour"]').value = startHour;
-                            form.querySelector('select[name="startminute"]').value = startMinute;
-                            form.querySelector('input[name="enddate"]').value = formattedEndDate;
-                            form.querySelector('select[name="endhour"]').value = endHour;
-                            form.querySelector('select[name="endminute"]').value = endMinute;
-                            document.getElementById('editbutton').onclick = () => {
-                                self.reservationPut(event.reserve_id);
-                            };
-                            } else if (result.isDenied) {
-                            // 刪除會議
-                            Swal.fire({
-                                title: '確定要刪除該會議嗎',
-                                icon: "warning",
-                                confirmButtonText: '確定',
-                                showCancelButton: true,
-                                cancelButtonText: '返回',
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                self.reservationDelete(event.reserve_id);
-                                Swal.fire({
-                                    title: '刪除成功',
-                                    icon: 'success',
-                                }).then(() => {
-                                    window.location.reload();
-                                });
-                                }
-                            })
-
-                            }
-                        })
-                        };
-                        document.querySelector('.hamburger-list').appendChild(popup);
-                        // document.getElementById('event-list').style.overflow = 'auto';
-                    });
+                            //編輯自己的會議
+                            popup.addEventListener('click', showEditInterface.bind(null, event));
+                            document.querySelector('.hamburger-list').appendChild(popup);
+                            // document.getElementById('event-list').style.overflow = 'auto';
+                        });
                     }
                 })
                 .catch(error => {
@@ -326,7 +381,6 @@ export default {
             const endTimestamp = this.formatDateTimeForDatabase(`${enddate}T${endhour}:${endminute}:00`);
             const startOfDay = this.formatDateTimeForDatabase(`${startdate}T00:00:00`);
             const endOfDay = this.formatDateTimeForDatabase(`${enddate}T23:59:59`);
-            const existingEvents = await this.fetchevent(startOfDay, endOfDay);
             // 構建數據對象
             const data = {
                 reserve_id: reserve_id,
@@ -339,6 +393,7 @@ export default {
                 status: false,
             };
 
+            console.log(data);
             const api = config.apiUrl + '/reservation';
             fetch(api, {
                 method: 'PUT',

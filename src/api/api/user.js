@@ -33,6 +33,19 @@ router.get('/self', jwt.verifyLogin, async function(req, res) {
     }
 })
 
+// get user email by identifier
+router.get('/email', jwt.verifyAdmin, async function(req, res) {
+    try {
+        const identifier = req.query.identifier;
+        const data = await User.getSelf(identifier);
+        res.json({'email' : data.email});
+    }
+    catch(e) {
+        console.error(e);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 // update user privileges by identifier
 router.put('/privilege', jwt.verifyAdmin, async function(req, res) {
     try {

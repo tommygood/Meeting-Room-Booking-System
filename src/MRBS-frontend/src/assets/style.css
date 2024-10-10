@@ -40,7 +40,7 @@ h1 {
     /* 替換為實際圖片路徑 */
     background-size: cover;
     background-position: center;
-    height: 100vh;
+    height: 88.5%;
     display: flex;
     justify-content: right;
     align-items: start;

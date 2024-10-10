@@ -1,16 +1,17 @@
 /* 左邊頁面選項 */
 .menu{
     background-color: #fff;
-    width:230px;
-    height:100vh;
+    width:200px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
 }
 .menu-title{
     font: 600 28px/1.2 Inter, Helvetica, Arial, serif;
     color: #000;
     letter-spacing: 6.3px;
+    display: none;
 }
 #menu-title1{
   margin-bottom: 0;

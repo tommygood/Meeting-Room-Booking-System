@@ -35,6 +35,13 @@ app.use("/page", require("./page/main.js"));
 app.use("/page/board", require("./page/board.js"));
 app.use("/page/rules", require("./page/rules.js"));
 app.use("/example", require("./example.js"));
+
+var history = require('connect-history-api-fallback');
+app.use(history());
+const path = util.getParentPath(__dirname) + "/MRBS-frontend/dist";
+app.use(express.static(path));
+
+/*
 app.use("/css", express.static(templates_path + '/css'));
 app.use("/image", express.static(templates_path + '/image'));
 app.use("/js", express.static(templates_path + '/js'));
@@ -42,6 +49,7 @@ app.use("/js", express.static(templates_path + '/js'));
 // set frontend path
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const { host_frontend } = require('./utilities/config.js');
+*/
 // Proxy configuration
 /*
 console.log(host_frontend);

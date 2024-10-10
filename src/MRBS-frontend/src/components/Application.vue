@@ -1,5 +1,5 @@
 <template>
-    <div id="hamburger-menu" class="hamburger-menu">
+    <div id="hamburger-menu" class="hamburger-menu" v-show="show">
     <!-- 我的會議頁面 -->
     <div id="hamburger-content" class="hamburger-content">
         <h3 class="hamburger-title">我的會議</h3>
@@ -40,7 +40,7 @@
                 <div class="input-group">
                     <h2 class="hamburger-request-title">開始日期：</h2>
                     <input type="date" class="hamburger-request" name="startdate" id="startdate" />
-                    <select name="starthour" id="starthour">
+                    <select name="starthour" id="starthour" style="margin-left:3%;">
                         <option value="08">08</option>
                         <option value="09">09</option>
                         <option value="10">10</option>
@@ -62,7 +62,7 @@
                 <div class="input-group">
                     <h2 class="hamburger-request-title">結束日期：</h2>
                     <input type="date" class="hamburger-request" name="enddate" id="enddate" />
-                    <select name="endhour" id="endhour">
+                    <select name="endhour" id="endhour" style="margin-left:3%;">
                         <option value="08">08</option>
                         <option value="09">09</option>
                         <option value="10">10</option>
@@ -122,11 +122,6 @@
                         style="background-color:#ece673" readonly />
                 </div>
                 <div class="input-group">
-                    <h2 class="hamburger-request-title">連絡電話：</h2>
-                    <input type="text" class="hamburger-request" name='phone' placeholder="連絡電話(固定)"
-                        style="background-color:#ece673" readonly />
-                </div>
-                <div class="input-group">
                     <h2 class="hamburger-request-title">分機號碼：</h2>
                     <input type="text" class="hamburger-request" name='ext' placeholder="分機號碼" />
                 </div>
@@ -137,7 +132,7 @@
                 <div class="input-group">
                     <h2 class="hamburger-request-title">開始日期：</h2>
                     <input type="date" class="hamburger-request" name="startdate" id="startdate" />
-                    <select name="starthour" id="editstarthour">
+                    <select name="starthour" id="editstarthour" style="margin-left:3%;">
                         <option value="00">00</option>
                         <option value="01">01</option>
                         <option value="02">02</option>
@@ -174,7 +169,7 @@
                 <div class="input-group">
                     <h2 class="hamburger-request-title">結束日期：</h2>
                     <input type="date" class="hamburger-request" name="enddate" id="enddate" />
-                    <select name="endhour" id="endhour">
+                    <select name="endhour" id="endhour" style="margin-left:3%;">
                         <option value="00">00</option>
                         <option value="01">01</option>
                         <option value="02">02</option>
@@ -238,6 +233,15 @@ export default {
     props: {
         info: Object,
         formatDateTimeForDatabase: Function,
+        show: {
+            type: Boolean,
+            default: true
+        },
+        setApplicationShow: Function,
+        remove_application_when_back: {
+            type: Boolean,
+            default: false
+        },
     },
     mounted() {
         this.syncStartEndDate();
@@ -259,6 +263,9 @@ export default {
         back() {
             document.getElementById('hamburger-content').style.display = 'block';
             document.getElementById('hamburger-requestpage').style.display = 'none';
+            if (this.remove_application_when_back) {
+                this.setApplicationShow(false);
+            }
         },
         async getDoc(doc_name) {
             const api = config.apiUrl + `/doc?doc_name=${doc_name}`;
@@ -361,3 +368,8 @@ export default {
     }
 }
 </script>
+<style scoped>
+input {
+    padding-left: 2%;
+}
+</style>

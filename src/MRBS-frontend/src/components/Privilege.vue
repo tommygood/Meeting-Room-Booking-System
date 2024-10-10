@@ -1,14 +1,26 @@
+<style scoped>
+    .gridjs-search {
+        display: none;
+    }
+</style>
 <template>
     <link rel="stylesheet" href="https://unpkg.com/gridjs@6.2.0/dist/theme/mermaid.min.css">
     <!-- 表單 -->
     <user_header :setInfo="setInfo" :info="info"></user_header>
     <div class="test">
-        <root_menu></root_menu>
+        <root_menu :setPageName="setPageName"></root_menu>
         <div>
-            <div class="search-container">
-                <span class="search-label">關鍵字搜尋 :&nbsp;</span>
-                <input type="text" placeholder="Type a keyword..." id="grid-search" class="gridjs-input"/>
-            </div>
+            <h1 style='margin-left:2%'>
+                [ {{ page_name }} ]
+            </h1>
+            <tr id='table_title' style='display:none;'>
+                <td colspan='6'>
+                    <div class="search-container">
+                        <span class="search-label">關鍵字搜尋 :&nbsp;</span>
+                        <input type="text" placeholder="Type a keyword..." id="grid-search" class="gridjs-input"/>
+                    </div>
+                </td>
+            </tr>
             <div id="gridtable"></div>
             <!-- 權限修改視窗 -->
             <div id="popup-privilege" class="popup"> 
@@ -30,13 +42,13 @@
                             </select>
                         </div>
                         <div class="bottom-button">
-                            <div class="popup-button" style="width:150px" onclick="hidePopup('popup-privilege')">
+                            <div class="popup-button" style="width:150px" v-on:click="hidePopup('popup-privilege')">
                                 <h3 class="hamburger-title" style="color:white">返回</h3>
                             </div>
-                            <div class="popup-button" style="width:150px" onclick="deleteUser()">
+                            <div class="popup-button" style="width:150px" v-on:click="deleteUser()">
                                 <h3 class="hamburger-title" style="color:white">刪除</h3>
                             </div>
-                            <div class="popup-button" style="width:150px" onclick="putPrivilege()">
+                            <div class="popup-button" style="width:150px" v-on:click="putPrivilege()">
                                 <h3 class="hamburger-title" style="color:white">確定</h3>
                             </div>
                         </div>
@@ -68,10 +80,10 @@
                         <h2 class="title">違規備註 :&nbsp;</h2>
                         <textarea id="violationNote" class="large-textarea" name="remark" >無備註</textarea>
                         <div class="bottom-button">
-                            <div class="popup-button" style="width:180px" onclick="hidePopup('popup-violate')">
+                            <div class="popup-button" style="width:180px" v-on:click="hidePopup('popup-violate')">
                                 <h3 class="hamburger-title" style="color:white">返回</h3>
                             </div>
-                            <div class="popup-button" style="width:180px" onclick="postViolation()">
+                            <div class="popup-button" style="width:180px" v-on:click="postViolation">
                                 <h3 class="hamburger-title" style="color:white">確定</h3>
                             </div> 
                         </div>
@@ -94,6 +106,7 @@ export default {
             'https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js',
         ])
         this.initTable();
+        this.setTableTitle(1000);
     },
     components: {
         root_menu,
@@ -104,9 +117,32 @@ export default {
             info: {},
             selectedIdentifier: null,
             selectedName: null,
+            table_title: null,
+            page_name: null,
         }
     },
     methods: {
+        setPageName(val) {
+            this.page_name = val;
+        },
+        setTableTitle(wait_seconds) {
+            setTimeout(() => {
+                if (this.table_title == null) {
+                    this.table_title = document.getElementById('table_title');
+                }
+                const table_body = document.getElementsByClassName('gridjs-tbody')[0];
+                // insert table title after table was rendered
+                this.table_title.style.display = '';
+                table_body.insertBefore(this.table_title, table_body.firstChild);
+            }, wait_seconds);
+        },
+        removeSearchBar() {
+            // remove the search bar
+            setTimeout(() => {
+                console.log('remove search bar');
+                document.querySelector('.gridjs-search').style.display = 'none';
+            }, 1000);
+        },
         async loadCDN(cdn) {
             // load required cdn, and wait for all cdn to be loaded
             await Promise.all(cdn.map(src => {
@@ -118,15 +154,18 @@ export default {
                     document.head.appendChild(script);
                 });
             }));
-            
+            // remove the search bar
+            this.removeSearchBar();
         },
         setInfo(val) {
             this.info = val;
         },
-        setPermission(identifier,name){
+        setPermission(event){
             document.getElementById('popup-privilege').style.display='flex';
-            selectedIdentifier = String(identifier);
-            selectedName = name;
+            const id = event.target.id;
+            const [identifier, name] = id.split(' ');
+            this.selectedIdentifier = String(identifier);
+            this.selectedName = name;
         },
         deleteUser(){
             Swal.fire({
@@ -145,7 +184,7 @@ export default {
                     headers: {
                     'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({identifier:selectedIdentifier, status: -1}),
+                    body: JSON.stringify({identifier:this.selectedIdentifier, status: -1}),
                 })
                 .then(response => response.json())
                 .catch(error => {
@@ -188,7 +227,8 @@ export default {
             const seconds = String(date.getSeconds()).padStart(2, '0');
             return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`; // 返回 'YYYY-MM-DD HH:MM:SS'
         },
-        async addViolate(identifier){
+        async addViolate(event){
+            const identifier = event.target.id;
             const today = new Date(); 
 
             const threeMonthsAgo = new Date(today); 
@@ -197,12 +237,12 @@ export default {
             if (threeMonthsAgo.getMonth() > today.getMonth()) {
                 threeMonthsAgo.setFullYear(today.getFullYear() - 1);
             }
-            const startOfRange = formatDateTimeForDatabase(threeMonthsAgo);
-            const endOfRange = formatDateTimeForDatabase(today);
-            const existingEvents = await fetchevent(startOfRange,endOfRange);
+            const startOfRange = this.formatDateTimeForDatabase(threeMonthsAgo);
+            const endOfRange = this.formatDateTimeForDatabase(today);
+            const existingEvents = await this.fetchevent(startOfRange,endOfRange);
             const result = existingEvents .data || []; 
             const events = result.filter(event => event.identifier === identifier);
-            selectedIdentifier = identifier;
+            this.selectedIdentifier = identifier;
             document.getElementById('popup-violate').style.display='flex';
 
             const selectElement = document.getElementById('violation-name');
@@ -262,14 +302,14 @@ export default {
         },
         putPrivilege(){
             const api_put = config.apiUrl + '/user/privilege';
-            const status_put = '/api/user/status';
+            const status_put = config.apiUrl + '/user/status';
             const form = document.getElementById('privilege-form');
             const formData = new FormData(form);
             const privileges = (formData.get('privilege')== 1 ? 1 : 0 ); 
             const status = (formData.get('status')== 1 ? 1 : 0); 
 
             const data={
-                identifier:selectedIdentifier,
+                identifier:this.selectedIdentifier,
                 privileges: privileges,
             }
             fetch(api_put,{
@@ -296,16 +336,23 @@ export default {
                 headers: {
                 'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({identifier:selectedIdentifier, status: status}),
+                body: JSON.stringify({identifier:this.selectedIdentifier, status: status}),
             })
             .then(response => response.json())
             .catch(error => {
                 console.error('Error:', error);
             });
         },
-        async showViolation(identifier){
-            const violation_get=`/api/violation`;
-            const violation= await fetch(violation_get)
+        async showViolation(event){
+            const identifier = event.target.id;
+            const violation_get= config.apiUrl + `/violation`;
+            const violation= await fetch(violation_get, 
+                {
+                    method: 'GET',
+                    credentials: 'include', 
+                    headers: { 'Content-Type': 'application/json' },
+                }
+            )
             .then(response => response.json())
             .then(result =>{
                 const violation = result.data || []; 
@@ -325,7 +372,7 @@ export default {
                 
                 const content= DOMPurify.sanitize(`
                     <div >
-                    <p><strong>違規時間：</strong> ${formattedDate} (${dayOfWeek})</p>
+                    <p><strong>記錄違規時間：</strong> ${formattedDate} (${dayOfWeek})</p>
                     <p><strong>原因：</strong> ${violation.reason}</p>
                     <p><strong>備註：</strong> ${violation.remark}</p>
                     <button type="button" class="delete-btn" data-id="${violation.violation_id}">刪除</button>
@@ -334,6 +381,7 @@ export default {
                 `);
                 return content;
                 }).join('');
+                const self = this;
                 //刪除還沒寫
                 Swal.fire({
                 title: DOMPurify.sanitize("違規紀錄"),
@@ -349,7 +397,7 @@ export default {
                     deleteButtons.forEach(button => {
                     button.addEventListener('click', function() {
                         const violationId = this.getAttribute('data-id');
-                        violationDelete(violationId); // 呼叫刪除函數
+                        self.violationDelete(violationId); // 呼叫刪除函數
                     });
                     });
                 }
@@ -364,7 +412,7 @@ export default {
             }
         },
         violationDelete(violation_id){
-            const violation_del=`/api/violation`;
+            const violation_del= config.apiUrl + `/violation`;
             try{
 
                 fetch(violation_del,{
@@ -414,14 +462,30 @@ export default {
                     item.chinesename,
                     privilegeText,
                     statusText,
-                    gridjs.html(`<a href="#" onclick="setPermission('${item.identifier}','${item.chinesename}');" >修改</a>`),
-                    gridjs.html(`${item.violation_count}次 <a href="#" onclick="addViolate('${item.identifier}');">新增</a> <a href="#" onclick="showViolation('${item.identifier}')">查詢</a>`)
+                    gridjs.html(`<a href="#" class='editPermission' id='${item.identifier} ${item.chinesename}' >修改</a>`),
+                    gridjs.html(`${item.violation_count}次 <button class='bind-addViolation fancy' id='${item.identifier}');">新增</button> <button href="#" class="bind-showViolation fancy" id='${item.identifier}'>查詢</button>`)
                     ],
                     extendedProps: {
                     identifier: item.identifier // 將 identifier 作為隱藏數據
                     }
                 };
                 }));
+
+                // add event listener to onclick buttons
+                setTimeout(() => {
+                    const editPermission = document.querySelectorAll('.editPermission');
+                    editPermission.forEach(button => {
+                        button.addEventListener('click', this.setPermission);
+                    });
+                    const addViolation = document.querySelectorAll('.bind-addViolation');
+                    addViolation.forEach(button => {
+                        button.addEventListener('click', this.addViolate);
+                    });
+                    const showViolation = document.querySelectorAll('.bind-showViolation');
+                    showViolation.forEach(button => {
+                        button.addEventListener('click', this.showViolation);
+                    });
+                }, 1000);
                 return data;
             }
         },
@@ -459,14 +523,13 @@ export default {
                     },
 
                 }).render(document.getElementById('gridtable'));
-
-                document.getElementById('grid-search').addEventListener('input', function(event) {
-                    // 設定 Grid.js 的搜尋文字
-                    document.querySelector('.gridjs-search .gridjs-input').value = event.target.value;
-                    // 手動觸發輸入事件
-                    document.querySelector('.gridjs-search .gridjs-input').dispatchEvent(new Event('input'));
-                });
-            })
+            });
+            document.getElementById('grid-search').addEventListener('input', function(event) {
+                // 設定 Grid.js 的搜尋文字
+                document.querySelector('.gridjs-search .gridjs-input').value = event.target.value;
+                // 手動觸發輸入事件
+                document.querySelector('.gridjs-search .gridjs-input').dispatchEvent(new Event('input'));
+            });
         },
     },
 }
@@ -475,6 +538,27 @@ export default {
 .test {
     display: flex;
     background-color:#DDD;
+}
+button.fancy {
+  background: #5E5DF0;
+  border-radius: 999px;
+  box-shadow: #5E5DF0 0 10px 20px -10px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-family: Inter,Helvetica,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Noto Color Emoji","Segoe UI Symbol","Android Emoji",EmojiSymbols,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans",sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  opacity: 1;
+  outline: 0 solid transparent;
+  padding: 8px 18px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: fit-content;
+  word-break: break-word;
+  border: 0;
 }
 </style>
 <style scoped>
@@ -486,10 +570,6 @@ export default {
   align-items: center;
   margin-left: 30px;
   margin-top: 10px;
-}
-.gridjs-search
-{
-  display: none;
 }
 .search-label{
     font: 600 20px/1 Inter, Helvetica, Arial, serif;
