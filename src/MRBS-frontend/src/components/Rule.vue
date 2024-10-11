@@ -39,7 +39,8 @@ export default {
     },
     async mounted() {
         await this.loadCDN([
-            'https://cdn.quilljs.com/1.3.6/quill.min.js', 
+            'https://cdn.quilljs.com/1.3.6/quill.js', 
+            'https://cdn.quilljs.com/1.3.6/quill.min.js',
             'https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js'
         ]);
         const saveButton = document.getElementById('save-button');
@@ -55,7 +56,7 @@ export default {
                 event.preventDefault(); 
             }
         });
-       this.loadRuleContent();
+        this.loadRuleContent();
     },
     methods: {
         setPageName(val) {
@@ -149,22 +150,30 @@ export default {
                     ['clean']
                 ];
             }
-            const quill = new Quill(quiller, {
-                theme: "snow", // 模板
-                modules: {
-                    toolbar: toolbarOptions,
-                    imageResize: {
-                        modules: [ 'Resize' ,'DisplaySize']  // 只保留 Resize 模塊，去除 Alignment 模塊
+            try {
+                console.log('test')
+                const quill = new Quill(quiller, {
+                    theme: "snow", // 模板
+                    modules: {
+                        toolbar: toolbarOptions,
+                        imageResize: {
+                            modules: [ 'Resize' ,'DisplaySize']  // 只保留 Resize 模塊，去除 Alignment 模塊
+                        }
                     }
+                });
+                console.log('tesg1');
+                if (content) {
+                    this.convertBlocks(content.blocks,quill);
                 }
-            });
-            if (content) {
-                this.convertBlocks(content.blocks,quill);
+                saveButton.addEventListener('click', () => {
+                    // 使用 quill.root.innerHTML 獲取編輯器的 HTML 內容
+                    this.saveEditorContent(quill);
+                });
             }
-            saveButton.addEventListener('click', () => {
-                // 使用 quill.root.innerHTML 獲取編輯器的 HTML 內容
-                this.saveEditorContent(quill);
-            });
+            catch (error) {
+                console.error(error);
+                location.reload(); // try to reload the page if imageResize error occurs
+            }
         },
         generateUniqueId() {
             return Math.random().toString(36).substr(2, 9);

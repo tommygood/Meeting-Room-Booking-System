@@ -9,6 +9,8 @@ import Demo from '@/components/Demo.vue'
 import Rule from '@/components/Rule.vue'
 import Log from '@/components/Log.vue'
 import RuleDemo from '@/components/RuleDemo.vue'
+import Auth from '@/middleware/Auth.vue'
+import FailedLogin from '@/components/FailedLogin.vue'
 
 const router = createRouter({
   history: createWebHistory('/'),
@@ -19,48 +21,45 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/AboutView.vue')
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      //component: () => import('../views/AboutView.vue')
-    },
-    {
       path: '/lobby',
       name: 'lobby',
-      component: Lobby
+      component: Lobby,
+      meta: { requiresAuth: true }
     },
     {
       path: '/privilege',
       name: 'privilege',
-      component: Privilege
+      component: Privilege,
+      meta: { requiresAuth: true }
     },
     {
       path: '/conference',
       name: 'conference',
-      component: Conference
+      component: Conference,
+      meta: { requiresAuth: true }
     },
     {
       path: '/board/demo',
       name: 'board_demo',
-      component: Demo
+      component: Demo,
+      meta: { requiresAuth: true }
     },
     {
       path: '/board/preview',
       name: 'preview',
-      component: Preview
+      component: Preview,
+      meta: { requiresAuth: true }
     },
     {
       path: '/board',
       name: 'board',
       component: Board,
+      meta: { requiresAuth: true }
     },
     {
       path: '/rule/demo',
       name: 'rule_demo',
-      component: RuleDemo
+      component: RuleDemo,
     },
     {
       path: '/rule',
@@ -72,13 +71,38 @@ const router = createRouter({
           component: Rule
         }
       ],
+      meta: { requiresAuth: true }
     },
     {
       path: '/log',
       name: 'log',
-      component: Log
+      component: Log,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/failed_login',
+      name: 'failed_login',
+      component: FailedLogin
     }
   ]
 })
+
+// 全局導航守衛
+router.beforeEach(async (to, from, next) => {
+  // 檢查路由是否需要驗證
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    const res = await Auth.methods.login();
+    if (!res.suc) {
+      // 如果未登入，重定向到登入頁面
+      next({ name: 'failed_login', query: {error : res.reason} });
+    } else {
+      // 如果已登入，繼續導航
+      next();
+    }
+  } else {
+    // 如果路由不需要驗證，繼續導航
+    next();
+  }
+});
 
 export default router

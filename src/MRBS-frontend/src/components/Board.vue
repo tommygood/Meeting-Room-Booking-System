@@ -31,19 +31,23 @@
                 </button>
             </div>
             <div class ="inputdate">
+                <tr id='table_header' style='display:none;'>
+                    <td>開始時間</td>
+                    <td>結束時間</td>
+                    <td>關鍵字搜尋</td>
+                    <td>操作</td>
+                </tr>
                 <tr id='table_title' style='display:none;'>
                     <td>
-                        <input type="date" name="startdate" placeholder="開始時間" style="margin-top:20%;width:100px" />
+                        <input type="date" name="startdate" placeholder="開始時間" style="width:100px" />
                     </td>
                     <td>
-                        <input type="date" name="enddate" placeholder="結束時間" style="margin-top:12%;width:100px"/> 
+                        <input type="date" name="enddate" placeholder="結束時間" style="width:100px"/> 
                     </td>
                     <td>
-                        <input type="text" placeholder="Type a keyword..." id="grid-search" class="gridjs-input" style="margin-top:20%"/>
+                        <input type="text" placeholder="Type a keyword..." id="grid-search" class="gridjs-input"/>
                     </td>
                     <td>
-                        <div>&nbsp;</div>
-                        <div>&nbsp;</div>
                         <button v-on:click="searchBoard">
                             篩選
                         </button>
@@ -117,6 +121,12 @@ export default {
                 // insert table title after table was rendered
                 this.table_title.style.display = '';
                 table_body.insertBefore(this.table_title, table_body.firstChild);
+                // replace the original header of search bar 
+                const origin_header = document.getElementsByClassName('gridjs-thead')[0];
+                origin_header.style.display = 'none';
+                const new_header = document.getElementById('table_header');
+                table_body.insertBefore(new_header, table_body.firstChild);
+                new_header.style.display = '';
             }, wait_seconds);
         },
         async loadCDN(cdn) {
