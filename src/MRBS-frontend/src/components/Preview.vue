@@ -197,6 +197,20 @@ export default {
             }
             return cur_slides[0];
         },
+        removeBothEvent() {
+            const next_event = this.findSwiper('NEXT');
+            const now_event = this.findSwiper('NOW');
+            if (now_event) {
+                console.log('remove now event', now_event);
+                now_event.remove();
+                this.swiper.update();
+            }
+            if (next_event) {
+                console.log('remove next event', next_event);
+                next_event.remove();
+                this.swiper.update();
+            }
+        },
         // use settimout to keep checking if the reservation is changed
         reservationMonitor() {
             setInterval(() => {
@@ -230,6 +244,7 @@ export default {
                         eventCard.className = 'event-title';
                         eventCard.innerHTML = '今日無會議';
                         document.querySelector('.event-list').appendChild(eventCard);
+                        this.removeBothEvent();
                     }
                     else {
                         let index = 0;
@@ -321,18 +336,7 @@ export default {
                         else if (now_empty && next_empty) {
                             //document.querySelector('.event-list-now').innerHTML = '今日無會議';
                             // remove the now and next event if there is no event
-                            const next_event = this.findSwiper('NEXT');
-                            const now_event = this.findSwiper('NOW');
-                            if (now_event) {
-                                console.log('remove now event', now_event);
-                                now_event.remove();
-                                this.swiper.update();
-                            }
-                            if (next_event) {
-                                console.log('remove next event', next_event);
-                                next_event.remove();
-                                this.swiper.update();
-                            }
+                            this.removeBothEvent();
                         }
                         else if (now_empty && !next_empty && document.querySelectorAll('.swiper-slide').length == 3) {
                             const now_event = this.findSwiper('NOW');

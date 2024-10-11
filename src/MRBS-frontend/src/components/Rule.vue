@@ -151,7 +151,6 @@ export default {
                 ];
             }
             try {
-                console.log('test')
                 const quill = new Quill(quiller, {
                     theme: "snow", // 模板
                     modules: {
@@ -161,7 +160,6 @@ export default {
                         }
                     }
                 });
-                console.log('tesg1');
                 if (content) {
                     this.convertBlocks(content.blocks,quill);
                 }

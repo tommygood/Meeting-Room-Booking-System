@@ -1,8 +1,3 @@
-<style scoped>
-    .gridjs-search {
-        display: none;
-    }
-</style>
 <template>
     <user_header :set-info="setInfo" :info="info"></user_header>
     <div class="test">
@@ -98,7 +93,7 @@ export default {
             // remove the search bar
             setTimeout(() => {
                 console.log('remove search bar');
-                document.querySelector('.gridjs-search').style.display = 'none';
+                //document.querySelector('.gridjs-search').style.display = 'none';
             }, 1000);
         },
         syncSearchBar() {
@@ -127,6 +122,10 @@ export default {
                 const new_header = document.getElementById('table_header');
                 table_body.insertBefore(new_header, table_body.firstChild);
                 new_header.style.display = '';
+                // show the table
+                document.getElementsByClassName('gridjs-input')[0].dispatchEvent(new Event('input')); // trigger search event to make the table have the correct style
+                document.getElementsByClassName('gridjs-table')[0].style.setProperty('display', 'table', 'important');
+                document.getElementsByClassName('gridjs-footer')[0].style.setProperty('display', 'block', 'important');
             }, wait_seconds);
         },
         async loadCDN(cdn) {
@@ -180,7 +179,7 @@ export default {
                 })
                 .then(response => response.json());
             });
-            alert('預約完成');
+            alert('儲存成功');
             window.location.reload();
         },
         //get board information
@@ -248,7 +247,11 @@ export default {
                 fixedHeader: true,
                 search: true,
                 resizable: true,
-            
+                pagination: {
+                    enabled: true,     
+                    limit: 5,          
+                    summary: true,     
+                },
                 style: {
                 container: {
                     'margin-left': '20px'
@@ -337,17 +340,28 @@ export default {
         },
         changePage(event){
             const button = event.target;
-            location.href = "/"+button.id;
+            window.open("/"+button.id, '_blank');
         },
     }
 }
 </script>
+<style>
+.gridjs-table {
+    display: none !important;
+}
+.gridjs-search {
+    display: none !important;
+}
+.gridjs-footer {
+    display: none !important;
+}
+</style>
 <style scoped>
 /* 表格大小 */
 table {
     width: 100%;
+    border: 1px solid black;
     border-collapse: collapse;
-    border-spacing: 0;
 }
 .gridjs-wrapper{
   max-height: 90vh;

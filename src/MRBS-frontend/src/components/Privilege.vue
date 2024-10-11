@@ -134,6 +134,10 @@ export default {
                 // insert table title after table was rendered
                 this.table_title.style.display = '';
                 table_body.insertBefore(this.table_title, table_body.firstChild);
+                // show the table
+                document.getElementsByClassName('gridjs-input')[0].dispatchEvent(new Event('input')); // trigger search event to make the table have the correct style
+                document.getElementsByClassName('gridjs-table')[0].style.setProperty('display', 'table', 'important');
+                document.getElementsByClassName('gridjs-footer')[0].style.setProperty('display', 'block', 'important');
             }, wait_seconds);
         },
         removeSearchBar() {
@@ -500,6 +504,11 @@ export default {
                     search: true,
                     sort: true,
                     resizable: true,
+                    pagination: {
+                        enabled: true,     
+                        limit: 5,          
+                        summary: true,     
+                    },
                     style: {
                         container:{
                         'margin-left':'20px'
@@ -535,6 +544,9 @@ export default {
 }
 </script>
 <style>
+table {
+    width: 100% !important;
+}
 .test {
     display: flex;
     background-color:#DDD;

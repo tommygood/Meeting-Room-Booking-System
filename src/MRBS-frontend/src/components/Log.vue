@@ -51,8 +51,26 @@ export default {
         await this.loadCDN(cdn);
         this.loadLogContent();
         this.removeSearchBar();
+        this.showTable();
     },
     methods: {
+        showTable() {
+            setTimeout(async () => {
+                const input_event = new Event('input');
+                document.getElementsByClassName('gridjs-table')[0].style.setProperty('display', 'table', 'important');
+                document.getElementsByClassName('gridjs-footer')[0].style.setProperty('display', 'block', 'important');
+                document.getElementsByClassName('gridjs-input')[0].dispatchEvent(new Event('input'));
+            }, 1000);
+        },
+        findButton(name) {
+            const buttons = document.getElementsByTagName('button');
+            for (let i = 0; i < buttons.length; i++) {
+                if (buttons[i].title === name) {
+                    return buttons[i];
+                }
+            }
+            return null;
+        },
         setPageName(val) {
             this.page_name = val;
         },
@@ -166,9 +184,9 @@ export default {
                 sort: true,
                 resizable: true,
                 pagination: {
-                enabled: true,     
-                limit: 6,          
-                summary: true,     
+                    enabled: true,     
+                    limit: 5,          
+                    summary: true,     
                 },
                 style: {
                     container:{
