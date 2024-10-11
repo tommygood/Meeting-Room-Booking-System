@@ -2,6 +2,7 @@
 
 module.exports = {
 	host : process.env.host == undefined ? "http://localhost:3000" : process.env.host,
+	host_frontend : process.env.host_frontend == undefined ? "http://localhost:5173" : process.env.host_frontend,
 	db : {
 		host : process.env.db_host == undefined ? 'db.cymlab.ncu.im' : process.env.db_host,
 		port : process.env.db_port == undefined ? 3306 : process.env.db_port,

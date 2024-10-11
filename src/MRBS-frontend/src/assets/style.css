@@ -1,0 +1,136 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background-color: #f0f0f0;
+    height: 100vh;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    justify-content: space-between;
+}
+
+.logo {
+    display: block;
+    height: 40px;
+}
+.logo_min {
+    display: none;
+}
+
+h1 {
+    font-size: 20px;
+    color: #333;
+    line-height: 1.5;
+    text-align: right;
+}
+
+.background-container {
+    position: relative;
+    background-image: url('../../public/RoomPhoto.png');
+    /* 替換為實際圖片路徑 */
+    background-size: cover;
+    background-position: center;
+    height: 88.5%;
+    display: flex;
+    justify-content: right;
+    align-items: start;
+}
+
+.content-card {
+    flex-wrap: wrap;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px 30px;
+    margin: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 500px;
+}
+
+.login-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    font-size: 25px;
+    font-weight: 700;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 20px 0px;
+    width: 90%;
+}
+
+.login-btn:hover {
+    background-color: #555;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-links a {
+    color: #555;
+    text-decoration: none;
+    font-weight: 600;
+    margin: 5px 20px;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+/* 底部版權資訊 */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: right;
+    padding: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* 響應式調整 */
+@media (max-width: 650px) {
+    div {
+        flex-wrap: wrap;
+    }
+
+    .logo_min {
+        display: block;
+        height: 40px;
+    }
+    .logo {
+        display: none;
+    }
+
+    .background-container {
+        height: 100vh;
+        padding: 10px;
+        justify-content: center;
+    }
+
+    .content-card {
+        width: 90%;
+        margin: 20px 10px;
+        padding: 20px;
+    }
+
+    .footer-links a {
+        font-size: 14px;
+    }
+}
