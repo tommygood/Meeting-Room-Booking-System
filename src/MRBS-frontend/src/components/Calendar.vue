@@ -16,11 +16,7 @@ export default {
                 'https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js'
         ];
         await this.loadCDN(cdn);
-<<<<<<< HEAD
         await this.loadCalendar();
-=======
-        this.loadCalendar();
->>>>>>> 3c1e13b14ce5178a1bb9cca590dda1a60f3a5fb9
     },
     props : {
         eventApiUrl : {

@@ -49,11 +49,7 @@ export default {
             'https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js'
         ];
         await this.loadCDN(cdn);
-<<<<<<< HEAD
         await this.loadLogContent();
-=======
-        this.loadLogContent();
->>>>>>> 3c1e13b14ce5178a1bb9cca590dda1a60f3a5fb9
         this.removeSearchBar();
         this.showTable();
     },
