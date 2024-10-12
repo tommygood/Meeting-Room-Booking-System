@@ -73,8 +73,8 @@ export default {
             'https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js'
         ];
         await this.loadCDN(cdn);
-        this.initTable();
-        this.setTableTitle(1000);
+        await this.initTable();
+        await this.setTableTitle(1000);
         this.syncSearchBar();
         this.removeSearchBar();
     },

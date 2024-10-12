@@ -4,7 +4,7 @@
             <div class="navbar">
                 <div id="hamburger-button" class="hamburger-button" v-on:click="toggleMenu"> </div>
                 <h1>行政大樓二樓<br>會議室預約系統</h1>
-                <h3 class="account-title" id="accountName">歡迎登入,&nbsp; </h3>
+                <h3 class="account-title" id="accountName">歡迎登入,&nbsp; {{ account_name }} </h3>
                 <a onclick="location.href='/'">［登出］</a>
                 <!-- 切換 使用者/管理者 -->
                 <div class="useradmin" id='useradmin' onclick="">
@@ -22,7 +22,13 @@ export default {
     name: 'user_header',
     props: {
         info: Object,
-        setInfo: Function
+        setInfo: Function,
+        username: String
+    },
+    data() {
+        return {
+            account_name: this.username,
+        };
     },
     mounted() {
         // load required cdn
@@ -86,7 +92,7 @@ export default {
                 this.setInfo(await this.getUserInfo());
                 await this.$nextTick();
                 const name = DOMPurify.sanitize(this.info.chinesename);
-                document.getElementById("accountName").innerHTML += name;
+                this.account_name = name;
                 const useradmin = document.getElementById('useradmin');
                 try {
                     const privilege = this.info.privilege_level;

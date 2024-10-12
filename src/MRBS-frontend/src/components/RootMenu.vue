@@ -28,7 +28,9 @@ import config from '@/config';
 export default {
     name: 'root_menu',
     async mounted() {
+        console.log('root_menu mounted');
         await this.loadCDN(['https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js',]);
+        console.log('root_menu loaded');
         //this.setAccountName();
         this.setCurrentPageColor();
     },
@@ -73,12 +75,15 @@ export default {
         setCurrentPageColor() {
             // Get the current page name from the URL path
             let currentPage;
+            console.log('window location path ', window.location.pathname);
+            
             if (window.location.pathname.includes('rule')) {
                 currentPage = 'rule/' + window.location.pathname.split('/').pop();
             }
             else {
                 currentPage = window.location.pathname.split('/').pop();
             }
+            console.log('currentPage', currentPage);
             document.getElementById(currentPage).style.backgroundColor = 'rgba(253, 105, 89, 0.636)';
             document.getElementById(currentPage).style.color= 'white';
             this.setPageName(document.getElementById(currentPage).childNodes[0].innerHTML);
