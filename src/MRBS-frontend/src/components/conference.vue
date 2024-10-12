@@ -7,10 +7,10 @@
     </div>
 </template>
 <script>
-import root_menu from '@/components/RootMenu.vue';
-import user_header from '@/components/Header.vue';
-import calendar from '@/components/Calendar.vue';
-import application from './Application.vue';
+import root_menu from '@/components/rootMenu.vue';
+import user_header from '@/components/header.vue';
+import calendar from '@/components/calendar.vue';
+import application from './application.vue';
 import config from '@/config';
 
 export default {

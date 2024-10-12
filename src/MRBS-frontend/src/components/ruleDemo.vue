@@ -2,7 +2,7 @@
     <rule :demo="demo" />
 </template>
 <script>
-import rule from '@/components/Rule.vue'
+import rule from '@/components/rule.vue'
 export default {
     components: {
         rule

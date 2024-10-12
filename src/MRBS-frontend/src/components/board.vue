@@ -58,8 +58,8 @@
     </div>
 </template>
 <script>
-import root_menu from '@/components/RootMenu.vue';
-import user_header from '@/components/Header.vue';
+import root_menu from '@/components/rootMenu.vue';
+import user_header from '@/components/header.vue';
 import config from '@/config';
 
 export default {
