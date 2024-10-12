@@ -1,7 +1,7 @@
 import { test, describe, expect, vi, beforeEach } from 'vitest';
 import { mount, flushPromises } from '@vue/test-utils';
 
-import App from '@/components/RootMenu.vue';
+import App from '@/components/rootMenu.vue';
 
 describe('Root Menu', async () => {
     function setPageName(val) {

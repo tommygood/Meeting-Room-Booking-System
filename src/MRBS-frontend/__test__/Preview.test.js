@@ -1,7 +1,7 @@
 import { test, describe, expect, vi, beforeEach } from 'vitest';
 import { mount, flushPromises } from '@vue/test-utils';
 
-import App from '@/components/Preview.vue';
+import App from '@/components/preview.vue';
 
 function convertHourFormat(hour) {
     const h = parseInt(hour);

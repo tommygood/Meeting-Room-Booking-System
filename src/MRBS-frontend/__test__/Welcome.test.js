@@ -1,7 +1,7 @@
 import { test, describe, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
 
-import App from '@/components/Welcome.vue';
+import App from '@/components/welcome.vue';
 
 describe('App.vue', () => {
   const wrapper = mount(App);
