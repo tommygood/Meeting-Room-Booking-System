@@ -74,16 +74,13 @@ export default {
         },
         setCurrentPageColor() {
             // Get the current page name from the URL path
-            let currentPage;
-            console.log('window location path ', window.location.pathname);
-            
+            let currentPage;            
             if (window.location.pathname.includes('rule')) {
                 currentPage = 'rule/' + window.location.pathname.split('/').pop();
             }
             else {
                 currentPage = window.location.pathname.split('/').pop();
             }
-            console.log('currentPage', currentPage);
             document.getElementById(currentPage).style.backgroundColor = 'rgba(253, 105, 89, 0.636)';
             document.getElementById(currentPage).style.color= 'white';
             this.setPageName(document.getElementById(currentPage).childNodes[0].innerHTML);

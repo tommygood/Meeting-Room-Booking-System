@@ -100,12 +100,21 @@ import config from '@/config';
 
 export default {
     name: 'privilege',
+<<<<<<< HEAD
     async mounted() {
         await this.loadCDN(['https://unpkg.com/gridjs@6.2.0/dist/gridjs.umd.js',
+=======
+    mounted() {
+        this.loadCDN(['https://unpkg.com/gridjs@6.2.0/dist/gridjs.umd.js',
+>>>>>>> 3c1e13b14ce5178a1bb9cca590dda1a60f3a5fb9
             'https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js',
             'https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js',
         ])
         this.initTable();
+<<<<<<< HEAD
+=======
+        this.setTableTitle(1000);
+>>>>>>> 3c1e13b14ce5178a1bb9cca590dda1a60f3a5fb9
     },
     components: {
         root_menu,
@@ -158,7 +167,11 @@ export default {
                 });
             }));
             // remove the search bar
+<<<<<<< HEAD
             //this.removeSearchBar();
+=======
+            this.removeSearchBar();
+>>>>>>> 3c1e13b14ce5178a1bb9cca590dda1a60f3a5fb9
         },
         setInfo(val) {
             this.info = val;
@@ -493,7 +506,11 @@ export default {
             }
         },
         // 初始化表格
+<<<<<<< HEAD
         async initTable() {
+=======
+        initTable() {
+>>>>>>> 3c1e13b14ce5178a1bb9cca590dda1a60f3a5fb9
             this.fetchData().then(data => {
                 new gridjs.Grid({
                     columns: ['單位名稱','姓名',  '身份權限', '狀態', '權限修改', '違規記點'],
@@ -531,7 +548,10 @@ export default {
                     },
 
                 }).render(document.getElementById('gridtable'));
+<<<<<<< HEAD
                 this.setTableTitle(1000);
+=======
+>>>>>>> 3c1e13b14ce5178a1bb9cca590dda1a60f3a5fb9
             });
             document.getElementById('grid-search').addEventListener('input', function(event) {
                 // 設定 Grid.js 的搜尋文字
