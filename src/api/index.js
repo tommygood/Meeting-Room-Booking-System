@@ -31,36 +31,11 @@ app.use("/api/violation", require("./api/violation.js"));
 app.use("/api/room", require("./api/room.js"));
 app.use("/api/user", require("./api/user.js"));
 app.use("/api/doc", require("./api/doc.js"));
-app.use("/page", require("./page/main.js"));
-app.use("/page/board", require("./page/board.js"));
-app.use("/page/rules", require("./page/rules.js"));
-app.use("/example", require("./example.js"));
 
-var history = require('connect-history-api-fallback');
+const history = require('connect-history-api-fallback');
 app.use(history());
 const path = util.getParentPath(__dirname) + "/MRBS-frontend/dist";
 app.use(express.static(path));
-
-/*
-app.use("/css", express.static(templates_path + '/css'));
-app.use("/image", express.static(templates_path + '/image'));
-app.use("/js", express.static(templates_path + '/js'));
-
-// set frontend path
-const { createProxyMiddleware } = require('http-proxy-middleware');
-const { host_frontend } = require('./utilities/config.js');
-*/
-// Proxy configuration
-/*
-console.log(host_frontend);
-app.use('/page', createProxyMiddleware({
-  target: host_frontend, // URL of your frontend host
-  pathRewrite: {
-    '^/page': '', // Remove /page prefix when forwarding to the frontend
-  },
-}));
-*/
-
 
 server.listen(3000, function () {
     console.log('Node server is running..');
