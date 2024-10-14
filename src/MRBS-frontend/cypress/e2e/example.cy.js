@@ -13,17 +13,25 @@ const login = () => {
       cy.get('#inputAccount').type(username)
       cy.get('#inputPassword').type(password)
       // wait for 10 sec
-      cy.get('iframe') 
-      .its('0.contentDocument.body') 
-      .should('not.be.empty') 
-      .then((body) => {
-        body.click() 
-        cy.wait(30000)
-        cy.log('current page path', cy.url())
-        cy.get('.btn-primary').click()
-        cy.get('.btn-danger').click()
-        // Log the body to the Cypress test runner
-      });
+      cy.get('body').then($body => {
+        if ($body.find('iframe').length > 0) {   //evaluates as true
+          cy.get('iframe') 
+        .its('0.contentDocument.body') 
+        .should('not.be.empty') 
+        .then((body) => {
+          body.click() 
+          cy.wait(30000)
+          cy.log('current page path', cy.url())
+          cy.get('.btn-primary').click()
+          cy.get('.btn-danger').click()
+          // Log the body to the Cypress test runner
+        });
+        }
+        else {
+          cy.get('.btn-primary').click()
+          cy.get('.btn-danger').click()
+        }
+      })
    })
   })
   // no visit here
