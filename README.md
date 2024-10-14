@@ -28,11 +28,15 @@
 ## Prerequisite
 - Node v20 up
 ## Usage
+### Frontend Site
+- `cd src\MRBS-frontend`
+- `npm install`
+- `npm run build`
 ### Backend API
-- `mysql < schemal.sql`
+- `cd src\api`
+- `mysql < model\schemal.sql`
 - `npm install`
 - `node index.js`
-### Frontend Site
 ## Test
 - <a href='https://github.com/tommygood/Meeting-Room-Booking-System/blob/main/doc/test.md'>doc</a>
 ### Frontend Unit Test
