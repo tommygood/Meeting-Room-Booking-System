@@ -16,10 +16,10 @@ jobs:
     - name: Install package
       run: cd src/api && npm install
     - name: Backend Test
-      run: cd src/api && npm test
       env:
         db_user: ${{ secrets.TEST_DB_USER }}
         db_password: ${{ secrets.TEST_DB_PASSWORD }}
+      run: echo $db_user && cd src/api && npm test
     - name: Frontend Unit Test
       run: cd src/MRBS-frontend && npm install  && npm run test:unit
   build:
