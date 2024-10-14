@@ -1,11 +1,11 @@
 <template>
-    <rule :demo="demo" />
+    <preview :demo="demo" />
 </template>
 <script>
-import rule from '@/components/Rule.vue'
+import preview from './preview.vue'
 export default {
     components: {
-        rule
+        preview
     },
     data() {
         return {

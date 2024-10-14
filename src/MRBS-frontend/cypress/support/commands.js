@@ -23,3 +23,11 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('isElementExist', (element) => {
+
+    cy.window().then((win) => {
+        const identifiedElement = win.document.querySelector(element)
+        cy.log('Object value = ' + identifiedElement)
+    });
+})

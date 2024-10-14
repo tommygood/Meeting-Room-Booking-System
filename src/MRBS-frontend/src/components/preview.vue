@@ -52,6 +52,14 @@ export default {
         demo: {
             type: Boolean,
             default: false
+        },
+        mock_swiper: {
+            type: Object,
+            default: null
+        },
+        mock_slides: {
+            type: Array,
+            default: []
         }
     },
     async mounted() {
@@ -75,10 +83,10 @@ export default {
     data() {
         return {
             info: {},
-            swiper: null,
+            swiper: this.mock_swiper,
             date : null,
             time : null,
-            slides: null,
+            slides: this.mock_slides,
             event_list: null,
             event_list_now: null,
             event_list_next: null,
@@ -211,144 +219,152 @@ export default {
                 this.swiper.update();
             }
         },
+        // check if the reservation is changed
+        reservationStausCheck(events) {
+            // record which event is triggered
+            let triggered_event = {'today': false, 'now': false, 'next': false};
+            // 取得會議預約資料
+            events.sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
+
+            // add swiper-slide back if there is no related event
+            if (document.querySelector('.event-list') == null) {
+                // add swiper-slide back
+                document.querySelector('.swiper-wrapper').appendChild(this.slides[0]);
+                this.swiper.update();
+            }
+            if (document.querySelector('.event-list-now') == null) {
+                //console.log('add event-list-now');
+                // add swiper-slide back
+                document.querySelector('.swiper-wrapper').appendChild(this.slides[1]);
+                this.swiper.update();
+            }
+            if (document.querySelector('.event-list-next') == null) {
+                // add swiper-slide back
+                document.querySelector('.swiper-wrapper').appendChild(this.slides[2]);
+                this.swiper.update();
+            }
+    
+            // display events not ended yet and happened today
+            if (events.length == 0) {
+                // 顯示今日無會議 // 未完成
+                document.querySelector('.event-list').innerHTML = '';
+                const eventCard = document.createElement('div');
+                eventCard.className = 'event-title';
+                eventCard.innerHTML = '今日無會議';
+                document.querySelector('.event-list').appendChild(eventCard);
+                this.removeBothEvent();
+            }
+            else {
+                let index = 0;
+                let now_empty = true;
+                let next_empty = true;
+                let can_put_next = false;
+                document.querySelector('.event-list').innerHTML = '';
+                //顯示每個今日會議
+                for (const event of events) {
+                    const eventCard = document.createElement('div');
+                    eventCard.className = 'event-card-min';
+                    const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    
+                    // not display the event which is already ended
+                    const datetime = new Date();
+                    if (new Date(event.end_time) < datetime) {
+                        continue;
+                    }
+    
+                    // display the event happened today
+                    eventCard.innerHTML = this.eventCardContent(event, startTime, endTime);
+                    document.querySelector('.event-list').appendChild(eventCard);
+                    triggered_event['today'] = true;
+
+                    // display the event happened now
+                    if (index == 0) {
+                        // check reservation time is now
+                        if (new Date(event.start_time) > datetime) {
+                            can_put_next = true;
+                        }
+                        else {
+                            triggered_event['now'] = true;
+                            // add .swiper-slide back to swiper if there is no div which contains event-list-now
+                            if (!document.querySelector('.event-list-now')) {
+                                document.querySelector('.swiper-wrapper').appendChild(this.slides[1]);
+                                this.swiper.update();
+                            }
+
+                            // put the first event to the div which class is event-list-now
+                            const eventCardNow = document.createElement('div');
+                            eventCardNow.className = 'event-card-max';
+                            eventCardNow.innerHTML = this.eventCardContent(event, startTime, endTime);
+                            // replace the event if there is an event
+                            if (document.querySelector('.event-list-now').childNodes.length == 0) {
+                                document.querySelector('.event-list-now').appendChild(eventCardNow);
+                            }
+                            else {
+                                document.querySelector('.event-list-now').replaceChildren(eventCardNow);
+                            }
+                            now_empty = false;
+                        }
+                    }
+
+                    console.log('event:', event, 'index:', index, 'can_put_next:', can_put_next);
+                    // display the next event
+                    if ((index == 1 && !can_put_next)  || (index == 0 && can_put_next)) {
+                        triggered_event['next'] = true;
+                        // put the second event to the div which class is event-list-next
+                        // add .swiper-slide back to swiper if there is no div which contains event-list-now
+                        if (!document.querySelector('.event-list-next')) {
+                            document.querySelector('.swiper-wrapper').appendChild(this.slides[2]);
+                            this.swiper.update();
+                        }
+                        const eventCardNow = document.createElement('div');
+                        eventCardNow.className = 'event-card-max';
+                        console.log('put next event:', event);
+                        eventCardNow.innerHTML = this.eventCardContent(event, startTime, endTime);
+                        // replace the event if there is an event
+                        if (document.querySelector('.event-list-next').childNodes.length == 0) {
+                            document.querySelector('.event-list-next').appendChild(eventCardNow);
+                        }
+                        else {
+                            document.querySelector('.event-list-next').replaceChildren(eventCardNow);
+                        }
+                        next_empty = false;
+                    }
+                    index++;
+                };
+                console.log('now_empty:', now_empty, 'next_empty:', next_empty);
+                console.log('index:', index);
+                // set the now event to empty if there is no event
+                if (!now_empty && next_empty) {
+                    const next_event = document.querySelectorAll('.swiper-slide')[2];  
+                    if (next_event) {
+                        console.log('remove next event', next_event);
+                        next_event.remove();
+                        this.swiper.update();
+                    }
+                }
+                else if (now_empty && next_empty) {
+                    //document.querySelector('.event-list-now').innerHTML = '今日無會議';
+                    // remove the now and next event if there is no event
+                    this.removeBothEvent();
+                }
+                else if (now_empty && !next_empty && document.querySelectorAll('.swiper-slide').length == 3) {
+                    const now_event = this.findSwiper('NOW');
+                    if (now_event) {
+                        console.log('remove now event', now_event);
+                        now_event.remove();
+                        this.swiper.update();
+                    }
+                }
+            }
+            this.swiper.update();
+            return triggered_event;
+        },
         // use settimout to keep checking if the reservation is changed
         reservationMonitor() {
-            setInterval(() => {
-                // get the event data
-                this.getevent().then(events => {
-                    // 取得會議預約資料
-                    events.sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
-
-                    if (document.querySelector('.event-list') == null) {
-                        // add swiper-slide back
-                        document.querySelector('.swiper-wrapper').appendChild(this.slides[0]);
-                        this.swiper.update();
-                    }
-                    if (document.querySelector('.event-list-now') == null) {
-                        //console.log('add event-list-now');
-                        // add swiper-slide back
-                        document.querySelector('.swiper-wrapper').appendChild(this.slides[1]);
-                        this.swiper.update();
-                    }
-                    if (document.querySelector('.event-list-next') == null) {
-                        // add swiper-slide back
-                        document.querySelector('.swiper-wrapper').appendChild(this.slides[2]);
-                        this.swiper.update();
-                    }
-            
-                    // display events not ended yet and happened today
-                    if (events.length == 0) {
-                        // 顯示今日無會議 // 未完成
-                        document.querySelector('.event-list').innerHTML = '';
-                        const eventCard = document.createElement('div');
-                        eventCard.className = 'event-title';
-                        eventCard.innerHTML = '今日無會議';
-                        document.querySelector('.event-list').appendChild(eventCard);
-                        this.removeBothEvent();
-                    }
-                    else {
-                        let index = 0;
-                        let now_empty = true;
-                        let next_empty = true;
-                        let can_put_next = false;
-                        document.querySelector('.event-list').innerHTML = '';
-                        //顯示每個今日會議
-                        for (const event of events) {
-                            const eventCard = document.createElement('div');
-                            eventCard.className = 'event-card-min';
-                            const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                            const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                            
-                            // not display the event which is already ended
-                            const datetime = new Date();
-                            if (new Date(event.end_time) < datetime) {
-                                continue;
-                            }
-            
-                            // display the event happened today
-                            eventCard.innerHTML = this.eventCardContent(event, startTime, endTime);
-                            document.querySelector('.event-list').appendChild(eventCard);
-
-                            // display the event happened now
-                            if (index == 0) {
-                                // check reservation time is now
-                                if (new Date(event.start_time) > datetime) {
-                                    can_put_next = true;
-                                }
-                                else {
-
-                                    // add .swiper-slide back to swiper if there is no div which contains event-list-now
-                                    if (!document.querySelector('.event-list-now')) {
-                                        document.querySelector('.swiper-wrapper').appendChild(this.slides[1]);
-                                        this.swiper.update();
-                                    }
-
-                                    // put the first event to the div which class is event-list-now
-                                    const eventCardNow = document.createElement('div');
-                                    eventCardNow.className = 'event-card-max';
-                                    eventCardNow.innerHTML = this.eventCardContent(event, startTime, endTime);
-                                    // replace the event if there is an event
-                                    if (document.querySelector('.event-list-now').childNodes.length == 0) {
-                                        document.querySelector('.event-list-now').appendChild(eventCardNow);
-                                    }
-                                    else {
-                                        document.querySelector('.event-list-now').replaceChildren(eventCardNow);
-                                    }
-                                    now_empty = false;
-                                }
-                            }
-
-                            console.log('event:', event, 'index:', index, 'can_put_next:', can_put_next);
-                            // display the next event
-                            if ((index == 1 && !can_put_next)  || (index == 0 && can_put_next)) {
-                                // put the second event to the div which class is event-list-next
-                                // add .swiper-slide back to swiper if there is no div which contains event-list-now
-                                if (!document.querySelector('.event-list-next')) {
-                                    document.querySelector('.swiper-wrapper').appendChild(this.slides[2]);
-                                    this.swiper.update();
-                                }
-                                const eventCardNow = document.createElement('div');
-                                eventCardNow.className = 'event-card-max';
-                                console.log('put next event:', event);
-                                eventCardNow.innerHTML = this.eventCardContent(event, startTime, endTime);
-                                // replace the event if there is an event
-                                if (document.querySelector('.event-list-next').childNodes.length == 0) {
-                                    document.querySelector('.event-list-next').appendChild(eventCardNow);
-                                }
-                                else {
-                                    document.querySelector('.event-list-next').replaceChildren(eventCardNow);
-                                }
-                                next_empty = false;
-                            }
-                            index++;
-                        };
-                        console.log('now_empty:', now_empty, 'next_empty:', next_empty);
-                        console.log('index:', index);
-                        // set the now event to empty if there is no event
-                        if (!now_empty && next_empty) {
-                            const next_event = document.querySelectorAll('.swiper-slide')[2];  
-                            if (next_event) {
-                                console.log('remove next event', next_event);
-                                next_event.remove();
-                                this.swiper.update();
-                            }
-                        }
-                        else if (now_empty && next_empty) {
-                            //document.querySelector('.event-list-now').innerHTML = '今日無會議';
-                            // remove the now and next event if there is no event
-                            this.removeBothEvent();
-                        }
-                        else if (now_empty && !next_empty && document.querySelectorAll('.swiper-slide').length == 3) {
-                            const now_event = this.findSwiper('NOW');
-                            if (now_event) {
-                                console.log('remove now event', now_event);
-                                now_event.remove();
-                                this.swiper.update();
-                            }
-                        }
-                    }
-                })
-                this.swiper.update();
+            setInterval(async () => {
+                const events = await this.getevent();
+                this.reservationStausCheck(events);
             }, 5000);
         },
         reloadMonitor() {

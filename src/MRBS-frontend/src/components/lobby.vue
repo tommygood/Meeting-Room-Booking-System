@@ -16,9 +16,9 @@
 -->
 <script>
 // import user header component from './header.vue'
-import user_header from './Header.vue';
-import calendar from './Calendar.vue';
-import application from './Application.vue';
+import user_header from './header.vue';
+import calendar from './calendar.vue';
+import application from './application.vue';
 import config from '@/config';
 
 export default {

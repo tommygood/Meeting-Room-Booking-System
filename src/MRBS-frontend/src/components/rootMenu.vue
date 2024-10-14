@@ -28,7 +28,9 @@ import config from '@/config';
 export default {
     name: 'root_menu',
     async mounted() {
+        console.log('root_menu mounted');
         await this.loadCDN(['https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js',]);
+        console.log('root_menu loaded');
         //this.setAccountName();
         this.setCurrentPageColor();
     },
@@ -72,7 +74,7 @@ export default {
         },
         setCurrentPageColor() {
             // Get the current page name from the URL path
-            let currentPage;
+            let currentPage;            
             if (window.location.pathname.includes('rule')) {
                 currentPage = 'rule/' + window.location.pathname.split('/').pop();
             }

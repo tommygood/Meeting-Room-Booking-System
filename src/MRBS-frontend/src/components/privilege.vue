@@ -94,19 +94,18 @@
     </div>
 </template>
 <script>
-import root_menu from '@/components/RootMenu.vue';
-import user_header from '@/components/Header.vue';
+import root_menu from '@/components/rootMenu.vue';
+import user_header from '@/components/header.vue';
 import config from '@/config';
 
 export default {
     name: 'privilege',
-    mounted() {
-        this.loadCDN(['https://unpkg.com/gridjs@6.2.0/dist/gridjs.umd.js',
+    async mounted() {
+        await this.loadCDN(['https://unpkg.com/gridjs@6.2.0/dist/gridjs.umd.js',
             'https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js',
             'https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js',
         ])
         this.initTable();
-        this.setTableTitle(1000);
     },
     components: {
         root_menu,
@@ -159,7 +158,7 @@ export default {
                 });
             }));
             // remove the search bar
-            this.removeSearchBar();
+            //this.removeSearchBar();
         },
         setInfo(val) {
             this.info = val;
@@ -494,7 +493,7 @@ export default {
             }
         },
         // 初始化表格
-        initTable() {
+        async initTable() {
             this.fetchData().then(data => {
                 new gridjs.Grid({
                     columns: ['單位名稱','姓名',  '身份權限', '狀態', '權限修改', '違規記點'],
@@ -532,6 +531,7 @@ export default {
                     },
 
                 }).render(document.getElementById('gridtable'));
+                this.setTableTitle(1000);
             });
             document.getElementById('grid-search').addEventListener('input', function(event) {
                 // 設定 Grid.js 的搜尋文字
