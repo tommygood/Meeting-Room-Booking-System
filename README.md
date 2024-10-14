@@ -50,5 +50,3 @@
 - `cd src\MRBS-frontend && npm install && npm run test:e2e`
 ## Workflow
 - <a href='https://github.com/tommygood/Meeting-Room-Booking-System/blob/main/doc/workflow.md'>doc</a>
-## Contribution
-- 歡迎 PR，可以先看一下<a href="https://github.com/tommygood/Meeting-Room-Booking-System/blob/main/doc/contribution.md">教學</a>
