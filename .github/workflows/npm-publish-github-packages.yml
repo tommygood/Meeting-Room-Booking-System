@@ -7,6 +7,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      db_user: ${{ secrets.TEST_DB_USER }}
+      db_password: ${{ secrets.TEST_DB_PASSWORD }}
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js 20.10.0
