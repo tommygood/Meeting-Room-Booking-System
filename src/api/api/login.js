@@ -9,21 +9,24 @@ const jwt = require('jsonwebtoken');
 const oauth_config = oauth.config;
 const host = config.host;
 
-
-router.get('/sso', async function(req, res) {
-	try {
-    	await oauth.run(host, req, res);
-	}
-	catch(e) {
-      console.error(e);
-      res.status(500).send('Internal Server Error');
+class SSOLogin {
+  constructor() {
   }
-})
 
-router.get('/callback', async function(req, res) {
-	try {
+  async sso(req, res) {
+    try {
+    	await oauth.run(host, req, res);
+    }
+    catch(e) {
+        console.error(e);
+        res.status(500).send('Internal Server Error');
+    }
+  }
+
+  async callback(req, res) {
+    try {
       const redirect_uri = `${host}/lobby`;
-    	const result = await oauth.callback(host, redirect_uri, req, res);
+      const result = await oauth.callback(host, redirect_uri, req, res);
 
       // insert/update user info into db
       User.insert(result.user_info);
@@ -34,11 +37,19 @@ router.get('/callback', async function(req, res) {
       else {
         Log.insert(req.ip, Operator.getOperator.LoginFail.code, result.user_info.identifier);
       }
-  }
-  catch(e) {
+    }
+    catch(e) {
       console.error(e);
       res.status(500).send('Internal Server Error');
+    }
   }
-})
+}
+
+const login = new SSOLogin();
+
+
+router.get('/sso', login.sso);
+
+router.get('/callback', login.callback);
 
 module.exports = router;
