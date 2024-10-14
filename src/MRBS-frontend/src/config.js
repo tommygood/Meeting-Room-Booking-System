@@ -1,4 +1,5 @@
 // src/config.js
 export default {
-  apiUrl: '/api' // API server URL, change it to your server URL
+  host: 'http://localhost:3000', // App host URL
+  apiUrl: '/api', // API server URL, change it to your server URL
 };

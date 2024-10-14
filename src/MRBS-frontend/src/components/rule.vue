@@ -43,12 +43,7 @@ export default {
             'https://cdn.quilljs.com/1.3.6/quill.min.js',
             'https://cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js'
         ]);
-        const saveButton = document.getElementById('save-button');
-        saveButton.addEventListener('click', () => {
-            const content = quill.root.innerHTML;
-            console.log(content);
-        });
-        
+
         document.body.addEventListener('click', function(event) {
             const target = event.target;
 
