@@ -7,9 +7,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      db_user: ${{ secrets.TEST_DB_USER }}
-      db_password: ${{ secrets.TEST_DB_PASSWORD }}
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js 20.10.0
@@ -20,6 +17,9 @@ jobs:
       run: cd src/api && npm install
     - name: Backend Test
       run: cd src/api && npm test
+      env:
+        db_user: ${{ secrets.TEST_DB_USER }}
+        db_password: ${{ secrets.TEST_DB_PASSWORD }}
     - name: Frontend Unit Test
       run: cd src/MRBS-frontend && npm install  && npm run test:unit
   build:
