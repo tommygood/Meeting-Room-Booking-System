@@ -1,6 +1,5 @@
 <template>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-
     <div class="swiper">
         <!-- swiper class 要輪播的內容為 swiper-wrapper -->
         <div class="swiper-wrapper">
@@ -63,10 +62,13 @@ export default {
         }
     },
     async mounted() {
+        document.querySelector('body').style.display = 'none'; // disable the body before loading the background image
+        this.loadCSS('/src/assets/board.css'); // load css dynamically to avoid css not loaded issue
         const cdn = ['https://unpkg.com/swiper/swiper-bundle.min.js',
             'https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js'
         ];
         await this.loadCDN(cdn);
+        this.setBgImage();
         this.displayDatetime();
         this.setSwiper();
         this.setTopDatetime();
@@ -93,6 +95,18 @@ export default {
         }
     },
     methods: {
+        loadCSS(src) {
+            var element = document.createElement("link");
+            element.setAttribute("rel", "stylesheet");
+            element.setAttribute("type", "text/css");
+            element.setAttribute("href", src);
+            document.getElementsByTagName("head")[0].appendChild(element);
+        },
+        setBgImage() {
+            // set background image
+            document.querySelector('body').style.backgroundImage = "url('/public/bg_board.png')";
+            document.querySelector('body').style.display = '';
+        },
         eventApiUrl: (start, end) => config.apiUrl + `/reservation?start_time=${start}&end_time=${end}`,
         async loadCDN(cdn) {
             // load required cdn, and wait for all cdn to be loaded
@@ -376,29 +390,33 @@ export default {
     }
 }
 </script>
-<style src="@/assets/board.css" scoped></style>
 <style scoped>
 
+body {
+    display: none;
+    background-image: url('/public/bg_board.png') !important;
+}
+
 .swiper {
-            margin: 0px 0px;
-            width: 90%;
-            height: 95%;
-        }
+    margin: 0px 0px;
+    width: 90%;
+    height: 95%;
+}
 
-        .swiper-slide {
-            width: contain;
-            height: contain;
-        }
+.swiper-slide {
+    width: contain;
+    height: contain;
+}
 
-        :root {
-            --swiper-theme-color: #666;
-        }
+:root {
+    --swiper-theme-color: #666;
+}
 
-        .block {
-            width: contain;
-            height: contain;
-            background-color: rgb(238 238 238);
-            box-shadow: inset 0 4px 4px 0 rgb(0 0 0 / 25%);
-        }
+.block {
+    width: contain;
+    height: contain;
+    background-color: rgb(238 238 238);
+    box-shadow: inset 0 4px 4px 0 rgb(0 0 0 / 25%);
+}
 
 </style>

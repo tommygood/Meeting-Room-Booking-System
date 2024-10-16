@@ -3,11 +3,11 @@
     <div class="test">
         <root_menu :setPageName="setPageName"></root_menu>
         <!-- 看板預覽/播放 -->
-        <div style='display:flex;flex-direction: column'>
+        <div style='display:flex;flex-direction: column;width:85%'>
             <h1 style='margin-left:2%'>
                 [ {{ page_name }} ]
             </h1>
-            <div style="font-size: 20px; outline: 3px dashed #000000; background-color: #cacaca; margin: 10px; padding: 10px;">
+            <div style="font-size: 20px; outline: 3px solid #000000; background-color: #cacaca; margin: 10px; padding: 10px;">
                 <form id="previewBoard" style='display:inline-flex'>
                     <div class="input-group">
                         <b>日期：</b>
@@ -22,7 +22,7 @@
                     <button id="board/preview" class="btn" v-on:click="previewBoard">未來預覽</button>
                 </div>
                 <button style='display:inline-flex' id="board/demo" class="btn" v-on:click="changePage">
-                    看板播放
+                    當前播放
                 </button>
             </div>
             <div class ="inputdate">
@@ -51,7 +51,6 @@
                         </button>
                     </td>
                 </tr>
-
             </div>
             <div id="gridtable"></div>
         </div>
@@ -73,8 +72,8 @@ export default {
             'https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js'
         ];
         await this.loadCDN(cdn);
-        await this.initTable();
-        await this.setTableTitle(1000);
+        this.initTable();
+        this.setTableTitle(1000);
         this.syncSearchBar();
         this.removeSearchBar();
     },
@@ -243,7 +242,7 @@ export default {
                 }
                 ],
                 data: rows.map(row => row.data), 
-                width: '900px',
+                width: '98%',
                 fixedHeader: true,
                 search: true,
                 resizable: true,
@@ -357,11 +356,9 @@ export default {
 }
 </style>
 <style scoped>
-/* 表格大小 */
-table {
-    width: 100%;
-    border: 1px solid black;
-    border-collapse: collapse;
+table, th, td {
+  border: 1px solid !important;
+  border-collapse: collapse !important;
 }
 .gridjs-wrapper{
   max-height: 90vh;

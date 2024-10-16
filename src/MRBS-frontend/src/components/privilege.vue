@@ -498,7 +498,7 @@ export default {
                 new gridjs.Grid({
                     columns: ['單位名稱','姓名',  '身份權限', '狀態', '權限修改', '違規記點'],
                     data: data.map(item => item.data),
-                    width:'1200px',
+                    width:'95%',
                     fixedHeader:true,
                     search: true,
                     sort: true,
@@ -513,9 +513,9 @@ export default {
                         'margin-left':'20px'
                         },
                         table: {
-                        border: '3px solid #ccc',
-                        'font-size': '16px',
-                        'text-align': 'center'
+                            border: '3px solid #ccc',
+                            'font-size': '16px',
+                            'text-align': 'center'
                         },
                         th: {
                             'background-color': 'lightgray',
