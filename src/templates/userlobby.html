@@ -21,7 +21,7 @@
 <body>
     <header>
         <div class="navbar">
-            <div id="hamburger-button" class="hamburger-button" > </div>
+            <div id="hamburger-button" class="hamburger-button"> </div>
             <h1>行政大樓二樓<br>會議室預約系統</h1>
             <h3 class="account-title" id="accountName">歡迎登入,&nbsp; </h3>
             <a onclick="location.href='/page/main'">［登出］</a>
@@ -57,7 +57,7 @@
                             <input type="text" class="hamburger-request" name='name' placeholder="會議名稱" />
                         </div>
                         <div class="input-group">
-                            <h2 class="hamburger-request-title">申請人 ：</h2>
+                            <h2 class="hamburger-request-title">&ensp;申請人&ensp;：</h2>
                             <input type="text" class="hamburger-request" name='person' placeholder="申請人(固定)"
                                 style="background-color:#9999995f" readonly />
                         </div>
@@ -77,6 +77,7 @@
                         <div class="input-group">
                             <h2 class="hamburger-request-title">開始日期：</h2>
                             <input type="date" class="hamburger-request" name="startdate" id="startdate" />
+                            <span>&emsp;</span>
                             <select name="starthour" id="starthour">
                                 <option value="08">08</option>
                                 <option value="09">09</option>
@@ -99,6 +100,7 @@
                         <div class="input-group">
                             <h2 class="hamburger-request-title">結束日期：</h2>
                             <input type="date" class="hamburger-request" name="enddate" id="enddate" />
+                            <span>&emsp;</span>
                             <select name="endhour" id="endhour">
                                 <option value="08">08</option>
                                 <option value="09">09</option>
@@ -149,7 +151,7 @@
                             <input type="text" class="hamburger-request" name='name' placeholder="會議名稱" />
                         </div>
                         <div class="input-group">
-                            <h2 class="hamburger-request-title">申請人 ：</h2>
+                            <h2 class="hamburger-request-title">&ensp;申請人&ensp;：</h2>
                             <input type="text" class="hamburger-request" name='person' placeholder="申請人(固定)"
                                 style="background-color:#9999995f" readonly />
                         </div>
@@ -169,6 +171,7 @@
                         <div class="input-group">
                             <h2 class="hamburger-request-title">開始日期：</h2>
                             <input type="date" class="hamburger-request" name="startdate" id="startdate" />
+                            <span>&emsp;</span>
                             <select name="starthour" id="editstarthour">
                                 <option value="08">08</option>
                                 <option value="09">09</option>
@@ -191,6 +194,7 @@
                         <div class="input-group">
                             <h2 class="hamburger-request-title">結束日期：</h2>
                             <input type="date" class="hamburger-request" name="enddate" id="enddate" />
+                            <span>&emsp;</span>
                             <select name="endhour" id="endhour">
                                 <option value="08">08</option>
                                 <option value="09">09</option>
