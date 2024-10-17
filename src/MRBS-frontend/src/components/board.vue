@@ -23,13 +23,7 @@
                     <button style='display:inline-flex' id="board/demo" class="btn" v-on:click="changePage">當前播放</button>
                 </div>
             </div>
-            <div class ="inputdate">
-                <tr id='table_header' style='display:none;'>
-                    <td>會議日期</td>
-                    <td>會議時間</td>
-                    <td>會議名稱</td>
-                    <td>是否顯示</td>
-                </tr>
+            <div class ="inputdate">  
                 <tr id='table_title' style='display:none;'>
                     <td>
                         <input type="date" name="startdate" placeholder="開始時間" style="width:100px" />
@@ -105,7 +99,7 @@ export default {
             this.info = val;
         },
         setTableTitle(wait_seconds) {
-            setTimeout(() => {
+                setTimeout(() => {
                 if (this.table_title == null) {
                     this.table_title = document.getElementById('table_title');
                 }
@@ -113,12 +107,6 @@ export default {
                 // insert table title after table was rendered
                 this.table_title.style.display = '';
                 table_body.insertBefore(this.table_title, table_body.firstChild);
-                // replace the original header of search bar 
-                const origin_header = document.getElementsByClassName('gridjs-thead')[0];
-                origin_header.style.display = 'none';
-                const new_header = document.getElementById('table_header');
-                table_body.insertBefore(new_header, table_body.firstChild);
-                new_header.style.display = '';
                 // show the table
                 document.getElementsByClassName('gridjs-input')[0].dispatchEvent(new Event('input')); // trigger search event to make the table have the correct style
                 document.getElementsByClassName('gridjs-table')[0].style.setProperty('display', 'table', 'important');
@@ -250,29 +238,32 @@ export default {
                     summary: true,     
                 },
                 style: {
-                container: {
-                    'margin-left': '20px'
-                },
-                table: {
-                    border: '3px solid #ccc',
-                    'font-size': '16px',
-                    'text-align': 'center'
-                },
-                th: {
-                    'background-color': 'lightgray',
-                    color: '#333',
-                    'position': 'sticky',
-                    'top': '0',
-                    'z-index': '1',
-                },
-                td: {
-                    'font-family':'Microsoft JhengHei',
-                    'font-size': '18px',
-                    'font-weight': 'bold'  ,
-                    'border-right': 'none',
-                    'border-left': 'none',
-                },
-                },
+                        container:{
+                        'margin-left':'20px',
+                    },
+                        table: {
+                            border: '3px solid #ccc',
+                            'font-size': '16px',
+                            'text-align': 'center',
+                            'background-color': 'white',
+                        },
+                        th: {
+                            'background-color': ' #3A3937',
+                            'color': 'white',
+                            'font-size': '22px',
+                            'position': 'sticky', // 使標題固定
+                            'top': '0', // 固定在表格的頂部
+                            'z-index': '1', // 確保標題在最上層
+                            'font-weight': 'bold'  ,
+                        },
+                        td: {
+                            'font-size': '18px',
+                            'font-weight': 'bold'  ,
+                            'border':'1px solid #e5e7eb',
+                            'border-right': 'none',
+                            'border-left': 'none',
+                        },
+                    },
             }).render(gridContainer);
         },
         searchBoard() {
@@ -360,16 +351,17 @@ export default {
 }
 </style>
 <style scoped>
-table, th, td {
+
+td {
   border-collapse: collapse !important;
-  background-color: rgb(58, 57, 55);
   color: #FFF;
-  font-size: 18px;
+  font-size: 12px;
+  background-color: #AAAAAA;
+
 }
 .gridjs-wrapper{
   max-height: 90vh;
 }
-
 button {
   background: #AAAAAA;
   border-radius: 999px;
