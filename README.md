@@ -3,11 +3,11 @@
 - 一個會議室預約系統
 - 將此系統拆分成 Backend API & Frontend Site
 ### Backend API
-- Express.JS & MySQL
+- build on Express.JS & MySQL
 - 提供前端需要的資料，處理資料的儲存
 - <a href='https://github.com/tommygood/Meeting-Room-Booking-System/blob/main/doc/api.md'>API doc</a>
 ### Frontend Site
-- Vue.js
+- build on Vue.js
 ## Features
 ### 串接 NCU OAuth
 - 提供利用 NCU Portal 實作第三方登入機制，讓學校職員可以利用學校帳號登入此系統
@@ -28,22 +28,25 @@
 ## Prerequisite
 - Node v20 up
 ## Usage
+### Frontend Site
+- `cd src\MRBS-frontend`
+- `npm install`
+- `npm run build`
 ### Backend API
-- `mysql < schemal.sql`
+- `cd src\api`
+- `mysql < model\schemal.sql`
 - `npm install`
 - `node index.js`
-### Frontend Site
 ## Test
+- <a href='https://github.com/tommygood/Meeting-Room-Booking-System/blob/main/doc/test.md'>doc</a>
 ### Frontend Unit Test
-- based on vitest.
+- build on vitest.
 - usage : `cd src\MRBS-frontend && npm install && npm run test:unit`
 ### Backend Unit Test
-- based on mocha.
+- build on mocha.
 - `cd src\api && npm run test`
 ### E2E Test
-- based on cypress.
+- build on cypress.
 - `cd src\MRBS-frontend && npm install && npm run test:e2e`
 ## Workflow
 - <a href='https://github.com/tommygood/Meeting-Room-Booking-System/blob/main/doc/workflow.md'>doc</a>
-## Contribution
-- 歡迎 PR，可以先看一下<a href="https://github.com/tommygood/Meeting-Room-Booking-System/blob/main/doc/contribution.md">教學</a>
