@@ -27,10 +27,10 @@
             </div>
             <div class ="inputdate">
                 <tr id='table_header' style='display:none;'>
-                    <td>開始時間</td>
-                    <td>結束時間</td>
-                    <td>關鍵字搜尋</td>
-                    <td>操作</td>
+                    <td>會議日期</td>
+                    <td>會議時間</td>
+                    <td>會議名稱</td>
+                    <td>是否顯示</td>
                 </tr>
                 <tr id='table_title' style='display:none;'>
                     <td>
@@ -178,7 +178,7 @@ export default {
                 })
                 .then(response => response.json());
             });
-            alert('儲存成功');
+            alert('預約成功');
             window.location.reload();
         },
         //get board information

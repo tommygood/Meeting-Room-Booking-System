@@ -139,18 +139,18 @@ export default {
         showEditConferncePage(conference_info) {
             console.log('showEditConferncePage:', conference_info);
             const startTime = new Date(conference_info.start).toLocaleTimeString('zh-TW',  {month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false,
-                    weekday: 'short'
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false,
+                weekday: 'short'
             })
             const endTime = new Date(conference_info.end).toLocaleTimeString('zh-TW',  {month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false,
-                    weekday: 'short'
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false,
+                weekday: 'short'
             })
             Swal.fire({
                 title: DOMPurify.sanitize(conference_info.title),
@@ -315,7 +315,6 @@ export default {
                 end.setHours(23, 59, 59, 999);
                 const startOfDay = self.formatDateTimeForDatabase(start);
                 const endOfDay = self.formatDateTimeForDatabase(end);
-                console.log(startOfDay, endOfDay);
                 fetch(self.eventApiUrl(startOfDay, endOfDay), {
                     method: 'GET',
                     credentials: 'include',
@@ -330,7 +329,6 @@ export default {
 
                     if (filteredEvents.length > 0) {
                         document.querySelector('.hamburger-list').innerHTML = '';
-                        console.log(filteredEvents)
                         //顯示每個自己的會議
                         filteredEvents.forEach(event => {
                             const popup = document.createElement('div');
@@ -339,7 +337,7 @@ export default {
                             popup.style.margin = '5%';
                             const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                             const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                            const date = new Date(event.start_time).toLocaleDateString([], { month: '2-digit', day: '2-digit', weekday: 'short' });
+                            const date = new Date(event.start_time).toLocaleDateString([], {year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short' });
                             popup.innerHTML = DOMPurify.sanitize(`
                             <div class="list-subtitle">
                                 ${date} ${startTime} ~ ${endTime}

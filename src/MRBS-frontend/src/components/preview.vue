@@ -63,7 +63,7 @@ export default {
     },
     async mounted() {
         document.querySelector('body').style.display = 'none'; // disable the body before loading the background image
-        this.loadCSS('/src/assets/board.css'); // load css dynamically to avoid css not loaded issue
+        this.loadCSS(); // load css dynamically to avoid css not loaded issue
         const cdn = ['https://unpkg.com/swiper/swiper-bundle.min.js',
             'https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js'
         ];
@@ -95,12 +95,171 @@ export default {
         }
     },
     methods: {
-        loadCSS(src) {
-            var element = document.createElement("link");
-            element.setAttribute("rel", "stylesheet");
-            element.setAttribute("type", "text/css");
-            element.setAttribute("href", src);
-            document.getElementsByTagName("head")[0].appendChild(element);
+        loadCSS() {
+            const style = document.createElement('style');
+            // load css dynamically to avoid css not loaded issue
+            style.innerHTML = `
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: sans-serif;
+            }
+
+
+            .container {
+                width: 100%;
+                height: 100%;
+                /* padding: 50px; */
+                text-align: center;
+            }
+
+            .date-time {
+                font-size: 70px;
+                font-family: monospace;
+                color: #ffffff;
+                margin-top: 50px;
+                align-content: end;
+                height: 10%;
+            }
+
+            .divider {
+                height: 1px;
+                background-color: #ccc;
+                margin: 25px 45px;
+                /* align-self: center; */
+            }
+
+            /* 資訊卡(大框) */
+            .table-container {
+                width: 90%;
+                height: 80%;
+                margin: 50px auto;
+                /* padding: 20px; */
+                background-color: rgba(255, 255, 255, 0.80);
+                border-radius: 20px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+                border: 3px solid #b0e0f5; /* Light blue border for side stripes */
+            }
+
+            /* 資訊卡標題 */
+            .title {
+                background: linear-gradient(to right, #6cd3a1, #37b9df); /* Gradient colors */
+                height: 8%;
+                border-top-left-radius: 20px;
+                border-top-right-radius: 20px;
+
+                font-size: 70px;
+                font-weight: 700;
+                color: #ffffff;
+                margin-bottom: 20px;
+                align-content: center;
+            }
+
+            /* TODAY */
+
+            .event-card-min {
+                display: flex;
+                align-items: center;
+                padding: 10px 15px;
+                margin: 20px 15px;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                background-color: #ffffff50;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .time-block-min {
+                color: #00a4bb;
+                font-weight: 700;
+                font-size: 45px;
+                text-align: center;
+            }
+
+                .time-block-min span {
+                    display: block;
+                }
+
+            .event-details-min {
+                text-align: left;
+                margin-left: 20px;
+            }
+
+            .event-details-min h3 {
+                font-size: 50px;
+                font-weight: 700;
+                width: auto;
+                color: #3e3a39;
+                margin-bottom: 8px;
+            }
+
+            .event-details-min p {
+                font-size: 30px;
+                color: #999999;
+            }
+
+            /* NOW & NEXT */
+            .event-card-max {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                height: 85%;
+                padding: 20px 100px;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                background-color: #fff;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .event-title {
+                font-size: 80px;
+                font-weight: 700;
+                height: 25%;
+                /* margin-bottom: 20px; */
+                align-content: center;
+                margin: 0px 25px;
+            }
+
+            .time-block-max {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                width: 100%;
+                height: 10%;
+                font-size: 80px;
+                font-weight: 700;
+                color: #00a4bb;
+            }
+
+            .time-block-max span {
+                display: block;
+            }
+
+            .time-block-max .dash {
+                margin: 0 10px;
+            }
+
+            .label {
+                font-size: 30px;
+                height: 5%;
+                color: #666;
+                margin-bottom: 5px;
+            }
+
+            .value {
+                font-size: 50px;
+                font-weight: 700;
+                height: 15%;
+                color: #000;
+                margin-bottom: 20px;
+                align-content: center;
+            }
+            `;
+            document.getElementsByTagName("head")[0].appendChild(style);
         },
         setBgImage() {
             // set background image

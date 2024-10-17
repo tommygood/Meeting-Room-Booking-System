@@ -196,6 +196,14 @@ module.exports = {
         }
     },
 
+    checkRules : function(start_time, end_time) {
+        // check if start_time is less than end_time
+        if (start_time >= end_time) {
+            return "開始時間應小於結束時間，請再次確認";
+        }
+        return "";
+    },
+
     // get reservation by reserve_id
     getById : async function (reserve_id) {
         const conn = await db_conn.getDBConnection();
