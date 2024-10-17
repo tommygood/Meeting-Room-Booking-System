@@ -5,12 +5,12 @@
     <div class="test" style='height: 83vh;width:98vw;'>
         <root_menu :set-page-name="setPageName" v-if="!demo"></root_menu>
         <div style='display:flex;flex-direction: column;width:100%;'>
-            <h1 style='margin-left:2%;width:100%;'>
+            <h1 style='margin-left:2%;width:100%;' v-if="!demo">
                 [ {{ page_name }} ]
                 <button id="save-button" class='fancy' style="position: absolute; width: 8%;margin-left:2%" v-show="!demo">存檔</button>
 
             </h1>
-            <div class='rule-box' style='width:100%;height:90%'>
+            <div class='rule-box' style='width:100%;height:100%'>
                 <div id="quill" style="width:100%;height:100%;overflow-y: scroll; border: 1px solid black;border-radius: 10px; margin: 0 auto ;background-color:white;"></div>
             </div>
         </div>
@@ -166,7 +166,9 @@ export default {
             }
             catch (error) {
                 console.error(error);
-                location.reload(); // try to reload the page if imageResize error occurs
+                if (error.message.includes('quill Cannot import modules/imageResize')) {
+                    location.reload(); // try to reload the page if imageResize error occurs
+                }
             }
         },
         generateUniqueId() {

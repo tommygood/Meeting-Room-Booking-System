@@ -30,31 +30,30 @@ const router = createRouter({
       path: '/privilege',
       name: 'privilege',
       component: Privilege,
-      meta: { requiresAuth: true }
+      meta: { requiresManagerAuth : true, requiresAuth: true }
     },
     {
       path: '/conference',
       name: 'conference',
       component: Conference,
-      meta: { requiresAuth: true }
+      meta: { requiresManagerAuth : true, requiresAuth: true }
     },
     {
       path: '/board/demo',
       name: 'board_demo',
       component: Demo,
-      meta: { requiresAuth: true }
     },
     {
       path: '/board/preview',
       name: 'preview',
       component: Preview,
-      meta: { requiresAuth: true }
+      meta: { requiresManagerAuth : true, requiresAuth: true }
     },
     {
       path: '/board',
       name: 'board',
       component: Board,
-      meta: { requiresAuth: true }
+      meta: { requiresManagerAuth : true, requiresAuth: true }
     },
     {
       path: '/rule/demo',
@@ -71,13 +70,13 @@ const router = createRouter({
           component: Rule
         }
       ],
-      meta: { requiresAuth: true }
+      meta: { requiresManagerAuth : true, requiresAuth: true }
     },
     {
       path: '/log',
       name: 'log',
       component: Log,
-      meta: { requiresAuth: true }
+      meta: { requiresManagerAuth : true, requiresAuth: true }
     },
     {
       path: '/failed_login',
@@ -90,7 +89,22 @@ const router = createRouter({
 // 全局導航守衛
 router.beforeEach(async (to, from, next) => {
   // 檢查路由是否需要驗證
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+  if (to.matched.some(record => record.meta.requiresManagerAuth)) {
+    const res = await Auth.methods.login();
+    if (!res.suc) {
+      // 如果未登入，重定向到登入頁面
+      next({ name: 'failed_login', query: {error : res.reason} });
+    }
+    else if (res.privelege_level < 1) {
+      // 如果權限不足，重定向到首頁
+      next({ name: 'failed_login', query: {error : '權限不足'} });
+    }
+    else {
+      // 如果已登入，繼續導航
+      next();
+    }
+  }
+  else if (to.matched.some(record => record.meta.requiresAuth)) {
     const res = await Auth.methods.login();
     if (!res.suc) {
       // 如果未登入，重定向到登入頁面
@@ -99,7 +113,8 @@ router.beforeEach(async (to, from, next) => {
       // 如果已登入，繼續導航
       next();
     }
-  } else {
+  }
+  else {
     // 如果路由不需要驗證，繼續導航
     next();
   }

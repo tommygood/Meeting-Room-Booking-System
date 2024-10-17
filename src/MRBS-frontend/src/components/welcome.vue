@@ -5,7 +5,7 @@
                 <img class="logo" src="../../public/ncu_logo.png" alt="國立中央大學">
                 <img class="logo_min" src="../../public/ncu_logo_min.png" alt="國立中央大學">
             </a>
-            <h1>行政大樓&emsp;二樓會議室<br>借用系統</h1>
+            <h1 style="margin-left:2%">行政大樓二樓會議室<div style='margin-right:55%;'>借用系統</div></h1>
         </header>
 
         <div class="background-container">
@@ -37,4 +37,4 @@ export default {
 }
 </script>
 
-<style src="../assets/style.css" scoped></style>
+<style src="../assets/style.css"></style>

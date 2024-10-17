@@ -12,15 +12,13 @@ body {
 header {
     display: flex;
     align-items: center;
-    padding: 10px 20px;
+    padding: 1% 2%;
     background-color: #fff;
-    border-bottom: 1px solid #e0e0e0;
-    justify-content: space-between;
 }
 
 .logo {
     display: block;
-    height: 40px;
+    height: 1%;
 }
 .logo_min {
     display: none;
@@ -30,7 +28,6 @@ h1 {
     font-size: 20px;
     color: #333;
     line-height: 1.5;
-    text-align: right;
 }
 
 .background-container {
@@ -39,7 +36,7 @@ h1 {
     /* 替換為實際圖片路徑 */
     background-size: cover;
     background-position: center;
-    height: 88.5%;
+    height: 89vh;
     display: flex;
     justify-content: right;
     align-items: start;
