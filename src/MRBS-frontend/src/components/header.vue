@@ -226,7 +226,11 @@ body {
   .fc-daygrid-day-top {
     justify-content: center;
   }
-  
+
+  /* 點選當天看所有事件的popup*/
+  .fc-theme-standard .fc-popover{
+    font-family: "Microsoft JhengHei";
+  }
   :root {
     --fc-today-bg-color: #3C9A8620;
     --fc-button-bg-color: #215D5A;

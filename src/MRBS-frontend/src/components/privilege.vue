@@ -465,7 +465,7 @@ export default {
                     item.chinesename,
                     privilegeText,
                     statusText,
-                    gridjs.html(`<img src="../../public/edit.png"><a href="#" class='editPermission' id='${item.identifier} ${item.chinesename}' >修改</a>`),
+                    gridjs.html(`<img src="../../public/edit.png"> <a href="#" class='editPermission' id='${item.identifier} ${item.chinesename}' >修改</a>`),
                     gridjs.html(`${item.violation_count}次 <button class='bind-addViolation fancy' id='${item.identifier}');">新增</button> <button href="#" class="bind-showViolation fancy" id='${item.identifier}'>查詢</button>`)
                     ],
                     extendedProps: {
