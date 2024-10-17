@@ -1,4 +1,6 @@
 <template>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <body>
         <header>
             <div class="navbar">
@@ -464,7 +466,28 @@ body {
   
   
   /* 響應式調整 */
-  @media (max-width: 830px) {
+
+  @viewport {
+    width: device-width;
+    initial-scale: 1;
+}
+  @media screen and (max-width: 830px) {
+    
+    h3, a {
+        white-space: nowrap;
+    }
+
+    #accountName {
+        margin-top: 20%;
+    }
+
+    td {
+        white-space: nowrap; /* Prevent text from wrapping to the next line */
+        overflow: hidden; /* Hide text that overflows */
+        text-overflow: ellipsis; /* Add "..." if text is too long */
+    }
+    
+
     body {
       display: block;
       flex-wrap: wrap;
@@ -476,6 +499,10 @@ body {
       width: 100vw;
       height: 100vh;
     }
+
+    #event-list {
+        display: none;
+    }
   
     .hamburger-menu {
       width: 100%;
@@ -486,6 +513,7 @@ body {
       /* left: 0; */
       transform: translateY(-100%);
       transition: transform 0.3s ease;
+      margin-top: 150%;
     }
   
     .hamburger-menu.active {
