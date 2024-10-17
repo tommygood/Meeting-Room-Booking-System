@@ -2,17 +2,18 @@
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="https://cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
     <user_header :set-info="setInfo" :info="info" v-if="!demo"></user_header>
-    <div class="test">
+    <div class="test" style='height: 83vh;width:98vw;'>
         <root_menu :set-page-name="setPageName" v-if="!demo"></root_menu>
-    </div>
-    <div style="display:inline-flex" v-if="!demo">
-        <h1 style='margin-left:2%;width:180px;'>
-        [ {{ page_name }} ]
-        </h1>
-    </div>
-    <div class='rule-box'>
-        <button id="save-button" class='fancy' style="height:40px;width:10%;margin-left:90%;" v-show="!demo">存檔</button>
-        <div id="quill" style="width:100%;height:100%;overflow-y: scroll; border: 1px solid black;border-radius: 10px; margin: 0 auto ;background-color:white;"></div>
+        <div style='display:flex;flex-direction: column;width:100%;'>
+            <h1 style='margin-left:2%;width:100%;'>
+                [ {{ page_name }} ]
+                <button id="save-button" class='fancy' style="position: absolute; width: 8%;margin-left:2%" v-show="!demo">存檔</button>
+
+            </h1>
+            <div class='rule-box' style='width:100%;height:90%'>
+                <div id="quill" style="width:100%;height:100%;overflow-y: scroll; border: 1px solid black;border-radius: 10px; margin: 0 auto ;background-color:white;"></div>
+            </div>
+        </div>
     </div>
     
 </template>
