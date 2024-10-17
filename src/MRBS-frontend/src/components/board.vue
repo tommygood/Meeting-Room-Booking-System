@@ -267,7 +267,13 @@ export default {
                     'top': '0',
                     'z-index': '1',
                 },
-                td: {}
+                td: {
+                    'font-family':'Microsoft JhengHei',
+                    'font-size': '18px',
+                    'font-weight': 'bold'  ,
+                    'border-right': 'none',
+                    'border-left': 'none',
+                },
                 },
             }).render(gridContainer);
         },
@@ -357,16 +363,36 @@ export default {
 </style>
 <style scoped>
 table, th, td {
-  border: 1px solid !important;
   border-collapse: collapse !important;
+  background-color: rgb(58, 57, 55);
+  color: #FFF;
+  font-size: 18px;
 }
 .gridjs-wrapper{
   max-height: 90vh;
 }
 
 button {
-    background-color: #8F8E8E;
-    color: #fff;
+  background: #AAAAAA;
+  border-radius: 999px;
+  box-shadow: #999999 0 10px 20px -10px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-family: Inter,Helvetica,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Noto Color Emoji","Segoe UI Symbol","Android Emoji",EmojiSymbols,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans",sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  border: 1px solid #000;
+  opacity: 1;
+  outline: 0 solid transparent;
+  padding: 6px 18px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: fit-content;
+  word-break: break-word;
+
 }
 .inputdate{
   display:flex;

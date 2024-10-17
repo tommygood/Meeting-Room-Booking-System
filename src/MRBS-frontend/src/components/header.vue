@@ -32,25 +32,31 @@ export default {
             account_name: this.username,
         };
     },
-    mounted() {
+    async mounted() {
         // load required cdn
         const cdn = ['https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js',
             'https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js',
             'https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js',
             'https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js'
         ];
-        this.loadCDN(cdn);
+        await this.loadCDN(cdn);
         this.setUserInfo();
     },
     methods: {
-        loadCDN(cdn) {
-            // load required cdn
-            cdn.forEach(src => {
-                const script = document.createElement('script');
-                script.src = src;
-                document.head.appendChild(script);
-            });
-        },
+      loadCDN(cdn) {
+          // Return a promise that resolves when all scripts are loaded
+          return Promise.all(
+              cdn.map(src => {
+                  return new Promise((resolve, reject) => {
+                      const script = document.createElement('script');
+                      script.src = src;
+                      script.onload = () => resolve(src); // Resolve when script is loaded
+                      script.onerror = () => reject(new Error(`Failed to load ${src}`)); // Reject if there's an error loading the script
+                      document.head.appendChild(script);
+                  });
+              })
+          );
+      },
         // toggle the menu
         toggleMenu() {
             console.log('toggleMenu');
@@ -360,6 +366,9 @@ body {
     background-color: #0D2524;
     cursor: pointer;
   
+  }
+  .fc-toolbar-title{
+    font-family:"Microsoft JhengHei";
   }
   
   /* 申請清單清單 */

@@ -521,7 +521,6 @@ export default {
                             'background-color': ' #3A3937',
                             'color': 'white',
                             'font-size': '18px',
-                            'font-family':'Microsoft JhengHei',
                             'position': 'sticky', // 使標題固定
                             'top': '0', // 固定在表格的頂部
                             'z-index': '1', // 確保標題在最上層
@@ -530,15 +529,11 @@ export default {
                             'border-left': 'none',
                         },
                         td: {
-                            'font-family':'Microsoft JhengHei',
                             'font-size': '18px',
                             'font-weight': 'bold'  ,
                             'border-right': 'none',
                             'border-left': 'none',
                         },
-                        '.editPermission':{
-                            'color':"black"
-                        }
                     },
 
                 }).render(document.getElementById('gridtable'));
@@ -698,9 +693,7 @@ tr:nth-of-type(odd) td {
     width: 114.33px;
 }
 
-.editPermission{
-    color:'black';
-}
+
 
 /* 使用者/管理者按鈕 */
 .useradmin{
