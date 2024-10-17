@@ -34,7 +34,13 @@ class Reservation {
         try {
             const start_time = req.query.start_time;
             const end_time = req.query.end_time;
-            const data = await this.model.getShow(start_time, end_time);
+            const data = await this.model.get(start_time, end_time);
+            // replace the reservation name with "校內會議" for showing in the TV screen
+            data.forEach((item) => {
+                if (!item.show) {
+                    item.name = "校內會議";
+                }
+            });
             res.json({data});
         }
         catch(e) {
@@ -189,7 +195,7 @@ router.post('/', jwt.verifyLogin, reservation.post);
 
 // get reservations which `show` is true and between the start_time and end_time
 // this is for showing the reservations in the TV screen
-router.get('/show', jwt.verifyLogin, reservation.getShow);
+router.get('/show', reservation.getShow);
 
 // update all columns except identifier in reservation by reserve_id and identifier
 router.put('/', jwt.verifyLogin, reservation.update);
