@@ -266,7 +266,7 @@ export default {
             document.querySelector('body').style.backgroundImage = "url('/public/bg_board.png')";
             document.querySelector('body').style.display = '';
         },
-        eventApiUrl: (start, end) => config.apiUrl + `/reservation?start_time=${start}&end_time=${end}`,
+        eventApiUrl: (start, end) => config.apiUrl + `/reservation/show?start_time=${start}&end_time=${end}`,
         async loadCDN(cdn) {
             // load required cdn, and wait for all cdn to be loaded
             await Promise.all(cdn.map(src => {
@@ -423,7 +423,7 @@ export default {
                 document.querySelector('.event-list').innerHTML = '';
                 const eventCard = document.createElement('div');
                 eventCard.className = 'event-title';
-                eventCard.innerHTML = '今日無會議';
+                eventCard.innerHTML = '<h3>今日無會議</h3>';
                 document.querySelector('.event-list').appendChild(eventCard);
                 this.removeBothEvent();
             }
@@ -432,7 +432,10 @@ export default {
                 let now_empty = true;
                 let next_empty = true;
                 let can_put_next = false;
-                document.querySelector('.event-list').innerHTML = '';
+                // reset today list if the content is not empty
+                if (!document.querySelector('.event-list').innerHTML.includes('今日無會議')) {
+                    document.querySelector('.event-list').innerHTML = '';
+                }
                 //顯示每個今日會議
                 for (const event of events) {
                     const eventCard = document.createElement('div');
@@ -517,7 +520,7 @@ export default {
                     }
                 }
                 else if (now_empty && next_empty) {
-                    //document.querySelector('.event-list-now').innerHTML = '今日無會議';
+                    document.querySelector('.event-list').innerHTML = '<h3>今日無會議</h3>';
                     // remove the now and next event if there is no event
                     this.removeBothEvent();
                 }
