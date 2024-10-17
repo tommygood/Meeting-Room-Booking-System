@@ -1,45 +1,47 @@
 <template>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-    <div class="swiper">
-        <!-- swiper class 要輪播的內容為 swiper-wrapper -->
-        <div class="swiper-wrapper">
-            <!-- 今日會議 -->
-            <div class="swiper-slide">
-                <div class="container">
-                    <div class="table-container">
-                        <div class="title">- TODAY -</div>
-                        <!-- 顯示會議資訊 -->
-                        <div class="event-list"></div>
+    <div id="bg_img" style='height:100vh'>
+        <div class="swiper">
+            <!-- swiper class 要輪播的內容為 swiper-wrapper -->
+            <div class="swiper-wrapper">
+                <!-- 今日會議 -->
+                <div class="swiper-slide">
+                    <div class="container">
+                        <div class="table-container">
+                            <div class="title">- TODAY -</div>
+                            <!-- 顯示會議資訊 -->
+                            <div class="event-list"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 現正進行會議 -->
+                <div class="swiper-slide">
+                    <div class="container">
+                        <div class="table-container">
+                            <div class="title">- NOW -</div>
+                            <div class="event-list-now"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 下一場會議 -->
+                <div class="swiper-slide">
+                    <div class="container">
+                        <div class="table-container">
+                            <div class="title">- NEXT -</div>
+                            <!-- <div class="divider"></div> -->
+                            <!-- <div class="event-card-max"> -->
+                            <!-- <div class="this-label">— NEXT —</div> -->
+                            <div id="next-event" class="event-list-next"></div>
+                            <!-- </div> -->
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- 現正進行會議 -->
-            <div class="swiper-slide">
-                <div class="container">
-                    <div class="table-container">
-                        <div class="title">- NOW -</div>
-                        <div class="event-list-now"></div>
-                    </div>
-                </div>
-            </div>
-            <!-- 下一場會議 -->
-            <div class="swiper-slide">
-                <div class="container">
-                    <div class="table-container">
-                        <div class="title">- NEXT -</div>
-                        <!-- <div class="divider"></div> -->
-                        <!-- <div class="event-card-max"> -->
-                        <!-- <div class="this-label">— NEXT —</div> -->
-                        <div id="next-event" class="event-list-next"></div>
-                        <!-- </div> -->
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
     </div>
 </template>
 <script>
@@ -263,10 +265,11 @@ export default {
         },
         setBgImage() {
             // set background image
-            document.querySelector('body').style.backgroundImage = "url('/public/bg_board.png')";
+            //document.querySelector('body').style.backgroundImage = "url('/public/bg_board.png')";
+
             document.querySelector('body').style.display = '';
         },
-        eventApiUrl: (start, end) => config.apiUrl + `/reservation?start_time=${start}&end_time=${end}`,
+        eventApiUrl: (start, end) => config.apiUrl + `/reservation/show?start_time=${start}&end_time=${end}`,
         async loadCDN(cdn) {
             // load required cdn, and wait for all cdn to be loaded
             await Promise.all(cdn.map(src => {
@@ -318,8 +321,8 @@ export default {
             else {
                 // get current datetime if url path is demo
                 const datetime = new Date();
-                this.date = datetime.toISOString().split('T')[0];
-                this.time = datetime.toTimeString().split(' ')[0];
+                this.date = datetime.toLocaleDateString();
+                this.time = datetime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             }
         },
         setTopDatetime() {
@@ -423,7 +426,7 @@ export default {
                 document.querySelector('.event-list').innerHTML = '';
                 const eventCard = document.createElement('div');
                 eventCard.className = 'event-title';
-                eventCard.innerHTML = '今日無會議';
+                eventCard.innerHTML = '<h3>今日無會議</h3>';
                 document.querySelector('.event-list').appendChild(eventCard);
                 this.removeBothEvent();
             }
@@ -432,7 +435,10 @@ export default {
                 let now_empty = true;
                 let next_empty = true;
                 let can_put_next = false;
-                document.querySelector('.event-list').innerHTML = '';
+                // reset today list if the content is not empty
+                if (!document.querySelector('.event-list').innerHTML.includes('今日無會議')) {
+                    document.querySelector('.event-list').innerHTML = '';
+                }
                 //顯示每個今日會議
                 for (const event of events) {
                     const eventCard = document.createElement('div');
@@ -517,7 +523,7 @@ export default {
                     }
                 }
                 else if (now_empty && next_empty) {
-                    //document.querySelector('.event-list-now').innerHTML = '今日無會議';
+                    document.querySelector('.event-list').innerHTML = '<h3>今日無會議</h3>';
                     // remove the now and next event if there is no event
                     this.removeBothEvent();
                 }
@@ -549,11 +555,16 @@ export default {
     }
 }
 </script>
+<style>
+#bg_img {
+    background-image: url('@/assets/bg_board.png');
+}
+
+</style>
 <style scoped>
 
 body {
-    display: none;
-    background-image: url('/public/bg_board.png') !important;
+    background-image: url('@/assets/bg_board.png');
 }
 
 .swiper {
