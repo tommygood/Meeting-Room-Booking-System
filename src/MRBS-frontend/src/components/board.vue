@@ -7,7 +7,7 @@
             <h1 style='margin-left:2%'>
                 [ {{ page_name }} ]
             </h1>
-            <div style="font-size: 20px; outline: 3px solid #000000; background-color: #cacaca; margin: 10px; padding: 10px;">
+            <div style="font-size: 20px; outline: 3px solid #000000; background-color: #cacaca; margin: 24px; padding: 10px;">
                 <form id="previewBoard" style='display:inline-flex'>
                     <div style='display:flex'>
                         <b style='margin-top:3%;'>日期：</b>
@@ -20,10 +20,18 @@
                 </form>
                 <div style='display:inline-flex;margin-left:3%'>
                     <button id="board/preview" class="btn" v-on:click="previewBoard">未來預覽</button>
+                    <hr/>
+                    <hr/>
                     <button style='display:inline-flex' id="board/demo" class="btn" v-on:click="changePage">當前播放</button>
                 </div>
             </div>
             <div class ="inputdate">  
+                <tr id='table_header' style='display:none;'>
+                    <td class="table_header">會議日期</td>
+                    <td class="table_header">會議時間</td>
+                    <td class="table_header">會議名稱</td>
+                    <td class="table_header">是否顯示</td>
+                </tr>
                 <tr id='table_title' style='display:none;'>
                     <td>
                         <input type="date" name="startdate" placeholder="開始時間" style="width:100px" />
@@ -38,7 +46,7 @@
                         <button v-on:click="searchBoard">
                             篩選
                         </button>
-                        <button v-on:click="saveContent">
+                        <button v-on:click="saveContent" style="margin-left: 2%;">
                             儲存
                         </button>
                     </td>
@@ -98,8 +106,8 @@ export default {
         setInfo(val) {
             this.info = val;
         },
-        setTableTitle(wait_seconds) {
-                setTimeout(() => {
+         setTableTitle(wait_seconds) {
+            setTimeout(() => {
                 if (this.table_title == null) {
                     this.table_title = document.getElementById('table_title');
                 }
@@ -107,6 +115,12 @@ export default {
                 // insert table title after table was rendered
                 this.table_title.style.display = '';
                 table_body.insertBefore(this.table_title, table_body.firstChild);
+                // replace the original header of search bar 
+                const origin_header = document.getElementsByClassName('gridjs-thead')[0];
+                origin_header.style.display = 'none';
+                const new_header = document.getElementById('table_header');
+                table_body.insertBefore(new_header, table_body.firstChild);
+                new_header.style.display = '';
                 // show the table
                 document.getElementsByClassName('gridjs-input')[0].dispatchEvent(new Event('input')); // trigger search event to make the table have the correct style
                 document.getElementsByClassName('gridjs-table')[0].style.setProperty('display', 'table', 'important');
@@ -247,15 +261,6 @@ export default {
                             'text-align': 'center',
                             'background-color': 'white',
                         },
-                        th: {
-                            'background-color': ' #3A3937',
-                            'color': 'white',
-                            'font-size': '22px',
-                            'position': 'sticky', // 使標題固定
-                            'top': '0', // 固定在表格的頂部
-                            'z-index': '1', // 確保標題在最上層
-                            'font-weight': 'bold'  ,
-                        },
                         td: {
                             'font-size': '18px',
                             'font-weight': 'bold'  ,
@@ -351,7 +356,16 @@ export default {
 }
 </style>
 <style scoped>
-
+.table_header{
+    background-color: #3A3937;
+    color: 'white';
+    font-size: 18px;
+    position: sticky;
+    top:0;
+    z-index: 1;
+    font-weight: bold ;
+    height:45px;
+}
 td {
   border-collapse: collapse !important;
   color: #FFF;
