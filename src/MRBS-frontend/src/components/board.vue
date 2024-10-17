@@ -9,21 +9,19 @@
             </h1>
             <div style="font-size: 20px; outline: 3px solid #000000; background-color: #cacaca; margin: 10px; padding: 10px;">
                 <form id="previewBoard" style='display:inline-flex'>
-                    <div class="input-group">
-                        <b>日期：</b>
+                    <div style='display:flex'>
+                        <b style='margin-top:3%;'>日期：</b>
                         <input type="date" class="hamburger-request" name="start-date"/>
                     </div>
-                    <div class="input-group">
-                        <b>時間：</b>
-                        <input type="time" id="start-time" name="start-time" class="hamburger-timerequest">
+                    <div style='display:flex'>
+                        <b style='margin-top:3%;width:30%'>時間：</b>
+                        <input type="time" id="start-time" name="start-time" class="hamburger-timerequest" style="width:70%">
                     </div>
                 </form>
-                <div style='display:inline-flex'>
+                <div style='display:inline-flex;margin-left:3%'>
                     <button id="board/preview" class="btn" v-on:click="previewBoard">未來預覽</button>
+                    <button style='display:inline-flex' id="board/demo" class="btn" v-on:click="changePage">當前播放</button>
                 </div>
-                <button style='display:inline-flex' id="board/demo" class="btn" v-on:click="changePage">
-                    當前播放
-                </button>
             </div>
             <div class ="inputdate">
                 <tr id='table_header' style='display:none;'>

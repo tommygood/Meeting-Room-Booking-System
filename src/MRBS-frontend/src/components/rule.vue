@@ -166,7 +166,7 @@ export default {
             }
             catch (error) {
                 console.error(error);
-                if (error.message.includes('quill Cannot import modules/imageResize')) {
+                if (error.message.includes('is not a constructor')) {
                     location.reload(); // try to reload the page if imageResize error occurs
                 }
             }
