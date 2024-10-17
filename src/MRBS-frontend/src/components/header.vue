@@ -211,8 +211,7 @@ body {
   
   /* 字體大小 */
   .fc-event-title {
-    font-size: 14px;
-  
+    margin-left: 3px;
   }
   
   /* 月曆每格大小 */
@@ -220,6 +219,8 @@ body {
     position: relative;
     box-sizing: border-box;
     width: auto;
+    font-family: "Microsoft JhengHei";
+    font-size: 14px;
   }
   
   .fc-daygrid-day-top {
@@ -366,7 +367,7 @@ body {
   .hamburger-request-title {
     margin-left: 10px;
     font-size: 18px;
-    white-space: nowrap
+    white-space: nowrap;
   }
   
   .hamburger-bottom {

@@ -465,7 +465,7 @@ export default {
                     item.chinesename,
                     privilegeText,
                     statusText,
-                    gridjs.html(`<a href="#" class='editPermission' id='${item.identifier} ${item.chinesename}' >修改</a>`),
+                    gridjs.html(`<img src="../../public/edit.png"><a href="#" class='editPermission' id='${item.identifier} ${item.chinesename}' >修改</a>`),
                     gridjs.html(`${item.violation_count}次 <button class='bind-addViolation fancy' id='${item.identifier}');">新增</button> <button href="#" class="bind-showViolation fancy" id='${item.identifier}'>查詢</button>`)
                     ],
                     extendedProps: {
@@ -510,24 +510,35 @@ export default {
                     },
                     style: {
                         container:{
-                        'margin-left':'20px'
-                        },
+                        'margin-left':'20px',
+                    },
                         table: {
-                        border: '3px solid #ccc',
-                        'font-size': '16px',
-                        'text-align': 'center'
+                        'border': '3px solid #ccc',
+                        'text-align': 'center',
+                        'font-weight': 'bold'  ,
                         },
                         th: {
-                            'background-color': 'lightgray',
-                            color: '#333',
+                            'background-color': ' #3A3937',
+                            'color': 'white',
+                            'font-size': '18px',
+                            'font-family':'Microsoft JhengHei',
                             'position': 'sticky', // 使標題固定
                             'top': '0', // 固定在表格的頂部
                             'z-index': '1', // 確保標題在最上層
+                            'font-weight': 'bold'  ,
+                            'border-right': 'none',
+                            'border-left': 'none',
                         },
                         td: {
-
+                            'font-family':'Microsoft JhengHei',
+                            'font-size': '18px',
+                            'font-weight': 'bold'  ,
+                            'border-right': 'none',
+                            'border-left': 'none',
                         },
-                
+                        '.editPermission':{
+                            'color':"black"
+                        }
                     },
 
                 }).render(document.getElementById('gridtable'));
@@ -552,9 +563,9 @@ table {
     background-color:#DDD;
 }
 button.fancy {
-  background: #5E5DF0;
-  border-radius: 999px;
-  box-shadow: #5E5DF0 0 10px 20px -10px;
+  background: #AAAAAA;
+  border-radius: 15px;
+  box-shadow: #999999 0 10px 20px -10px;
   box-sizing: border-box;
   color: #FFFFFF;
   cursor: pointer;
@@ -564,7 +575,7 @@ button.fancy {
   line-height: 24px;
   opacity: 1;
   outline: 0 solid transparent;
-  padding: 8px 18px;
+  padding: 6px 18px;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
