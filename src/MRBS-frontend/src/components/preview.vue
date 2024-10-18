@@ -1,6 +1,7 @@
 <template>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <div id="bg_img" style='height:100vh'>
+        <h1 id = "current_time" style="text-align:center;"></h1>
         <div class="swiper">
             <!-- swiper class 要輪播的內容為 swiper-wrapper -->
             <div class="swiper-wrapper">
@@ -83,6 +84,7 @@ export default {
         this.reservationMonitor();
         // reload the page every 15 minutes
         this.reloadMonitor();
+        this.displayCureentTime();
     },
     data() {
         return {
@@ -97,6 +99,13 @@ export default {
         }
     },
     methods: {
+        displayCureentTime() {
+            // keep updating the current time
+            setInterval(() => {
+                const datetime = new Date();
+                document.getElementById('current_time').innerText = "當前時間：" + datetime.toISOString().split('T')[0] + ' ' + datetime.toTimeString().split(' ')[0].slice(0, 5);
+            }, 1000);
+        },
         loadCSS() {
             const style = document.createElement('style');
             // load css dynamically to avoid css not loaded issue
@@ -321,8 +330,8 @@ export default {
             else {
                 // get current datetime if url path is demo
                 const datetime = new Date();
-                this.date = datetime.toLocaleDateString();
-                this.time = datetime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                this.date = datetime.toISOString().split('T')[0]; // 產生 YYYY-MM-DD 格式
+                this.time = datetime.toTimeString().split(' ')[0].slice(0, 5); // 產生 HH:MM 格式
             }
         },
         setTopDatetime() {
@@ -350,6 +359,7 @@ export default {
                     headers: { 'Content-Type': 'application/json' },
                 });
                 const data = await response.json();
+                console.log('data', this.date, this.time, data, day.toISOString().split('T')[0], tomorrow.toISOString().split('T')[0]);
                 return data.data;
 
             } catch (error) {
