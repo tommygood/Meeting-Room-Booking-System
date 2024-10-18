@@ -475,9 +475,10 @@ export default {
                 }));
 
                 // add event listener to onclick buttons
-                setTimeout(() => {
+                setInterval(() => {
                     const editPermission = document.querySelectorAll('.editPermission');
                     editPermission.forEach(button => {
+                        console.log('set', this.setPermission)
                         button.addEventListener('click', this.setPermission);
                     });
                     const addViolation = document.querySelectorAll('.bind-addViolation');
@@ -505,7 +506,7 @@ export default {
                     resizable: true,
                     pagination: {
                         enabled: true,     
-                        limit: 5,          
+                        limit: 20,          
                         summary: true,     
                     },
                     style: {
@@ -537,7 +538,7 @@ export default {
                     },
 
                 }).render(document.getElementById('gridtable'));
-                this.setTableTitle(1000);
+                this.setTableTitle(1);
             });
             document.getElementById('grid-search').addEventListener('input', function(event) {
                 // 設定 Grid.js 的搜尋文字
@@ -555,7 +556,6 @@ table {
 }
 .test {
     display: flex;
-    background-color:#DDD;
 }
 button.fancy {
   background: #AAAAAA;
@@ -580,6 +580,10 @@ button.fancy {
 }
 </style>
 <style scoped>
+
+td {
+    padding: 6px 12px;
+}
 
 /* 右半邊畫面 */
 .search-container{
@@ -721,5 +725,10 @@ tr:nth-of-type(odd) td {
 .useradmin-button:hover{
   background-color: rgba(0, 0, 0, 0.2);
   cursor: pointer;
+}
+</style>
+<style scoped>
+.search-container {
+    margin-bottom:1%
 }
 </style>

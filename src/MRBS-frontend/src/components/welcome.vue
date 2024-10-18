@@ -65,6 +65,7 @@ export default {
         },
         async showRules(doc_name) {
             const text = await this.getDoc(doc_name);
+            console.log(doc_name);
             let htmlContent = '';
             text.blocks.forEach(block =>{
                 if (block.type === 'paragraph' && block.data && block.data.text) {

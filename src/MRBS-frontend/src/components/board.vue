@@ -73,7 +73,7 @@ export default {
         ];
         await this.loadCDN(cdn);
         this.initTable();
-        this.setTableTitle(1000);
+        this.setTableTitle(1000, null);
         this.syncSearchBar();
         this.removeSearchBar();
     },
@@ -106,7 +106,7 @@ export default {
         setInfo(val) {
             this.info = val;
         },
-         setTableTitle(wait_seconds) {
+         setTableTitle(wait_seconds, t_header) {
             setTimeout(() => {
                 if (this.table_title == null) {
                     this.table_title = document.getElementById('table_title');
@@ -118,7 +118,10 @@ export default {
                 // replace the original header of search bar 
                 const origin_header = document.getElementsByClassName('gridjs-thead')[0];
                 origin_header.style.display = 'none';
-                const new_header = document.getElementById('table_header');
+                let new_header = document.getElementById('table_header');
+                if (new_header == null) {
+                    new_header = t_header;
+                }
                 table_body.insertBefore(new_header, table_body.firstChild);
                 new_header.style.display = '';
                 // show the table
@@ -178,7 +181,7 @@ export default {
                 })
                 .then(response => response.json());
             });
-            alert('預約成功');
+            alert('儲存成功');
             window.location.reload();
         },
         //get board information
@@ -201,7 +204,8 @@ export default {
                 const rows = data.data.map(item => {
                     const startDate = new Date(item.start_time);
                     const endDate = new Date(item.end_time);
-                    const formattedDate = `${(startDate.getMonth() + 1).toString().padStart(2, '0')}/${startDate.getDate().toString().padStart(2, '0')}`;
+                    // convert startDate to 'YYYY/MM/DD weekday'
+                    const formattedDate = `${startDate.getFullYear()}/${(startDate.getMonth() + 1).toString().padStart(2, '0')}/${startDate.getDate().toString().padStart(2, '0')} （${['日', '一', '二', '三', '四', '五', '六'][startDate.getDay()]}）`;
                     const startTime = `${startDate.getHours().toString().padStart(2, '0')}:${startDate.getMinutes().toString().padStart(2, '0')}`;
                     const endTime = `${endDate.getHours().toString().padStart(2, '0')}:${endDate.getMinutes().toString().padStart(2, '0')}`;
                     const formattedTime = `${startTime}~${endTime}`;
@@ -279,6 +283,7 @@ export default {
                 alert('請輸入完整的開始和結束日期');
                 return;
             }
+            const table_header = (document.getElementById('table_header'));
 
             const startDate = new Date(startInput);
             startDate.setHours(0, 0, 0, 0); 
@@ -302,7 +307,7 @@ export default {
             .catch(error => {
                 console.error('Error rendering Grid.js:', error);
             });
-            this.setTableTitle(1000);
+            this.setTableTitle(1000, document.getElementById('table_header'));
             this.removeSearchBar();
         },
         initTable() {
@@ -318,7 +323,6 @@ export default {
 
             // 初始載入時抓取一個月內的資料並更新表格
             this.fetchData(start, end).then(rows => {
-
                 this.updateGrid(rows); 
             }).catch(error => {
                 console.error('Error rendering Grid.js:', error);

@@ -1,10 +1,10 @@
 <template>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <div id="bg_img" style='height:100vh'>
-        <h1 id = "current_time" style="text-align:center;"></h1>
+        <h1 id = "current_time" style="text-align:center;padding:5%;color:white;font-size:80px"></h1>
         <div class="swiper">
             <!-- swiper class 要輪播的內容為 swiper-wrapper -->
-            <div class="swiper-wrapper">
+            <div class="swiper-wrapper" style="margin-left:6%">
                 <!-- 今日會議 -->
                 <div class="swiper-slide">
                     <div class="container">
@@ -103,7 +103,10 @@ export default {
             // keep updating the current time
             setInterval(() => {
                 const datetime = new Date();
-                document.getElementById('current_time').innerText = "當前時間：" + datetime.toISOString().split('T')[0] + ' ' + datetime.toTimeString().split(' ')[0].slice(0, 5);
+                // get weekday from datetime
+                const weekday = ['日', '一', '二', '三', '四', '五', '六'][datetime.getDay()];
+                document.getElementById('current_time').innerHTML = datetime.toISOString().split('T')[0] + ` (${weekday})` +
+                '<br/>' + datetime.toTimeString().split(' ')[0].slice(0, 5);
             }, 1000);
         },
         loadCSS() {
@@ -191,9 +194,9 @@ export default {
                 text-align: center;
             }
 
-                .time-block-min span {
-                    display: block;
-                }
+            .time-block-min span {
+                display: block;
+            }
 
             .event-details-min {
                 text-align: left;
@@ -220,7 +223,6 @@ export default {
                 align-items: center;
                 height: 85%;
                 padding: 20px 100px;
-                border: 1px solid #ccc;
                 border-radius: 10px;
                 background-color: #fff;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -240,7 +242,7 @@ export default {
                 justify-content: space-around;
                 align-items: center;
                 width: 100%;
-                height: 10%;
+                height: 100px;
                 font-size: 80px;
                 font-weight: 700;
                 color: #00a4bb;
@@ -375,10 +377,37 @@ export default {
                     <span>|</span>
                     <span>${endTime}</span>
                 </div>
-                <div class="event-details-min">
+                <div class="event-details-min" style="margin-left:10%">
                     <h3>${event.name}</h3>
                     <p>借用單位：${event.unit}</p>
                     <p>借用人：${event.chinesename}</p>
+                </div>
+            `;
+        },
+        eventCardMaxContent(event, startTime, endTime) {
+            return `
+                <div class="event-title" style="height:200px">${event.name}</div>
+                <span class="dash divider" style="margin-bottom:15px;height: 1px;
+                background-color: #ccc;
+                margin: 25px 45px;width:650px;"></span>
+                <div class="time-block-max" style="height:200px">
+                    <span>${startTime}</span>
+                    <span class="dash" style="margin-bottom:15px;">—</span>
+                    <span>${endTime}</span>
+                </div>
+                <span class="dash divider" style="margin-bottom:15px;height: 1px;
+                background-color: #ccc;
+                margin: 25px 45px;width:650px;"></span>
+                <div style="height:200px;text-align:center;margin-top:50px;">
+                    <div class="label" style="font-size:50px;margin-bottom:70px;">借用單位</div>
+                    <div class="value">${event.unit}</div>
+                </div>
+                <span class="dash divider" style="margin-bottom:15px;height: 1px;
+                background-color: #ccc;
+                margin: 25px 45px;width:650px;"></span>
+                <div style="height:200px;margin-top:50px;">
+                <div class="label"  style="font-size:50px;margin-bottom:70px;">借用人</div>
+                <div class="value">${event.chinesename}</div>
                 </div>
             `;
         },
@@ -436,7 +465,14 @@ export default {
                 document.querySelector('.event-list').innerHTML = '';
                 const eventCard = document.createElement('div');
                 eventCard.className = 'event-title';
-                eventCard.innerHTML = '<h3>今日無會議</h3>';
+                let no_reservation_msg;
+                if (events.length == 0) {
+                    no_reservation_msg = '今日無會議';
+                }
+                else {
+                    no_reservation_msg = '今日會議已結束';
+                }
+                eventCard.innerHTML = `<h3 style="margin-top:60%;">${no_reservation_msg}</h3>`;
                 document.querySelector('.event-list').appendChild(eventCard);
                 this.removeBothEvent();
             }
@@ -453,9 +489,9 @@ export default {
                 for (const event of events) {
                     const eventCard = document.createElement('div');
                     eventCard.className = 'event-card-min';
-                    const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    
+                    const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }).slice(2, 7);
+                    const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }).slice(2, 7);
+                    console.log(startTime)
                     // not display the event which is already ended
                     const datetime = new Date();
                     if (new Date(event.end_time) < datetime) {
@@ -484,7 +520,7 @@ export default {
                             // put the first event to the div which class is event-list-now
                             const eventCardNow = document.createElement('div');
                             eventCardNow.className = 'event-card-max';
-                            eventCardNow.innerHTML = this.eventCardContent(event, startTime, endTime);
+                            eventCardNow.innerHTML = this.eventCardMaxContent(event, startTime, endTime);
                             // replace the event if there is an event
                             if (document.querySelector('.event-list-now').childNodes.length == 0) {
                                 document.querySelector('.event-list-now').appendChild(eventCardNow);
@@ -509,7 +545,7 @@ export default {
                         const eventCardNow = document.createElement('div');
                         eventCardNow.className = 'event-card-max';
                         console.log('put next event:', event);
-                        eventCardNow.innerHTML = this.eventCardContent(event, startTime, endTime);
+                        eventCardNow.innerHTML = this.eventCardMaxContent(event, startTime, endTime);
                         // replace the event if there is an event
                         if (document.querySelector('.event-list-next').childNodes.length == 0) {
                             document.querySelector('.event-list-next').appendChild(eventCardNow);
@@ -533,7 +569,14 @@ export default {
                     }
                 }
                 else if (now_empty && next_empty) {
-                    document.querySelector('.event-list').innerHTML = '<h3>今日無會議</h3>';
+                let no_reservation_msg;
+                if (events.length == 0) {
+                    no_reservation_msg = '今日無會議';
+                }
+                else {
+                    no_reservation_msg = '今日會議已結束';
+                }
+                    document.querySelector('.event-list').innerHTML = `<h3 style="margin-top:60%;">${no_reservation_msg}</h3>`;
                     // remove the now and next event if there is no event
                     this.removeBothEvent();
                 }
