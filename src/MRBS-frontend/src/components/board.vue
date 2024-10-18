@@ -260,6 +260,7 @@ export default {
                             'font-size': '16px',
                             'text-align': 'center',
                             'background-color': 'white',
+                            'border-radius': '20px'
                         },
                         td: {
                             'font-size': '18px',

@@ -189,24 +189,32 @@ export default {
                     summary: true,     
                 },
                 style: {
-                    container:{
-                    'margin-left':'20px'
+                        container:{
+                        'margin-left':'20px',
                     },
-                    table: {
-                    border: '3px solid #ccc',
-                    'font-size': '16px',
-                    'text-align': 'center'
+                        table: {
+                            border: '3px solid #ccc',
+                            'font-size': '16px',
+                            'text-align': 'center'
+                        },
+                        th: {
+                            'background-color': ' #3A3937',
+                            'color': 'white',
+                            'font-size': '18px',
+                            'position': 'sticky', // 使標題固定
+                            'top': '0', // 固定在表格的頂部
+                            'z-index': '1', // 確保標題在最上層
+                            'font-weight': 'bold'  ,
+                            'border-right': 'none',
+                            'border-left': 'none',
+                        },
+                        td: {
+                            'font-size': '18px',
+                            'font-weight': 'bold'  ,
+                            'border-right': 'none',
+                            'border-left': 'none',
+                        },
                     },
-                    th: {
-                        'background-color': 'lightgray',
-                        color: '#333',
-                        'position': 'sticky', // 使標題固定
-                        'top': '0', // 固定在表格的頂部
-                        'z-index': '1', // 確保標題在最上層
-                    },
-
-                
-                }
 
             }).render(document.getElementById('gridtable'));
             
