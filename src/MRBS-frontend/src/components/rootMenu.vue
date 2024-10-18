@@ -1,7 +1,6 @@
 <template>
     <div class="menu">
-        <h3 id="accountName" class="menu-title" ></h3>
-        <div class="page-choose" style="">
+        <div class="page-choose" >
             <div id="privilege" class="choice" v-on:click="changePage">
                 <h3 class="pagetext">權限管理</h3>
             </div>

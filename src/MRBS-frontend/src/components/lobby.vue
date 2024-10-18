@@ -56,7 +56,6 @@ export default {
                     document.head.appendChild(script);
                 });
             }));
-            
         },
         async getBlocksAndId() {
             const res = await fetch(`/api/doc?doc_name=use`, {

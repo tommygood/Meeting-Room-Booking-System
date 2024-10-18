@@ -20,7 +20,7 @@
                     <input type="text" class="hamburger-request" name='name' placeholder="會議名稱" />
                 </div>
                 <div class="input-group">
-                    <h2 class="hamburger-request-title">申請人 ：</h2>
+                    <h2 class="hamburger-request-title">&nbsp;&nbsp;&nbsp;申請人 ：</h2>
                     <input type="text" class="hamburger-request" name='person' placeholder="申請人(固定)"
                         style="background-color:#9999995f" readonly />
                 </div>
@@ -370,6 +370,6 @@ export default {
 </script>
 <style scoped>
 input {
-    padding-left: 2%;
-}
+            padding-left: 3%;  /* 調整右邊的內邊距 */
+        }
 </style>

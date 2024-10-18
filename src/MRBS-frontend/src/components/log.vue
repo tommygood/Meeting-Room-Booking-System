@@ -185,7 +185,7 @@ export default {
                 resizable: true,
                 pagination: {
                     enabled: true,     
-                    limit: 5,          
+                    limit: 20,          
                     summary: true,     
                 },
                 style: {
