@@ -52,9 +52,9 @@ export default {
                     html: DOMPurify.sanitize(`
                         ${StartTime} ~ ${EndTime}<br>
                         會議：${info.event.title}<br>
-                        借用單位: ${info.event.extendedProps.unit}<br>
-                        申請人: ${info.event.extendedProps.chinesename}<br>
-                        分機號碼: ${info.event.extendedProps.number}<br>
+                        借用單位：${info.event.extendedProps.unit}<br>
+                        申請人：${info.event.extendedProps.chinesename}<br>
+                        分機號碼：${info.event.extendedProps.number}<br>
                     `),
                     confirmButtonText: "OK",
                 })
@@ -155,11 +155,11 @@ export default {
             Swal.fire({
                 title: DOMPurify.sanitize(conference_info.title),
                 html: DOMPurify.sanitize(`
-                ${conference_info.date} <br>
-                ${startTime} ~ ${endTime}<br>
-                借用單位: ${conference_info.unit}<br>
-                申請人: ${conference_info.chinesename}<br>
-                分機號碼: ${conference_info.number}<br>
+                開始日期：${startTime}<br>
+                結束日期：${endTime}<br>
+                借用單位：${conference_info.unit}<br>
+                申&ensp;請&ensp;人：${conference_info.chinesename}<br>
+                分機號碼：${conference_info.number}<br>
             `),
                 showCancelButton: true,
                 showDenyButton: true,
@@ -315,6 +315,7 @@ export default {
                 end.setHours(23, 59, 59, 999);
                 const startOfDay = self.formatDateTimeForDatabase(start);
                 const endOfDay = self.formatDateTimeForDatabase(end);
+                console.log(config.apiUrl  + `/reservation?start_time=${startOfDay}&end_time=${endOfDay}`)
                 fetch(self.eventApiUrl(startOfDay, endOfDay), {
                     method: 'GET',
                     credentials: 'include',
@@ -324,6 +325,8 @@ export default {
                 .then(async (result) => {
                     const events = result.data || [];
                     await self.$nextTick();
+                    // sleep 1 sec
+                    await new Promise(resolve => setTimeout(resolve, 1000));
                     const filteredEvents = events.filter(event => event.identifier === self.info.identifier);
                     filteredEvents.sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
 
@@ -334,13 +337,15 @@ export default {
                             const popup = document.createElement('div');
                             popup.className = 'list-content_box';
                             popup.style.display = 'flex';
-                            popup.style.margin = '5%';
+                            popup.style.margin = '1%';
                             const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                             const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                             const date = new Date(event.start_time).toLocaleDateString([], {year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short' });
                             popup.innerHTML = DOMPurify.sanitize(`
                             <div class="list-subtitle">
-                                ${date} ${startTime} ~ ${endTime}
+                                ${date}
+                                <br>
+                                ${startTime} ~ ${endTime}
                                 <br>
                                 <div class="list-title">${event.name}</div>
                                 
@@ -430,3 +435,9 @@ export default {
 }
     
 </script>
+<style>
+#swal2-html-container {
+    text-align: left;
+    margin-left: 18%;
+}
+</style>

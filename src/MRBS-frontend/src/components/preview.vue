@@ -83,8 +83,6 @@ export default {
         this.reservationMonitor();
         // reload the page every 15 minutes
         this.reloadMonitor();
-        const events = await this.getevent();
-        this.reservationStausCheck(events);
     },
     data() {
         return {
@@ -312,7 +310,6 @@ export default {
                     },
                 });
             }
-            
         },
         displayDatetime() {
             // get datetime from query string if url path is not demo
@@ -327,7 +324,6 @@ export default {
                 this.date = datetime.toLocaleDateString();
                 this.time = datetime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             }
-            
         },
         setTopDatetime() {
             // 顯示看板上方日期時間(3頁)
@@ -541,7 +537,6 @@ export default {
                 }
             }
             this.swiper.update();
-            
             return triggered_event;
         },
         // use settimout to keep checking if the reservation is changed

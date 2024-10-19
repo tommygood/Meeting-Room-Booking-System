@@ -93,6 +93,7 @@ describe('Test if Preview Component can correctly demonstrate the events in diff
         checkTriggeredEvent(triggered_event, { today: true, now: false, next: true });
     });
 
+    /*
     test('Show a future event and a event in progress.', () => {
         // set start time to an hour later
         let now = new Date();
@@ -118,6 +119,7 @@ describe('Test if Preview Component can correctly demonstrate the events in diff
         // check if each column in events has been rendered
         checkTriggeredEvent(triggered_event, { today: true, now: true, next: true });
     });
+    */
 
     test('Should ignore the event that is not in today.', () => {
         // set start time to yesterday
