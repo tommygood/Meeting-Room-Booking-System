@@ -185,7 +185,7 @@ export default {
                 resizable: true,
                 pagination: {
                     enabled: true,     
-                    limit: 5,          
+                    limit: 20,          
                     summary: true,     
                 },
                 style: {
@@ -253,7 +253,7 @@ tr:nth-of-type(odd) td {
 }
 /* 表格大小 */
 .gridjs-wrapper{
-    max-height: 83vh;
+    max-height: 50vh;
 }
 
 

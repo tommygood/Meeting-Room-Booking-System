@@ -269,6 +269,7 @@ export default {
                             'border-right': 'none',
                             'border-left': 'none',
                         },
+                        
                     },
             }).render(gridContainer);
         },
@@ -288,7 +289,6 @@ export default {
             const endDate = new Date(endInput); 
             endDate.setHours(23, 59, 59, 999); 
             const end = endDate.toISOString().split('.')[0];
-
 
             this.fetchData(start, end)
             .then(rows => {
@@ -357,6 +357,7 @@ export default {
 }
 </style>
 <style scoped>
+
 .table_header{
     background-color: #3A3937;
     color: 'white';
@@ -377,6 +378,7 @@ td {
 .gridjs-wrapper{
   max-height: 90vh;
 }
+
 button {
   background: #AAAAAA;
   border-radius: 999px;
