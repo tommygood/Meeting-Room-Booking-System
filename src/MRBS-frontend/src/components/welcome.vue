@@ -12,7 +12,7 @@
             <div class="content-card">
                 <button class="login-btn" v-on:click="redirectBackend('/login/sso')">登入</button>
                 <div class="footer-links">
-                    <a href="#" v-on:click="showRules('rules')">使用規則</a>
+                    <a href="#" v-on:click="showRules('use')">使用規則</a>
                     <a href="#" v-on:click="showRules('equipment')">設備介紹</a>
                 </div>
             </div>
@@ -75,7 +75,7 @@ export default {
                 htmlContent += `<img src="${block.data.url}" style="width:${block.data.width}">`;
                 }
                 });
-            const title = (doc_name=='rules')?'會議室使用規則': '器材規則';
+            const title = (doc_name=='use')?'會議室使用規則': '器材規則';
             Swal.fire({
                 title: title,
                 html: htmlContent, // 顯示會議室規則，目前排版置中(需修改)
