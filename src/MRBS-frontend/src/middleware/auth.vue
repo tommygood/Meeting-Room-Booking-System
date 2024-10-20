@@ -14,7 +14,7 @@ export default {
                     credentials: 'include',
                 });
                 //const data = await res.json();
-                let result = {suc : false, reason : '', privelege_level : -1};
+                let result = {suc : false, reason : '', privelege_level : 0};
                 // res status 200 means the user is already logged in, then call the next middleware
                 if (res.status === 200) {
                     const data = await res.json();
