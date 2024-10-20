@@ -97,6 +97,7 @@ export default {
         },
         // post reservation
         async reservationPost() {
+            console.log("Reservation");
             const form = document.getElementById('request');
             const formData = new FormData(form);
             const name = formData.get('name');

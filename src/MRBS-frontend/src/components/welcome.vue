@@ -65,7 +65,6 @@ export default {
         },
         async showRules(doc_name) {
             const text = await this.getDoc(doc_name);
-            console.log(doc_name);
             let htmlContent = '';
             text.blocks.forEach(block =>{
                 if (block.type === 'paragraph' && block.data && block.data.text) {
@@ -76,7 +75,9 @@ export default {
                 htmlContent += `<img src="${block.data.url}" style="width:${block.data.width}">`;
                 }
                 });
+            const title = (doc_name=='rules')?'會議室使用規則': '器材規則';
             Swal.fire({
+                title: title,
                 html: htmlContent, // 顯示會議室規則，目前排版置中(需修改)
             });
         },

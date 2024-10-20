@@ -29,32 +29,40 @@ export default {
         eventClick : {
             type : Function,
             default : (info) => {
-                const StartTime = info.event.start.toLocaleString('zh-TW', {
+                const startWeekday = ['日', '一', '二', '三', '四', '五', '六'][new Date(info.event.start).getDay()];
+                const endWeekday = ['日', '一', '二', '三', '四', '五', '六'][new Date(info.event.end).getDay()];
+
+                const startDate = new Date(info.event.start).toLocaleDateString('zh-TW', {
+                    year: 'numeric',
                     month: '2-digit',
                     day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false,
-                    weekday: 'short'
                 });
-                const EndTime = info.event.end.toLocaleString('zh-TW', {
-                    month: '2-digit',
-                    day: '2-digit',
+                const startTime = new Date(info.event.start).toLocaleTimeString('zh-TW', {
                     hour: '2-digit',
                     minute: '2-digit',
-                    hour12: false,
-                    weekday: 'short'
+                    hour12: false, // 使用24小時制
+                });
+
+                const endDate = new Date(info.event.end).toLocaleDateString('zh-TW', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                });
+                const endTime = new Date(info.event.end).toLocaleTimeString('zh-TW', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false, // 使用24小時制
                 });
 
                 Swal.fire({
                     title: DOMPurify.sanitize(info.event.title),
 
                     html: DOMPurify.sanitize(`
-                        ${StartTime} ~ ${EndTime}<br>
-                        會議：${info.event.title}<br>
-                        借用單位：${info.event.extendedProps.unit}<br>
-                        申請人：${info.event.extendedProps.chinesename}<br>
-                        分機號碼：${info.event.extendedProps.number}<br>
+                    開始日期：${startDate}(${startWeekday}) ${startTime}<br>
+                    結束日期：${endDate}(${endWeekday}) ${endTime}<br>
+                    借用單位：${info.event.extendedProps.unit}<br>
+                    申&ensp;請&ensp;人：${info.event.extendedProps.chinesename}<br>
+                    分機號碼：${info.event.extendedProps.number}<br>
                     `),
                     confirmButtonText: "OK",
                 })
@@ -138,29 +146,41 @@ export default {
         },
         showEditConferncePage(conference_info) {
             console.log('showEditConferncePage:', conference_info);
-            const startTime = new Date(conference_info.start).toLocaleTimeString('zh-TW',  {month: '2-digit',
+            const startWeekday = ['日', '一', '二', '三', '四', '五', '六'][new Date(conference_info.start).getDay()];
+            const endWeekday = ['日', '一', '二', '三', '四', '五', '六'][new Date(conference_info.end).getDay()];
+
+            const startDate = new Date(conference_info.start).toLocaleDateString('zh-TW', {
+                year: 'numeric',
+                month: '2-digit',
                 day: '2-digit',
+            });
+            const startTime = new Date(conference_info.start).toLocaleTimeString('zh-TW', {
                 hour: '2-digit',
                 minute: '2-digit',
-                hour12: false,
-                weekday: 'short'
-            })
-            const endTime = new Date(conference_info.end).toLocaleTimeString('zh-TW',  {month: '2-digit',
+                hour12: false, // 使用24小時制
+            });
+
+            const endDate = new Date(conference_info.end).toLocaleDateString('zh-TW', {
+                year: 'numeric',
+                month: '2-digit',
                 day: '2-digit',
+            });
+            const endTime = new Date(conference_info.end).toLocaleTimeString('zh-TW', {
                 hour: '2-digit',
                 minute: '2-digit',
-                hour12: false,
-                weekday: 'short'
-            })
+                hour12: false, // 使用24小時制
+            });
+
             Swal.fire({
                 title: DOMPurify.sanitize(conference_info.title),
                 html: DOMPurify.sanitize(`
-                開始日期：${startTime}<br>
-                結束日期：${endTime}<br>
-                借用單位：${conference_info.unit}<br>
-                申&ensp;請&ensp;人：${conference_info.chinesename}<br>
-                分機號碼：${conference_info.number}<br>
-            `),
+                    開始日期：${startDate}(${startWeekday}) ${startTime}<br>
+                    結束日期：${endDate}(${endWeekday}) ${endTime}<br>
+                    借用單位：${conference_info.unit}<br>
+                    申&ensp;請&ensp;人：${conference_info.chinesename}<br>
+                    分機號碼：${conference_info.number}<br>
+                `),
+
                 showCancelButton: true,
                 showDenyButton: true,
                 cancelButtonText: 'OK',
@@ -338,12 +358,15 @@ export default {
                             popup.className = 'list-content_box';
                             popup.style.display = 'flex';
                             popup.style.margin = '1%';
-                            const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                            const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                            const date = new Date(event.start_time).toLocaleDateString([], {year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short' });
+                            // get weekday from date
+                            const weekday = ['日', '一', '二', '三', '四', '五', '六'][new Date(event.start_time).getDay()];
+                            const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' ,hour12: false });
+                            const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' ,hour12: false});
+                            const date = new Date(event.start_time).toLocaleDateString([], {year: 'numeric', month: '2-digit', day: '2-digit'});
+                            
                             popup.innerHTML = DOMPurify.sanitize(`
                             <div class="list-subtitle">
-                                ${date}
+                                ${date}(${weekday})
                                 <br>
                                 ${startTime} ~ ${endTime}
                                 <br>
@@ -439,5 +462,6 @@ export default {
 #swal2-html-container {
     text-align: left;
     margin-left: 18%;
+    font-family: "Microsoft JhengHei", sans-serif;
 }
 </style>

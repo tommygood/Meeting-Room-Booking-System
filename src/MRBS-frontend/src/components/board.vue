@@ -1,4 +1,5 @@
 <template>
+    <link rel="stylesheet" href="https://unpkg.com/gridjs@6.2.0/dist/theme/mermaid.min.css">
     <user_header :set-info="setInfo" :info="info"></user_header>
     <div class="test">
         <root_menu :setPageName="setPageName"></root_menu>
@@ -70,6 +71,7 @@ export default {
     async mounted() {
         const cdn = ['https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.production.min.js',
             'https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js'
+        
         ];
         await this.loadCDN(cdn);
         this.initTable();
@@ -205,7 +207,7 @@ export default {
                     const startDate = new Date(item.start_time);
                     const endDate = new Date(item.end_time);
                     // convert startDate to 'YYYY/MM/DD weekday'
-                    const formattedDate = `${startDate.getFullYear()}/${(startDate.getMonth() + 1).toString().padStart(2, '0')}/${startDate.getDate().toString().padStart(2, '0')} （${['日', '一', '二', '三', '四', '五', '六'][startDate.getDay()]}）`;
+                    const formattedDate = `${startDate.getFullYear()}/${(startDate.getMonth() + 1).toString().padStart(2, '0')}/${startDate.getDate().toString().padStart(2, '0')}(${['日', '一', '二', '三', '四', '五', '六'][startDate.getDay()]})`;
                     const startTime = `${startDate.getHours().toString().padStart(2, '0')}:${startDate.getMinutes().toString().padStart(2, '0')}`;
                     const endTime = `${endDate.getHours().toString().padStart(2, '0')}:${endDate.getMinutes().toString().padStart(2, '0')}`;
                     const formattedTime = `${startTime}~${endTime}`;
