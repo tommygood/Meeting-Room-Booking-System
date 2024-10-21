@@ -27,23 +27,23 @@
                 </div>
             </div>
             <div class ="inputdate">  
-                <tr id='table_header' style='display:none;'>
+                <tr id='table_header' style='display:none; height: 53.78px;'>
                     <td class="table_header">會議日期</td>
                     <td class="table_header">會議時間</td>
                     <td class="table_header">會議名稱</td>
                     <td class="table_header">是否顯示</td>
                 </tr>
                 <tr id='table_title' style='display:none;'>
-                    <td>
+                    <td class="table_title">
                         <input type="date" name="startdate" placeholder="開始時間" style="width:100px" />
                     </td>
-                    <td>
+                    <td class="table_title"> 
                         <input type="date" name="enddate" placeholder="結束時間" style="width:100px"/> 
                     </td>
-                    <td>
+                    <td class="table_title">
                         <input type="text" placeholder="Type a keyword..." id="grid-search" class="gridjs-input"/>
                     </td>
-                    <td>
+                    <td class="table_title">
                         <button v-on:click="searchBoard">
                             篩選
                         </button>
@@ -254,7 +254,7 @@ export default {
                 resizable: true,
                 pagination: {
                     enabled: true,     
-                    limit: 5,          
+                    limit: 10,          
                     summary: true,     
                 },
                 style: {
@@ -378,13 +378,16 @@ td {
   border-collapse: collapse !important;
   color: #FFF;
   font-size: 12px;
-  background-color: #AAAAAA;
+  background-color: rgb(238, 238, 238);
 
 }
 .gridjs-wrapper{
   max-height: 90vh;
 }
 
+.table_title{
+  padding: 6px 12px;
+}
 button {
   background: #AAAAAA;
   border-radius: 999px;

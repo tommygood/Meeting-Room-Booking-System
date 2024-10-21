@@ -490,8 +490,8 @@ export default {
                 for (const event of events) {
                     const eventCard = document.createElement('div');
                     eventCard.className = 'event-card-min';
-                    const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }).slice(2, 7);
-                    const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }).slice(2, 7);
+                    const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit',hour12:false });
+                    const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' ,hour12:false });
                     console.log(startTime)
                     // not display the event which is already ended
                     const datetime = new Date();
