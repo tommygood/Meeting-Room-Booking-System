@@ -486,6 +486,12 @@ body {
     initial-scale: 1;
 }
   @media screen and (max-width: 830px) {
+
+    #fc-dom-1 {
+      display: flex;
+      margin-bottom: 100%;
+      white-space: nowrap;
+    }
     
     h3, a {
         white-space: nowrap;

@@ -3,7 +3,6 @@ const { expect } = require("chai");
 
 // call violation api
 const Violation = require("../api/violation").Violation;
-console.log(Violation)
 const violation = new Violation();
 
 const ip = "127.0.0.1";
