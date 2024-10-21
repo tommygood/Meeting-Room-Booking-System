@@ -1,4 +1,6 @@
 <template>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <body>
         <header>
             <div class="navbar">
@@ -30,25 +32,31 @@ export default {
             account_name: this.username,
         };
     },
-    mounted() {
+    async mounted() {
         // load required cdn
         const cdn = ['https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js',
             'https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js',
             'https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js',
             'https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js'
         ];
-        this.loadCDN(cdn);
+        await this.loadCDN(cdn);
         this.setUserInfo();
     },
     methods: {
-        loadCDN(cdn) {
-            // load required cdn
-            cdn.forEach(src => {
-                const script = document.createElement('script');
-                script.src = src;
-                document.head.appendChild(script);
-            });
-        },
+      loadCDN(cdn) {
+          // Return a promise that resolves when all scripts are loaded
+          return Promise.all(
+              cdn.map(src => {
+                  return new Promise((resolve, reject) => {
+                      const script = document.createElement('script');
+                      script.src = src;
+                      script.onload = () => resolve(src); // Resolve when script is loaded
+                      script.onerror = () => reject(new Error(`Failed to load ${src}`)); // Reject if there's an error loading the script
+                      document.head.appendChild(script);
+                  });
+              })
+          );
+      },
         // toggle the menu
         toggleMenu() {
             console.log('toggleMenu');
@@ -211,8 +219,7 @@ body {
   
   /* 字體大小 */
   .fc-event-title {
-    font-size: 14px;
-  
+    margin-left: 3px;
   }
   
   /* 月曆每格大小 */
@@ -220,12 +227,18 @@ body {
     position: relative;
     box-sizing: border-box;
     width: auto;
+    font-family: "Microsoft JhengHei";
+    font-size: 14px;
   }
   
   .fc-daygrid-day-top {
     justify-content: center;
   }
-  
+
+  /* 點選當天看所有事件的popup*/
+  .fc-theme-standard .fc-popover{
+    font-family: "Microsoft JhengHei";
+  }
   :root {
     --fc-today-bg-color: #3C9A8620;
     --fc-button-bg-color: #215D5A;
@@ -354,6 +367,9 @@ body {
     cursor: pointer;
   
   }
+  .fc-toolbar-title{
+    font-family:"Microsoft JhengHei";
+  }
   
   /* 申請清單清單 */
   .hamburger-requestpage {
@@ -366,7 +382,7 @@ body {
   .hamburger-request-title {
     margin-left: 10px;
     font-size: 18px;
-    white-space: nowrap
+    white-space: nowrap;
   }
   
   .hamburger-bottom {
@@ -464,7 +480,28 @@ body {
   
   
   /* 響應式調整 */
-  @media (max-width: 830px) {
+
+  @viewport {
+    width: device-width;
+    initial-scale: 1;
+}
+  @media screen and (max-width: 830px) {
+    
+    h3, a {
+        white-space: nowrap;
+    }
+
+    #accountName {
+        margin-top: 20%;
+    }
+
+    td {
+        white-space: nowrap; /* Prevent text from wrapping to the next line */
+        overflow: hidden; /* Hide text that overflows */
+        text-overflow: ellipsis; /* Add "..." if text is too long */
+    }
+    
+
     body {
       display: block;
       flex-wrap: wrap;
@@ -476,6 +513,10 @@ body {
       width: 100vw;
       height: 100vh;
     }
+
+    #event-list {
+        display: none;
+    }
   
     .hamburger-menu {
       width: 100%;
@@ -486,6 +527,7 @@ body {
       /* left: 0; */
       transform: translateY(-100%);
       transition: transform 0.3s ease;
+      margin-top: 150%;
     }
   
     .hamburger-menu.active {

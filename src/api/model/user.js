@@ -16,7 +16,7 @@ module.exports = {
                 //const mobilePhone = user_info.mobilePhone == undefined ? null : user_info.mobilePhone;
                 const mobilePhone = null;
                 const unit = user_info.facultyRecords == undefined ? null : user_info.facultyRecords.unit;
-                const sql = 'INSERT INTO `User` (`identifier`, `chinesename`, `email`, `mobilePhone`, `unit`) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE `chinesename` = ?, `email` = ?, `mobilePhone` = ?, `unit` = ?;';
+                const sql = 'INSERT INTO `User` (`identifier`, `chinesename`, `email`, `mobilePhone`, `unit`,`status`) VALUES (?, ?, ?, ?, ?,1) ON DUPLICATE KEY UPDATE `chinesename` = ?, `email` = ?, `mobilePhone` = ?, `unit` = ?,`status`=`status`;';
                 await conn.query(sql, [user_info.identifier, user_info.chineseName, user_info.email, mobilePhone, unit, user_info.chineseName, user_info.email, mobilePhone, unit]);
                 db_conn.closeDBConnection(conn);
                 return true;

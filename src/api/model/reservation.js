@@ -51,6 +51,7 @@ module.exports = {
             return null;
         }
         else {
+            console.log("getShow");
             try {
                 sql = "SELECT * FROM `Reservation` WHERE `show` = 1 AND `status` = 0;";
                 const result = await conn.query(sql);
@@ -194,6 +195,14 @@ module.exports = {
                 return false;
             }
         }
+    },
+
+    checkRules : function(start_time, end_time) {
+        // check if start_time is less than end_time
+        if (start_time >= end_time) {
+            return "開始時間應小於結束時間，請再次確認";
+        }
+        return "";
     },
 
     // get reservation by reserve_id

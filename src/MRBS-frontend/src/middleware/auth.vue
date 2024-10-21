@@ -6,7 +6,7 @@ export default {
     methods: {
         async login() {
             try {
-                const res = await fetch(config.apiUrl + '/user/self', {
+                const res = await fetch(config.apiUrl + '/user/privilege', {
                     method: 'get',
                     headers: {
                         'Content-Type': 'application/json',
@@ -14,10 +14,12 @@ export default {
                     credentials: 'include',
                 });
                 //const data = await res.json();
-                let result = {suc : false, reason : 'test'};
+                let result = {suc : false, reason : '', privelege_level : 0};
                 // res status 200 means the user is already logged in, then call the next middleware
                 if (res.status === 200) {
+                    const data = await res.json();
                     result.suc = true;
+                    result.privelege_level = data.data;
                 }
                 else {
                     //result.reason = data.reason;

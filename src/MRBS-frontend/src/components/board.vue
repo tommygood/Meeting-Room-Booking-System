@@ -1,57 +1,57 @@
 <template>
+    <link rel="stylesheet" href="https://unpkg.com/gridjs@6.2.0/dist/theme/mermaid.min.css">
     <user_header :set-info="setInfo" :info="info"></user_header>
     <div class="test">
         <root_menu :setPageName="setPageName"></root_menu>
         <!-- 看板預覽/播放 -->
-        <div style='display:flex;flex-direction: column'>
+        <div style='display:flex;flex-direction: column;width:85%'>
             <h1 style='margin-left:2%'>
                 [ {{ page_name }} ]
             </h1>
-            <div style="font-size: 20px; outline: 3px dashed #000000; background-color: #cacaca; margin: 10px; padding: 10px;">
+            <div style="font-size: 20px; outline: 3px solid #000000; background-color: #cacaca; margin: 24px; padding: 10px;">
                 <form id="previewBoard" style='display:inline-flex'>
-                    <div class="input-group">
-                        <b>日期：</b>
+                    <div style='display:flex'>
+                        <b style='margin-top:3%;'>日期：</b>
                         <input type="date" class="hamburger-request" name="start-date"/>
                     </div>
-                    <div class="input-group">
-                        <b>時間：</b>
-                        <input type="time" id="start-time" name="start-time" class="hamburger-timerequest">
+                    <div style='display:flex'>
+                        <b style='margin-top:3%;width:30%'>時間：</b>
+                        <input type="time" id="start-time" name="start-time" class="hamburger-timerequest" style="width:70%">
                     </div>
                 </form>
-                <div style='display:inline-flex'>
+                <div style='display:inline-flex;margin-left:3%'>
                     <button id="board/preview" class="btn" v-on:click="previewBoard">未來預覽</button>
+                    <hr/>
+                    <hr/>
+                    <button style='display:inline-flex' id="board/demo" class="btn" v-on:click="changePage">當前播放</button>
                 </div>
-                <button style='display:inline-flex' id="board/demo" class="btn" v-on:click="changePage">
-                    看板播放
-                </button>
             </div>
-            <div class ="inputdate">
-                <tr id='table_header' style='display:none;'>
-                    <td>開始時間</td>
-                    <td>結束時間</td>
-                    <td>關鍵字搜尋</td>
-                    <td>操作</td>
+            <div class ="inputdate">  
+                <tr id='table_header' style='display:none; height: 53.78px;'>
+                    <td class="table_header">會議日期</td>
+                    <td class="table_header">會議時間</td>
+                    <td class="table_header">會議名稱</td>
+                    <td class="table_header">是否顯示</td>
                 </tr>
                 <tr id='table_title' style='display:none;'>
-                    <td>
+                    <td class="table_title">
                         <input type="date" name="startdate" placeholder="開始時間" style="width:100px" />
                     </td>
-                    <td>
+                    <td class="table_title"> 
                         <input type="date" name="enddate" placeholder="結束時間" style="width:100px"/> 
                     </td>
-                    <td>
+                    <td class="table_title">
                         <input type="text" placeholder="Type a keyword..." id="grid-search" class="gridjs-input"/>
                     </td>
-                    <td>
+                    <td class="table_title">
                         <button v-on:click="searchBoard">
                             篩選
                         </button>
-                        <button v-on:click="saveContent">
+                        <button v-on:click="saveContent" style="margin-left: 2%;">
                             儲存
                         </button>
                     </td>
                 </tr>
-
             </div>
             <div id="gridtable"></div>
         </div>
@@ -71,10 +71,11 @@ export default {
     async mounted() {
         const cdn = ['https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.production.min.js',
             'https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js'
+        
         ];
         await this.loadCDN(cdn);
-        await this.initTable();
-        await this.setTableTitle(1000);
+        this.initTable();
+        this.setTableTitle(1000, null);
         this.syncSearchBar();
         this.removeSearchBar();
     },
@@ -107,7 +108,7 @@ export default {
         setInfo(val) {
             this.info = val;
         },
-        setTableTitle(wait_seconds) {
+         setTableTitle(wait_seconds, t_header) {
             setTimeout(() => {
                 if (this.table_title == null) {
                     this.table_title = document.getElementById('table_title');
@@ -119,7 +120,10 @@ export default {
                 // replace the original header of search bar 
                 const origin_header = document.getElementsByClassName('gridjs-thead')[0];
                 origin_header.style.display = 'none';
-                const new_header = document.getElementById('table_header');
+                let new_header = document.getElementById('table_header');
+                if (new_header == null) {
+                    new_header = t_header;
+                }
                 table_body.insertBefore(new_header, table_body.firstChild);
                 new_header.style.display = '';
                 // show the table
@@ -202,7 +206,8 @@ export default {
                 const rows = data.data.map(item => {
                     const startDate = new Date(item.start_time);
                     const endDate = new Date(item.end_time);
-                    const formattedDate = `${(startDate.getMonth() + 1).toString().padStart(2, '0')}/${startDate.getDate().toString().padStart(2, '0')}`;
+                    // convert startDate to 'YYYY/MM/DD weekday'
+                    const formattedDate = `${startDate.getFullYear()}/${(startDate.getMonth() + 1).toString().padStart(2, '0')}/${startDate.getDate().toString().padStart(2, '0')}(${['日', '一', '二', '三', '四', '五', '六'][startDate.getDay()]})`;
                     const startTime = `${startDate.getHours().toString().padStart(2, '0')}:${startDate.getMinutes().toString().padStart(2, '0')}`;
                     const endTime = `${endDate.getHours().toString().padStart(2, '0')}:${endDate.getMinutes().toString().padStart(2, '0')}`;
                     const formattedTime = `${startTime}~${endTime}`;
@@ -243,33 +248,35 @@ export default {
                 }
                 ],
                 data: rows.map(row => row.data), 
-                width: '900px',
+                width: '98%',
                 fixedHeader: true,
                 search: true,
                 resizable: true,
                 pagination: {
                     enabled: true,     
-                    limit: 5,          
+                    limit: 10,          
                     summary: true,     
                 },
                 style: {
-                container: {
-                    'margin-left': '20px'
-                },
-                table: {
-                    border: '3px solid #ccc',
-                    'font-size': '16px',
-                    'text-align': 'center'
-                },
-                th: {
-                    'background-color': 'lightgray',
-                    color: '#333',
-                    'position': 'sticky',
-                    'top': '0',
-                    'z-index': '1',
-                },
-                td: {}
-                },
+                        container:{
+                        'margin-left':'20px',
+                    },
+                        table: {
+                            border: '3px solid #ccc',
+                            'font-size': '16px',
+                            'text-align': 'center',
+                            'background-color': 'white',
+                            'border-radius': '20px'
+                        },
+                        td: {
+                            'font-size': '18px',
+                            'font-weight': 'bold'  ,
+                            'border':'1px solid #e5e7eb',
+                            'border-right': 'none',
+                            'border-left': 'none',
+                        },
+                        
+                    },
             }).render(gridContainer);
         },
         searchBoard() {
@@ -280,6 +287,7 @@ export default {
                 alert('請輸入完整的開始和結束日期');
                 return;
             }
+            const table_header = (document.getElementById('table_header'));
 
             const startDate = new Date(startInput);
             startDate.setHours(0, 0, 0, 0); 
@@ -288,7 +296,6 @@ export default {
             const endDate = new Date(endInput); 
             endDate.setHours(23, 59, 59, 999); 
             const end = endDate.toISOString().split('.')[0];
-
 
             this.fetchData(start, end)
             .then(rows => {
@@ -303,7 +310,7 @@ export default {
             .catch(error => {
                 console.error('Error rendering Grid.js:', error);
             });
-            this.setTableTitle(1000);
+            this.setTableTitle(1000, document.getElementById('table_header'));
             this.removeSearchBar();
         },
         initTable() {
@@ -319,7 +326,6 @@ export default {
 
             // 初始載入時抓取一個月內的資料並更新表格
             this.fetchData(start, end).then(rows => {
-
                 this.updateGrid(rows); 
             }).catch(error => {
                 console.error('Error rendering Grid.js:', error);
@@ -357,19 +363,52 @@ export default {
 }
 </style>
 <style scoped>
-/* 表格大小 */
-table {
-    width: 100%;
-    border: 1px solid black;
-    border-collapse: collapse;
+
+.table_header{
+    background-color: #3A3937;
+    color: 'white';
+    font-size: 18px;
+    position: sticky;
+    top:0;
+    z-index: 1;
+    font-weight: bold ;
+    height:45px;
+}
+td {
+  border-collapse: collapse !important;
+  color: #FFF;
+  font-size: 12px;
+  background-color: rgb(238, 238, 238);
+
 }
 .gridjs-wrapper{
   max-height: 90vh;
 }
 
+.table_title{
+  padding: 6px 12px;
+}
 button {
-    background-color: #8F8E8E;
-    color: #fff;
+  background: #AAAAAA;
+  border-radius: 999px;
+  box-shadow: #999999 0 10px 20px -10px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-family: Inter,Helvetica,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Noto Color Emoji","Segoe UI Symbol","Android Emoji",EmojiSymbols,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans",sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  border: 1px solid #000;
+  opacity: 1;
+  outline: 0 solid transparent;
+  padding: 6px 18px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: fit-content;
+  word-break: break-word;
+
 }
 .inputdate{
   display:flex;

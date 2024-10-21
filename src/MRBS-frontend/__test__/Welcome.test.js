@@ -8,6 +8,6 @@ describe('App.vue', () => {
 
   test('歡迎內容是否正確', () => {
     const text = wrapper.find('h1').text();
-    expect(text).toBe('行政大樓 二樓會議室借用系統');
+    expect(text).toBe('行政大樓二樓會議室借用系統');
   });
 });

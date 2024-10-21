@@ -19,7 +19,7 @@ describe('Root Menu', async () => {
         vi.stubGlobal('location', { pathname: '/conference' }); // stub location.pathname
         wrapper.vm.setCurrentPageColor(); // call setCurrentPageColor method to set related page color
         const text = wrapper.text();
-        expect(text).toBe('權限管理會議管理看板管理使用規則器材規則登入紀錄');
+        expect(text).toBe('權限管理會議管理看板管理使用規則設備介紹登入紀錄');
         
     });
 });

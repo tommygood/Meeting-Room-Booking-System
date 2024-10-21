@@ -6,12 +6,6 @@
 
 body {
     font-family: sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-image: url('../../public/bg_board.png');
 }
 
 
@@ -94,18 +88,18 @@ body {
     margin-left: 20px;
 }
 
-    .event-details-min h3 {
-        font-size: 50px;
-        font-weight: 700;
-        width: auto;
-        color: #3e3a39;
-        margin-bottom: 8px;
-    }
+.event-details-min h3 {
+    font-size: 50px;
+    font-weight: 700;
+    width: auto;
+    color: #3e3a39;
+    margin-bottom: 8px;
+}
 
-    .event-details-min p {
-        font-size: 30px;
-        color: #999999;
-    }
+.event-details-min p {
+    font-size: 30px;
+    color: #999999;
+}
 
 /* NOW & NEXT */
 .event-card-max {
@@ -140,13 +134,13 @@ body {
     color: #00a4bb;
 }
 
-    .time-block-max span {
-        display: block;
-    }
+.time-block-max span {
+    display: block;
+}
 
-    .time-block-max .dash {
-        margin: 0 10px;
-    }
+.time-block-max .dash {
+    margin: 0 10px;
+}
 
 .label {
     font-size: 30px;
