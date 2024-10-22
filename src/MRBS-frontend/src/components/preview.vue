@@ -171,7 +171,7 @@ export default {
                 height: 8%;
                 border-top-left-radius: 20px;
                 border-top-right-radius: 20px;
-                padding-top: 30px;
+                padding-top: 20px;
                 font-size: 70px;
                 font-weight: 700;
                 color: #ffffff;
@@ -387,8 +387,8 @@ export default {
                 </div>
                 <div class="event-details-min" style="margin-left:10%">
                     <h3>${event.name}</h3>
-                    <p>借用單位：${event.unit}</p>
-                    <p>借用人：${event.chinesename}</p>
+                    <p style="font-weight:bold">借用單位：${event.unit}</p>
+                    <p style="font-weight:bold">借用人：${event.chinesename}</pe=>
                 </div>
             `;
         },
