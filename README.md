@@ -24,7 +24,13 @@
 - 基於 Quill 開發
 - 用於動態更新使用規則
 ### 看板播放
-- 提供頁面以在廣告機輪流播放 當日/當前/下一個 的會議
+- 提供頁面（`/board/demo`）以在廣告機輪流播放<b>即時</b>的 當日/當前/下一個 的會議
+
+  <details>
+    <summary>畫面</summary>
+
+    ![image](https://github.com/user-attachments/assets/550b8c25-db00-4fed-b7d0-9d9fbc52ba68)
+  </details>
 ## Prerequisite
 - Node v20 up
 ## Usage
