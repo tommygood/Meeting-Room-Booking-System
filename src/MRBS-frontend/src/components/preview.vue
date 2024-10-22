@@ -71,6 +71,7 @@ export default {
             'https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js'
         ];
         await this.loadCDN(cdn);
+        this.displayCureentTime();
         this.setBgImage();
         this.displayDatetime();
         this.setSwiper();
@@ -84,7 +85,6 @@ export default {
         this.reservationMonitor();
         // reload the page every 15 minutes
         this.reloadMonitor();
-        this.displayCureentTime();
     },
     data() {
         return {
@@ -99,16 +99,20 @@ export default {
         }
     },
     methods: {
+        keepDisplayCureentTime() {
+            this.displayCureentTime();
+            setInterval(() => {
+                this.displayCureentTime();
+            }, 1000);
+        },
         displayCureentTime() {
             // keep updating the current time
-            setInterval(() => {
-                const datetime = new Date();
-                // get weekday from datetime
-                
-                const weekday = ['日', '一', '二', '三', '四', '五', '六'][datetime.getDay()];
-                document.getElementById('current_time').innerHTML = datetime.toISOString().split('T')[0] + ` (${weekday})` +
-                '<br/>' + datetime.toTimeString().split(' ')[0].slice(0, 5);
-            }, 1000);
+            const datetime = new Date();
+            // get weekday from datetime
+            
+            const weekday = ['日', '一', '二', '三', '四', '五', '六'][datetime.getDay()];
+            document.getElementById('current_time').innerHTML = datetime.toISOString().split('T')[0] + ` (${weekday})` +
+            '<br/>' + datetime.toTimeString().split(' ')[0].slice(0, 5);
         },
         loadCSS() {
             const style = document.createElement('style');
@@ -152,7 +156,7 @@ export default {
             .table-container {
                 width: 90%;
                 height: 80%;
-                margin: 50px auto;
+                margin-left: 4%;
                 /* padding: 20px; */
                 background-color: rgba(255, 255, 255, 0.80);
                 border-radius: 20px;
@@ -173,6 +177,7 @@ export default {
                 color: #ffffff;
                 margin-bottom: 20px;
                 align-content: center;
+                text-align: center;
             }
 
             /* TODAY */
@@ -236,6 +241,7 @@ export default {
                 /* margin-bottom: 20px; */
                 align-content: center;
                 margin: 0px 25px;
+                text-algin: center;
             }
 
             .time-block-max {
