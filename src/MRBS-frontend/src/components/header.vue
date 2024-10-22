@@ -486,6 +486,12 @@ body {
     initial-scale: 1;
 }
   @media screen and (max-width: 830px) {
+
+    #fc-dom-1 {
+      display: flex;
+      margin-bottom: 100%;
+      white-space: nowrap;
+    }
     
     h3, a {
         white-space: nowrap;
@@ -527,7 +533,7 @@ body {
       /* left: 0; */
       transform: translateY(-100%);
       transition: transform 0.3s ease;
-      margin-top: 150%;
+      margin-top: 50%;
     }
   
     .hamburger-menu.active {

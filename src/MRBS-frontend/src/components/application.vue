@@ -253,6 +253,10 @@ export default {
             document.querySelector('input[name="person"]').value = this.info.chinesename;
             document.querySelector('input[name="unit"]').value = this.info.unit;
             document.querySelector('input[name="email"]').value = this.info.email;
+            // set margin-top = 150% on #hamburger-menu when the screen size is under 830px
+            if (window.innerWidth < 830) {
+                document.getElementById('hamburger-menu').style.marginTop = '150%';
+            }
         },
         syncStartEndDate() {
             const startDate = document.getElementById('startdate');
@@ -266,6 +270,10 @@ export default {
             document.getElementById('hamburger-requestedit').style.display = 'none';
             if (this.remove_application_when_back) {
                 this.setApplicationShow(false);
+            }
+            // set margin-top = 50% on #hamburger-menu when the screen size is under 830px
+            if (window.innerWidth < 830) {
+                document.getElementById('hamburger-menu').style.marginTop = '50%';
             }
         },
         async getDoc(doc_name) {

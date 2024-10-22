@@ -51,9 +51,8 @@ module.exports = {
             return null;
         }
         else {
-            console.log("getShow");
             try {
-                sql = "SELECT * FROM `Reservation` WHERE `show` = 1 AND `status` = 0;";
+                sql = "SELECT * FROM `Reservation` WHERE `status` = 0;";
                 const result = await conn.query(sql);
                 db_conn.closeDBConnection(conn);
                 return result[0];
