@@ -34,7 +34,13 @@ class Reservation {
         try {
             const start_time = req.query.start_time;
             const end_time = req.query.end_time;
-            const data = await this.model.getShow(start_time, end_time);
+            const data = await this.model.get(start_time, end_time);
+            // replace the reservation name with "校內會議" for showing in the TV screen
+            data.forEach((item) => {
+                if (!item.show) {
+                    item.name = "校內會議";
+                }
+            });
             res.json({data});
         }
         catch(e) {
@@ -43,15 +49,47 @@ class Reservation {
         }
     }
 
+    async checkRules(identifer, start_time, end_time) {
+        const user_priveilege = await User.getPrivilegeLevel(identifer);
+        let res = {suc : true, msg : ""};
+        if (user_priveilege < 1) {
+            // normal user can only reserve the room between 8:00 and 18:00
+            const start = new Date(start_time);
+            const end = new Date(end_time);
+
+            if (start.getHours() < 8 || end.getHours() > 18) {
+                res.suc = false;
+                res.msg = "一般使用者只能預約 8:00 ~ 18:00 的時間";
+            }
+            // normal user can only reserve the room between monday and friday
+            else if (start.getDay() == 0 || start.getDay() == 6 || end.getDay() == 0 || end.getDay() == 6) {
+                res.suc = false;
+                res.msg = "一般使用者只能預約星期一到星期五的時間";
+            }
+            // normal user can only reserve future time
+            else if (start.getTime() < Date.now()) {
+                res.suc = false;
+                res.msg = "一般使用者只能預約從現在開始的未來時間";
+            }
+        }
+        return res;
+    }
+
     async post(req, res) {
         try {
             const {room_id, name, start_time, end_time, show, ext} = req.body;
             const identifier = req.identifier;
+            const rules_pass = await this.checkRules(identifier, start_time, end_time);
             if (start_time >= end_time) {
                 // invlid time, start_time should be less than end_time
                 // log the action
                 Log.insert(req.ip, Operator.getOperator.reservationFailed.code, identifier);
                 res.json({result : "開始時間應該小於結束時間，請再次確認"});
+            }
+            else if (!rules_pass.suc) {
+                // log the action
+                Log.insert(req.ip, Operator.getOperator.reservationFailed.code, identifier);
+                res.json({result : rules_pass.msg});
             }
             else if (await this.model.checkOverlap(start_time, end_time)) {
                 // log the action
@@ -153,11 +191,11 @@ const reservation = new Reservation();
 router.get('/', jwt.verifyLogin, reservation.get);
 
 // insert a reservation if not conflict with other reservations
-router.post('/', jwt.verifyAdmin, reservation.post);
+router.post('/', jwt.verifyLogin, reservation.post);
 
 // get reservations which `show` is true and between the start_time and end_time
 // this is for showing the reservations in the TV screen
-router.get('/show', jwt.verifyLogin, reservation.getShow);
+router.get('/show', reservation.getShow);
 
 // update all columns except identifier in reservation by reserve_id and identifier
 router.put('/', jwt.verifyLogin, reservation.update);

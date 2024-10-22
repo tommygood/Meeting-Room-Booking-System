@@ -47,7 +47,6 @@ class SSOLogin {
 
 const login = new SSOLogin();
 
-
 router.get('/sso', login.sso);
 
 router.get('/callback', login.callback);

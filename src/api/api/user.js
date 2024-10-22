@@ -10,6 +10,7 @@ class User {
         this.updatePrivilegeLevel = this.updatePrivilegeLevel.bind(this);
         this.updateStatus = this.updateStatus.bind(this);
         this.getPrivilegeLevel = this.getPrivilegeLevel.bind(this);
+        this.getEmail = this.getEmail.bind(this);  
     }
 
     async get(req, res) {
@@ -43,7 +44,7 @@ class User {
     async getEmail(req, res) {
         try {
             const identifier = req.query.identifier;
-            const data = await User.getSelf(identifier);
+            const data = await this.model.getSelf(identifier);
             res.json({'email' : data.email});
         }
         catch(e) {

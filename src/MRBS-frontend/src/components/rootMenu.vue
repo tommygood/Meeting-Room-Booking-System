@@ -1,7 +1,6 @@
 <template>
     <div class="menu">
-        <h3 id="accountName" class="menu-title" ></h3>
-        <div class="page-choose" style="">
+        <div class="page-choose" >
             <div id="privilege" class="choice" v-on:click="changePage">
                 <h3 class="pagetext">權限管理</h3>
             </div>
@@ -15,7 +14,7 @@
                 <h3 class="pagetext">使用規則</h3>
             </div>
             <div id="rule/equipment" class="choice" v-on:click="changePage">
-                <h3 class="pagetext">器材規則</h3>
+                <h3 class="pagetext">設備介紹</h3>
             </div>
             <div id="log" class="choice" v-on:click="changePage">
                 <h3  class="pagetext">登入紀錄</h3>

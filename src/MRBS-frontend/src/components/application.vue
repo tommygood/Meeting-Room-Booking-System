@@ -20,7 +20,7 @@
                     <input type="text" class="hamburger-request" name='name' placeholder="會議名稱" />
                 </div>
                 <div class="input-group">
-                    <h2 class="hamburger-request-title">申請人 ：</h2>
+                    <h2 class="hamburger-request-title">&nbsp;&nbsp;&nbsp;申請人 ：</h2>
                     <input type="text" class="hamburger-request" name='person' placeholder="申請人(固定)"
                         style="background-color:#9999995f" readonly />
                 </div>
@@ -112,7 +112,7 @@
                     <input type="text" class="hamburger-request" name='name' placeholder="會議名稱" />
                 </div>
                 <div class="input-group">
-                    <h2 class="hamburger-request-title">申請人 ：</h2>
+                    <h2 class="hamburger-request-title">&nbsp;&nbsp;&nbsp;申請人 ：</h2>
                     <input type="text" class="hamburger-request" name='person' placeholder="申請人(固定)"
                         style="background-color:#ece673" readonly />
                 </div>
@@ -253,6 +253,10 @@ export default {
             document.querySelector('input[name="person"]').value = this.info.chinesename;
             document.querySelector('input[name="unit"]').value = this.info.unit;
             document.querySelector('input[name="email"]').value = this.info.email;
+            // set margin-top = 150% on #hamburger-menu when the screen size is under 830px
+            if (window.innerWidth < 830) {
+                document.getElementById('hamburger-menu').style.marginTop = '30%';
+            }
         },
         syncStartEndDate() {
             const startDate = document.getElementById('startdate');
@@ -263,8 +267,13 @@ export default {
         back() {
             document.getElementById('hamburger-content').style.display = 'block';
             document.getElementById('hamburger-requestpage').style.display = 'none';
+            document.getElementById('hamburger-requestedit').style.display = 'none';
             if (this.remove_application_when_back) {
                 this.setApplicationShow(false);
+            }
+            // set margin-top = 50% on #hamburger-menu when the screen size is under 830px
+            if (window.innerWidth < 830) {
+                document.getElementById('hamburger-menu').style.marginTop = '30%';
             }
         },
         async getDoc(doc_name) {
@@ -370,6 +379,6 @@ export default {
 </script>
 <style scoped>
 input {
-    padding-left: 2%;
-}
+            padding-left: 3%;  /* 調整右邊的內邊距 */
+        }
 </style>

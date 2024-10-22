@@ -37,8 +37,8 @@
                         <div class="popup-input">
                             <h2 class="title">目前狀態 :&nbsp;</h2>
                             <select id="actionSelect" class="selector"  name="status">
-                                <option value="1">有效</option>
-                                <option value="0">無效</option>
+                                <option value='1'>有效</option>
+                                <option value='0'>無效</option>
                             </select>
                         </div>
                         <div class="bottom-button">
@@ -166,9 +166,13 @@ export default {
         setPermission(event){
             document.getElementById('popup-privilege').style.display='flex';
             const id = event.target.id;
-            const [identifier, name] = id.split(' ');
+            const [identifier, name,privilege,status] = id.split(' ');
             this.selectedIdentifier = String(identifier);
             this.selectedName = name;
+            console.log();
+            document.getElementById('privilegeSelect').value= String(privilege);
+            document.getElementById('actionSelect').value= status;
+
         },
         deleteUser(){
             Swal.fire({
@@ -465,7 +469,7 @@ export default {
                     item.chinesename,
                     privilegeText,
                     statusText,
-                    gridjs.html(`<a href="#" class='editPermission' id='${item.identifier} ${item.chinesename}' >修改</a>`),
+                    gridjs.html(`<a href="#" class='editPermission' id='${item.identifier} ${item.chinesename} ${item.privilege_level} ${item.status}' >修改</a>`),
                     gridjs.html(`${item.violation_count}次 <button class='bind-addViolation fancy' id='${item.identifier}');">新增</button> <button href="#" class="bind-showViolation fancy" id='${item.identifier}'>查詢</button>`)
                     ],
                     extendedProps: {
@@ -475,9 +479,10 @@ export default {
                 }));
 
                 // add event listener to onclick buttons
-                setTimeout(() => {
+                setInterval(() => {
                     const editPermission = document.querySelectorAll('.editPermission');
                     editPermission.forEach(button => {
+                        console.log('set', this.setPermission)
                         button.addEventListener('click', this.setPermission);
                     });
                     const addViolation = document.querySelectorAll('.bind-addViolation');
@@ -498,40 +503,46 @@ export default {
                 new gridjs.Grid({
                     columns: ['單位名稱','姓名',  '身份權限', '狀態', '權限修改', '違規記點'],
                     data: data.map(item => item.data),
-                    width:'1200px',
+                    width:'95%',
                     fixedHeader:true,
                     search: true,
                     sort: true,
                     resizable: true,
                     pagination: {
                         enabled: true,     
-                        limit: 5,          
+                        limit: 20,          
                         summary: true,     
                     },
                     style: {
                         container:{
-                        'margin-left':'20px'
-                        },
+                        'margin-left':'20px',
+                    },
                         table: {
-                        border: '3px solid #ccc',
-                        'font-size': '16px',
-                        'text-align': 'center'
+                            border: '3px solid #ccc',
+                            'font-size': '16px',
+                            'text-align': 'center'
                         },
                         th: {
-                            'background-color': 'lightgray',
-                            color: '#333',
+                            'background-color': ' #3A3937',
+                            'color': 'white',
+                            'font-size': '18px',
                             'position': 'sticky', // 使標題固定
                             'top': '0', // 固定在表格的頂部
                             'z-index': '1', // 確保標題在最上層
+                            'font-weight': 'bold'  ,
+                            'border-right': 'none',
+                            'border-left': 'none',
                         },
                         td: {
-
+                            'font-size': '18px',
+                            'font-weight': 'bold'  ,
+                            'border-right': 'none',
+                            'border-left': 'none',
                         },
-                
                     },
 
                 }).render(document.getElementById('gridtable'));
-                this.setTableTitle(1000);
+                this.setTableTitle(1);
             });
             document.getElementById('grid-search').addEventListener('input', function(event) {
                 // 設定 Grid.js 的搜尋文字
@@ -549,12 +560,11 @@ table {
 }
 .test {
     display: flex;
-    background-color:#DDD;
 }
 button.fancy {
-  background: #5E5DF0;
-  border-radius: 999px;
-  box-shadow: #5E5DF0 0 10px 20px -10px;
+  background: #AAAAAA;
+  border-radius: 15px;
+  box-shadow: #999999 0 10px 20px -10px;
   box-sizing: border-box;
   color: #FFFFFF;
   cursor: pointer;
@@ -564,7 +574,7 @@ button.fancy {
   line-height: 24px;
   opacity: 1;
   outline: 0 solid transparent;
-  padding: 8px 18px;
+  padding: 6px 18px;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
@@ -574,6 +584,10 @@ button.fancy {
 }
 </style>
 <style scoped>
+
+td {
+    padding: 6px 12px;
+}
 
 /* 右半邊畫面 */
 .search-container{
@@ -672,6 +686,7 @@ tr:nth-of-type(odd) td {
     letter-spacing: 6.3px;
     text-align: center;
     margin:0px;
+    
 }
 .selector{
     width: 90px;
@@ -715,5 +730,10 @@ tr:nth-of-type(odd) td {
 .useradmin-button:hover{
   background-color: rgba(0, 0, 0, 0.2);
   cursor: pointer;
+}
+</style>
+<style scoped>
+.search-container {
+    margin-bottom:1%
 }
 </style>

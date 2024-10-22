@@ -13,12 +13,17 @@
         <div>
             <h1 style='margin-left:2%'>
             [ {{ page_name }} ]
-        </h1>
-            <div class="search-container" style="display:inline-flex">
-                <span class="search-label" >關鍵字搜尋 ： &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <input type="text" placeholder="Type a keyword..." id="grid-search" class="gridjs-input"/>
-            </div>
-            <button id="download-button" class='fancy' v-on:click="downloadLog" style="margin-left:55%;margin-top:20px;">下載紀錄</button>
+            </h1>
+            <tr id='table_title' style='display:none;'>
+                <td colspan='6'>
+                    <div class="search-container">
+                        <span class="search-label">關鍵字搜尋 :&nbsp;</span>
+                        <input type="text" placeholder="Type a keyword..." id="grid-search" class="gridjs-input"/>
+                        <button id="download-button" class='fancy' v-on:click="downloadLog" style="margin-left:5%;">下載紀錄</button>
+
+                    </div>
+                </td>
+            </tr>
             <div id="gridtable"></div>
         </div>
         
@@ -73,6 +78,21 @@ export default {
         },
         setPageName(val) {
             this.page_name = val;
+        },
+        setTableTitle(wait_seconds) {
+            setTimeout(() => {
+                if (this.table_title == null) {
+                    this.table_title = document.getElementById('table_title');
+                }
+                const table_body = document.getElementsByClassName('gridjs-tbody')[0];
+                // insert table title after table was rendered
+                this.table_title.style.display = '';
+                table_body.insertBefore(this.table_title, table_body.firstChild);
+                // show the table
+                document.getElementsByClassName('gridjs-input')[0].dispatchEvent(new Event('input')); // trigger search event to make the table have the correct style
+                document.getElementsByClassName('gridjs-table')[0].style.setProperty('display', 'table', 'important');
+                document.getElementsByClassName('gridjs-footer')[0].style.setProperty('display', 'block', 'important');
+            }, wait_seconds);
         },
         removeSearchBar() {
             // remove the search bar
@@ -159,7 +179,7 @@ export default {
             this.response = data.data;
         },
         async loadLogContent(){
-            await this.getLog({offset : 0, num : 20000, day_limit : 180})
+            await this.getLog({ offset: 0, num: 20000, day_limit: 180 });    
             const data = this.response.map(item => [
                 item.unit,
                 item.chinesename,
@@ -175,41 +195,49 @@ export default {
                     timeZoneName: 'short' 
                 }).format(new Date(item.datetime))
             ]);
+            
             new gridjs.Grid({
                 columns: ['單位', '姓名', 'ip', '操作內容', '操作時間'],
                 data: data,
-                width:'1200px',
-                fixedHeader:true,
+                width:'95%',
+                fixedHeader: true,
                 search: true,
                 sort: true,
                 resizable: true,
                 pagination: {
-                    enabled: true,     
-                    limit: 5,          
-                    summary: true,     
+                    enabled: true,
+                    limit: 20,
+                    summary: true,
                 },
                 style: {
-                    container:{
-                    'margin-left':'20px'
+                    container: {
+                        'margin-left': '20px',
                     },
                     table: {
-                    border: '3px solid #ccc',
-                    'font-size': '16px',
-                    'text-align': 'center'
+                        border: '3px solid #ccc',
+                        'font-size': '16px',
+                        'text-align': 'center'
                     },
                     th: {
-                        'background-color': 'lightgray',
-                        color: '#333',
+                        'background-color': ' #3A3937',
+                        'color': 'white',
+                        'font-size': '18px',
                         'position': 'sticky', // 使標題固定
                         'top': '0', // 固定在表格的頂部
                         'z-index': '1', // 確保標題在最上層
+                        'font-weight': 'bold',
+                        'border-right': 'none',
+                        'border-left': 'none',
                     },
-
-                
-                }
-
+                    td: {
+                        'font-size': '18px',
+                        'font-weight': 'bold',
+                        'border-right': 'none',
+                        'border-left': 'none',
+                    },
+                },
             }).render(document.getElementById('gridtable'));
-            
+            this.setTableTitle(1);
             document.getElementById('grid-search').addEventListener('input', function(event) {
                 // 設定 Grid.js 的搜尋文字
                 document.querySelector('.gridjs-search .gridjs-input').value = event.target.value;
@@ -231,6 +259,8 @@ export default {
     align-items: center;
     margin-left: 30px;
     margin-top: 10px;
+    padding: 6px 12px;
+
 }
 .search-label{
     font: 600 20px/1 Inter, Helvetica, Arial, serif;
@@ -245,7 +275,7 @@ tr:nth-of-type(odd) td {
 }
 /* 表格大小 */
 .gridjs-wrapper{
-    max-height: 83vh;
+    max-height: 50vh;
 }
 
 
