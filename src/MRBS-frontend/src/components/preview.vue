@@ -71,7 +71,7 @@ export default {
             'https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js'
         ];
         await this.loadCDN(cdn);
-        this.displayCureentTime();
+        this.keepDisplayCureentTime();
         this.setBgImage();
         this.displayDatetime();
         this.setSwiper();
@@ -128,6 +128,9 @@ export default {
                 font-family: sans-serif;
             }
 
+            .event-list-now {
+                height: 120%;
+            }
 
             .container {
                 width: 100%;
