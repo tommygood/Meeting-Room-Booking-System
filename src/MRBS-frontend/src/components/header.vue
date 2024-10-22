@@ -156,7 +156,7 @@ body {
   
   .navbar a {
     font-size: 20px;
-    margin: 0px 20px;
+    margin: 0px 0px;
     color: #3C9A86;
   }
   
@@ -399,6 +399,7 @@ body {
     padding: 2px;
     margin-top: 5px;
     margin-right: 5px;
+    /* background-color: #e2f0d975; */
   }
   
   input {
@@ -526,7 +527,7 @@ body {
   
     .hamburger-menu {
       width: 100%;
-      height: 60vh;
+      height: 100vh;
       /* position: absolute; */
       top: 0;
       order: 1;
