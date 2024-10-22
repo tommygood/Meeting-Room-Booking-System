@@ -40,8 +40,8 @@
             </div>
 
             <div class="swiper-pagination"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev" v-show="!demo"></div>
+            <div class="swiper-button-next" v-show="!demo"></div>
         </div>
     </div>
 </template>
@@ -618,7 +618,6 @@ export default {
 
 </style>
 <style scoped>
-
 body {
     background-image: url('@/assets/bg_board.png');
 }
