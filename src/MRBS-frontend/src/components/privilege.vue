@@ -37,8 +37,8 @@
                         <div class="popup-input">
                             <h2 class="title">目前狀態 :&nbsp;</h2>
                             <select id="actionSelect" class="selector"  name="status">
-                                <option value="1">有效</option>
-                                <option value="0">無效</option>
+                                <option value='1'>有效</option>
+                                <option value='0'>無效</option>
                             </select>
                         </div>
                         <div class="bottom-button">
@@ -166,9 +166,13 @@ export default {
         setPermission(event){
             document.getElementById('popup-privilege').style.display='flex';
             const id = event.target.id;
-            const [identifier, name] = id.split(' ');
+            const [identifier, name,privilege,status] = id.split(' ');
             this.selectedIdentifier = String(identifier);
             this.selectedName = name;
+            console.log();
+            document.getElementById('privilegeSelect').value= String(privilege);
+            document.getElementById('actionSelect').value= status;
+
         },
         deleteUser(){
             Swal.fire({
@@ -465,7 +469,7 @@ export default {
                     item.chinesename,
                     privilegeText,
                     statusText,
-                    gridjs.html(`<a href="#" class='editPermission' id='${item.identifier} ${item.chinesename}' >修改</a>`),
+                    gridjs.html(`<a href="#" class='editPermission' id='${item.identifier} ${item.chinesename} ${item.privilege_level} ${item.status}' >修改</a>`),
                     gridjs.html(`${item.violation_count}次 <button class='bind-addViolation fancy' id='${item.identifier}');">新增</button> <button href="#" class="bind-showViolation fancy" id='${item.identifier}'>查詢</button>`)
                     ],
                     extendedProps: {
@@ -682,6 +686,7 @@ tr:nth-of-type(odd) td {
     letter-spacing: 6.3px;
     text-align: center;
     margin:0px;
+    
 }
 .selector{
     width: 90px;

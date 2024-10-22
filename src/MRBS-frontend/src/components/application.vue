@@ -255,7 +255,7 @@ export default {
             document.querySelector('input[name="email"]').value = this.info.email;
             // set margin-top = 150% on #hamburger-menu when the screen size is under 830px
             if (window.innerWidth < 830) {
-                document.getElementById('hamburger-menu').style.marginTop = '150%';
+                document.getElementById('hamburger-menu').style.marginTop = '80%';
             }
         },
         syncStartEndDate() {

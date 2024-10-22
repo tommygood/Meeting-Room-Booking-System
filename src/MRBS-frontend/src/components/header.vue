@@ -531,7 +531,7 @@ body {
       top: 0;
       order: 1;
       /* left: 0; */
-      transform: translateY(-100%);
+      transform: translateY(-50%);
       transition: transform 0.3s ease;
       margin-top: 50%;
     }

@@ -199,7 +199,7 @@ export default {
             new gridjs.Grid({
                 columns: ['單位', '姓名', 'ip', '操作內容', '操作時間'],
                 data: data,
-                width: '1200px',
+                width:'95%',
                 fixedHeader: true,
                 search: true,
                 sort: true,

@@ -171,7 +171,7 @@ export default {
                 height: 8%;
                 border-top-left-radius: 20px;
                 border-top-right-radius: 20px;
-
+                padding-top: 50px;
                 font-size: 70px;
                 font-weight: 700;
                 color: #ffffff;
