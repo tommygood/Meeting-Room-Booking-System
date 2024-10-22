@@ -533,7 +533,7 @@ body {
       /* left: 0; */
       transform: translateY(-100%);
       transition: transform 0.3s ease;
-      margin-top: 150%;
+      margin-top: 50%;
     }
   
     .hamburger-menu.active {
