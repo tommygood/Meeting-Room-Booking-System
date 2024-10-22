@@ -242,6 +242,7 @@ export default {
                 align-content: center;
                 margin: 0px 25px;
                 text-algin: center;
+                margin-top:100px;
             }
 
             .time-block-max {
