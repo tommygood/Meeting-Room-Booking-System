@@ -461,7 +461,7 @@ export default {
 <style>
 #swal2-html-container {
     text-align: left;
-    margin-left: 18%;
     font-family: "Microsoft JhengHei", sans-serif;
+    max-height:'80%' !important
 }
 </style>
