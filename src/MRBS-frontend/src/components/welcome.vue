@@ -78,6 +78,7 @@ export default {
             const title = (doc_name=='use')?'會議室使用規則': '器材規則';
             Swal.fire({
                 width:'fit-content',
+                'max-width':'55%',
                 title: title,
                 html: htmlContent, // 顯示會議室規則，目前排版置中(需修改)
             });
