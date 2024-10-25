@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36" version="24.7.8">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36" version="24.8.2">
   <diagram name="第 1 页" id="1VKcg0zCmO8QLD_K8Hbc">
-    <mxGraphModel dx="1034" dy="412" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1088" dy="469" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -39,17 +39,17 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="d_T4CtBdEG4fSvAagIkc-11" value="將 Authrization code 以 query string 跳轉回&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;後端的 callback url&lt;/span&gt;&lt;div&gt;&lt;div&gt;/api/login/callback&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="620" y="280" width="130" height="60" as="geometry" />
+          <mxGeometry x="812" y="270" width="130" height="60" as="geometry" />
         </mxCell>
         <mxCell id="d_T4CtBdEG4fSvAagIkc-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="d_T4CtBdEG4fSvAagIkc-13" target="d_T4CtBdEG4fSvAagIkc-15" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="d_T4CtBdEG4fSvAagIkc-13" value="後端利用&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;Authrization code&amp;nbsp;&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;和&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&amp;nbsp;NCU OAuth : /oauth2/token&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;要求 access token&lt;/div&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="400" y="280" width="160" height="60" as="geometry" />
+          <mxGeometry x="592" y="270" width="160" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="d_T4CtBdEG4fSvAagIkc-15" target="d_T4CtBdEG4fSvAagIkc-19" edge="1">
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="d_T4CtBdEG4fSvAagIkc-15" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="160" y="310" as="targetPoint" />
+            <mxPoint x="362" y="300" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="d_T4CtBdEG4fSvAagIkc-20" value="Y" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="d_T4CtBdEG4fSvAagIkc-18" vertex="1" connectable="0">
@@ -58,13 +58,12 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="d_T4CtBdEG4fSvAagIkc-15" value="成功存取" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="240" y="270" width="80" height="80" as="geometry" />
+          <mxGeometry x="432" y="260" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="d_T4CtBdEG4fSvAagIkc-19" target="d_T4CtBdEG4fSvAagIkc-21" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="d_T4CtBdEG4fSvAagIkc-19" value="&lt;div&gt;將 access token以&lt;span style=&quot;background-color: initial;&quot;&gt;&amp;nbsp;cookie&lt;/span&gt;&lt;div&gt;的方式存到使用者端&lt;/div&gt;&lt;/div&gt;&lt;div&gt;並&lt;span style=&quot;background-color: initial;&quot;&gt;跳轉到前端頁面&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="50" y="280" width="120" height="60" as="geometry" />
+        <mxCell id="d_T4CtBdEG4fSvAagIkc-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="8-Wq-pjl8wOPaa6rkLst-1" target="d_T4CtBdEG4fSvAagIkc-21" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="302" y="330" as="sourcePoint" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="d_T4CtBdEG4fSvAagIkc-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="d_T4CtBdEG4fSvAagIkc-21" target="d_T4CtBdEG4fSvAagIkc-25" edge="1">
           <mxGeometry relative="1" as="geometry" />
@@ -99,6 +98,15 @@
         </mxCell>
         <mxCell id="d_T4CtBdEG4fSvAagIkc-33" value="前端顯示&lt;div&gt;使用者帳號種類&lt;/div&gt;&lt;div&gt;在頁面上&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="790" y="380" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8-Wq-pjl8wOPaa6rkLst-1" value="&lt;div&gt;將後端的 token以&lt;span style=&quot;background-color: initial;&quot;&gt;&amp;nbsp;cookie&lt;/span&gt;&lt;div&gt;的方式存到使用者端&lt;/div&gt;&lt;/div&gt;&lt;div&gt;並&lt;span style=&quot;background-color: initial;&quot;&gt;跳轉到前端頁面&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="270" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8-Wq-pjl8wOPaa6rkLst-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="8-Wq-pjl8wOPaa6rkLst-2" target="8-Wq-pjl8wOPaa6rkLst-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="8-Wq-pjl8wOPaa6rkLst-2" value="利用 access token&lt;br&gt;向 NCU Resource Server 存取 user 資料" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="242" y="270" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

@@ -71,7 +71,7 @@ export default {
             'https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js'
         ];
         await this.loadCDN(cdn);
-        this.displayCureentTime();
+        this.keepDisplayCureentTime();
         this.setBgImage();
         this.displayDatetime();
         this.setSwiper();
@@ -128,6 +128,9 @@ export default {
                 font-family: sans-serif;
             }
 
+            .event-list-now {
+                height: 120%;
+            }
 
             .container {
                 width: 100%;
@@ -171,7 +174,7 @@ export default {
                 height: 8%;
                 border-top-left-radius: 20px;
                 border-top-right-radius: 20px;
-                padding-top: 30px;
+                padding-top: 20px;
                 font-size: 70px;
                 font-weight: 700;
                 color: #ffffff;
@@ -387,8 +390,35 @@ export default {
                 </div>
                 <div class="event-details-min" style="margin-left:10%">
                     <h3>${event.name}</h3>
-                    <p>借用單位：${event.unit}</p>
-                    <p>借用人：${event.chinesename}</p>
+                    <p style="font-weight:bold">借用單位：${event.unit}</p>
+                    <p style="font-weight:bold">借用人：${event.chinesename}</pe=>
+                </div>
+            `;
+        },
+        eventCardMaxContent(event, startTime, endTime) {
+            return `
+                <div class="event-title" style="height:200px">${event.name}</div>
+                <span class="dash divider" style="margin-bottom:15px;height: 1px;
+                background-color: #ccc;
+                margin: 25px 45px;width:650px;"></span>
+                <div class="time-block-max" style="height:200px">
+                    <span>${startTime}</span>
+                    <span class="dash" style="margin-bottom:15px;">—</span>
+                    <span>${endTime}</span>
+                </div>
+                <span class="dash divider" style="margin-bottom:15px;height: 1px;
+                background-color: #ccc;
+                margin: 25px 45px;width:650px;"></span>
+                <div style="height:200px;text-align:center;margin-top:50px;">
+                    <div class="label" style="font-size:50px;margin-bottom:70px;">借用單位</div>
+                    <div class="value">${event.unit}</div>
+                </div>
+                <span class="dash divider" style="margin-bottom:15px;height: 1px;
+                background-color: #ccc;
+                margin: 25px 45px;width:650px;"></span>
+                <div style="height:200px;margin-top:50px;">
+                <div class="label"  style="font-size:50px;margin-bottom:70px;">借用人</div>
+                <div class="value">${event.chinesename}</div>
                 </div>
             `;
         },
@@ -577,6 +607,9 @@ export default {
                     }
                 }
                 else if (now_empty && next_empty) {
+                document.querySelector('.event-list').innerHTML = '';
+                const eventCard = document.createElement('div');
+                eventCard.className = 'event-title';
                 let no_reservation_msg;
                 if (events.length == 0) {
                     no_reservation_msg = '今日無會議';
@@ -584,9 +617,9 @@ export default {
                 else {
                     no_reservation_msg = '今日會議已結束';
                 }
-                    document.querySelector('.event-list').innerHTML = `<h3 style="margin-top:60%;">${no_reservation_msg}</h3>`;
-                    // remove the now and next event if there is no event
-                    this.removeBothEvent();
+                eventCard.innerHTML = `<h3 style="margin-top:60%;">${no_reservation_msg}</h3>`;
+                document.querySelector('.event-list').appendChild(eventCard);
+                this.removeBothEvent();
                 }
                 else if (now_empty && !next_empty && document.querySelectorAll('.swiper-slide').length == 3) {
                     const now_event = this.findSwiper('NOW');
