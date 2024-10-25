@@ -343,8 +343,13 @@ export default {
             else {
                 // get current datetime if url path is demo
                 const datetime = new Date();
-                this.date = datetime.toISOString().split('T')[0]; // 產生 YYYY-MM-DD 格式
-                this.time = datetime.toTimeString().split(' ')[0].slice(0, 5); // 產生 HH:MM 格式
+                // 取得當地時區的日期，格式為 YYYY-MM-DD
+    this.date = datetime.toLocaleDateString('en-CA'); // 'en-CA' 格式化為 YYYY-MM-DD
+    
+    // 取得當地時區的時間，格式為 HH:MM
+    this.time = datetime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+
+                console.log('date:', this.date, 'time:', this.time);
             }
         },
         setTopDatetime() {
@@ -360,7 +365,7 @@ export default {
             const day = new Date(this.date);
             const tomorrow = new Date(this.date);
             if (day < today_date) {
-                alert('日期不可晚於今天');
+                alert(`日期（${day}）不可晚於今天（${today_date}）`);
                 return null;
             }
             
