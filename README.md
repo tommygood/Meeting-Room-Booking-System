@@ -15,7 +15,7 @@
   <details>
     <summary>流程圖</summary>
 
-    ![image](https://github.com/user-attachments/assets/f62dd386-0089-4614-8aef-a58b838188a3)
+    ![image](https://github.com/user-attachments/assets/5bb72ed5-4119-485e-9c89-f5a9d358de4a)
   </details>
 ### 當特定 event 發生，使用 NCU SMTP Mail Server 寄信
 - 預約成功
