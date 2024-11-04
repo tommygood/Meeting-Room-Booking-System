@@ -49,7 +49,7 @@ export default {
     },
     async mounted() {
         const cdn = [
-            'https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js',
             'https://unpkg.com/gridjs@6.2.0/dist/gridjs.umd.js',
             'https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js'
         ];

@@ -7,12 +7,12 @@
                 <div id="hamburger-button" class="hamburger-button" v-on:click="toggleMenu"> </div>
                 <h1>行政大樓二樓<br>會議室預約系統</h1>
                 <h3 class="account-title" id="accountName">歡迎登入,&nbsp; {{ account_name }} </h3>
-                <a onclick="location.href='/'">［登出］</a>
+                <a v-on:click="redirect('/')">［登出］</a>
                 <!-- 切換 使用者/管理者 -->
-                <div class="useradmin" id='useradmin' onclick="">
-                    <img src="../../public/user.png" class="useradmin-button" onclick="location.href ='/lobby'">
+                <div class="useradmin" id='useradmin'>
+                    <img src="../../public/user.png" class="useradmin-button" v-on:click="redirect('/lobby')">
                     <hr style="margin: 0; height: 100%;" />
-                    <img src="../../public/admin.png" class="useradmin-button" onclick="location.href ='/privilege'">
+                    <img src="../../public/admin.png" class="useradmin-button" v-on:click="redirect('/privilege')">
                 </div>
             </div>
         </header>
@@ -43,6 +43,9 @@ export default {
         this.setUserInfo();
     },
     methods: {
+      redirect(path) {
+          window.location.href = path;
+      },
       loadCDN(cdn) {
           // Return a promise that resolves when all scripts are loaded
           return Promise.all(
