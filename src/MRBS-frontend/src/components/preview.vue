@@ -655,7 +655,7 @@ export default {
             setInterval(async () => {
                 const events = await this.getevent();
                 this.reservationStausCheck(events);
-            }, 30000);
+            }, 5000);
         },
         reloadMonitor() {
             // reload the page every 15 minutes
