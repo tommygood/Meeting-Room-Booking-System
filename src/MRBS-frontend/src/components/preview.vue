@@ -256,7 +256,6 @@ export default {
                 align-content: center;
                 margin: 0px 25px;
                 text-algin: center;
-                margin-top:100px;
             }
 
             .time-block-max {
@@ -656,7 +655,7 @@ export default {
             setInterval(async () => {
                 const events = await this.getevent();
                 this.reservationStausCheck(events);
-            }, 5000);
+            }, 30000);
         },
         reloadMonitor() {
             // reload the page every 15 minutes
