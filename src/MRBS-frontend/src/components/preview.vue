@@ -256,6 +256,7 @@ export default {
                 align-content: center;
                 margin: 0px 25px;
                 text-algin: center;
+                margin-top: 100px;
             }
 
             .time-block-max {
@@ -410,36 +411,22 @@ export default {
                 </div>
             `;
         },
+        
         eventCardMaxContent(event, startTime, endTime) {
+            // make event title
+            // if length of event.name > 9, then use different style
+            let event_title;
+            if (event.name.length > 14) {
+                event_title = `<div class="event-title" style="height:200px;margin-bottom:200px;">${event.name}</div>`;
+            }
+            else if (event.name.length > 7) {
+                event_title = `<div class="event-title" style="height:200px;margin-bottom:100px;">${event.name}</div>`;
+            }
+            else {
+                event_title = `<div class="event-title" style="height:200px">${event.name}</div>`;
+            }
             return `
-                <div class="event-title" style="height:200px">${event.name}</div>
-                <span class="dash divider" style="margin-bottom:15px;height: 1px;
-                background-color: #ccc;
-                margin: 25px 45px;width:650px;"></span>
-                <div class="time-block-max" style="height:200px">
-                    <span>${startTime}</span>
-                    <span class="dash" style="margin-bottom:15px;">—</span>
-                    <span>${endTime}</span>
-                </div>
-                <span class="dash divider" style="margin-bottom:15px;height: 1px;
-                background-color: #ccc;
-                margin: 25px 45px;width:650px;"></span>
-                <div style="height:200px;text-align:center;margin-top:50px;">
-                    <div class="label" style="font-size:50px;margin-bottom:70px;">借用單位</div>
-                    <div class="value">${event.unit}</div>
-                </div>
-                <span class="dash divider" style="margin-bottom:15px;height: 1px;
-                background-color: #ccc;
-                margin: 25px 45px;width:650px;"></span>
-                <div style="height:200px;margin-top:50px;">
-                <div class="label"  style="font-size:50px;margin-bottom:70px;">借用人</div>
-                <div class="value">${event.chinesename}</div>
-                </div>
-            `;
-        },
-        eventCardMaxContent(event, startTime, endTime) {
-            return `
-                <div class="event-title" style="height:200px">${event.name}</div>
+                ${event_title}
                 <span class="dash divider" style="margin-bottom:15px;height: 1px;
                 background-color: #ccc;
                 margin: 25px 45px;width:650px;"></span>
