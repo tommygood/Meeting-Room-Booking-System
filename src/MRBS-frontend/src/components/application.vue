@@ -133,14 +133,14 @@
                     <h2 class="hamburger-request-title">開始日期：</h2>
                     <input type="date" class="hamburger-request" name="startdate" id="startdate" />
                     <select name="starthour" id="editstarthour" style="margin-left:3%;">
-                        <option value="00">00</option>
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
-                        <option value="05">05</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
+                        <option v-if="is_admin" value="00">00</option>
+                        <option v-if="is_admin" value="01">01</option>
+                        <option v-if="is_admin" value="02">02</option>
+                        <option v-if="is_admin" value="03">03</option>
+                        <option v-if="is_admin" value="04">04</option>
+                        <option v-if="is_admin" value="05">05</option>
+                        <option v-if="is_admin" value="06">06</option>
+                        <option v-if="is_admin" value="07">07</option>
                         <option value="08">08</option>
                         <option value="09">09</option>
                         <option value="10">10</option>
@@ -151,13 +151,13 @@
                         <option value="15">15</option>
                         <option value="16">16</option>
                         <option value="17">17</option>
-                        <option value="18">18</option>
-                        <option value="19">19</option>
-                        <option value="20">20</option>
-                        <option value="21">21</option>
-                        <option value="22">22</option>
-                        <option value="23">23</option>
-                        <option value="24">24</option>
+                        <option v-if="is_admin" value="18">18</option>
+                        <option v-if="is_admin" value="19">19</option>
+                        <option v-if="is_admin" value="20">20</option>
+                        <option v-if="is_admin" value="21">21</option>
+                        <option v-if="is_admin" value="22">22</option>
+                        <option v-if="is_admin" value="23">23</option>
+                        <option v-if="is_admin" value="24">24</option>
                     </select>
                     <span>:</span>
                     <select name="startminute" id="editstartminute">
@@ -170,14 +170,14 @@
                     <h2 class="hamburger-request-title">結束日期：</h2>
                     <input type="date" class="hamburger-request" name="enddate" id="enddate" />
                     <select name="endhour" id="endhour" style="margin-left:3%;">
-                        <option value="00">00</option>
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
-                        <option value="05">05</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
+                        <option v-if="is_admin" value="00">00</option>
+                        <option v-if="is_admin" value="01">01</option>
+                        <option v-if="is_admin" value="02">02</option>
+                        <option v-if="is_admin" value="03">03</option>
+                        <option v-if="is_admin" value="04">04</option>
+                        <option v-if="is_admin" value="05">05</option>
+                        <option v-if="is_admin" value="06">06</option>
+                        <option v-if="is_admin" value="07">07</option>
                         <option value="08">08</option>
                         <option value="09">09</option>
                         <option value="10">10</option>
@@ -188,13 +188,13 @@
                         <option value="15">15</option>
                         <option value="16">16</option>
                         <option value="17">17</option>
-                        <option value="18">18</option>
-                        <option value="19">19</option>
-                        <option value="20">20</option>
-                        <option value="21">21</option>
-                        <option value="22">22</option>
-                        <option value="23">23</option>
-                        <option value="24">24</option>
+                        <option v-if="is_admin" value="18">18</option>
+                        <option v-if="is_admin" value="19">19</option>
+                        <option v-if="is_admin" value="20">20</option>
+                        <option v-if="is_admin" value="21">21</option>
+                        <option v-if="is_admin" value="22">22</option>
+                        <option v-if="is_admin" value="23">23</option>
+                        <option v-if="is_admin" value="24">24</option>
                     </select>
                     <span>:</span>
                     <select name="endminute" id="endminute">
@@ -203,24 +203,23 @@
                     </select>
                 </div>
 
-            </div>
-            <div class="request-check">
-                <input type="checkbox" id="checkrule">
-                <h2 class="hamburger-request-title">
-                    我已詳閱
-                    <a href="#" v-on:click="showRules">
-                        《會議室使用規則》
-                    </a>
-                </h2>
-            </div>
-            <div class="hamburger-bottom">
-                <div v-on:click="back" id="backbtnedit" class="hamburger-sendbutton">
-                    <h3 class="hamburger-title" style="color:white">返回</h3>
+                <div class="request-check">
+                    <input type="checkbox" id="checkrule">
+                    <h2 class="hamburger-request-title">
+                        我已詳閱
+                        <a href="#" v-on:click="showRules">
+                            《會議室使用規則》
+                        </a>
+                    </h2>
                 </div>
-                <div id="editbutton" class="hamburger-sendbutton">
-                    <h3 class="hamburger-title" style="color:white">編輯送出</h3>
+                <div class="hamburger-bottom">
+                    <div v-on:click="back" id="backbtnedit" class="hamburger-sendbutton">
+                        <h3 class="hamburger-title" style="color:white">返回</h3>
+                    </div>
+                    <div id="editbutton" class="hamburger-sendbutton">
+                        <h3 class="hamburger-title" style="color:white">編輯送出</h3>
+                    </div>
                 </div>
-
             </div>
         </form>
     </div>
@@ -239,6 +238,10 @@ export default {
         },
         setApplicationShow: Function,
         remove_application_when_back: {
+            type: Boolean,
+            default: false
+        },
+        is_admin: {
             type: Boolean,
             default: false
         },

@@ -106,13 +106,24 @@ export default {
             }, 1000);
         },
         displayCureentTime() {
-            // keep updating the current time
-            const datetime = new Date();
-            // get weekday from datetime
-            
-            const weekday = ['日', '一', '二', '三', '四', '五', '六'][datetime.getDay()];
-            document.getElementById('current_time').innerHTML = datetime.toISOString().split('T')[0] + ` (${weekday})` +
-            '<br/>' + datetime.toTimeString().split(' ')[0].slice(0, 5);
+            // set the current time to fixed value if the url path is not demo
+            const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+            if (!this.isDemoPage()) {
+                // get fixed time from query string
+                const urlParams = new URLSearchParams(window.location.search);
+                const date = urlParams.get('date');
+                const time = urlParams.get('time');
+                const weekday = weekdays[new Date(date).getDay()];
+                document.getElementById('current_time').innerHTML = date + ` (${weekday})` + '<br/>' + time;
+            }
+            else {
+                // keep updating the current time
+                const datetime = new Date();
+                // get weekday from datetime
+                const weekday = weekdays[datetime.getDay()];
+                document.getElementById('current_time').innerHTML = datetime.toISOString().split('T')[0] + ` (${weekday})` +
+                '<br/>' + datetime.toTimeString().split(' ')[0].slice(0, 5);
+            }
         },
         loadCSS() {
             const style = document.createElement('style');

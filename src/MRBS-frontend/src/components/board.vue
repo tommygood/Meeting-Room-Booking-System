@@ -248,7 +248,7 @@ export default {
                 }
                 ],
                 data: rows.map(row => row.data), 
-                width: '98%',
+                width: '96%',
                 fixedHeader: true,
                 search: true,
                 resizable: true,

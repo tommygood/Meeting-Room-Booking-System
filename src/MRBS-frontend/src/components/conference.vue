@@ -3,7 +3,7 @@
     <div class="test">
         <root_menu :setPageName="setPageName"></root_menu>
         <calendar :info="info" :eventClick="eventClick" ref="calendar_ref" :setApplicationShow="setApplicationShow"></calendar>
-        <application :info="info" :show="application_show" :remove_application_when_back="remove_application_when_back" :setApplicationShow="setApplicationShow"></application>
+        <application :info="info" :show="application_show" :remove_application_when_back="remove_application_when_back" :setApplicationShow="setApplicationShow" :is_admin="true"></application>
     </div>
 </template>
 <script>
