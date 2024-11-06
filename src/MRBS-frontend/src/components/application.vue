@@ -202,9 +202,8 @@
                         <option value="30">30</option>
                     </select>
                 </div>
-
                 <div class="request-check">
-                    <input type="checkbox" id="checkrule">
+                    <input type="checkbox" id="checkrule" style="width: 25px;">
                     <h2 class="hamburger-request-title">
                         我已詳閱
                         <a href="#" v-on:click="showRules">
@@ -212,13 +211,13 @@
                         </a>
                     </h2>
                 </div>
-                <div class="hamburger-bottom">
-                    <div v-on:click="back" id="backbtnedit" class="hamburger-sendbutton">
-                        <h3 class="hamburger-title" style="color:white">返回</h3>
-                    </div>
-                    <div id="editbutton" class="hamburger-sendbutton">
-                        <h3 class="hamburger-title" style="color:white">編輯送出</h3>
-                    </div>
+            </div>
+            <div class="hamburger-bottom">
+                <div v-on:click="back" id="backbtnedit" class="hamburger-sendbutton">
+                    <h3 class="hamburger-title" style="color:white">返回</h3>
+                </div>
+                <div id="editbutton" class="hamburger-sendbutton">
+                    <h3 class="hamburger-title" style="color:white">編輯送出</h3>
                 </div>
             </div>
         </form>

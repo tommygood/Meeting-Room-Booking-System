@@ -44,8 +44,14 @@ class User {
     async getEmail(req, res) {
         try {
             const identifier = req.query.identifier;
-            const data = await this.model.getSelf(identifier);
-            res.json({'email' : data.email});
+            const user_priveilege = await this.model.getPrivilegeLevel(req.identifier);
+            if (user_priveilege < 1 && identifier != req.identifier) {
+                res.status(403).send('Forbidden');
+            }
+            else {
+                const data = await this.model.getSelf(identifier);
+                res.json({'email' : data.email});
+            }
         }
         catch(e) {
             console.error(e);
@@ -101,7 +107,7 @@ router.get('/', jwt.verifyAdmin, user.get);
 router.get('/self', jwt.verifyLogin, user.getSelf);
 
 // get user email by identifier
-router.get('/email', jwt.verifyAdmin, user.getEmail);
+router.get('/email', jwt.verifyLogin, user.getEmail);
 
 // update user privileges by identifier
 router.put('/privilege', jwt.verifyAdmin, user.updatePrivilegeLevel);

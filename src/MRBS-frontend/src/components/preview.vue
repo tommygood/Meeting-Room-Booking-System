@@ -241,7 +241,7 @@ export default {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                height: 85%;
+                height: 100vh;
                 padding: 20px 100px;
                 border-radius: 10px;
                 background-color: #fff;
@@ -417,7 +417,7 @@ export default {
             // if length of event.name > 9, then use different style
             let event_title;
             if (event.name.length > 14) {
-                event_title = `<div class="event-title" style="height:200px;margin-bottom:200px;">${event.name}</div>`;
+                event_title = `<div class="event-title" style="height:200px;margin-bottom:150px;">${event.name}</div>`;
             }
             else if (event.name.length > 7) {
                 event_title = `<div class="event-title" style="height:200px;margin-bottom:100px;">${event.name}</div>`;

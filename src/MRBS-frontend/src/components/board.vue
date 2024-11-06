@@ -38,7 +38,6 @@
                         <input type="date" name="startdate" placeholder="開始時間" style="width:100px" />
                     </td>
                     <td class="table_title"> 
-                        <input type="date" name="enddate" placeholder="結束時間" style="width:100px"/> 
                     </td>
                     <td class="table_title">
                         <input type="text" placeholder="Type a keyword..." id="grid-search" class="gridjs-input"/>

@@ -5,7 +5,9 @@
         <header>
             <div class="navbar">
                 <div id="hamburger-button" class="hamburger-button" v-on:click="toggleMenu"> </div>
-                <h1>行政大樓二樓<br>會議室預約系統</h1>
+                <h1>行政大樓二樓<br>會議室預約系統
+                  <div id="phone_account_name" style="font-size: medium;display: none;">歡迎登入,&nbsp; {{ account_name }} </div>
+                </h1>
                 <h3 class="account-title" id="accountName">歡迎登入,&nbsp; {{ account_name }} </h3>
                 <a v-on:click="redirect('/')">［登出］</a>
                 <!-- 切換 使用者/管理者 -->
@@ -63,23 +65,30 @@ export default {
         // toggle the menu
         toggleMenu() {
             console.log('toggleMenu');
-            const menu = document.getElementById('hamburger-menu');
-            const lobby = document.getElementById('lobby');
+            if (window.innerWidth < 830) {
+              document.getElementById('hamburger-menu').style.display = document.getElementById('hamburger-menu').style.display === 'none' ? 'block' : 'none';
+              document.getElementById('fc-dom-1').style.marginTop = document.getElementById('hamburger-menu').style.display === 'none' ? '10%' : '';
 
-            // 切換active狀態來控制菜單顯示或隱藏
-            menu.classList.toggle('active');
-
-            // 根據菜單是否隱藏來調整lobby的寬度
-            if (menu.classList.contains('active')) {
-                // console.log('1');
-                lobby.classList.add('full-width');
-            } else {
-                // console.log('1');
-                lobby.classList.remove('full-width');
             }
-            setTimeout(() => {
-                window.dispatchEvent(new Event('resize'));
-            }, 1);
+            else {
+              const menu = document.getElementById('hamburger-menu');
+              const lobby = document.getElementById('lobby');
+
+              // 切換active狀態來控制菜單顯示或隱藏
+              menu.classList.toggle('active');
+
+              // 根據菜單是否隱藏來調整lobby的寬度
+              if (menu.classList.contains('active')) {
+                  // console.log('1');
+                  lobby.classList.add('full-width');
+              } else {
+                  // console.log('1');
+                  lobby.classList.remove('full-width');
+              }
+              setTimeout(() => {
+                  window.dispatchEvent(new Event('resize'));
+              }, 1);
+            }
         },
 
         // add a async function
@@ -491,6 +500,14 @@ body {
 }
   @media screen and (max-width: 830px) {
 
+    #phone_account_name {
+        display: block !important;
+    }
+
+    #accountName {
+        display: none;
+    }
+
     #fc-dom-1 {
       display: flex;
       margin-bottom: 100%;
@@ -526,7 +543,7 @@ body {
 
     #event-list {
         height:45vh;
-        width:85%;
+        width:95%;
         overflow-y: scroll;
     }
   
