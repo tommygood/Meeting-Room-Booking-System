@@ -143,7 +143,6 @@ body {
     background-color: #fff;
     border-bottom: 1px solid #ddd;
     padding: 10px;
-    height: fit-content;
   }
   
   .navbar {
@@ -170,6 +169,13 @@ body {
     font-size: 20px;
     margin: 0px 0px;
     color: #3C9A86;
+  }
+
+  header{
+    transform: scale(1.2); /* 調整縮放比例 */
+    transform-origin: left; /* 縮放中心設為元素中心 */
+    width: calc(100% / 1.22); /* 縮放寬度以補償 scale 的影響 */
+    height: 6vh; /* 縮放高度以補償 scale 的影響 */
   }
   
   .content {
@@ -499,6 +505,10 @@ body {
     initial-scale: 1;
 }
   @media screen and (max-width: 830px) {
+
+    #hamburger-menu {
+      margin-top: '1000px' !important;
+    }
 
     #phone_account_name {
         display: block !important;

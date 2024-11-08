@@ -1,5 +1,5 @@
 <template>
-    <div id="hamburger-menu" class="hamburger-menu" v-show="show">
+    <div id="hamburger-menu" class="hamburger-menu" style="margin-top: 1vh;" v-show="show">
     <!-- 我的會議頁面 -->
     <div id="hamburger-content" class="hamburger-content">
         <h3 class="hamburger-title">我的會議</h3>
@@ -95,7 +95,7 @@
                 <div v-on:click="back" id="backbtn" class="hamburger-sendbutton">
                     <h3 class="hamburger-title" style="color:white">返回</h3>
                 </div>
-                <div id="sendbutton" class="hamburger-sendbutton" v-on:click="reservationPost">
+                <div v-on:click="reservationPost" id="sendbutton" class="hamburger-sendbutton">
                     <h3 class="hamburger-title" style="color:white">申請送出</h3>
                 </div>
 
@@ -203,7 +203,7 @@
                     </select>
                 </div>
                 <div class="request-check">
-                    <input type="checkbox" id="checkrule" style="width: 25px;">
+                    <input type="checkbox" id="checkrule_update" style="width: 25px;">
                     <h2 class="hamburger-request-title">
                         我已詳閱
                         <a href="#" v-on:click="showRules">
@@ -245,8 +245,11 @@ export default {
             default: false
         },
     },
-    mounted() {
+    async mounted() {
         this.syncStartEndDate();
+        if (window.innerWidth < 830) {
+            document.getElementById('hamburger-menu').style.margin = '';
+        }
     },
     methods: {
         apply() {
@@ -258,6 +261,8 @@ export default {
             // set margin-top = 150% on #hamburger-menu when the screen size is under 830px
             if (window.innerWidth < 830) {
                 document.getElementById('hamburger-menu').style.marginTop = '30%';
+                console.log(document.getElementById('hamburger-menu').style.height)
+                document.getElementById('hamburger-menu').style.height = '0p';
             }
         },
         syncStartEndDate() {
@@ -306,9 +311,16 @@ export default {
                 html: htmlContent, // 顯示會議室規則，目前排版置中(需修改)
             });
         },
+        ruleBoxCheck() {
+            const rulesCheckbox = document.getElementById('checkrule');
+            if (!rulesCheckbox.checked) {
+                alert('請先勾選「我已詳閱《會議室使用規則》」才能提交申請。');
+                return false;
+            }
+            return true;
+        },
         //上傳預約
         async reservationPost() {
-
             const form = document.getElementById('request');
             const formData = new FormData(form);
             const name = formData.get('name');
@@ -327,13 +339,10 @@ export default {
                 alert('所有欄位都是必填的，請完整填寫表單！');
                 return;
             }
-            const rulesCheckbox = document.getElementById('checkrule');
-                if (!rulesCheckbox.checked) {
-                alert('請先勾選「我已詳閱《會議室使用規則》」才能提交申請。');
+            
+            if (!this.ruleBoxCheck()) {
                 return;
             }
-
-
             //不能借現在以前的時間&超過三個月
             const today = new Date();
             const reservationDate = new Date(startdate);

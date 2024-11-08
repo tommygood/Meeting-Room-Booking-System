@@ -392,8 +392,20 @@ export default {
 
             calendar.render();
         },
+        ruleBoxCheck() {
+            const rulesCheckbox = document.getElementById('checkrule_update');
+            console.log(rulesCheckbox, rulesCheckbox.checked);
+            if (!rulesCheckbox.checked) {
+                alert('請先勾選「我已詳閱《會議室使用規則》」才能提交申請。');
+                return false;
+            }
+            return true;
+        },
         //編輯會議
         async reservationPut(reserve_id) {
+            if (!this.ruleBoxCheck()) {
+                return;
+            }
             const formData = new FormData(document.getElementById("requestedit"));
             const name = formData.get('name');
             const startdate = formData.get('startdate');
@@ -464,5 +476,7 @@ export default {
     font-family: "Microsoft JhengHei", sans-serif;
 
 }
-
+.fc-daygrid-body {
+    width: 100% !important;
+}
 </style>

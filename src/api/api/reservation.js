@@ -49,10 +49,16 @@ class Reservation {
         }
     }
 
-    async checkRules(identifer, start_time, end_time) {
+    async checkRules(identifer, start_time, end_time, name) {
         const user_priveilege = await User.getPrivilegeLevel(identifer);
         let res = {suc : true, msg : ""};
-        if (user_priveilege < 1) {
+        if (start_time >= end_time) {
+            // invlid time, start_time should be less than end_time
+            // log the action
+            Log.insert(req.ip, Operator.getOperator.reservationFailed.code, identifier);
+            res.json({result : "開始時間應該小於結束時間，請再次確認"});
+        }
+        else if (user_priveilege < 1) {
             // normal user can only reserve the room between 8:00 and 18:00
             const start = new Date(start_time);
             const end = new Date(end_time);
@@ -77,18 +83,23 @@ class Reservation {
                 res.msg = "一般使用者只能預約 7 天內的時間";
             }
         }
+        else if (!this.nameCheck(name).suc) {
+            res.suc = false;
+            res.msg = this.nameCheck(name).result;
+        }
         return res;
     }
 
     nameCheck(name) {
         // check if the name is empty
+        console.log(name, name.length);
         let res = {suc : false, result : null};
         if (name == "") {
             res.result = "名稱不可為空";
         }
         // check if the name is too long
         else if (name.length > 20) {
-            res.result = "名稱不可超過 30 個字";
+            res.result = "名稱不可超過 20 個字";
         }
         else {
             res.suc = true;
@@ -100,14 +111,8 @@ class Reservation {
         try {
             const {room_id, name, start_time, end_time, show, ext} = req.body;
             const identifier = req.identifier;
-            const rules_pass = await this.checkRules(identifier, start_time, end_time);
-            if (start_time >= end_time) {
-                // invlid time, start_time should be less than end_time
-                // log the action
-                Log.insert(req.ip, Operator.getOperator.reservationFailed.code, identifier);
-                res.json({result : "開始時間應該小於結束時間，請再次確認"});
-            }
-            else if (!rules_pass.suc) {
+            const rules_pass = await this.checkRules(identifier, start_time, end_time, name);
+            if (!rules_pass.suc) {
                 // log the action
                 Log.insert(req.ip, Operator.getOperator.reservationFailed.code, identifier);
                 res.json({result : rules_pass.msg});
@@ -119,21 +124,13 @@ class Reservation {
                 res.json({result : "與其他預約有衝突，請再次確認"});
             }
             else {
-                // check if the name is valid
-                if (!this.nameCheck(name).suc) {
-                    // log the action
-                    Log.insert(req.ip, Operator.getOperator.reservationFailed.code, identifier);
-                    res.json({result : this.nameCheck(name).result});
-                }
                 // insert the reservation if pass all the checks
-                else {
-                    const suc = await this.model.insert(identifier, room_id, name, start_time, end_time, show, ext);
-                    // send email to admin if the reservation is successful
-                    Email.sendUser(req.identifier, Email.subject.succeessful_reservation, Email.text.succeessful_reservation(req.identifier, start_time, end_time, room_id));
-                    // log the action
-                    Log.insert(req.ip, Operator.getOperator.reservationSuccess.code, identifier);
-                    res.json({suc});
-                }
+                const suc = await this.model.insert(identifier, room_id, name, start_time, end_time, show, ext);
+                // send email to admin if the reservation is successful
+                Email.sendUser(req.identifier, Email.subject.succeessful_reservation, Email.text.succeessful_reservation(req.identifier, start_time, end_time, room_id));
+                // log the action
+                Log.insert(req.ip, Operator.getOperator.reservationSuccess.code, identifier);
+                res.json({suc});
             }
         }
         catch(e) {
@@ -149,11 +146,12 @@ class Reservation {
             const user_priveilege = await User.getPrivilegeLevel(identifier);
             
             let suc = false;
-            // check if start_time is less than end_time and there is no confliction with other reservations
-            if (start_time >= end_time) {
+            // rule check
+            const rules_pass = await this.checkRules(identifier, start_time, end_time, name);
+            if (!rules_pass.suc) {
                 // log the action
                 Log.insert(req.ip, Operator.getOperator.reservationFailed.code, identifier);
-                res.json({result : "開始時間應小於結束時間，請再次確認"});
+                res.json({result : rules_pass.msg});
             }
             else {
                 // delete the reservation first and then check if there is a confliction with other reservations
