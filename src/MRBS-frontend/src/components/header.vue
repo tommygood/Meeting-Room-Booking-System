@@ -511,7 +511,7 @@ body {
     }
 
     #hamburger-menu {
-      margin-top: '1000px' !important;
+      margin-top: 30% !important;
     }
 
     #phone_account_name {

@@ -248,7 +248,7 @@ export default {
     async mounted() {
         this.syncStartEndDate();
         if (window.innerWidth < 830) {
-            document.getElementById('hamburger-menu').style.margin = '';
+            document.getElementById('hamburger-menu').style.marginTop = '30%';
         }
     },
     methods: {
