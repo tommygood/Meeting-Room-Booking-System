@@ -9,7 +9,7 @@
         </header>
 
         <div class="background-container">
-            <div class="content-card">
+            <div class="content-card" style="margin-top: 7%;">
                 <button class="login-btn" v-on:click="redirectBackend('/login/sso')">登入</button>
                 <div class="footer-links">
                     <a href="#" v-on:click="showRules('use')">使用規則</a>
@@ -88,3 +88,8 @@ export default {
 </script>
 
 <style src="../assets/style.css" scoped></style>
+<style scoped>
+header {
+    height: 13vh !important;
+}
+</style>

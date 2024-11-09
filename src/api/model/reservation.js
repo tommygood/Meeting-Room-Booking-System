@@ -66,15 +66,15 @@ module.exports = {
     },
 
     // update all columns except identifer in reservation by reserve_id and identifier
-    updateSelfs : async function (identifer, reserve_id, room_id, name, start_time, end_time, show, ext) {
+    updateSelfs : async function (identifer, reserve_id, room_id, name, start_time, end_time, show, ext, status) {
         const conn = await db_conn.getDBConnection();
         if (conn == null) {
             return false;
         }
         else {
             try {
-                const sql = "UPDATE `Reservation` SET `room_id` = ?, `name` = ?, `start_time` = ?, `end_time` = ?, `show` = ?, `ext` = ? WHERE `reserve_id` = ? and `identifier` = ?;";
-                await conn.query(sql, [room_id, name, start_time, end_time, show, ext, reserve_id, identifer]);
+                const sql = "UPDATE `Reservation` SET `room_id` = ?, `name` = ?, `start_time` = ?, `end_time` = ?, `show` = ?, `ext` = ?, `status` = ? WHERE `reserve_id` = ? and `identifier` = ?;";
+                await conn.query(sql, [room_id, name, start_time, end_time, show, ext, status, reserve_id, identifer]);
                 db_conn.closeDBConnection(conn);
                 return true;
             }

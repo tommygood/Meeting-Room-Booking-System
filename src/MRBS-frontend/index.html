@@ -2,10 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self' https://cdn.jsdelivr.net http://localhost:3000 https://cdnjs.cloudflare.com; 
+    img-src 'self' data: http://localhost:3000; 
+    style-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.quilljs.com https://cdn.jsdelivr.net; 
+    script-src 'self' https://cdn.jsdelivr.net http://localhost:3000 https://cdnjs.cloudflare.com https://unpkg.com https://cdn.quilljs.com; 
+    font-src 'self' https://cdn.jsdelivr.net data:;
+    ">
+
     <title>國立中央大學-行政大樓2樓會議室借用系統</title>
     <link rel="icon" href="/public/favicon.ico">
-
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
   </head>
   <body>
     <div id="app"></div>

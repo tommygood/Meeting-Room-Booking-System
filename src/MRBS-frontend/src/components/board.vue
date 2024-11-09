@@ -38,7 +38,7 @@
                         <input type="date" name="startdate" placeholder="開始時間" style="width:100px" />
                     </td>
                     <td class="table_title"> 
-                        <input type="date" name="enddate" placeholder="結束時間" style="width:100px"/> 
+                        <input type="date" name="enddate" placeholder="結束時間" style="width:100px;display: none;"/> 
                     </td>
                     <td class="table_title">
                         <input type="text" placeholder="Type a keyword..." id="grid-search" class="gridjs-input"/>
@@ -248,7 +248,7 @@ export default {
                 }
                 ],
                 data: rows.map(row => row.data), 
-                width: '98%',
+                width: '96%',
                 fixedHeader: true,
                 search: true,
                 resizable: true,
@@ -281,10 +281,11 @@ export default {
         },
         searchBoard() {
             const startInput = document.querySelector('input[name="startdate"]').value;
-            const endInput = document.querySelector('input[name="enddate"]').value;
+            const endInput = startInput;
+            //const endInput = document.querySelector('input[name="enddate"]').value;
 
-            if (!startInput || !endInput) {
-                alert('請輸入完整的開始和結束日期');
+            if (!startInput) {
+                alert('請輸入完整的開始日期');
                 return;
             }
             const table_header = (document.getElementById('table_header'));

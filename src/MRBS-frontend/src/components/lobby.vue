@@ -2,7 +2,7 @@
     <body>
         <user_header :setInfo="setInfo" :info="info"></user_header>
         <div class="content">
-            <application :info="info" :formatDateTimeForDatabase="formatDateTimeForDatabase"></application>
+            <application :info="info" :formatDateTimeForDatabase="formatDateTimeForDatabase" :is_admin="false"></application>
             <calendar :eventApiUrl="eventApiUrl" :info="info"></calendar>
         </div>
     </body>

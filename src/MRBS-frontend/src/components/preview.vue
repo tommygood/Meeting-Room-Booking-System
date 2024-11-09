@@ -106,13 +106,24 @@ export default {
             }, 1000);
         },
         displayCureentTime() {
-            // keep updating the current time
-            const datetime = new Date();
-            // get weekday from datetime
-            
-            const weekday = ['日', '一', '二', '三', '四', '五', '六'][datetime.getDay()];
-            document.getElementById('current_time').innerHTML = datetime.toISOString().split('T')[0] + ` (${weekday})` +
-            '<br/>' + datetime.toTimeString().split(' ')[0].slice(0, 5);
+            // set the current time to fixed value if the url path is not demo
+            const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+            if (!this.isDemoPage()) {
+                // get fixed time from query string
+                const urlParams = new URLSearchParams(window.location.search);
+                const date = urlParams.get('date');
+                const time = urlParams.get('time');
+                const weekday = weekdays[new Date(date).getDay()];
+                document.getElementById('current_time').innerHTML = date + ` (${weekday})` + '<br/>' + time;
+            }
+            else {
+                // keep updating the current time
+                const datetime = new Date();
+                // get weekday from datetime
+                const weekday = weekdays[datetime.getDay()];
+                document.getElementById('current_time').innerHTML = datetime.toISOString().split('T')[0] + ` (${weekday})` +
+                '<br/>' + datetime.toTimeString().split(' ')[0].slice(0, 5);
+            }
         },
         loadCSS() {
             const style = document.createElement('style');
@@ -230,7 +241,7 @@ export default {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                height: 85%;
+                height: 100vh;
                 padding: 20px 100px;
                 border-radius: 10px;
                 background-color: #fff;
@@ -245,7 +256,7 @@ export default {
                 align-content: center;
                 margin: 0px 25px;
                 text-algin: center;
-                margin-top:100px;
+                margin-top: 50px;
             }
 
             .time-block-max {
@@ -393,43 +404,29 @@ export default {
                     <span>|</span>
                     <span>${endTime}</span>
                 </div>
-                <div class="event-details-min" style="margin-left:10%">
+                <div class="event-details-min" style="margin-left:10%;">
                     <h3>${event.name}</h3>
                     <p style="font-weight:bold">借用單位：${event.unit}</p>
                     <p style="font-weight:bold">借用人：${event.chinesename}</pe=>
                 </div>
             `;
         },
+        
         eventCardMaxContent(event, startTime, endTime) {
+            // make event title
+            // if length of event.name > 9, then use different style
+            let event_title;
+            if (event.name.length > 14) {
+                event_title = `<div class="event-title" style="height:200px;margin-bottom:170px">${event.name}</div>`;
+            }
+            else if (event.name.length > 7) {
+                event_title = `<div class="event-title" style="height:200px;margin-bottom:60px;">${event.name}</div>`;
+            }
+            else {
+                event_title = `<div class="event-title" style="height:200px;margin-bottom:50px;">${event.name}</div>`;
+            }
             return `
-                <div class="event-title" style="height:200px">${event.name}</div>
-                <span class="dash divider" style="margin-bottom:15px;height: 1px;
-                background-color: #ccc;
-                margin: 25px 45px;width:650px;"></span>
-                <div class="time-block-max" style="height:200px">
-                    <span>${startTime}</span>
-                    <span class="dash" style="margin-bottom:15px;">—</span>
-                    <span>${endTime}</span>
-                </div>
-                <span class="dash divider" style="margin-bottom:15px;height: 1px;
-                background-color: #ccc;
-                margin: 25px 45px;width:650px;"></span>
-                <div style="height:200px;text-align:center;margin-top:50px;">
-                    <div class="label" style="font-size:50px;margin-bottom:70px;">借用單位</div>
-                    <div class="value">${event.unit}</div>
-                </div>
-                <span class="dash divider" style="margin-bottom:15px;height: 1px;
-                background-color: #ccc;
-                margin: 25px 45px;width:650px;"></span>
-                <div style="height:200px;margin-top:50px;">
-                <div class="label"  style="font-size:50px;margin-bottom:70px;">借用人</div>
-                <div class="value">${event.chinesename}</div>
-                </div>
-            `;
-        },
-        eventCardMaxContent(event, startTime, endTime) {
-            return `
-                <div class="event-title" style="height:200px">${event.name}</div>
+                ${event_title}
                 <span class="dash divider" style="margin-bottom:15px;height: 1px;
                 background-color: #ccc;
                 margin: 25px 45px;width:650px;"></span>
@@ -534,12 +531,22 @@ export default {
                     eventCard.className = 'event-card-min';
                     const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit',hour12:false });
                     const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' ,hour12:false });
-                    console.log(startTime)
                     // not display the event which is already ended
-                    const datetime = new Date();
-                    if (new Date(event.end_time) < datetime) {
-                        continue;
+                    let datetime;
+                    if (this.isDemoPage()) {
+                        datetime = new Date();
+                        if (new Date(event.end_time) < datetime) {
+                            continue;
+                        }
                     }
+                    else {
+                        // get fixed time from query string
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const date = urlParams.get('date');
+                        const time = urlParams.get('time');
+                        datetime = new Date(date + ' ' + time);
+                    }
+                    
     
                     // display the event happened today
                     eventCard.innerHTML = this.eventCardContent(event, startTime, endTime);

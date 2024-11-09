@@ -51,6 +51,7 @@ describe('Test if Preview Component can correctly demonstrate the events in diff
                 update: vi.fn(),
             },
             mock_slides: mock_slides,
+            demo: true,
         }
     })
 
