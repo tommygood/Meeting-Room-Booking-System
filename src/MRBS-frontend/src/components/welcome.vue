@@ -88,7 +88,7 @@ export default {
 </script>
 
 <style src="../assets/style.css" scoped></style>
-<style>
+<style scoped>
 header {
     height: 13vh !important;
 }

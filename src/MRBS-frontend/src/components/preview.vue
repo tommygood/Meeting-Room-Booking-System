@@ -256,7 +256,7 @@ export default {
                 align-content: center;
                 margin: 0px 25px;
                 text-algin: center;
-                margin-top: 100px;
+                margin-top: 50px;
             }
 
             .time-block-max {
@@ -404,7 +404,7 @@ export default {
                     <span>|</span>
                     <span>${endTime}</span>
                 </div>
-                <div class="event-details-min" style="margin-left:10%">
+                <div class="event-details-min" style="margin-left:10%;">
                     <h3>${event.name}</h3>
                     <p style="font-weight:bold">借用單位：${event.unit}</p>
                     <p style="font-weight:bold">借用人：${event.chinesename}</pe=>
@@ -417,13 +417,13 @@ export default {
             // if length of event.name > 9, then use different style
             let event_title;
             if (event.name.length > 14) {
-                event_title = `<div class="event-title" style="height:200px;margin-bottom:150px;">${event.name}</div>`;
+                event_title = `<div class="event-title" style="height:200px;margin-bottom:170px">${event.name}</div>`;
             }
             else if (event.name.length > 7) {
-                event_title = `<div class="event-title" style="height:200px;margin-bottom:100px;">${event.name}</div>`;
+                event_title = `<div class="event-title" style="height:200px;margin-bottom:60px;">${event.name}</div>`;
             }
             else {
-                event_title = `<div class="event-title" style="height:200px">${event.name}</div>`;
+                event_title = `<div class="event-title" style="height:200px;margin-bottom:50px;">${event.name}</div>`;
             }
             return `
                 ${event_title}
@@ -531,12 +531,22 @@ export default {
                     eventCard.className = 'event-card-min';
                     const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit',hour12:false });
                     const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' ,hour12:false });
-                    console.log(startTime)
                     // not display the event which is already ended
-                    const datetime = new Date();
-                    if (new Date(event.end_time) < datetime) {
-                        continue;
+                    let datetime;
+                    if (this.isDemoPage()) {
+                        datetime = new Date();
+                        if (new Date(event.end_time) < datetime) {
+                            continue;
+                        }
                     }
+                    else {
+                        // get fixed time from query string
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const date = urlParams.get('date');
+                        const time = urlParams.get('time');
+                        datetime = new Date(date + ' ' + time);
+                    }
+                    
     
                     // display the event happened today
                     eventCard.innerHTML = this.eventCardContent(event, startTime, endTime);

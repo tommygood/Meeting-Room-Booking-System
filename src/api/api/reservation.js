@@ -49,14 +49,20 @@ class Reservation {
         }
     }
 
-    async checkRules(identifer, start_time, end_time, name) {
+    async checkRules(identifer, start_time, end_time, name, req, identifier) {
         const user_priveilege = await User.getPrivilegeLevel(identifer);
         let res = {suc : true, msg : ""};
-        if (start_time >= end_time) {
+        if (start_time > end_time) {
             // invlid time, start_time should be less than end_time
             // log the action
             Log.insert(req.ip, Operator.getOperator.reservationFailed.code, identifier);
-            res.json({result : "開始時間應該小於結束時間，請再次確認"});
+            res.suc = false;
+            res.msg = "開始時間應該小於結束時間，請再次確認";
+        }
+        else if (start_time == end_time) {
+            Log.insert(req.ip, Operator.getOperator.reservationFailed.code, identifier);
+            res.suc = false;
+            res.msg = "開始時間不可等於結束時間，請再次確認";
         }
         else if (user_priveilege < 1) {
             // normal user can only reserve the room between 8:00 and 18:00
@@ -111,7 +117,7 @@ class Reservation {
         try {
             const {room_id, name, start_time, end_time, show, ext} = req.body;
             const identifier = req.identifier;
-            const rules_pass = await this.checkRules(identifier, start_time, end_time, name);
+            const rules_pass = await this.checkRules(identifier, start_time, end_time, name, req, identifier);
             if (!rules_pass.suc) {
                 // log the action
                 Log.insert(req.ip, Operator.getOperator.reservationFailed.code, identifier);
@@ -147,7 +153,7 @@ class Reservation {
             
             let suc = false;
             // rule check
-            const rules_pass = await this.checkRules(identifier, start_time, end_time, name);
+            const rules_pass = await this.checkRules(identifier, start_time, end_time, name, req, identifier);
             if (!rules_pass.suc) {
                 // log the action
                 Log.insert(req.ip, Operator.getOperator.reservationFailed.code, identifier);

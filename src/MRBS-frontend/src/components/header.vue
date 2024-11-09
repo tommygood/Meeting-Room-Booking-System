@@ -5,11 +5,11 @@
         <header>
             <div class="navbar">
                 <div id="hamburger-button" class="hamburger-button" v-on:click="toggleMenu"> </div>
-                <h1>行政大樓二樓<br>會議室預約系統
+                <h1 class="header-text">行政大樓二樓<br>會議室預約系統
                   <div id="phone_account_name" style="font-size: medium;display: none;">歡迎登入,&nbsp; {{ account_name }} </div>
                 </h1>
-                <h3 class="account-title" id="accountName">歡迎登入,&nbsp; {{ account_name }} </h3>
-                <a v-on:click="redirect('/')">［登出］</a>
+                <h3 class="account-title header-text" id="accountName">歡迎登入,&nbsp; {{ account_name }} </h3>
+                <a class="header-text" v-on:click="redirect('/')">［登出］</a>
                 <!-- 切換 使用者/管理者 -->
                 <div class="useradmin" id='useradmin'>
                     <img src="../../public/user.png" class="useradmin-button" v-on:click="redirect('/lobby')">
@@ -505,6 +505,10 @@ body {
     initial-scale: 1;
 }
   @media screen and (max-width: 830px) {
+
+    .header-text {
+      font-size: 4vw !important;
+    }
 
     #hamburger-menu {
       margin-top: '1000px' !important;
