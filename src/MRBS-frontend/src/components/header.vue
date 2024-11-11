@@ -142,7 +142,7 @@ body {
   header {
     background-color: #fff;
     border-bottom: 1px solid #ddd;
-    padding: 10px;
+    padding : 2vh 1px 1vh 10px;
   }
   
   .navbar {

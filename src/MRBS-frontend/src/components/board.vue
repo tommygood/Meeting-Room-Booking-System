@@ -14,9 +14,9 @@
                         <b style='margin-top:3%;'>日期：</b>
                         <input type="date" class="hamburger-request" name="start-date"/>
                     </div>
-                    <div style='display:flex'>
+                    <div class="timeBar" style='display:flex'>
                         <b style='margin-top:3%;width:30%'>時間：</b>
-                        <input type="time" id="start-time" name="start-time" class="hamburger-timerequest" style="width:70%">
+                        <input type="time" id="start-time" name="start-time" class="hamburger-timerequest" style="width:70%; margin :0px">
                     </div>
                 </form>
                 <div style='display:inline-flex;margin-left:3%'>
@@ -44,7 +44,10 @@
                         <input type="text" placeholder="Type a keyword..." id="grid-search" class="gridjs-input"/>
                     </td>
                     <td class="table_title">
-                        <button v-on:click="searchBoard">
+                        <button v-on:click="resetBoard" style="margin-left: 2%;">
+                            清除
+                        </button>
+                        <button v-on:click="searchBoard" style="margin-left: 2%;">
                             篩選
                         </button>
                         <button v-on:click="saveContent" style="margin-left: 2%;">
@@ -349,6 +352,31 @@ export default {
             const button = event.target;
             window.open("/"+button.id, '_blank');
         },
+        resetBoard(){
+            const startDate = new Date();
+            startDate.setHours(0, 0, 0, 0); 
+            const start = startDate.toISOString().split('.')[0];
+
+            const endDate = new Date();
+            endDate.setMonth(endDate.getMonth() + 1); // 加一個月
+            endDate.setHours(0, 0, 0, 0); 
+            const end = endDate.toISOString().split('.')[0];
+            this.fetchData(start, end)
+            .then(rows => {
+            if (this.grid) {
+                this.grid.updateConfig({
+                data: rows.map(row => row.data) 
+                }).forceRender(); 
+            } else {
+                this.updateGrid(rows); 
+            }
+            })
+            .catch(error => {
+                console.error('Error rendering Grid.js:', error);
+            });
+            this.setTableTitle(1000, document.getElementById('table_header'));
+            this.removeSearchBar();
+        }
     }
 }
 </script>
@@ -479,5 +507,14 @@ button:hover{
   .useradmin-button:hover{
     background-color: rgba(0, 0, 0, 0.2);
     cursor: pointer;
+  }
+  @media (max-width: 650px){
+    #previewBoard{
+        display: inline-flex;
+        flex-direction: column;
+    }
+    .timeBar{
+        margin :5px 0px 10px 0px;
+    }
   }
 </style>

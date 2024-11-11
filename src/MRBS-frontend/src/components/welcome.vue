@@ -5,7 +5,7 @@
                 <img class="logo" src="../../public/ncu_logo.png" alt="國立中央大學">
                 <img class="logo_min" src="../../public/ncu_logo_min.png" alt="國立中央大學">
             </a>
-            <h1 style="margin-left:2%">行政大樓二樓會議室<div style='margin-right:55%;'>借用系統</div></h1>
+            <h1 style="margin-left:2%">行政大樓二樓會議室<div style='margin-right:55%;margin-top:-5px;'>借用系統</div></h1>
         </header>
 
         <div class="background-container">
@@ -90,6 +90,6 @@ export default {
 <style src="../assets/style.css" scoped></style>
 <style scoped>
 header {
-    height: 13vh !important;
+    height: 11vh !important;
 }
 </style>
