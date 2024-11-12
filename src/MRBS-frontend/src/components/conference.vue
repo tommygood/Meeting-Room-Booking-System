@@ -2,9 +2,10 @@
     <user_header :set-info="setInfo" :info="info"></user_header>
     <div class="test">
         <root_menu :setPageName="setPageName"></root_menu>
-        <calendar :info="info" :eventClick="eventClick" ref="calendar_ref" :setApplicationShow="setApplicationShow"></calendar>
-        <application :info="info" :show="application_show" :remove_application_when_back="remove_application_when_back" :setApplicationShow="setApplicationShow" :is_admin="true"></application>
+        <application :info="info" :show="application_show" :remove_application_when_back="remove_application_when_back" :setApplicationShow="setApplicationShow" :is_admin="true" :parent="calendar_type"></application>
+        <calendar :parent="calendar_type" :info="info" :eventClick="eventClick" ref="calendar_ref" :setApplicationShow="setApplicationShow"></calendar>
     </div>
+    
 </template>
 <script>
 import root_menu from '@/components/rootMenu.vue';
@@ -23,10 +24,16 @@ export default {
     },
     data() {
         return {
+            calendar_type: 'conference',
             info: {},
             application_show: false,
             remove_application_when_back: true,
         }
+    },
+    mounted() {
+        // add event listener to listen for edit button click #editbutton
+        const edit_button = document.getElementsByClassName('swal2-confirm')[0]
+        console.log('edit_button:', edit_button);
     },
     methods: {
         setPageName(val) {

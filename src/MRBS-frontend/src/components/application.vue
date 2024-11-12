@@ -229,6 +229,7 @@ import config from '@/config';
 export default {
     name: 'application',
     props: {
+        parent: String,
         info: Object,
         formatDateTimeForDatabase: Function,
         show: {
@@ -254,7 +255,7 @@ export default {
     methods: {
         apply() {
             document.getElementById('hamburger-content').style.display = 'none';
-            document.getElementById('hamburger-requestpage').style.display = 'flex';
+            document.getElementsByClassName('hamburger-requestpage')[0].style.display = 'flex';
             document.querySelector('input[name="person"]').value = this.info.chinesename;
             document.querySelector('input[name="unit"]').value = this.info.unit;
             document.querySelector('input[name="email"]').value = this.info.email;
@@ -273,7 +274,7 @@ export default {
         },
         back() {
             document.getElementById('hamburger-content').style.display = 'block';
-            document.getElementById('hamburger-requestpage').style.display = 'none';
+            document.getElementsByClassName('hamburger-requestpage')[0].style.display = 'none';
             document.getElementById('hamburger-requestedit').style.display = 'none';
             if (this.remove_application_when_back) {
                 this.setApplicationShow(false);
@@ -281,6 +282,15 @@ export default {
             // set margin-top = 50% on #hamburger-menu when the screen size is under 830px
             if (window.innerWidth < 830) {
                 document.getElementById('hamburger-menu').style.marginTop = '30%';
+                if (this.parent == 'conference') {
+                    console.log('parent is conference');
+                    console.log(window.innerWidth);
+                    if (window.innerWidth < 830) {
+                        const a=document.getElementsByClassName('lobby');
+                        a[0].style.position='';
+                        a[0].style.top=''
+                    }
+                }
             }
         },
         async getDoc(doc_name) {

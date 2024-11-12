@@ -538,7 +538,6 @@ body {
 
     td {
         white-space: nowrap; /* Prevent text from wrapping to the next line */
-        overflow: hidden; /* Hide text that overflows */
         text-overflow: ellipsis; /* Add "..." if text is too long */
     }
     

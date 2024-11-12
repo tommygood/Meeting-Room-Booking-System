@@ -19,6 +19,9 @@ export default {
         await this.loadCalendar();
     },
     props : {
+        parent: {
+            type: String,
+        },
         eventApiUrl : {
             type : Function,
             default : (start, end) => config.apiUrl  + `/reservation?start_time=${start}&end_time=${end}`,
@@ -188,6 +191,16 @@ export default {
                 denyButtonText: '刪除會議',
             }).then(async (result) => {
                 if (result.isConfirmed) {
+                    console.log('parent:', this.parent);
+                    if (this.parent == 'conference') {
+                        console.log('parent is conference');
+                        console.log(window.innerWidth);
+                        if (window.innerWidth < 830) {
+                            const a=document.getElementsByClassName('lobby');
+                            a[0].style.position='absolute';
+                            a[0].style.top='120%'
+                        }
+                    }
                     this.setApplicationShow(true);
                     const form = document.getElementById('requestedit');
                     document.getElementById('hamburger-requestpage').style.display = 'none';
