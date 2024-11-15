@@ -192,7 +192,6 @@ export default {
         //get board information
         fetchData(start, end) {
             const api_board = config.apiUrl + `/reservation?start_time=${start}&end_time=${end}`;
-
             return fetch(api_board, {
             method: 'GET',
             credentials: 'include', 
@@ -285,21 +284,13 @@ export default {
         searchBoard() {
             const startInput = document.querySelector('input[name="startdate"]').value;
             const endInput = startInput;
-            //const endInput = document.querySelector('input[name="enddate"]').value;
-
-            if (!startInput) {
-                alert('請輸入完整的開始日期');
-                return;
-            }
-            const table_header = (document.getElementById('table_header'));
-
             const startDate = new Date(startInput);
             startDate.setHours(0, 0, 0, 0); 
-            const start = startDate.toISOString().split('.')[0];
+            const start = startDate.toLocaleString('zh-TW', { hour12: false }); // 或 `toLocaleDateString()` 只取日期
 
-            const endDate = new Date(endInput); 
-            endDate.setHours(23, 59, 59, 999); 
-            const end = endDate.toISOString().split('.')[0];
+            const endDate = new Date(endInput);
+            endDate.setHours(23, 59, 59, 999);
+            const end = endDate.toLocaleString('zh-TW', { hour12: false });
 
             this.fetchData(start, end)
             .then(rows => {
@@ -383,6 +374,7 @@ export default {
 <style>
 .gridjs-table {
     display: none !important;
+    min-width: 600px; /* 設定表格的最小寬度 */
 }
 .gridjs-search {
     display: none !important;

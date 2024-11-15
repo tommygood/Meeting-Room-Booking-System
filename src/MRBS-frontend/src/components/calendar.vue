@@ -80,6 +80,13 @@ export default {
         test() {
             console.log('test')
         },
+        resizeWindow() {
+            // resize after 1 sec
+            setTimeout(() => {
+                console.log('calendar resize');
+                window.dispatchEvent(new Event('resize'));
+            }, 1000);
+        },
         //starttime&endtime轉datetime格式
         formatDateTimeForDatabase(dateTime) {
             const date = new Date(dateTime);
@@ -148,7 +155,7 @@ export default {
             this.showEditConferncePage(conference_info);
         },
         showEditConferncePage(conference_info) {
-            console.log('showEditConferncePage:', conference_info);
+            console.log('showEditConferncePage?????:', conference_info);
             const startWeekday = ['日', '一', '二', '三', '四', '五', '六'][new Date(conference_info.start).getDay()];
             const endWeekday = ['日', '一', '二', '三', '四', '五', '六'][new Date(conference_info.end).getDay()];
 
@@ -196,9 +203,13 @@ export default {
                         console.log('parent is conference');
                         console.log(window.innerWidth);
                         if (window.innerWidth < 830) {
-                            const a=document.getElementsByClassName('lobby');
-                            a[0].style.position='absolute';
-                            a[0].style.top='120%'
+                            const lobby=document.getElementsByClassName('lobby');
+                            lobby[0].style.position='absolute';
+                            lobby[0].style.top='120%'
+                            const cal = document.getElementById('calendar');
+                            cal.style.marginLeft = '30%';
+                            cal.style.marginTop = '20%';
+                            cal.style.width = '100%';
                         }
                     }
                     this.setApplicationShow(true);
@@ -260,6 +271,7 @@ export default {
                     })
                 }
             })
+            this.resizeWindow();
         },
         async loadCalendar() {
             console.log('loadCalendar');

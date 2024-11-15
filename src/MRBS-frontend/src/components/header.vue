@@ -176,6 +176,9 @@ body {
     transform-origin: left; /* 縮放中心設為元素中心 */
     width: calc(100% / 1.22); /* 縮放寬度以補償 scale 的影響 */
     height: 6vh; /* 縮放高度以補償 scale 的影響 */
+    display: flex;
+    justify-content: right;
+    align-items: center;
   }
   
   .content {
@@ -505,9 +508,12 @@ body {
     initial-scale: 1;
 }
   @media screen and (max-width: 830px) {
-
+    header {
+      height: 8vh;
+    }
     .header-text {
       font-size: 4vw !important;
+      margin-top: 4vh;
     }
 
     #hamburger-menu {

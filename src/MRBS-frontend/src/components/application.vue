@@ -253,6 +253,13 @@ export default {
         }
     },
     methods: {
+        resizeWindow() {
+            // resize after 1 sec
+            setTimeout(() => {
+                console.log('applying resize');
+                window.dispatchEvent(new Event('resize'));
+            }, 0);
+        },
         apply() {
             document.getElementById('hamburger-content').style.display = 'none';
             document.getElementsByClassName('hamburger-requestpage')[0].style.display = 'flex';
@@ -265,6 +272,7 @@ export default {
                 console.log(document.getElementById('hamburger-menu').style.height)
                 document.getElementById('hamburger-menu').style.height = '0p';
             }
+            this.resizeWindow();
         },
         syncStartEndDate() {
             const startDate = document.getElementById('startdate');
@@ -286,12 +294,17 @@ export default {
                     console.log('parent is conference');
                     console.log(window.innerWidth);
                     if (window.innerWidth < 830) {
-                        const a=document.getElementsByClassName('lobby');
-                        a[0].style.position='';
-                        a[0].style.top=''
+                        const lobby=document.getElementsByClassName('lobby');
+                        lobby[0].style.position='';
+                        lobby[0].style.top=''
+                        const cal = document.getElementById('calendar');
+                        cal.style.marginLeft = '';
+                        cal.style.marginTop = '';
+                        cal.style.width = '';
                     }
                 }
             }
+            this.resizeWindow();
         },
         async getDoc(doc_name) {
             const api = config.apiUrl + `/doc?doc_name=${doc_name}`;

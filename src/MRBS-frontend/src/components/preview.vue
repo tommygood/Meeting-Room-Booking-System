@@ -355,11 +355,10 @@ export default {
                 // get current datetime if url path is demo
                 const datetime = new Date();
                 // 取得當地時區的日期，格式為 YYYY-MM-DD
-    this.date = datetime.toLocaleDateString('en-CA'); // 'en-CA' 格式化為 YYYY-MM-DD
-    
-    // 取得當地時區的時間，格式為 HH:MM
-    this.time = datetime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-
+                this.date = datetime.toLocaleDateString('en-CA'); // 'en-CA' 格式化為 YYYY-MM-DD
+                
+                // 取得當地時區的時間，格式為 HH:MM
+                this.time = datetime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
                 console.log('date:', this.date, 'time:', this.time);
             }
         },
@@ -545,6 +544,9 @@ export default {
                         const date = urlParams.get('date');
                         const time = urlParams.get('time');
                         datetime = new Date(date + ' ' + time);
+                        if (new Date(event.end_time) < datetime) {
+                            continue;
+                        }
                     }
                     
     
