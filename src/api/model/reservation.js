@@ -22,6 +22,26 @@ module.exports = {
             }
         }
     },
+
+    getInRange : async function (date) {
+        const conn = await db_conn.getDBConnection();
+        if (conn == null) {
+            return null;
+        }
+        else {
+            try {
+                sql = "SELECT `Reservation`.reserve_id ,`Reservation`.identifier, `Room`.room_name, `Reservation`.name, `Reservation`.start_time, `Reservation`.end_time, `Reservation`.show, `Reservation`.ext, `User`.chinesename, `User`.`unit` FROM `Reservation`,`Room`, `User` WHERE `Reservation`.room_id = `Room`.room_id AND `Reservation`.identifier = `User`.identifier AND `Reservation`.start_time <= ? AND `Reservation`.end_time >= ? AND `Reservation`.status = 0;";
+                const result = await conn.query(sql, [`${date} 23:59:59`, `${date} 00:00:00`]);
+                db_conn.closeDBConnection(conn);
+                return result;
+            }
+            catch(e) {
+                console.error("error getting reservation : ", e);
+                db_conn.closeDBConnection(conn);
+                return null;
+            }
+        }
+    },
     
     // insert reservation into db by identifier, room_id, name, start_time, end_time, show, ext
     insert : async function (identifier, room_id, name, start_time, end_time, show, ext) {

@@ -91,5 +91,6 @@ export default {
 <style scoped>
 header {
     height: 11vh !important;
+    justify-content: left !important;
 }
 </style>

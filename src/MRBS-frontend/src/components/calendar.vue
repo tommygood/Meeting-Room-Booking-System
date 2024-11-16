@@ -155,7 +155,6 @@ export default {
             this.showEditConferncePage(conference_info);
         },
         showEditConferncePage(conference_info) {
-            console.log('showEditConferncePage?????:', conference_info);
             const startWeekday = ['日', '一', '二', '三', '四', '五', '六'][new Date(conference_info.start).getDay()];
             const endWeekday = ['日', '一', '二', '三', '四', '五', '六'][new Date(conference_info.end).getDay()];
 
@@ -218,12 +217,11 @@ export default {
                     document.getElementById('hamburger-requestedit').style.display = 'flex';
                     document.getElementById('hamburger-content').style.display = 'none';
                     const startDate = new Date(conference_info.start);
-                    console.log(startDate, conference_info)
                     const formattedStartDate = startDate.toISOString().split('T')[0];
                     const startHour = String(startDate.getHours()).padStart(2, '0');
                     const startMinute = String(startDate.getMinutes()).padStart(2, '0');
                     const endDate = new Date(conference_info.end);
-                    const formattedEndDate = startDate.toISOString().split('T')[0];
+                    const formattedEndDate = endDate.toISOString().split('T')[0];
                     const endHour = String(endDate.getHours()).padStart(2, '0');
                     const endMinute = String(endDate.getMinutes()).padStart(2, '0');
                     form.querySelector('input[name="name"]').value = conference_info.title;
@@ -360,7 +358,6 @@ export default {
                 end.setHours(23, 59, 59, 999);
                 const startOfDay = self.formatDateTimeForDatabase(start);
                 const endOfDay = self.formatDateTimeForDatabase(end);
-                console.log(config.apiUrl  + `/reservation?start_time=${startOfDay}&end_time=${endOfDay}`)
                 fetch(self.eventApiUrl(startOfDay, endOfDay), {
                     method: 'GET',
                     credentials: 'include',
@@ -374,7 +371,6 @@ export default {
                     await new Promise(resolve => setTimeout(resolve, 1000));
                     const filteredEvents = events.filter(event => event.identifier === self.info.identifier);
                     filteredEvents.sort((a, b) => new Date(a.start_time) - new Date(b.start_time));
-
                     if (filteredEvents.length > 0) {
                         document.querySelector('.hamburger-list').innerHTML = '';
                         //顯示每個自己的會議
@@ -384,21 +380,40 @@ export default {
                             popup.style.display = 'flex';
                             popup.style.margin = '1%';
                             // get weekday from date
-                            const weekday = ['日', '一', '二', '三', '四', '五', '六'][new Date(event.start_time).getDay()];
                             const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' ,hour12: false });
                             const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' ,hour12: false});
-                            const date = new Date(event.start_time).toLocaleDateString([], {year: 'numeric', month: '2-digit', day: '2-digit'});
+                            // show the year-date of start_time and end_time when they are different
+                            if (event.start_time.split(' ')[0] === event.end_time.split(' ')[0]) {
+                                const date = new Date(event.start_time).toLocaleDateString([], {year: 'numeric', month: '2-digit', day: '2-digit' });
+                                const weekday = ['日', '一', '二', '三', '四', '五', '六'][new Date(event.start_time).getDay()];
+                                popup.innerHTML = DOMPurify.sanitize(`
+                                <div class="list-subtitle">
+                                    ${date}(${weekday})
+                                    <br>
+                                    ${startTime} ~ ${endTime}
+                                    <br>
+                                    <div class="list-title">${event.name}</div>
+                                    
+                                </div>
+                                `);
+                            } else {
+                                const date = new Date(event.start_time).toLocaleDateString([], {year: 'numeric', month: '2-digit', day: '2-digit' });
+                                const end_date = new Date(event.end_time).toLocaleDateString([], {year: 'numeric', month: '2-digit', day: '2-digit' });
+                                const start_date_weekday = ['日', '一', '二', '三', '四', '五', '六'][new Date(event.start_time).getDay()];
+                                const end_date_weekday = ['日', '一', '二', '三', '四', '五', '六'][new Date(event.end_time).getDay()];
+                                popup.innerHTML = DOMPurify.sanitize(`
+                                <div class="list-subtitle">
+                                    ${date}(${start_date_weekday}) ~ ${end_date}(${end_date_weekday})
+                                    <br>
+                                    ${startTime} ~ ${endTime}
+                                    <br>
+                                    <div class="list-title">${event.name}</div>
+                                    
+                                </div>
+                                `);
+                            }
                             
-                            popup.innerHTML = DOMPurify.sanitize(`
-                            <div class="list-subtitle">
-                                ${date}(${weekday})
-                                <br>
-                                ${startTime} ~ ${endTime}
-                                <br>
-                                <div class="list-title">${event.name}</div>
-                                
-                            </div>
-                            `);
+                            
                             //     <br>
                             //     借用單位: ${event.unit}<br>
                             //     申請人: ${event.chinesename} &emsp; 分機號碼: ${event.ext}

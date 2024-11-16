@@ -11,6 +11,7 @@ class Reservation {
         this.model = require('./../model/reservation.js');
         // bind the function to the class
         this.get = this.get.bind(this);
+        this.getInRange = this.getInRange.bind(this);
         this.getShow = this.getShow.bind(this);
         this.post = this.post.bind(this);
         this.update = this.update.bind(this);
@@ -30,15 +31,34 @@ class Reservation {
         }
     }
 
+    async getInRange(req, res) {
+        try {
+            const time = req.query.time;
+            console.log('time', time);
+            const data = await this.model.getInRange(time);
+            res.json({data});
+        }
+        catch(e) {
+            console.error(e);
+            res.status(500).send('Internal Server Error');
+        }
+    }
+
     async getShow(req, res) {
         try {
             const start_time = req.query.start_time;
-            const end_time = req.query.end_time;
+            // add 7 days to the end time for showing the cross day reservation
+            let end_time = new Date(req.query.end_time);
+            end_time.setDate(end_time.getDate() + 7);
             const data = await this.model.get(start_time, end_time);
             // replace the reservation name with "校內會議" for showing in the TV screen
             data.forEach((item) => {
                 if (!item.show) {
                     item.name = "校內會議";
+                }
+                // remove element which date of start time is not equal to the date of start_time
+                if (new Date(item.start_time).getDate() != new Date(start_time).getDate()) {
+                    data.splice(data.indexOf(item), 1);
                 }
             });
             res.json({data});
@@ -223,6 +243,8 @@ const reservation = new Reservation();
 
 // get reservations which are between start_time and end_time 
 router.get('/', jwt.verifyLogin, reservation.get);
+
+router.get('/inrange', jwt.verifyAdmin, reservation.getInRange);
 
 // insert a reservation if not conflict with other reservations
 router.post('/', jwt.verifyLogin, reservation.post);

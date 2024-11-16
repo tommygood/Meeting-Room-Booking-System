@@ -190,8 +190,14 @@ export default {
             window.location.reload();
         },
         //get board information
-        fetchData(start, end) {
-            const api_board = config.apiUrl + `/reservation?start_time=${start}&end_time=${end}`;
+        fetchData(start, end, api) {
+            let api_board;
+            if (api) {
+                api_board = api;
+            } else {
+                api_board = config.apiUrl + `/reservation?start_time=${start}&end_time=${end}`;
+            }
+            console.log('api_board:', api_board);
             return fetch(api_board, {
             method: 'GET',
             credentials: 'include', 
@@ -209,7 +215,12 @@ export default {
                     const startDate = new Date(item.start_time);
                     const endDate = new Date(item.end_time);
                     // convert startDate to 'YYYY/MM/DD weekday'
-                    const formattedDate = `${startDate.getFullYear()}/${(startDate.getMonth() + 1).toString().padStart(2, '0')}/${startDate.getDate().toString().padStart(2, '0')}(${['日', '一', '二', '三', '四', '五', '六'][startDate.getDay()]})`;
+                    // show the start and end date if they are different
+                    const formattedDate = startDate.getFullYear() === endDate.getFullYear() &&
+                    startDate.getMonth() === endDate.getMonth() &&
+                    startDate.getDate() === endDate.getDate()
+                    ? `${startDate.getFullYear()}/${(startDate.getMonth() + 1).toString().padStart(2, '0')}/${startDate.getDate().toString().padStart(2, '0')}(${['日', '一', '二', '三', '四', '五', '六'][startDate.getDay()]})`
+                    : `${startDate.getFullYear()}/${(startDate.getMonth() + 1).toString().padStart(2, '0')}/${startDate.getDate().toString().padStart(2, '0')}(${['日', '一', '二', '三', '四', '五', '六'][startDate.getDay()]}) ~ ${endDate.getFullYear()}/${(endDate.getMonth() + 1).toString().padStart(2, '0')}/${endDate.getDate().toString().padStart(2, '0')}(${['日', '一', '二', '三', '四', '五', '六'][endDate.getDay()]})`;
                     const startTime = `${startDate.getHours().toString().padStart(2, '0')}:${startDate.getMinutes().toString().padStart(2, '0')}`;
                     const endTime = `${endDate.getHours().toString().padStart(2, '0')}:${endDate.getMinutes().toString().padStart(2, '0')}`;
                     const formattedTime = `${startTime}~${endTime}`;
@@ -238,6 +249,7 @@ export default {
         updateGrid(rows) {
             const gridContainer = document.getElementById('gridtable');
             gridContainer.innerHTML = '';
+            console.log('rows:', rows);
 
             this.grid = new gridjs.Grid({
                 columns: [
@@ -287,12 +299,12 @@ export default {
             const startDate = new Date(startInput);
             startDate.setHours(0, 0, 0, 0); 
             const start = startDate.toLocaleString('zh-TW', { hour12: false }); // 或 `toLocaleDateString()` 只取日期
+            // format start time to 'YYYY-MM-DD'
+            const time_range = start.split(' ')[0].replace(/\//g, '-');
+            console.log('time_range:', time_range);
+            const api = config.apiUrl + `/reservation/inrange?time=${time_range}`;
 
-            const endDate = new Date(endInput);
-            endDate.setHours(23, 59, 59, 999);
-            const end = endDate.toLocaleString('zh-TW', { hour12: false });
-
-            this.fetchData(start, end)
+            this.fetchData(start, null, api)
             .then(rows => {
             if (this.grid) {
                 this.grid.updateConfig({
@@ -320,7 +332,7 @@ export default {
             const end = endDate.toISOString().split('.')[0];
 
             // 初始載入時抓取一個月內的資料並更新表格
-            this.fetchData(start, end).then(rows => {
+            this.fetchData(start, end, null).then(rows => {
                 this.updateGrid(rows); 
             }).catch(error => {
                 console.error('Error rendering Grid.js:', error);
@@ -352,7 +364,7 @@ export default {
             endDate.setMonth(endDate.getMonth() + 1); // 加一個月
             endDate.setHours(0, 0, 0, 0); 
             const end = endDate.toISOString().split('.')[0];
-            this.fetchData(start, end)
+            this.fetchData(start, end, null)
             .then(rows => {
             if (this.grid) {
                 this.grid.updateConfig({
