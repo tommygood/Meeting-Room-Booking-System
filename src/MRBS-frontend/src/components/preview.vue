@@ -396,7 +396,26 @@ export default {
                 return null;
             }
         },
-        eventCardContent(event, startTime, endTime) {
+        makeDisplayedTime(event) {
+            const start_time_date = event.start_time.split(' ')[0];
+            const end_time_date = event.end_time.split(' ')[0];
+            let startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit',hour12:false });
+            let endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' ,hour12:false });
+            if (start_time_date != end_time_date) {
+                if (new Date(start_time_date) < new Date(this.date)) {
+                    startTime = '08:00';
+                    endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' ,hour12:false });
+                }
+                if (new Date(end_time_date) > new Date(this.date)) {
+                    startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit',hour12:false });
+                    endTime = '17:00';
+                }
+            }
+            return {startTime, endTime};
+        },
+
+        eventCardContent(event) {
+            const {startTime, endTime} = this.makeDisplayedTime(event);
             return `
                 <div class="time-block-min">
                     <span>${startTime}</span>
@@ -411,10 +430,11 @@ export default {
             `;
         },
         
-        eventCardMaxContent(event, startTime, endTime) {
+        eventCardMaxContent(event) {
             // make event title
             // if length of event.name > 9, then use different style
             let event_title;
+            const {startTime, endTime} = this.makeDisplayedTime(event);
             if (event.name.length > 14) {
                 event_title = `<div class="event-title" style="height:200px;margin-bottom:170px">${event.name}</div>`;
             }
@@ -534,7 +554,6 @@ export default {
                     let datetime;
                     if (this.isDemoPage()) {
                         datetime = new Date();
-
                         if (new Date(event.end_time) < datetime) {
                             continue;
                         }
@@ -546,7 +565,6 @@ export default {
                         const time = urlParams.get('time');
                         datetime = new Date(date + ' ' + time);
                         if (new Date(event.end_time) < datetime) {
-                            console.log(event.end_time, datetime);
                             continue;
                         }
                     }
@@ -574,7 +592,7 @@ export default {
                             // put the first event to the div which class is event-list-now
                             const eventCardNow = document.createElement('div');
                             eventCardNow.className = 'event-card-max';
-                            eventCardNow.innerHTML = this.eventCardMaxContent(event, startTime, endTime);
+                            eventCardNow.innerHTML = this.eventCardMaxContent(event);
                             // replace the event if there is an event
                             if (document.querySelector('.event-list-now').childNodes.length == 0) {
                                 document.querySelector('.event-list-now').appendChild(eventCardNow);
@@ -599,7 +617,7 @@ export default {
                         const eventCardNow = document.createElement('div');
                         eventCardNow.className = 'event-card-max';
                         console.log('put next event:', event);
-                        eventCardNow.innerHTML = this.eventCardMaxContent(event, startTime, endTime);
+                        eventCardNow.innerHTML = this.eventCardMaxContent(event);
                         // replace the event if there is an event
                         if (document.querySelector('.event-list-next').childNodes.length == 0) {
                             document.querySelector('.event-list-next').appendChild(eventCardNow);

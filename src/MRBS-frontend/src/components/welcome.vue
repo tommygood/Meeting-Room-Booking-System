@@ -75,7 +75,7 @@ export default {
                 htmlContent += `<img src="${block.data.url}" style="width:${block.data.width}">`;
                 }
                 });
-            const title = (doc_name=='use')?'會議室使用規則': '器材規則';
+            const title = (doc_name=='use')?'會議室使用規則': '設備介紹';
             Swal.fire({
                 width:'fit-content',
                 'max-width':'55%',

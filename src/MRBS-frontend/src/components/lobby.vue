@@ -132,7 +132,7 @@ export default {
             const privilege = info.privilege_level;
             if (privilege != 1) {
                 if (reservationDate > threeMonthsLater) {
-                    alert('借閱日期不能超過三個月後，請選擇在三個月內的日期！');
+                    alert('借用日期不能超過三個月後，請選擇在三個月內的日期！');
                     return;
                 }
             }
