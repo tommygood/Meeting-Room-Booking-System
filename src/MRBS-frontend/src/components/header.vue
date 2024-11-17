@@ -544,9 +544,12 @@ body {
 
     td {
         white-space: nowrap; /* Prevent text from wrapping to the next line */
-        text-overflow: ellipsis; /* Add "..." if text is too long */
+        text-overflow: hidden; /* Prevent text from overflowing the cell */
     }
-    
+
+    .fc-event-time, .fc-event-title {
+      overflow: hidden;
+    }
 
     body {
       display: block;

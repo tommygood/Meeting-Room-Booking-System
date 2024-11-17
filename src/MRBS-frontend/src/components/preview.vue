@@ -534,6 +534,7 @@ export default {
                     let datetime;
                     if (this.isDemoPage()) {
                         datetime = new Date();
+
                         if (new Date(event.end_time) < datetime) {
                             continue;
                         }
@@ -545,6 +546,7 @@ export default {
                         const time = urlParams.get('time');
                         datetime = new Date(date + ' ' + time);
                         if (new Date(event.end_time) < datetime) {
+                            console.log(event.end_time, datetime);
                             continue;
                         }
                     }

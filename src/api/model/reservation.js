@@ -32,6 +32,7 @@ module.exports = {
             try {
                 sql = "SELECT `Reservation`.reserve_id ,`Reservation`.identifier, `Room`.room_name, `Reservation`.name, `Reservation`.start_time, `Reservation`.end_time, `Reservation`.show, `Reservation`.ext, `User`.chinesename, `User`.`unit` FROM `Reservation`,`Room`, `User` WHERE `Reservation`.room_id = `Room`.room_id AND `Reservation`.identifier = `User`.identifier AND `Reservation`.start_time <= ? AND `Reservation`.end_time >= ? AND `Reservation`.status = 0;";
                 const result = await conn.query(sql, [`${date} 23:59:59`, `${date} 00:00:00`]);
+                console.log('result', result);
                 db_conn.closeDBConnection(conn);
                 return result;
             }

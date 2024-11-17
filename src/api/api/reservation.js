@@ -50,15 +50,11 @@ class Reservation {
             // add 7 days to the end time for showing the cross day reservation
             let end_time = new Date(req.query.end_time);
             end_time.setDate(end_time.getDate() + 7);
-            const data = await this.model.get(start_time, end_time);
+            const data = await this.model.getInRange(start_time);
             // replace the reservation name with "校內會議" for showing in the TV screen
             data.forEach((item) => {
                 if (!item.show) {
                     item.name = "校內會議";
-                }
-                // remove element which date of start time is not equal to the date of start_time
-                if (new Date(item.start_time).getDate() != new Date(start_time).getDate()) {
-                    data.splice(data.indexOf(item), 1);
                 }
             });
             res.json({data});
