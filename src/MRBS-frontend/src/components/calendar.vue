@@ -83,7 +83,10 @@ export default {
         resizeWindow() {
             // resize after 1 sec
             setTimeout(() => {
-                console.log('calendar resize');
+                window.dispatchEvent(new Event('resize'));
+            }, 2000);
+            // resize after 1 sec
+            setTimeout(() => {
                 window.dispatchEvent(new Event('resize'));
             }, 1000);
         },
