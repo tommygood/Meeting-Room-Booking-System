@@ -6,9 +6,9 @@ const Reservation = require("./../api/reservation.js").Reservation;
 const reservation = new Reservation();
 
 // start time is now time and format is YYYY-MM-DD HH:00:00
-let start_time = new Date().toISOString().slice(0, 19).replace('T', ' ').slice(0, 14) + "00:00"
+let start_time = new Date(new Date().getTime() + 365*60*60*1000).toISOString().slice(0, 19).replace('T', ' ').slice(0, 14) + "00:00"
 // end time is start time + 1 hour
-let end_time = new Date(new Date().getTime() + 60*60*1000).toISOString().slice(0, 19).replace('T', ' ').slice(0, 14) + "00:00"
+let end_time = new Date(new Date().getTime() + 365*60*60*1000 + 60*60*1000).toISOString().slice(0, 19).replace('T', ' ').slice(0, 14) + "00:00"
 
 const ip = "127.0.0.1";
 
@@ -43,6 +43,7 @@ describe('test if reservation operations work ', () => {
             identifier: "admin",
             ip: "127.0.0.1",
         };
+        console.log('stub_req', stub_req);
         stub_res.json = function (data) {
             expect(data).include({suc: true});
         };
