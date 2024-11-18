@@ -38,7 +38,7 @@ module.exports = {
     const codeVerifier = this.generateCodeVerifier();
     const code_challenge = this.generateCodeChallenge(codeVerifier);
     const authorizationUri = client.authorizeURL({
-      redirect_uri: `${host}/api/login/callback`,
+      redirect_uri: `https://ncusec.ncu.edu.tw/2fconference/api/login/callback`,
       scope: this.scope,
       state: "9d6ca6532dab4d92eac96d7b114730b4",
       code_verify: code_challenge, // this is the code_challenge for weird result from vunlnerability scanner
