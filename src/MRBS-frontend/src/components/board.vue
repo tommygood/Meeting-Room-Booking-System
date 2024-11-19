@@ -165,6 +165,10 @@ export default {
 
                 const checkbox = document.querySelector(`#gridtable input[type="checkbox"][value="${row[4]}"]`);
                 console.log(row, checkbox);
+                if (!checkbox) {
+                    // next row
+                    return;
+                }
                 // 獲取 checkbox 當前的 checked 狀態
                 const checkboxValue = checkbox ? checkbox.checked : false;
 
@@ -188,7 +192,7 @@ export default {
                 .then(response => response.json());
             });
             alert('儲存成功');
-            //window.location.reload();
+            window.location.reload();
         },
         //get board information
         fetchData(start, end, api) {
