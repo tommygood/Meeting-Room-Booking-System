@@ -346,7 +346,7 @@ export default {
             if (date && time) {
                 // 將選定的日期和時間拼接成查詢參數
                 const queryString = `?date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`;
-                window.open(`/board/preview${queryString}`, '_blank');
+                window.open(`/2fconference/board/preview${queryString}`, '_blank');
             } else {
                 alert('請選擇日期和時間');
             }
