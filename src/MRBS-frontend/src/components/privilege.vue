@@ -261,18 +261,21 @@ export default {
                 // 將 start_time 轉換為 Date 對象
                 const startTime = new Date(event.start_time);
                 
-                // 格式化為 mm/dd
-                const month = String(startTime.getMonth() + 1).padStart(2, '0'); // 月份需要加 1
-                const day = String(startTime.getDate()).padStart(2, '0');
-                
-                // 獲取星期幾
-                const daysOfWeek = ['日', '一', '二', '三', '四', '五', '六'];
-                const dayOfWeek = daysOfWeek[startTime.getDay()];
-                
-                // 格式化為 mm/dd (星期幾)
-                const formattedDate = `${month}/${day} (${dayOfWeek})`;
-                option.value = event.reserve_id;  // 可以根據需要調整 value
-                option.textContent = DOMPurify.sanitize(`${formattedDate} ${event.name}`);
+               // 修改部分
+const year = startTime.getFullYear(); // 获取年份
+const month = String(startTime.getMonth() + 1).padStart(2, '0'); // 月份需要加 1
+const day = String(startTime.getDate()).padStart(2, '0');
+
+// 星期几
+const daysOfWeek = ['日', '一', '二', '三', '四', '五', '六'];
+const dayOfWeek = daysOfWeek[startTime.getDay()];
+
+// 格式化为 yyyy/mm/dd (weekday)
+const formattedDate = `${year}/${month}/${day} (${dayOfWeek})`;
+
+// 使用 DOMPurify 防止 XSS
+option.textContent = DOMPurify.sanitize(`${formattedDate} ${event.name}`);
+
                 selectElement.appendChild(option);
             });
         },
