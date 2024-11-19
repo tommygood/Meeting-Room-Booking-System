@@ -188,7 +188,7 @@ export default {
                 .then(response => response.json());
             });
             alert('儲存成功');
-            window.location.reload();
+            //window.location.reload();
         },
         //get board information
         fetchData(start, end, api) {
