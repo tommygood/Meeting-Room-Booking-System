@@ -221,7 +221,7 @@ class Reservation {
             // send email to user who reserved the room when the reservation is deleted
             const reservation = await this.model.getById(reserve_id);
             // format the start_time and end_time from mysql
-            Email.sendUser(identifier, Email.subject.cancel_reservation, Email.text.cancel_reservation(identifier, reservation.start_time, reservation.end_time, reservation.room_id));
+            Email.sendUser(reservation.identifer, Email.subject.cancel_reservation, Email.text.cancel_reservation(reservation.identifer, reservation.start_time, reservation.end_time, reservation.room_id));
             // log the action
             Log.insert(req.ip, Operator.getOperator.reservationDelete.code, identifier);
             res.json({suc}); 

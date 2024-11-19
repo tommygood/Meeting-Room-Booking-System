@@ -46,8 +46,7 @@ export default {
     },
     methods: {
       redirect(path) {
-          const api = config.apiUrl; 
-          window.location.href = api + path;
+          window.location.href = path;
       },
       loadCDN(cdn) {
           // Return a promise that resolves when all scripts are loaded
