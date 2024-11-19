@@ -58,7 +58,7 @@ module.exports = {
 
     const tokenParams = {
       code,
-      redirect_uri: `${host}/example`,
+      redirect_uri: `${host}/2fconference/lobby`,
       scope: this.scope,
       code_verifier: codeVerifier,
     };
