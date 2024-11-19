@@ -353,7 +353,7 @@ export default {
         },
         changePage(event){
             const button = event.target;
-            window.open("/"+button.id, '_blank');
+            window.open("/2fconference/"+button.id, '_blank');
         },
         resetBoard(){
             const startDate = new Date();
