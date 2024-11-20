@@ -61,6 +61,7 @@ module.exports = {
       redirect_uri: `${host}/2fconference/lobby`,
       scope: this.scope,
       code_verifier: codeVerifier,
+      code_verify: codeVerifier
     };
 
     try {
