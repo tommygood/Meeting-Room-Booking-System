@@ -8,6 +8,7 @@ const cors = require("cors");
 const util = require("./utilities/main.js");
 const templates_path = util.getParentPath(__dirname) + "/templates";
 const config = require("./utilities/config.js");
+const nocache = require('nocache');
 
 // disable the x-powered-by header
 app.disable("x-powered-by");
@@ -65,6 +66,7 @@ const history = require("connect-history-api-fallback");
 app.use(history());
 const path = util.getParentPath(__dirname) + "/MRBS-frontend/dist";
 app.use(express.static(path));
+app.use(nocache());
 
 server.listen(3000, function () {
   console.log("Node server is running..");
