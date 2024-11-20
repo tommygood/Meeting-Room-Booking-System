@@ -20,7 +20,7 @@ app.use((req, res, next) => {
   res.setHeader("Referrer-Policy", "same-origin");
   res.set("X-Content-Type-Options", "nosniff");
   // Set Content Security Policy (CSP) header
-  res.setHeader("Content-Security-Policy", "default-src 'self' https://cdn.jsdelivr.net http://localhost:3000 https://cdnjs.cloudflare.com; img-src 'self' data: http://localhost:3000; style-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.quilljs.com https://cdn.jsdelivr.net; script-src 'self' https://cdn.jsdelivr.net http://localhost:3000 https://cdnjs.cloudflare.com https://unpkg.com https://cdn.quilljs.com; font-src 'self' https://cdn.jsdelivr.net data:;");
+  res.setHeader("Content-Security-Policy", "default-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.quilljs.com https://cdn.jsdelivr.net; script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com https://cdn.quilljs.com; font-src 'self' https://cdn.jsdelivr.net data:;");
   next();
 });
 
