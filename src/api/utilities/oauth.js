@@ -75,7 +75,7 @@ module.exports = {
         // put the token in cookie and redirect to main page if login successfully
         const user_info = await Info.getInfoFromAPI(access_token);
         const token = jwt.signJwtToken(user_info.identifier);
-        res.cookie("token", token);
+        res.cookie("token", token, { sameSite: 'strict'});
         res.redirect(`${redirect_uri}`);
         return {
           suc: true,
