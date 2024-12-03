@@ -5,11 +5,11 @@
                 <img class="logo" src="../../public/ncu_logo.png" alt="國立中央大學">
                 <img class="logo_min" src="../../public/ncu_logo_min.png" alt="國立中央大學">
             </a>
-            <h1 style="margin-left:2%">行政大樓二樓會議室<div style='margin-right:55%;'>借用系統</div></h1>
+            <h1 style="margin-left:2%">行政大樓二樓會議室<div style='margin-right:55%;margin-top:-5px;'>借用系統</div></h1>
         </header>
 
         <div class="background-container">
-            <div class="content-card">
+            <div class="content-card" style="margin-top: 7%;">
                 <button class="login-btn" v-on:click="redirectBackend('/login/sso')">登入</button>
                 <div class="footer-links">
                     <a href="#" v-on:click="showRules('use')">使用規則</a>
@@ -75,7 +75,7 @@ export default {
                 htmlContent += `<img src="${block.data.url}" style="width:${block.data.width}">`;
                 }
                 });
-            const title = (doc_name=='use')?'會議室使用規則': '器材規則';
+            const title = (doc_name=='use')?'會議室使用規則': '設備介紹';
             Swal.fire({
                 width:'fit-content',
                 'max-width':'55%',
@@ -88,3 +88,9 @@ export default {
 </script>
 
 <style src="../assets/style.css" scoped></style>
+<style scoped>
+header {
+    height: 11vh !important;
+    justify-content: left !important;
+}
+</style>

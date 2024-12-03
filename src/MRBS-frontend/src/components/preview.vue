@@ -106,13 +106,24 @@ export default {
             }, 1000);
         },
         displayCureentTime() {
-            // keep updating the current time
-            const datetime = new Date();
-            // get weekday from datetime
-            
-            const weekday = ['日', '一', '二', '三', '四', '五', '六'][datetime.getDay()];
-            document.getElementById('current_time').innerHTML = datetime.toISOString().split('T')[0] + ` (${weekday})` +
-            '<br/>' + datetime.toTimeString().split(' ')[0].slice(0, 5);
+            // set the current time to fixed value if the url path is not demo
+            const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+            if (!this.isDemoPage()) {
+                // get fixed time from query string
+                const urlParams = new URLSearchParams(window.location.search);
+                const date = urlParams.get('date');
+                const time = urlParams.get('time');
+                const weekday = weekdays[new Date(date).getDay()];
+                document.getElementById('current_time').innerHTML = date + ` (${weekday})` + '<br/>' + time;
+            }
+            else {
+                // keep updating the current time
+                const datetime = new Date();
+                // get weekday from datetime
+                const weekday = weekdays[datetime.getDay()];
+                document.getElementById('current_time').innerHTML = datetime.toISOString().split('T')[0] + ` (${weekday})` +
+                '<br/>' + datetime.toTimeString().split(' ')[0].slice(0, 5);
+            }
         },
         loadCSS() {
             const style = document.createElement('style');
@@ -230,7 +241,7 @@ export default {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                height: 85%;
+                height: 100vh;
                 padding: 20px 100px;
                 border-radius: 10px;
                 background-color: #fff;
@@ -245,7 +256,7 @@ export default {
                 align-content: center;
                 margin: 0px 25px;
                 text-algin: center;
-                margin-top:100px;
+                margin-top: 50px;
             }
 
             .time-block-max {
@@ -343,8 +354,12 @@ export default {
             else {
                 // get current datetime if url path is demo
                 const datetime = new Date();
-                this.date = datetime.toISOString().split('T')[0]; // 產生 YYYY-MM-DD 格式
-                this.time = datetime.toTimeString().split(' ')[0].slice(0, 5); // 產生 HH:MM 格式
+                // 取得當地時區的日期，格式為 YYYY-MM-DD
+                this.date = datetime.toLocaleDateString('en-CA'); // 'en-CA' 格式化為 YYYY-MM-DD
+                
+                // 取得當地時區的時間，格式為 HH:MM
+                this.time = datetime.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                console.log('date:', this.date, 'time:', this.time);
             }
         },
         setTopDatetime() {
@@ -360,7 +375,7 @@ export default {
             const day = new Date(this.date);
             const tomorrow = new Date(this.date);
             if (day < today_date) {
-                alert('日期不可晚於今天');
+                alert(`日期（${day}）不可晚於今天（${today_date}）`);
                 return null;
             }
             
@@ -381,23 +396,56 @@ export default {
                 return null;
             }
         },
-        eventCardContent(event, startTime, endTime) {
+        makeDisplayedTime(event) {
+            const start_time_date = event.start_time.split(' ')[0];
+            const end_time_date = event.end_time.split(' ')[0];
+            let startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit',hour12:false });
+            let endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' ,hour12:false });
+            if (start_time_date != end_time_date) {
+                if (new Date(start_time_date) < new Date(this.date)) {
+                    startTime = '08:00';
+                    endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' ,hour12:false });
+                }
+                if (new Date(end_time_date) > new Date(this.date)) {
+                    startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit',hour12:false });
+                    endTime = '17:00';
+                }
+            }
+            return {startTime, endTime};
+        },
+
+        eventCardContent(event) {
+            const {startTime, endTime} = this.makeDisplayedTime(event);
             return `
                 <div class="time-block-min">
                     <span>${startTime}</span>
                     <span>|</span>
                     <span>${endTime}</span>
                 </div>
-                <div class="event-details-min" style="margin-left:10%">
+                <div class="event-details-min" style="margin-left:10%;">
                     <h3>${event.name}</h3>
                     <p style="font-weight:bold">借用單位：${event.unit}</p>
                     <p style="font-weight:bold">借用人：${event.chinesename}</pe=>
                 </div>
             `;
         },
-        eventCardMaxContent(event, startTime, endTime) {
+        
+        eventCardMaxContent(event) {
+            // make event title
+            // if length of event.name > 9, then use different style
+            let event_title;
+            const {startTime, endTime} = this.makeDisplayedTime(event);
+            if (event.name.length > 14) {
+                event_title = `<div class="event-title" style="height:200px;margin-bottom:170px">${event.name}</div>`;
+            }
+            else if (event.name.length > 7) {
+                event_title = `<div class="event-title" style="height:200px;margin-bottom:60px;">${event.name}</div>`;
+            }
+            else {
+                event_title = `<div class="event-title" style="height:200px;margin-bottom:50px;">${event.name}</div>`;
+            }
             return `
-                <div class="event-title" style="height:200px">${event.name}</div>
+                ${event_title}
                 <span class="dash divider" style="margin-bottom:15px;height: 1px;
                 background-color: #ccc;
                 margin: 25px 45px;width:650px;"></span>
@@ -502,12 +550,25 @@ export default {
                     eventCard.className = 'event-card-min';
                     const startTime = new Date(event.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit',hour12:false });
                     const endTime = new Date(event.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' ,hour12:false });
-                    console.log(startTime)
                     // not display the event which is already ended
-                    const datetime = new Date();
-                    if (new Date(event.end_time) < datetime) {
-                        continue;
+                    let datetime;
+                    if (this.isDemoPage()) {
+                        datetime = new Date();
+                        if (new Date(event.end_time) < datetime) {
+                            continue;
+                        }
                     }
+                    else {
+                        // get fixed time from query string
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const date = urlParams.get('date');
+                        const time = urlParams.get('time');
+                        datetime = new Date(date + ' ' + time);
+                        if (new Date(event.end_time) < datetime) {
+                            continue;
+                        }
+                    }
+                    
     
                     // display the event happened today
                     eventCard.innerHTML = this.eventCardContent(event, startTime, endTime);
@@ -531,7 +592,7 @@ export default {
                             // put the first event to the div which class is event-list-now
                             const eventCardNow = document.createElement('div');
                             eventCardNow.className = 'event-card-max';
-                            eventCardNow.innerHTML = this.eventCardMaxContent(event, startTime, endTime);
+                            eventCardNow.innerHTML = this.eventCardMaxContent(event);
                             // replace the event if there is an event
                             if (document.querySelector('.event-list-now').childNodes.length == 0) {
                                 document.querySelector('.event-list-now').appendChild(eventCardNow);
@@ -556,7 +617,7 @@ export default {
                         const eventCardNow = document.createElement('div');
                         eventCardNow.className = 'event-card-max';
                         console.log('put next event:', event);
-                        eventCardNow.innerHTML = this.eventCardMaxContent(event, startTime, endTime);
+                        eventCardNow.innerHTML = this.eventCardMaxContent(event);
                         // replace the event if there is an event
                         if (document.querySelector('.event-list-next').childNodes.length == 0) {
                             document.querySelector('.event-list-next').appendChild(eventCardNow);
@@ -580,6 +641,9 @@ export default {
                     }
                 }
                 else if (now_empty && next_empty) {
+                document.querySelector('.event-list').innerHTML = '';
+                const eventCard = document.createElement('div');
+                eventCard.className = 'event-title';
                 let no_reservation_msg;
                 if (events.length == 0) {
                     no_reservation_msg = '今日無會議';
@@ -587,9 +651,9 @@ export default {
                 else {
                     no_reservation_msg = '今日會議已結束';
                 }
-                    document.querySelector('.event-list').innerHTML = `<h3 style="margin-top:60%;">${no_reservation_msg}</h3>`;
-                    // remove the now and next event if there is no event
-                    this.removeBothEvent();
+                eventCard.innerHTML = `<h3 style="margin-top:60%;">${no_reservation_msg}</h3>`;
+                document.querySelector('.event-list').appendChild(eventCard);
+                this.removeBothEvent();
                 }
                 else if (now_empty && !next_empty && document.querySelectorAll('.swiper-slide').length == 3) {
                     const now_event = this.findSwiper('NOW');

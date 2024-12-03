@@ -9,7 +9,7 @@ function verifyJwtToken(token) {
         return {suc : true, data : result};
     }
     catch (e) {
-        console.log(e);
+        console.error(e);
         return {suc : false, data : null};
     }
 }
@@ -23,7 +23,7 @@ module.exports = {
             return result;
         }
         catch (e) {
-            console.log(e);
+            console.error(e);
             return null;
         }
     },

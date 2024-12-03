@@ -2,7 +2,7 @@
     <body>
         <user_header :setInfo="setInfo" :info="info"></user_header>
         <div class="content">
-            <application :info="info" :formatDateTimeForDatabase="formatDateTimeForDatabase"></application>
+            <application :info="info" :formatDateTimeForDatabase="formatDateTimeForDatabase" :is_admin="false"></application>
             <calendar :eventApiUrl="eventApiUrl" :info="info"></calendar>
         </div>
     </body>
@@ -132,7 +132,7 @@ export default {
             const privilege = info.privilege_level;
             if (privilege != 1) {
                 if (reservationDate > threeMonthsLater) {
-                    alert('借閱日期不能超過三個月後，請選擇在三個月內的日期！');
+                    alert('借用日期不能超過三個月後，請選擇在三個月內的日期！');
                     return;
                 }
             }

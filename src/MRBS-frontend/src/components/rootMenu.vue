@@ -86,7 +86,7 @@ export default {
         },
         changePage(event){
             const button = event.target.parentElement;
-            location.href = "/"+button.id;
+            location.href = "/2fconference/"+button.id;
         },
     }
 }

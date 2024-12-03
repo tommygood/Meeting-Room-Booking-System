@@ -25,7 +25,7 @@ class SSOLogin {
 
   async callback(req, res) {
     try {
-      const redirect_uri = `${host}/lobby`;
+      const redirect_uri = `${host}/2fconference/lobby`;
       const result = await oauth.callback(host, redirect_uri, req, res);
 
       // insert/update user info into db
@@ -40,7 +40,6 @@ class SSOLogin {
     }
     catch(e) {
       console.error(e);
-      res.status(500).send('Internal Server Error');
     }
   }
 }

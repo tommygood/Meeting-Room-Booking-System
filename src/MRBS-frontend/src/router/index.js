@@ -13,7 +13,7 @@ import Auth from '@/middleware/auth.vue'
 import FailedLogin from '@/components/failedLogin.vue'
 
 const router = createRouter({
-  history: createWebHistory('/'),
+  history: createWebHistory('/2fconference'),
   routes: [
     {
       path: '/',

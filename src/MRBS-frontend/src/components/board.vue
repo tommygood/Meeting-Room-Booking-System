@@ -14,9 +14,9 @@
                         <b style='margin-top:3%;'>日期：</b>
                         <input type="date" class="hamburger-request" name="start-date"/>
                     </div>
-                    <div style='display:flex'>
+                    <div class="timeBar" style='display:flex'>
                         <b style='margin-top:3%;width:30%'>時間：</b>
-                        <input type="time" id="start-time" name="start-time" class="hamburger-timerequest" style="width:70%">
+                        <input type="time" id="start-time" name="start-time" class="hamburger-timerequest" style="width:70%; margin :0px">
                     </div>
                 </form>
                 <div style='display:inline-flex;margin-left:3%'>
@@ -38,13 +38,16 @@
                         <input type="date" name="startdate" placeholder="開始時間" style="width:100px" />
                     </td>
                     <td class="table_title"> 
-                        <input type="date" name="enddate" placeholder="結束時間" style="width:100px"/> 
+                        <input type="date" name="enddate" placeholder="結束時間" style="width:100px;display: none;"/> 
                     </td>
                     <td class="table_title">
                         <input type="text" placeholder="Type a keyword..." id="grid-search" class="gridjs-input"/>
                     </td>
                     <td class="table_title">
-                        <button v-on:click="searchBoard">
+                        <button v-on:click="resetBoard" style="margin-left: 2%;">
+                            清除
+                        </button>
+                        <button v-on:click="searchBoard" style="margin-left: 2%;">
                             篩選
                         </button>
                         <button v-on:click="saveContent" style="margin-left: 2%;">
@@ -161,6 +164,11 @@ export default {
             rows.map(row => {
 
                 const checkbox = document.querySelector(`#gridtable input[type="checkbox"][value="${row[4]}"]`);
+                console.log(row, checkbox);
+                if (!checkbox) {
+                    // next row
+                    return;
+                }
                 // 獲取 checkbox 當前的 checked 狀態
                 const checkboxValue = checkbox ? checkbox.checked : false;
 
@@ -187,9 +195,14 @@ export default {
             window.location.reload();
         },
         //get board information
-        fetchData(start, end) {
-            const api_board = config.apiUrl + `/reservation?start_time=${start}&end_time=${end}`;
-
+        fetchData(start, end, api) {
+            let api_board;
+            if (api) {
+                api_board = api;
+            } else {
+                api_board = config.apiUrl + `/reservation?start_time=${start}&end_time=${end}`;
+            }
+            console.log('api_board:', api_board);
             return fetch(api_board, {
             method: 'GET',
             credentials: 'include', 
@@ -207,7 +220,12 @@ export default {
                     const startDate = new Date(item.start_time);
                     const endDate = new Date(item.end_time);
                     // convert startDate to 'YYYY/MM/DD weekday'
-                    const formattedDate = `${startDate.getFullYear()}/${(startDate.getMonth() + 1).toString().padStart(2, '0')}/${startDate.getDate().toString().padStart(2, '0')}(${['日', '一', '二', '三', '四', '五', '六'][startDate.getDay()]})`;
+                    // show the start and end date if they are different
+                    const formattedDate = startDate.getFullYear() === endDate.getFullYear() &&
+                    startDate.getMonth() === endDate.getMonth() &&
+                    startDate.getDate() === endDate.getDate()
+                    ? `${startDate.getFullYear()}/${(startDate.getMonth() + 1).toString().padStart(2, '0')}/${startDate.getDate().toString().padStart(2, '0')}(${['日', '一', '二', '三', '四', '五', '六'][startDate.getDay()]})`
+                    : `${startDate.getFullYear()}/${(startDate.getMonth() + 1).toString().padStart(2, '0')}/${startDate.getDate().toString().padStart(2, '0')}(${['日', '一', '二', '三', '四', '五', '六'][startDate.getDay()]}) ~ ${endDate.getFullYear()}/${(endDate.getMonth() + 1).toString().padStart(2, '0')}/${endDate.getDate().toString().padStart(2, '0')}(${['日', '一', '二', '三', '四', '五', '六'][endDate.getDay()]})`;
                     const startTime = `${startDate.getHours().toString().padStart(2, '0')}:${startDate.getMinutes().toString().padStart(2, '0')}`;
                     const endTime = `${endDate.getHours().toString().padStart(2, '0')}:${endDate.getMinutes().toString().padStart(2, '0')}`;
                     const formattedTime = `${startTime}~${endTime}`;
@@ -236,6 +254,7 @@ export default {
         updateGrid(rows) {
             const gridContainer = document.getElementById('gridtable');
             gridContainer.innerHTML = '';
+            console.log('rows:', rows);
 
             this.grid = new gridjs.Grid({
                 columns: [
@@ -248,7 +267,7 @@ export default {
                 }
                 ],
                 data: rows.map(row => row.data), 
-                width: '98%',
+                width: '96%',
                 fixedHeader: true,
                 search: true,
                 resizable: true,
@@ -281,23 +300,16 @@ export default {
         },
         searchBoard() {
             const startInput = document.querySelector('input[name="startdate"]').value;
-            const endInput = document.querySelector('input[name="enddate"]').value;
-
-            if (!startInput || !endInput) {
-                alert('請輸入完整的開始和結束日期');
-                return;
-            }
-            const table_header = (document.getElementById('table_header'));
-
+            const endInput = startInput;
             const startDate = new Date(startInput);
             startDate.setHours(0, 0, 0, 0); 
-            const start = startDate.toISOString().split('.')[0];
+            const start = startDate.toLocaleString('zh-TW', { hour12: false }); // 或 `toLocaleDateString()` 只取日期
+            // format start time to 'YYYY-MM-DD'
+            const time_range = start.split(' ')[0].replace(/\//g, '-');
+            console.log('time_range:', time_range);
+            const api = config.apiUrl + `/reservation/inrange?time=${time_range}`;
 
-            const endDate = new Date(endInput); 
-            endDate.setHours(23, 59, 59, 999); 
-            const end = endDate.toISOString().split('.')[0];
-
-            this.fetchData(start, end)
+            this.fetchData(start, null, api)
             .then(rows => {
             if (this.grid) {
                 this.grid.updateConfig({
@@ -325,7 +337,7 @@ export default {
             const end = endDate.toISOString().split('.')[0];
 
             // 初始載入時抓取一個月內的資料並更新表格
-            this.fetchData(start, end).then(rows => {
+            this.fetchData(start, end, null).then(rows => {
                 this.updateGrid(rows); 
             }).catch(error => {
                 console.error('Error rendering Grid.js:', error);
@@ -339,21 +351,47 @@ export default {
             if (date && time) {
                 // 將選定的日期和時間拼接成查詢參數
                 const queryString = `?date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`;
-                window.open(`/board/preview${queryString}`, '_blank');
+                window.open(`/2fconference/board/preview${queryString}`, '_blank');
             } else {
                 alert('請選擇日期和時間');
             }
         },
         changePage(event){
             const button = event.target;
-            window.open("/"+button.id, '_blank');
+            window.open("/2fconference/"+button.id, '_blank');
         },
+        resetBoard(){
+            const startDate = new Date();
+            startDate.setHours(0, 0, 0, 0); 
+            const start = startDate.toISOString().split('.')[0];
+
+            const endDate = new Date();
+            endDate.setMonth(endDate.getMonth() + 1); // 加一個月
+            endDate.setHours(0, 0, 0, 0); 
+            const end = endDate.toISOString().split('.')[0];
+            this.fetchData(start, end, null)
+            .then(rows => {
+            if (this.grid) {
+                this.grid.updateConfig({
+                data: rows.map(row => row.data) 
+                }).forceRender(); 
+            } else {
+                this.updateGrid(rows); 
+            }
+            })
+            .catch(error => {
+                console.error('Error rendering Grid.js:', error);
+            });
+            this.setTableTitle(1000, document.getElementById('table_header'));
+            this.removeSearchBar();
+        }
     }
 }
 </script>
 <style>
 .gridjs-table {
     display: none !important;
+    min-width: 600px; /* 設定表格的最小寬度 */
 }
 .gridjs-search {
     display: none !important;
@@ -478,5 +516,14 @@ button:hover{
   .useradmin-button:hover{
     background-color: rgba(0, 0, 0, 0.2);
     cursor: pointer;
+  }
+  @media (max-width: 650px){
+    #previewBoard{
+        display: inline-flex;
+        flex-direction: column;
+    }
+    .timeBar{
+        margin :5px 0px 10px 0px;
+    }
   }
 </style>

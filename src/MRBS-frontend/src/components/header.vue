@@ -5,14 +5,16 @@
         <header>
             <div class="navbar">
                 <div id="hamburger-button" class="hamburger-button" v-on:click="toggleMenu"> </div>
-                <h1>行政大樓二樓<br>會議室預約系統</h1>
-                <h3 class="account-title" id="accountName">歡迎登入,&nbsp; {{ account_name }} </h3>
-                <a onclick="location.href='/'">［登出］</a>
+                <h1 class="header-text">行政大樓二樓<br>會議室預約系統
+                  <div id="phone_account_name" style="font-size: medium;display: none;">歡迎登入,&nbsp; {{ account_name }} </div>
+                </h1>
+                <h3 class="account-title header-text" id="accountName">歡迎登入,&nbsp; {{ account_name }} </h3>
+                <a class="header-text" v-on:click="redirect('/')">［登出］</a>
                 <!-- 切換 使用者/管理者 -->
-                <div class="useradmin" id='useradmin' onclick="">
-                    <img src="../../public/user.png" class="useradmin-button" onclick="location.href ='/lobby'">
+                <div class="useradmin" id='useradmin'>
+                    <img src="../../public/user.png" class="useradmin-button" v-on:click="redirect('/lobby')">
                     <hr style="margin: 0; height: 100%;" />
-                    <img src="../../public/admin.png" class="useradmin-button" onclick="location.href ='/privilege'">
+                    <img src="../../public/admin.png" class="useradmin-button" v-on:click="redirect('/privilege')">
                 </div>
             </div>
         </header>
@@ -43,6 +45,9 @@ export default {
         this.setUserInfo();
     },
     methods: {
+      redirect(path) {
+          window.location.href = '/2fconference' + path;
+      },
       loadCDN(cdn) {
           // Return a promise that resolves when all scripts are loaded
           return Promise.all(
@@ -60,23 +65,30 @@ export default {
         // toggle the menu
         toggleMenu() {
             console.log('toggleMenu');
-            const menu = document.getElementById('hamburger-menu');
-            const lobby = document.getElementById('lobby');
+            if (window.innerWidth < 830) {
+              document.getElementById('hamburger-menu').style.display = document.getElementById('hamburger-menu').style.display === 'none' ? 'block' : 'none';
+              document.getElementById('fc-dom-1').style.marginTop = document.getElementById('hamburger-menu').style.display === 'none' ? '10%' : '';
 
-            // 切換active狀態來控制菜單顯示或隱藏
-            menu.classList.toggle('active');
-
-            // 根據菜單是否隱藏來調整lobby的寬度
-            if (menu.classList.contains('active')) {
-                // console.log('1');
-                lobby.classList.add('full-width');
-            } else {
-                // console.log('1');
-                lobby.classList.remove('full-width');
             }
-            setTimeout(() => {
-                window.dispatchEvent(new Event('resize'));
-            }, 1);
+            else {
+              const menu = document.getElementById('hamburger-menu');
+              const lobby = document.getElementById('lobby');
+
+              // 切換active狀態來控制菜單顯示或隱藏
+              menu.classList.toggle('active');
+
+              // 根據菜單是否隱藏來調整lobby的寬度
+              if (menu.classList.contains('active')) {
+                  // console.log('1');
+                  lobby.classList.add('full-width');
+              } else {
+                  // console.log('1');
+                  lobby.classList.remove('full-width');
+              }
+              setTimeout(() => {
+                  window.dispatchEvent(new Event('resize'));
+              }, 1);
+            }
         },
 
         // add a async function
@@ -130,8 +142,7 @@ body {
   header {
     background-color: #fff;
     border-bottom: 1px solid #ddd;
-    padding: 10px;
-    height: fit-content;
+    padding : 2vh 1px 1vh 10px;
   }
   
   .navbar {
@@ -158,6 +169,16 @@ body {
     font-size: 20px;
     margin: 0px 0px;
     color: #3C9A86;
+  }
+
+  header{
+    transform: scale(1.2); /* 調整縮放比例 */
+    transform-origin: left; /* 縮放中心設為元素中心 */
+    width: calc(100% / 1.22); /* 縮放寬度以補償 scale 的影響 */
+    height: 6vh; /* 縮放高度以補償 scale 的影響 */
+    display: flex;
+    justify-content: right;
+    align-items: center;
   }
   
   .content {
@@ -487,6 +508,25 @@ body {
     initial-scale: 1;
 }
   @media screen and (max-width: 830px) {
+    header {
+      height: 8vh;
+    }
+    .header-text {
+      font-size: 4vw !important;
+      margin-top: 4vh;
+    }
+
+    #hamburger-menu {
+      margin-top: 30% !important;
+    }
+
+    #phone_account_name {
+        display: block !important;
+    }
+
+    #accountName {
+        display: none;
+    }
 
     #fc-dom-1 {
       display: flex;
@@ -504,10 +544,12 @@ body {
 
     td {
         white-space: nowrap; /* Prevent text from wrapping to the next line */
-        overflow: hidden; /* Hide text that overflows */
-        text-overflow: ellipsis; /* Add "..." if text is too long */
+        text-overflow: hidden; /* Prevent text from overflowing the cell */
     }
-    
+
+    .fc-event-time, .fc-event-title {
+      overflow: hidden;
+    }
 
     body {
       display: block;
@@ -522,7 +564,9 @@ body {
     }
 
     #event-list {
-        display: none;
+        height:45vh;
+        width:95%;
+        overflow-y: scroll;
     }
   
     .hamburger-menu {

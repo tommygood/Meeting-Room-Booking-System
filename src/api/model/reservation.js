@@ -22,6 +22,27 @@ module.exports = {
             }
         }
     },
+
+    getInRange : async function (date) {
+        const conn = await db_conn.getDBConnection();
+        if (conn == null) {
+            return null;
+        }
+        else {
+            try {
+                sql = "SELECT `Reservation`.reserve_id ,`Reservation`.identifier, `Room`.room_name, `Reservation`.name, `Reservation`.start_time, `Reservation`.end_time, `Reservation`.show, `Reservation`.ext, `User`.chinesename, `User`.`unit` FROM `Reservation`,`Room`, `User` WHERE `Reservation`.room_id = `Room`.room_id AND `Reservation`.identifier = `User`.identifier AND `Reservation`.start_time <= ? AND `Reservation`.end_time >= ? AND `Reservation`.status = 0;";
+                const result = await conn.query(sql, [`${date} 23:59:59`, `${date} 00:00:00`]);
+                console.log('result', result);
+                db_conn.closeDBConnection(conn);
+                return result;
+            }
+            catch(e) {
+                console.error("error getting reservation : ", e);
+                db_conn.closeDBConnection(conn);
+                return null;
+            }
+        }
+    },
     
     // insert reservation into db by identifier, room_id, name, start_time, end_time, show, ext
     insert : async function (identifier, room_id, name, start_time, end_time, show, ext) {
@@ -66,15 +87,15 @@ module.exports = {
     },
 
     // update all columns except identifer in reservation by reserve_id and identifier
-    updateSelfs : async function (identifer, reserve_id, room_id, name, start_time, end_time, show, ext) {
+    updateSelfs : async function (identifer, reserve_id, room_id, name, start_time, end_time, show, ext, status) {
         const conn = await db_conn.getDBConnection();
         if (conn == null) {
             return false;
         }
         else {
             try {
-                const sql = "UPDATE `Reservation` SET `room_id` = ?, `name` = ?, `start_time` = ?, `end_time` = ?, `show` = ?, `ext` = ? WHERE `reserve_id` = ? and `identifier` = ?;";
-                await conn.query(sql, [room_id, name, start_time, end_time, show, ext, reserve_id, identifer]);
+                const sql = "UPDATE `Reservation` SET `room_id` = ?, `name` = ?, `start_time` = ?, `end_time` = ?, `show` = ?, `ext` = ?, `status` = ? WHERE `reserve_id` = ? and `identifier` = ?;";
+                await conn.query(sql, [room_id, name, start_time, end_time, show, ext, status, reserve_id, identifer]);
                 db_conn.closeDBConnection(conn);
                 return true;
             }

@@ -262,6 +262,7 @@ export default {
                 const startTime = new Date(event.start_time);
                 
                 // 格式化為 mm/dd
+                const year = startTime.getFullYear(); // 获取年份
                 const month = String(startTime.getMonth() + 1).padStart(2, '0'); // 月份需要加 1
                 const day = String(startTime.getDate()).padStart(2, '0');
                 
@@ -270,7 +271,7 @@ export default {
                 const dayOfWeek = daysOfWeek[startTime.getDay()];
                 
                 // 格式化為 mm/dd (星期幾)
-                const formattedDate = `${month}/${day} (${dayOfWeek})`;
+                const formattedDate = `${year}/${month}/${day} (${dayOfWeek})`;
                 option.value = event.reserve_id;  // 可以根據需要調整 value
                 option.textContent = DOMPurify.sanitize(`${formattedDate} ${event.name}`);
                 selectElement.appendChild(option);
