@@ -25,9 +25,8 @@ class SSOLogin {
 
   async callback(req, res) {
     try {
-      const redirect_uri = `${host}/2fconference/lobby`;
+      const redirect_uri = host.includes('localhost') ? `${host}/lobby` : `${host}/2fconference/lobby`;
       const result = await oauth.callback(host, redirect_uri, req, res);
-
       // insert/update user info into db
       User.insert(result.user_info);
       // Log the login result

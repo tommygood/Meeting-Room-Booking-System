@@ -33,6 +33,9 @@
   </details>
 ## Prerequisite
 - Node v20 up
+## Configure
+- db connection
+  - set envrionment variables or update `db` section in `api/utilities/config.js`.
 ## Usage
 ### Frontend Site
 - `cd src\MRBS-frontend`
