@@ -16,6 +16,23 @@ app.disable("x-powered-by");
 // session management
 const session = require("express-session");
 
+// Middleware to rewrite the URL path
+app.use((req, res, next) => {
+  const removeOnRoutes = '/2fconference';
+
+  if (req.url.startsWith(removeOnRoutes)) {
+    // Rewrite req.url
+    req.url = req.url.replace(removeOnRoutes, '') || '/';
+
+    // Rewrite req.originalUrl
+    req.originalUrl = req.originalUrl.replace(removeOnRoutes, '') || '/';
+
+    // Rewrite req._parsedUrl
+    req._parsedUrl = req.url; // Re-parse the URL based on the updated req.url
+  }
+  next();
+});
+
 // set X-Content-Type-Options header to prevent MIME sniffing
 app.use((req, res, next) => {
   res.setHeader("Referrer-Policy", "same-origin");

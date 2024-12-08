@@ -14,11 +14,11 @@ module.exports = {
     client: {
       id:
         process.env.oauth_client_id == undefined
-          ? "20240810153319N3rBYdMmk8gj"
+          ? "202412032157153TTwd9OVvxgb"
           : process.env.oauth_client_id,
       secret:
         process.env.oauth_client_secret == undefined
-          ? "5qnk47LxuLGxJLrRUKSDNNJxRC5pU4byTV5ZYMKnro0SOyBiVtoEhe"
+          ? "jAeau0dgAIJWrDw7tleyitNLD7kwbOtXgfHCan27jyikZXagw6F"
           : process.env.oauth_client_secret,
     },
     auth: {
@@ -38,8 +38,7 @@ module.exports = {
     const codeVerifier = this.generateCodeVerifier();
     const code_challenge = this.generateCodeChallenge(codeVerifier);
     const authorizationUri = client.authorizeURL({
-      redirect_uri: `https://ncusec.ncu.edu.tw/2fconference/api/login/callback`,
-      scope: this.scope,
+      redirect_uri: `${host}/2fconference/api/login/callback`,
       state: "9d6ca6532dab4d92eac96d7b114730b4",
       code_verify: code_challenge, // this is the code_challenge for weird result from vunlnerability scanner
       code_challenge: code_challenge,
@@ -58,7 +57,7 @@ module.exports = {
 
     const tokenParams = {
       code,
-      redirect_uri: `${host}/2fconference/lobby`,
+      redirect_uri: host.includes('localhost') ? `${host}/lobby` : `${host}/2fconference/lobby`,
       scope: this.scope,
       code_verifier: codeVerifier,
       code_verify: codeVerifier
