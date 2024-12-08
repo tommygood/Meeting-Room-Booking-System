@@ -104,10 +104,10 @@ class Reservation {
                 res.suc = false;
                 res.msg = "一般使用者只能預約 7 天內的時間";
             }
-        }
-        else if (!this.nameCheck(name).suc) {
-            res.suc = false;
-            res.msg = this.nameCheck(name).result;
+            else if (!this.nameCheck(name).suc) {
+                res.suc = false;
+                res.msg = this.nameCheck(name).result;
+            }
         }
         return res;
     }
