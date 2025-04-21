@@ -121,8 +121,7 @@ export default {
                 const datetime = new Date();
                 // get weekday from datetime
                 const weekday = weekdays[datetime.getDay()];
-                document.getElementById('current_time').innerHTML = datetime.toISOString().split('T')[0] + ` (${weekday})` +
-                '<br/>' + datetime.toTimeString().split(' ')[0].slice(0, 5);
+                document.getElementById('current_time').innerHTML = datetime.toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll('/', '-') + ` (${weekday})` + '<br/>' + datetime.toTimeString().split(' ')[0].slice(0, 5);
             }
         },
         loadCSS() {
