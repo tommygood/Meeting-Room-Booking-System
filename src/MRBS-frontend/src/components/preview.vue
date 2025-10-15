@@ -254,8 +254,17 @@ export default {
                 /* margin-bottom: 20px; */
                 align-content: center;
                 margin: 0px 25px;
-                text-algin: center;
+                text-align: center;
                 margin-top: 50px;
+            }
+
+            /* Ensure h3 inside .event-title is rendered bold and large
+               Fixes thin-looking "會議名稱" / "今日無會議" messages */
+            .event-title h3 {
+                font-weight: 700;
+                font-size: 80px;
+                margin: 0;
+                line-height: 1.1;
             }
 
             .time-block-max {
@@ -424,7 +433,7 @@ export default {
                 <div class="event-details-min" style="margin-left:10%;">
                     <h3>${event.name}</h3>
                     <p style="font-weight:bold">借用單位：${event.unit}</p>
-                    <p style="font-weight:bold">借用人：${event.chinesename}</pe=>
+                    <p style="font-weight:bold">借用人：${event.chinesename}</p>
                 </div>
             `;
         },
