@@ -37,8 +37,12 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   res.setHeader("Referrer-Policy", "same-origin");
   res.set("X-Content-Type-Options", "nosniff");
+  res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+  res.setHeader("Cross-Origin-Resource-Policy", "same-origin");
   // Set Content Security Policy (CSP) header
-  res.setHeader("Content-Security-Policy", "default-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.quilljs.com https://cdn.jsdelivr.net; script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com https://cdn.quilljs.com; font-src 'self' https://cdn.jsdelivr.net data:;frame-ancestors 'self';");
+  // The app never embeds itself in a frame, so no one else should be able to either
+  res.setHeader("Content-Security-Policy", "default-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.quilljs.com https://cdn.jsdelivr.net; script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com https://cdn.quilljs.com; font-src 'self' https://cdn.jsdelivr.net data:;frame-ancestors 'none';");
   next();
 });
 
