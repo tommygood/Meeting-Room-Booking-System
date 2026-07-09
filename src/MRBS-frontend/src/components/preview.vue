@@ -254,7 +254,7 @@ export default {
                 /* margin-bottom: 20px; */
                 align-content: center;
                 margin: 0px 25px;
-                text-algin: center;
+                text-align: center;
                 margin-top: 50px;
             }
 
@@ -424,7 +424,7 @@ export default {
                 <div class="event-details-min" style="margin-left:10%;">
                     <h3>${event.name}</h3>
                     <p style="font-weight:bold">借用單位：${event.unit}</p>
-                    <p style="font-weight:bold">借用人：${event.chinesename}</pe=>
+                    <p style="font-weight:bold">借用人：${event.chinesename}</p>
                 </div>
             `;
         },
