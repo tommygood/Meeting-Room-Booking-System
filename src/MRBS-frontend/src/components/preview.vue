@@ -258,15 +258,6 @@ export default {
                 margin-top: 50px;
             }
 
-            /* Ensure h3 inside .event-title is rendered bold and large
-               Fixes thin-looking "會議名稱" / "今日無會議" messages */
-            .event-title h3 {
-                font-weight: 700;
-                font-size: 80px;
-                margin: 0;
-                line-height: 1.1;
-            }
-
             .time-block-max {
                 display: flex;
                 justify-content: space-around;
